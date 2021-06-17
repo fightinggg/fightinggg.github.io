@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace-theme-minimal.min.css">
+  <script src="/lib/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fightinggg.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copyhiddencode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka时间轮">
+<meta property="og:url" content="http://fightinggg.top/QR4S3C.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.50.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.51.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.47.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.52.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.52.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.52.02.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.53.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.53.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.54.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.55.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.55.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.55.02.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.56.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.56.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.57.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.57.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.58.00.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.58.01.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.58.02.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.58.03.000.png">
+<meta property="og:image" content="http://fightinggg.top/images/image-2021-04-06.14.58.04.000.png">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="article:published_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:modified_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="lis">
+<meta property="article:tag" content="Zookeeper">
+<meta property="article:tag" content="字节">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.top/images/image-2021-04-06.14.50.00.000.png">
+
+<link rel="canonical" href="http://fightinggg.top/QR4S3C.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<script>
+  ((w, d) => {
+    'use strict';
+      const userScheme = localStorage.getItem('Scheme');
+      if (!userScheme) return;
+    d.documentElement.className += ' darkScheme';
+  })(window, document);
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="/js/msg.js"></script>
+<!--<script src="/js/hello.js"></script>-->
+<!--script src="/js/changeBackground.js"></script -->
+<script type="text/javascript" src="/js/nightAuto.js"></script>
+
+<!-- <script type="text/javascript" src="\js\snow.js"></script> -->
+
+  <title>Kafka时间轮 | Believe it</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+    <a target="_blank" rel="noopener" href="https://github.com/fightinggg" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Believe it</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-hot">
+
+    <a href="/hot/" rel="section"><i class="fa fa-signal fa-fw"></i>热度排行</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/QR4S3C.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka时间轮
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-06 15:14:00" itemprop="dateCreated datePublished" datetime="2021-04-06T15:14:00+08:00">2021-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">队列</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%98%9F%E5%88%97/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/QR4S3C.html" class="post-meta-item leancloud_visitors" data-flag-title="Kafka时间轮" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/QR4S3C.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/QR4S3C.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904110399946766">原文链接</a></p>
+<p><strong>侵删</strong></p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.50.00.000.png" alt=""></p>
+<h1 id="一张图理解Kafka时间轮-TimingWheel-看不懂算我输"><a href="#一张图理解Kafka时间轮-TimingWheel-看不懂算我输" class="headerlink" title="一张图理解Kafka时间轮(TimingWheel),看不懂算我输!"></a>一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</h1><blockquote>
+<p>本文是【字节可视化系列】Kafka专栏文章。</p>
+<p>通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。</p>
+</blockquote>
+  <span id="more"></span>
+<p>时间轮，是一种实现延迟功能（定时器）的巧妙算法，在Netty，Zookeeper，Kafka等各种框架中，甚至Linux内核中都有用到。</p>
+<p>本文将参考Kafka的时间轮作为例子讲解。</p>
+<h1 id="0-设计源于生活"><a href="#0-设计源于生活" class="headerlink" title="0 设计源于生活"></a>0 设计源于生活</h1><p>开始之前给大家看块宝珀中华年历表。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.51.00.000.png" alt=""></p>
+<p>图片来自宝珀官网  </p>
+<p>这款手表的表盘融合了中华历法中各种博大精深的计时元素。</p>
+<p>上方位置的小表盘显示时辰数字及字符,24小时一周期;年份视窗显示当年所属生肖,12年一周期;</p>
+<p>左边位置显示农历月,12个月一周期; 农历日, 30天一周期;</p>
+<p>右边位置显示五行元素和十天干,10年一周期;</p>
+<p>下方的表盘显示月相盈亏。</p>
+<p>至于价格…..这个话题略过。</p>
+<p>而时间轮，其设计正是来源于生活中的时钟。</p>
+<h1 id="1-时间轮"><a href="#1-时间轮" class="headerlink" title="1 时间轮"></a>1 时间轮</h1><p>如图就是一个简单的时间轮：  </p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.47.00.000.png" alt=""></p>
+<p>图中大圆的圆心位置表示的是当前的时间，随着时间推移, 圆心处的时间也会不断跳动。</p>
+<p>下面我们对着这个图，来说说Kafka的时间轮TimingWheel。</p>
+<p>Kafka时间轮的底层就是一个环形数组，而数组中每个元素都存放一个双向链表TimerTaskList，链表中封装了很多延时任务。</p>
+<p>Kafka中一个时间轮TimingWheel是由20个时间格组成，wheelSize = 20；每格的时间跨度是1ms，tickMs = 1ms。参照Kafka，上图中也用了20个灰边小圆表示时间格，为了动画演示可以看得清楚，我们这里每个小圆的时间跨度是1s。</p>
+<p>所以现在整个时间轮的时间跨度就是 tickMs * wheelSize ，也就是 20s。从0s到19s，我们都分别有一个灰边小圆来承载。</p>
+<p>Kafka的时间轮还有一个表盘指针 currentTime，表示时间轮当前所处的时间。也就是图中用黑色粗线表示的圆，随着时间推移, 这个指针也会不断前进;</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.52.00.000.png" alt=""></p>
+<h2 id="添加定时任务"><a href="#添加定时任务" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>有了时间轮，现在可以往里面添加定时任务了。我们用一个粉红色的小圆来表示一个定时任务。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.52.01.000.png" alt=""></p>
+<p>这里先讲一下设定，每一个定时任务都有延时时间<strong>delayTime</strong>，和过期时间<strong>ExpiredTime</strong>。</p>
+<p>比如当前时间是10s，我们添加了个延时时间为2s的任务，那么这个任务的过期时间就是12s，也就是当前时间10s再走两秒，变成了12s的时候，就到了触发这个定时任务的时间。</p>
+<p>而时间轮上代表时间格的灰边小圆上显示的数字，可以理解为任务的过期时间。  </p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.52.02.000.png" alt=""></p>
+<p>讲清楚这些设定后，我们就开始添加定时任务吧。</p>
+<p>初始的时候, 时间轮的指针定格在0。此时添加一个超时时间为2s的任务, 那么这个任务将会插入到第二个时间格中。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.53.00.000.png" alt=""></p>
+<p>当时间轮的指针到达第二个时间格时, 会处理该时间格上对应的任务。在动画上就是让红色的小圆消失!</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.53.01.000.png" alt=""></p>
+<p>如果这个时候又插入一个延时时间为8s的任务进来, 这个任务的过期时间就是在当前时间2s的基础上加8s, 也就是10s, 那么这个任务将会插入到过期时间为10s的时间格中。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.54.00.000.png" alt=""></p>
+<h1 id="2-“动态”时间轮"><a href="#2-“动态”时间轮" class="headerlink" title="2 “动态”时间轮"></a>2 “动态”时间轮</h1><p>到目前为止，一切都很好理解。</p>
+<p>那么如果在当前时间是2s的时候, 插入一个延时时间为19s的任务时, 这个任务的过期时间就是在当前时间2s的基础上加19s, 也就是21s。  </p>
+<p>请看下图，当前的时间轮是没有过期时间为21s的时间格。这个任务将会插入到过期时间为1s的时间格中，这是怎么回事呢？</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.55.00.000.png" alt=""></p>
+<h2 id="复用时间格"><a href="#复用时间格" class="headerlink" title="复用时间格"></a>复用时间格</h2><p>为了解答上面的问题，我们先来点魔法， 让时间轮上的时间都动起来！  </p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.55.01.000.png" alt=""></p>
+<p>其实呢，当指针定格在2s的位置时, 时间格0s, 1s和2s就已经是过期的时间格。  </p>
+<p>也就是说指针可以用来划分过期的时间格[0,2]和未来的时间格 [3,19]。而过期的时间格可以继续复用。比如过期的时间格0s就变成了20s, 存放过期时间为20s的任务。</p>
+<p>理解了时间格的复用之后，再看回刚刚的例子，当前时间是2s时，添加延时时间为19s的任务，那么这个任务就会插入到过期时间为21s的时间格中。  </p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.55.02.000.png" alt=""></p>
+<h1 id="3-时间轮升级"><a href="#3-时间轮升级" class="headerlink" title="3 时间轮升级"></a>3 时间轮升级</h1><p>下面，新的问题来了，请坐好扶稳。</p>
+<p>如果在当前时间是2s的时候, 插入一个延时时间为22s的任务, 这个任务的过期时间就是在2s的基础上加22s，也就是24s。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.56.00.000.png" alt=""></p>
+<p>显然当前时间轮是无法找到过期时间格为24秒的时间格，因为当前过期时间最大的时间格才到21s。而且我们也没办法像前面那样再复用时间格，因为除了过期时间为2s的时间格，其他的时间格都还没过期呢。当前时间轮无法承载这个定时任务, 那么应该怎么办呢\?</p>
+<p>当然我们可以选择扩展时间轮上的时间格, 但是这样一来，时间轮就失去了意义。</p>
+<p>是时候要升级时间轮了！</p>
+<p>我们先来理解下多层时间轮之间的联系。</p>
+<h1 id="4-层级时间轮"><a href="#4-层级时间轮" class="headerlink" title="4 层级时间轮"></a>4 层级时间轮</h1><p>如图是一个两层的时间轮:</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.56.01.000.png" alt=""></p>
+<p>第二层时间轮也是由20个时间格组成, 每个时间格的跨度是20s。</p>
+<p>图中展示了每个时间格对应的过期时间范围, 我们可以清晰地看到, 第二层时间轮的第0个时间格的过期时间范围是 [0,19]。也就是说, 第二层时间轮的一个时间格就可以表示第一层时间轮的所有(20个)时间格;</p>
+<p>为了进一步理清第一层时间轮和第二层时间轮的关系, 我们拉着时间的小手, 一起观看下面的动图:</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.57.00.000.png" alt=""></p>
+<p>可以看到，第二层时间轮同样也有自己的指针, 每当第一层时间轮走完一个周期，第二层时间轮的指针就会推进一格。</p>
+<h2 id="添加定时任务-1"><a href="#添加定时任务-1" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>回到一开始的问题，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.57.01.000.png" alt=""></p>
+<p>当第一层时间轮容纳不下时，进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>我们再来个例子，如果在当前时间是2s的时候, 插入一个延时时间为350s的任务, 这个任务的过期时间就是在2s的基础上加350s，也就是352s。</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.58.00.000.png" alt=""></p>
+<p>从图中可以看到，该任务插入到第二层时间轮过期时间为[340,359]s的时间格中，也就是第17格的位置。  </p>
+<h1 id="5-“动态”层级时间轮"><a href="#5-“动态”层级时间轮" class="headerlink" title="5 “动态”层级时间轮"></a>5 “动态”层级时间轮</h1><p>通常来说, 第二层时间轮的第0个时间格是用来表示第一层时间轮的, 这一格是存放不了任务的, 因为超时时间0-20s的任务, 第一层时间轮就可以处理了。</p>
+<p>但是! 事情往往没这么简单, 我们时间轮上的时间格都是可以复用的! 那么这在第二层时间轮上又是怎么体现的呢\?</p>
+<p>下面是魔法时间， 我们让时间轮上的过期时间都动起来！</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.58.01.000.png" alt=""></p>
+<p>从图中可以看到，当第一层时间轮的指针定格在1s时，超时时间0s的时间格就过期了。而这个时候，第二层时间轮第0个时间格的时间范围就从[0,19]分为了过期的[0],和未过期的[1,19]。而过期的[0]就会被新的过期时间[400]复用。  </p>
+<p>第二层时间轮第0个时间格的过期时间范围演变如下：</p>
+<p>[0-19]</p>
+<p>[400][1,19]</p>
+<p>[400,401][2,19]</p>
+<p>……</p>
+<p>[400,419]</p>
+<p>所以，如果在当前时间是2s的时候, 插入一个延时时间为399s的任务, 这个任务的过期时间就是在2s的基础上加399s，也就是401s。如图，这个任务还是会插到第二层时间轮第0个时间格中去。  </p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.58.02.000.png" alt=""></p>
+<h1 id="6-时间轮降级"><a href="#6-时间轮降级" class="headerlink" title="6 时间轮降级"></a>6 时间轮降级</h1><p>还是用回这个大家都已经耳熟能详的例子，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。最后进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>当二层时间轮上的定时任务到期后，时间轮是怎么做的呢？</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.58.03.000.png" alt=""></p>
+<p>从图中可以看到，随着当前时间从2s继续往前推进，一直到20s的时候，总共经过了18s。此时第二层时间轮中，超时时间为[20-39s]的时间格上的任务到期。</p>
+<p>原本超时时间为24s的任务会被取出来，重新加入时间轮。此时该定时任务的延时时间从原本的22s，到现在还剩下4s（22s-18s）。最后停留在第一层时间轮超时时间为24s的时间格，也就是第4个时间格。</p>
+<p>随着当前时间继续推进，再经过4s后，该定时任务到期被执行。</p>
+<p>从这里可以看出时间轮的巧妙之处，两层时间轮只用了40个数组元素，却可以承载[0-399s]的定时任务。而三层时间轮用60个数组元素，就可以承载[0-7999s]的定时任务！</p>
+<p><img src="/images/loading.gif" data-original="/images/image-2021-04-06.14.58.04.000.png" alt=""></p>
+<h1 id="7-时间轮的推进"><a href="#7-时间轮的推进" class="headerlink" title="7 时间轮的推进"></a>7 时间轮的推进</h1><p>从动画中可以注意到, 随着时间推进, 时间轮的指针循环往复地定格在每一个时间格上, 每一次都要判断当前定格的时间格里是不是有任务存在;</p>
+<p>其中有很多时间格都是没有任务的, 指针定格在这种空的时间格中, 就是一次”空推进”;</p>
+<p>比如说, 插入一个延时时间400s的任务, 指针就要执行399次”空推进”, 这是一种浪费!</p>
+<p>那么Kafka是怎么解决这个问题的呢？这就要从延迟队列DelayQueue开始讲起了！</p>
+<p>时间轮搭配延迟队列DelayQueue，会发生什么化学反应呢？请关注公众号【字节武装】后续更新。  </p>
+<h1 id="往期回顾"><a href="#往期回顾" class="headerlink" title="往期回顾"></a>往期回顾</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&amp;mid=2247484068&amp;idx=1&amp;sn=8398823824f8511c69a652d1394a263f&amp;chksm=cfc381cbf8b408dd6343218814b6633ee7fbdeb255f27439ab41462d2d7f29e34c605c6c24af&amp;scene=21#wechat_redirect">图说堆排序</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&amp;mid=2247483930&amp;idx=1&amp;sn=851e418f68e7efbbcf5acb43e7c9995a&amp;chksm=cfc38175f8b4086394fd2ebe3d5f5acb16182633203464760c9aac7f254bdb5e872f1db66b6d&amp;scene=21#wechat_redirect">TCP为啥要3次握手和4次挥手？这是一种沟通技巧</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&amp;mid=2247483887&amp;idx=1&amp;sn=bbac015aeec266eb5e7346f43000cc48&amp;chksm=cfc38280f8b40b9607199d324b82162160784979f8dca68edf39765ee1e7c2c5758ef9e4fa6d&amp;scene=21#wechat_redirect">一张图搞懂归并排序</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&amp;mid=2247483811&amp;idx=1&amp;sn=3e68d49a4429d492ff1ffb09a96208db&amp;chksm=cfc382ccf8b40bda701cad9a37052b468f93c263fddef55fe899a1e3f6767737d4ff90825544&amp;scene=21#wechat_redirect">Java线程池的故事, 四个花瓶</a></li>
+</ul>
+<p><img src="/images/loading.gif" data-original="https://user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="">  </p>
+
+    </div>
+
+    
+    
+    
+
+      
+      
+        <div>
+    <div>
+        
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+        
+    </div>
+</div>
+      
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.top/QR4S3C.html" title="Kafka时间轮">http://fightinggg.top/QR4S3C.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kafka/" rel="tag">🏷️ Kafka</a>
+              <a href="/tags/lis/" rel="tag">🏷️ lis</a>
+              <a href="/tags/Zookeeper/" rel="tag">🏷️ Zookeeper</a>
+              <a href="/tags/%E5%AD%97%E8%8A%82/" rel="tag">🏷️ 字节</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/QR12J0.html" rel="prev" title="从TCP看HTTP">
+      <i class="fa fa-chevron-left"></i> 从TCP看HTTP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/QR6OSO.html" rel="next" title="Kafka权威指南">
+      Kafka权威指南 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%90%86%E8%A7%A3Kafka%E6%97%B6%E9%97%B4%E8%BD%AE-TimingWheel-%E7%9C%8B%E4%B8%8D%E6%87%82%E7%AE%97%E6%88%91%E8%BE%93"><span class="nav-text">一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E8%AE%BE%E8%AE%A1%E6%BA%90%E4%BA%8E%E7%94%9F%E6%B4%BB"><span class="nav-text">0 设计源于生活</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="nav-text">1 时间轮</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">添加定时任务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="nav-text">2 “动态”时间轮</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E7%94%A8%E6%97%B6%E9%97%B4%E6%A0%BC"><span class="nav-text">复用时间格</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%97%B6%E9%97%B4%E8%BD%AE%E5%8D%87%E7%BA%A7"><span class="nav-text">3 时间轮升级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="nav-text">4 层级时间轮</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-1"><span class="nav-text">添加定时任务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="nav-text">5 “动态”层级时间轮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E6%97%B6%E9%97%B4%E8%BD%AE%E9%99%8D%E7%BA%A7"><span class="nav-text">6 时间轮降级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E6%97%B6%E9%97%B4%E8%BD%AE%E7%9A%84%E6%8E%A8%E8%BF%9B"><span class="nav-text">7 时间轮的推进</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%80%E6%9C%9F%E5%9B%9E%E9%A1%BE"><span class="nav-text">往期回顾</span></a></li></ol></div>
+      </div>
+      
+      <!--/noindex-->
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">499</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top"><i class="fas fa-blog fa-fw"></i>主站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="老BLOG → &#x2F;ACM"><i class="far fa-lightbulb fa-fw"></i>老BLOG</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="镜像站1(最稳) → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站1(最稳)</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding-pages-bucket-95057-7784511-14310-531605-1258727650.cos-website.ap-hongkong.myqcloud.com/" title="镜像站2 → https:&#x2F;&#x2F;coding-pages-bucket-95057-7784511-14310-531605-1258727650.cos-website.ap-hongkong.myqcloud.com" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站2</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitee.io/" title="镜像站3 → https:&#x2F;&#x2F;fightinggg.gitee.io" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站3</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://eaw3p1.coding-pages.com/" title="镜像站4 → https:&#x2F;&#x2F;eaw3p1.coding-pages.com" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站4</a>
+      </span>
+  </div>
+
+
+<div class="night-mode motion-element">
+  <a role="button" class="night-btn">
+    <i class="fa fa-lightbulb-o"></i>
+    黑夜模式
+  </a>
+</div>
+
+
+        
+          <script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+          <script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+          <script type="text/javascript" charset="utf-8">
+              $.get('/api/tagList/').then(o=>{
+                  tagList = JSON.parse(o)
+                  tagHtmlList = tagList.map(tag=>`<a class="tag-list-link" href="/tags/${tag}/" rel="tag">${tag}</a>`)
+                  tagHTML = tagHtmlList.join('')
+                  document.getElementById('tagCloudList').innerHTML = tagHTML;
+              })
+          </script>
+          <div class="widget-wrap">
+              <div id="myCanvasContainer" class="widget tagcloud">
+                  <canvas width="250" height="250" id="resCanvas" style="width:100%">
+                      <ul id="tagCloudList", class="tag-list" itemprop="keywords">
+                      </ul>
+                  </canvas>
+              </div>
+          </div>
+        
+
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+
+
+  </aside>
+
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">1253k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">37:57</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="/lib/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity.min.js"></script>
+  <script src="/lib/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.10.2/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+<script>
+  ((w, d) => {
+    'use strict';
+      let userScheme = localStorage.getItem('Scheme');
+      if (userScheme) d.documentElement.className += ' darkScheme';
+      const btn = d.querySelector('.night-btn');
+      w.addEventListener('keydown', e => {
+        if (e.altKey && e.code === 'KeyX') btn.click();
+      });
+      btn.addEventListener('click', () => {
+        d.documentElement.classList.toggle('darkScheme');
+        if ( d.documentElement.classList.contains('darkScheme') ) {
+          localStorage.setItem('Scheme', 'Dark');
+          return;
+        }
+        localStorage.removeItem('Scheme');
+      });
+  })(window, document);
+</script>
+<script src='/js/valine-load.js'></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>
