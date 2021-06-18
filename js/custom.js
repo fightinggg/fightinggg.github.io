@@ -1,3 +1,15 @@
+
+
+msgUtils = {
+    showSuccessMsg: (msg, duration) => {
+        Vue.prototype.$message({
+            message: msg,
+            center: true,
+            duration: duration || 3000
+        })
+    }
+}
+
 autoScheme = () => {
     // localStorage.removeItem('lastAutoUpdateScheme')
     hour = (new Date()).getHours()
