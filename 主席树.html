@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;fightinggg.top&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:true,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:&quot;gitalk&quot;,&quot;storage&quot;:true,&quot;lazyload&quot;:true,&quot;nav&quot;:null,&quot;activeClass&quot;:&quot;gitalk&quot;},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:true,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="转移自老blog                 主席树                    ------ 2019.4.30         什么是主席树         &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;主席树是可持久化权值线段树,支持点修改,区间查询。         静态数组区间第k大         &amp;nbsp;&amp;nbsp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="主席树">
+<meta property="og:url" content="http://fightinggg.top/%E4%B8%BB%E5%B8%AD%E6%A0%91.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="转移自老blog                 主席树                    ------ 2019.4.30         什么是主席树         &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;主席树是可持久化权值线段树,支持点修改,区间查询。         静态数组区间第k大         &amp;nbsp;&amp;nbsp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:modified_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="tree">
+<meta property="article:tag" content="二分">
+<meta property="article:tag" content="自动机">
+<meta property="article:tag" content="后缀自动机">
+<meta property="article:tag" content="线段树">
+<meta property="article:tag" content="最短路">
+<meta property="article:tag" content="主席树">
+<meta property="article:tag" content="区间问题">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://fightinggg.top/%E4%B8%BB%E5%B8%AD%E6%A0%91.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;fightinggg.top&#x2F;%E4%B8%BB%E5%B8%AD%E6%A0%91.html&quot;,&quot;path&quot;:&quot;主席树.html&quot;,&quot;title&quot;:&quot;主席树&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>主席树 | Believe it</title>
+  
+
+
+
+<script src="/js/custom.js"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Believe it</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">89</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">499</span></a></li>
+        <li class="menu-item menu-item-友链"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li>
+        <li class="menu-item menu-item-热度榜单"><a href="/hot/" rel="section"><i class="fa fa-signal fa-fw"></i>热度榜单</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">主席树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">什么是主席树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">静态数组区间第k大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">为数组的每一个前缀建立一颗线段树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">具体实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">时空复杂度分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">如何解决静态区间第k大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">一个优化（可以先不看）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">动态数组区间第k大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">重新研究主席树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">区间和查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">带修改的区间和查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">将树状数组的思路用到主席树上(带修主席树)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">带修主席树？线段树动态开点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">线段树套主席树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">树形主席树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">静态树上路径第k大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">树上差分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">树上任意路径？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-text">可变的树上路径第k大</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">499</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button site-overview-item animated">
+    <a onclick="Chatra('openChat', true);"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top"><i class="fas fa-blog fa-fw"></i>主站</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="老BLOG → &#x2F;ACM"><i class="far fa-lightbulb fa-fw"></i>老BLOG</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="镜像站1(最稳) → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站1(最稳)</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding-pages-bucket-95057-7784511-14310-531605-1258727650.cos-website.ap-hongkong.myqcloud.com/" title="镜像站2 → https:&#x2F;&#x2F;coding-pages-bucket-95057-7784511-14310-531605-1258727650.cos-website.ap-hongkong.myqcloud.com" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站2</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitee.io/" title="镜像站3 → https:&#x2F;&#x2F;fightinggg.gitee.io" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站3</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://eaw3p1.coding-pages.com/" title="镜像站4 → https:&#x2F;&#x2F;eaw3p1.coding-pages.com" rel="noopener" target="_blank"><i class="fas fa-blog fa-fw"></i>镜像站4</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/%E4%B8%BB%E5%B8%AD%E6%A0%91.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          主席树<a href="https://github.com/fightinggg/hexo-blog/tree/master/source/_posts/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data_struct/%E4%B8%BB%E5%B8%AD%E6%A0%91.html" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-08-05 23:23:08" itemprop="dateCreated datePublished" datetime="2019-08-05T23:23:08+08:00">2019-08-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" itemprop="url" rel="index"><span itemprop="name">老Blog迁移</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" itemprop="url" rel="index"><span itemprop="name">stencil</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" itemprop="url" rel="index"><span itemprop="name">data_struct</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        转移自<a href='/ACM/stencil/data_struct/主席树.html'>老blog</a>
+
+<div type="text/javadiv" src="/ACM/js/web_begin.js"></div>
+<div>
+    <center>
+        <h1>主席树</h1>
+    </center>
+    <div id="text">
+        <div style="float: right;"> ------ 2019.4.30</div>
+        <h2>什么是主席树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主席树是可持久化权值线段树,支持点修改,区间查询。
+        <h2>静态数组区间第k大</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先来个题，给一个数组，多组询问，每次询问区间第k大(小),
+        <h2>为数组的每一个前缀建立一颗线段树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;但是这样子，空间会爆炸，时间也一样爆炸，但是我们发现前缀
+        之间是有联系的，两个相邻的前缀之间只有一个权值的差距，所以可以考虑利用以前的节点信息以节省空间和时间。
+        <h2>具体实现</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为两个相邻的前缀之间只有一个权值的差距，所以两颗线段树树之间
+        只有一条链的差距。我们尝试让新树的指针指向旧树，然后对新树那条有区别的链重新开辟空间即可。
+        <h2>时空复杂度分析</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因为一条链的差距，导致每次建树，空间至多开辟lgn,同理，时间为lgn
+        <h2>如何解决静态区间第k大</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们有了每一个前缀的权值线段树，于是我们让两个前缀权值线段树相减，即可得到
+        任意区间的权值线段树,现在问题化简了，已知某个区间的权值线段树，询问区间第k大，我们在这颗权值线段树上二分答案即可。二分是这样实现的，
+        如果当前跑到了叶子结点，说明叶子节点权值为答案，否则把k和当前节点左子树的权值和比较，若k小，说明答案在右子树，否则在左子树。
+        <h2>一个优化（可以先不看）</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很多人写主席树，带一个build函数，用来建立一颗第一个版本的树，理解确实好理解，
+        然而，真的有必要吗？其实是没有的，我们来看看那颗树长啥样？由于没有权值，所以那颗树维护的所有节点的权值都是0，注意：都是0。也就是说
+        你浪费了2*n的空间，存了一堆0？是的，这里我们来优化一下，我们来看这样一个节点，他的权值为0,他的左儿子指向自己，他的右儿子指向自己，
+        看看，这是一个包含了一个节点的非简单图，他有自环来着。我们尝试对这一个节点安装访问曾经访问过的节点的方式带着区间端点dfs下去，你会发现一个奇妙的
+        事情，你得到了和之前花费2*n个节点建立空树一样的效果。于是我们优化了这一个空间复杂度，此优化在此不太明显，O(lg)-O(1)算啥呀。但是
+        当我们处理后面的动态区间问题时，此优化起到了非常大的作用，这就是图的优势<span style="color: grey">打个广告：此优化像极了后缀自动机</span>
+        <br><br>
+        <hr>
+        <h2>动态数组区间第k大</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面的题目已经解决了,但是当数组变化(点修改)伴随着区间第k大查询的时候，我们该怎么办呢？
+        <h2>重新研究主席树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主席树，说白了，就是原数组所有前缀的权值线段树+时空优化。查询的时候同个两个
+        前缀和的差值得到任意区间的权值线段树。我们发现这和一个题目很相似。
+        <h2>区间和查询</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想必不少人都做过这样的一个题目，给你一个固定的数组，给出很多询问，每次询问
+        一个区间，让你输出区间和。这个题目很简单，我们只需要预处理前缀和，对于任意询问，用两个前缀和向减即可解决，
+        <h2>带修改的区间和查询</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当上一个题目发生变化:数组可能会点修改，点修改伴随着区间和查询，的时候，我们
+        就不能用前缀和了，这样很困难，于是树状数组出现了。<span style="color: grey">限于重点，此处不解释<a
+                href="/ACM/stencil/data_struct/树状数组.html">树状数组</a></span>
+        <h2>将树状数组的思路用到主席树上(带修主席树)</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们让主席树换一种建法，不用前缀和，用树状数组的方案，每一颗主席树rt[i]维护
+        区间(i&(i-1),i]的权值线段树。如此一来，当我们进行点修改的时候，只需要修改lg颗权值线段树，当我们查询的时候，要lg颗线段树才能组成
+        任意区间的权值线段树。相当于牺牲了一部分查询时间，换取更新操作的加速。
+        <h2>带修主席树？线段树动态开点？</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当主席树方式变了之后，我们惊讶的发现，权值线段树不能简单的继承他的儿子了，他比儿子
+        多好多新的权值信息要维护，比方说1100(12)，他的儿子是1000(8),他俩差了100(4)个权值,如果我们还是采用之前的继承儿子权值线段树的方式，编码会很复杂
+        这里提出一种新的方法:超级超级超级大大大暴力建树，每一个树状数组节点（权值线段树）我们都从0开始建树。有兴趣可以去打表试试，看似暴力其实一点都不暴力，
+        除非你不用上文谈到的的那个"一个优化" 我们最多调用update函数lg*lg次。于是，这个带修主席树，被yyb成为了线段树动态开点。
+        <span style="color: grey">不知道yyb，你可太骚了，自己百度去</span>
+        <h2>线段树套主席树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此坑待填。
+
+        <br><br>
+        <hr>
+
+        <h2>树形主席树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主席树太强了，我们骚里个骚，把它放到树上去，来个树套树
+        <h2>静态树上路径第k大</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是这样一个问题，给你一棵树，每个节点都有权，很多询问，问你任意两点之间的最短路径上经过的点中
+        点权第k大是谁
+        <h2>树上差分</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前缀也没谁了，树上一个点前缀就是这个点到根的路径上经过的点的集合，我们安装这种想法建立一个树上的
+        主席树，儿子是父亲的继承版本中的一个，父亲是儿子的前一个版本，时空复杂度不高，
+        <h2>树上任意路径？</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比方说u->v ，我们假设lca为u和v的lca，假设fa为lca的父亲，那么我们用u的权值线段树加上v的权值线段树减去lca的
+        权值线段树再减去fa的权值线段树，得到的就是u->v这条路径的权值线段树，ok你已经学完了此博文
+
+        <h2>可变的树上路径第k大</h2>
+        https://www.luogu.org/problemnew/solution/P4175
+    </div>
+
+    <div id="code">
+        <pre><span class="c1">// 没有build 因为不需要 空树就是rt[0],是建好了的</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span> <span class="o">=</span> <span class="mf">2e5</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">ls</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">2</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">2</span><span class="p">],</span><span class="n">siz</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">2</span><span class="p">],</span><span class="n">tot</span><span class="p">,</span><span class="n">rt</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span><span class="c1">//update用了几次，就要乘以多少</span>
+
+<span class="kt">void</span> <span class="n">ini</span><span class="p">(){</span><span class="n">tot</span><span class="o">=</span><span class="mi">0</span><span class="p">;}</span>
+
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">pre</span><span class="p">,</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">pos</span><span class="p">,</span><span class="kt">int</span> <span class="n">val</span><span class="p">){</span><span class="c1">//把u按照pre复制，然后更新pos</span>
+    <span class="n">u</span><span class="o">=++</span><span class="n">tot</span><span class="p">;</span>
+    <span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">pre</span><span class="p">];</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">rs</span><span class="p">[</span><span class="n">pre</span><span class="p">];</span>
+    <span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">siz</span><span class="p">[</span><span class="n">pre</span><span class="p">]</span><span class="o">+</span><span class="n">val</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span><span class="k">return</span> <span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pos</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">pre</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">val</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">pre</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">val</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">k</span><span class="p">){</span><span class="c1">//查询（y树-x树）差值的区间第k小</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span><span class="k">return</span> <span class="n">l</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">s</span><span class="o">=</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">y</span><span class="p">]]</span><span class="o">-</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">x</span><span class="p">]];</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="n">s</span><span class="p">)</span> <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">y</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">y</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">k</span><span class="p">){</span><span class="c1">//查询树上有多少个数大于等于k,用于询问区间不同数的个数</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span> <span class="k">return</span> <span class="n">k</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">?</span><span class="n">siz</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">:</span><span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span> <span class="k">return</span> <span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">x</span><span class="p">]]</span><span class="o">+</span><span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="c1">//////////////////////////////////////////////////////////////////////////////////////////</span>
+
+
+
+<span class="c1">//树状数组套主席树</span>
+<span class="kt">int</span> <span class="n">ls</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">20</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">20</span><span class="p">],</span><span class="n">siz</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="o">*</span><span class="mi">20</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">rt</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">Tl</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">Tr</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">Tl_</span><span class="p">,</span><span class="n">Tr_</span><span class="p">,</span><span class="n">tot</span><span class="p">;</span>
+
+<span class="c1">// n-&gt; 树状数组节点个数     maxval-&gt;主席树叶子结点</span>
+<span class="c1">// for(int j=x;j&lt;=n;j+=j&amp;-j) update(rt[j],1,maxval,pos,+1/-1); //注意pos写不要大常数</span>
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">pos</span><span class="p">,</span><span class="kt">int</span> <span class="n">val</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">u</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">u</span><span class="o">=++</span><span class="n">tot</span><span class="p">;</span><span class="c1">//,ls[u]=rs[u]=siz[u]=0;</span>
+    <span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">+=</span><span class="n">val</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pos</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">val</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">val</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//query(x-1,y,1,maxval,z)</span>
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">k</span><span class="p">){</span>
+    <span class="n">Tl_</span><span class="o">=</span><span class="n">Tr_</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">x</span><span class="p">;</span><span class="n">i</span><span class="p">;</span><span class="n">i</span><span class="o">&amp;=</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="n">Tl</span><span class="p">[</span><span class="n">Tl_</span><span class="o">++</span><span class="p">]</span><span class="o">=</span><span class="n">rt</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">y</span><span class="p">;</span><span class="n">i</span><span class="p">;</span><span class="n">i</span><span class="o">&amp;=</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="n">Tr</span><span class="p">[</span><span class="n">Tr_</span><span class="o">++</span><span class="p">]</span><span class="o">=</span><span class="n">rt</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tl_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">sum</span><span class="o">-=</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">Tl</span><span class="p">[</span><span class="n">i</span><span class="p">]]];</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tr_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">sum</span><span class="o">+=</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">Tr</span><span class="p">[</span><span class="n">i</span><span class="p">]]];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="n">sum</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tl_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">Tl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">Tl</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tr_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">Tr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">Tr</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+            <span class="n">r</span><span class="o">=</span><span class="n">mid</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tl_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">Tl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">rs</span><span class="p">[</span><span class="n">Tl</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Tr_</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">Tr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">rs</span><span class="p">[</span><span class="n">Tr</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+            <span class="n">l</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+            <span class="n">k</span><span class="o">-=</span><span class="n">sum</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//////////////////////////////////////////////////////////////////////////////////////////</span>
+
+
+
+<span class="kt">int</span> <span class="n">ls</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="p">],</span><span class="n">siz</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">20</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">tot</span><span class="p">,</span><span class="n">rt</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+<span class="k">struct</span> <span class="n">star</span><span class="p">{</span><span class="kt">int</span> <span class="n">v</span><span class="p">,</span><span class="n">nex</span><span class="p">;}</span><span class="n">g</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">head</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">g_</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">w</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">fa</span><span class="p">[</span><span class="n">maxn</span><span class="p">][</span><span class="mi">20</span><span class="p">],</span><span class="n">dep</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+
+<span class="c1">//tree</span>
+<span class="kt">void</span> <span class="n">ini</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+    <span class="n">g_</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">add_edge</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">v</span><span class="p">){</span>
+    <span class="n">g</span><span class="p">[</span><span class="n">g_</span><span class="p">].</span><span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">;</span>
+    <span class="n">g</span><span class="p">[</span><span class="n">g_</span><span class="p">].</span><span class="n">nex</span><span class="o">=</span><span class="n">head</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+    <span class="n">head</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">g_</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="n">g</span><span class="p">[</span><span class="n">g_</span><span class="p">].</span><span class="n">v</span><span class="o">=</span><span class="n">u</span><span class="p">;</span>
+    <span class="n">g</span><span class="p">[</span><span class="n">g_</span><span class="p">].</span><span class="n">nex</span><span class="o">=</span><span class="n">head</span><span class="p">[</span><span class="n">v</span><span class="p">];</span>
+    <span class="n">head</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">=</span><span class="n">g_</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//lca</span>
+<span class="kt">void</span> <span class="n">build_lca</span><span class="p">(</span><span class="kt">int</span> <span class="n">cur</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="kt">int</span> <span class="n">father</span><span class="o">=</span><span class="mi">0</span><span class="p">){</span>
+    <span class="n">dep</span><span class="p">[</span><span class="n">cur</span><span class="p">]</span><span class="o">=</span><span class="n">dep</span><span class="p">[</span><span class="n">father</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">fa</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">father</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">20</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">fa</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">fa</span><span class="p">[</span><span class="n">fa</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">head</span><span class="p">[</span><span class="n">cur</span><span class="p">];</span><span class="o">~</span><span class="n">i</span><span class="p">;</span><span class="n">i</span><span class="o">=</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">nex</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="o">==</span><span class="n">father</span><span class="p">)</span><span class="k">continue</span><span class="p">;</span>
+        <span class="n">build_lca</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">,</span><span class="n">cur</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">lca</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">v</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dep</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">&gt;</span><span class="n">dep</span><span class="p">[</span><span class="n">v</span><span class="p">])</span><span class="n">swap</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">);</span><span class="c1">//so dep[u]&lt;dep[v]</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">19</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dep</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">i</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">dep</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="n">v</span><span class="o">=</span><span class="n">fa</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">u</span><span class="o">==</span><span class="n">v</span><span class="p">)</span><span class="k">return</span> <span class="n">u</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">19</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fa</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">fa</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">i</span><span class="p">]){</span>
+            <span class="n">u</span><span class="o">=</span><span class="n">fa</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">v</span><span class="o">=</span><span class="n">fa</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">fa</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">//seg tree</span>
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">pre</span><span class="p">,</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">pos</span><span class="p">){</span>
+    <span class="n">u</span><span class="o">=++</span><span class="n">tot</span><span class="p">;</span>
+    <span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">pre</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">rs</span><span class="p">[</span><span class="n">pre</span><span class="p">];</span>
+    <span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">=</span><span class="n">siz</span><span class="p">[</span><span class="n">pre</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span><span class="k">return</span> <span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pos</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">pre</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">pos</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">pre</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">pos</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">build_seg</span><span class="p">(</span><span class="kt">int</span> <span class="n">cur</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="kt">int</span> <span class="n">fa</span><span class="o">=</span><span class="mi">0</span><span class="p">){</span><span class="c1">//root</span>
+    <span class="n">update</span><span class="p">(</span><span class="n">rt</span><span class="p">[</span><span class="n">fa</span><span class="p">],</span><span class="n">rt</span><span class="p">[</span><span class="n">cur</span><span class="p">],</span><span class="mi">1</span><span class="p">,</span><span class="n">disc_</span><span class="p">,</span><span class="n">w</span><span class="p">[</span><span class="n">cur</span><span class="p">]);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">head</span><span class="p">[</span><span class="n">cur</span><span class="p">];</span><span class="o">~</span><span class="n">i</span><span class="p">;</span><span class="n">i</span><span class="o">=</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">nex</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="o">==</span><span class="n">fa</span><span class="p">)</span><span class="k">continue</span><span class="p">;</span>
+        <span class="n">build_seg</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">v</span><span class="p">,</span><span class="n">cur</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// query(rt[u],rt[v],rt[lca],rt[fa[lca][0]],1,maxval,kth);</span>
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">,</span><span class="kt">int</span> <span class="n">v</span><span class="p">,</span><span class="kt">int</span> <span class="n">lca</span><span class="p">,</span><span class="kt">int</span> <span class="n">fa</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">k</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">)</span><span class="k">return</span> <span class="n">l</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">s</span><span class="o">=</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="o">+</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span><span class="o">-</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">lca</span><span class="p">]]</span><span class="o">-</span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">fa</span><span class="p">]];</span>
+    <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="n">s</span><span class="p">)</span> <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">v</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">lca</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">fa</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">mid</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+    <span class="k">else</span>     <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">v</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">lca</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">fa</span><span class="p">],</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">k</span><span class="o">-</span><span class="n">s</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">//////////////////////////////////////////////////////////////////////////////////////////</span>
+</pre>
+    </div>
+</div>
+<div type="text/javadiv" src="/ACM/js/web_end.js"></div>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://fightinggg.top/%E4%B8%BB%E5%B8%AD%E6%A0%91.html" title="主席树">http://fightinggg.top/主席树.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/tree/" rel="tag"><i class="fa fa-tag"></i> tree</a>
+              <a href="/tags/%E4%BA%8C%E5%88%86/" rel="tag"><i class="fa fa-tag"></i> 二分</a>
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> 自动机</a>
+              <a href="/tags/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> 后缀自动机</a>
+              <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag"><i class="fa fa-tag"></i> 线段树</a>
+              <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag"><i class="fa fa-tag"></i> 最短路</a>
+              <a href="/tags/%E4%B8%BB%E5%B8%AD%E6%A0%91/" rel="tag"><i class="fa fa-tag"></i> 主席树</a>
+              <a href="/tags/%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98/" rel="tag"><i class="fa fa-tag"></i> 区间问题</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html" rel="prev" title="区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树">
+                  <i class="fa fa-chevron-left"></i> 区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/splay.html" rel="next" title="splay">
+                  splay <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="chatra" type="application/json">{&quot;enable&quot;:true,&quot;async&quot;:true,&quot;id&quot;:&quot;LJsNL2yaWz34DrH7v&quot;}</script>
+  <script src="/js/third-party/chat/chatra.js"></script>
+  <script async src="https://call.chatra.io/chatra.js"></script>
+
+
+  <script class="next-config" data-name="pdf" type="application/json">{&quot;object_url&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;pdfobject@2.2.5&#x2F;pdfobject.min.js&quot;,&quot;integrity&quot;:&quot;sha256-YuNlP9i6s&#x2F;WH7EaU2kErloo9Vc85C3WVqhoMDgsEVpY&#x3D;&quot;},&quot;url&quot;:&quot;&#x2F;lib&#x2F;pdf&#x2F;web&#x2F;viewer.html&quot;}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{&quot;enable&quot;:true,&quot;theme&quot;:&quot;forest&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mermaid@8.9.3&#x2F;dist&#x2F;mermaid.min.js&quot;,&quot;integrity&quot;:&quot;sha256-OyJHvRcZHaRR6Ig73ppxF4QXk8HzvfgTprRWkulCkfY&#x3D;&quot;}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;all&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.1.0/dist/quicklink.umd.js" integrity="sha256-KK3rvmDcW72MSl9jzzNZWlQjZNrRzAuGhAQ+0SFOg7Q=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{&quot;enable&quot;:true,&quot;home&quot;:true,&quot;archive&quot;:false,&quot;delay&quot;:true,&quot;timeout&quot;:3000,&quot;priority&quot;:true,&quot;ignores&quot;:null,&quot;url&quot;:&quot;http:&#x2F;&#x2F;fightinggg.top&#x2F;%E4%B8%BB%E5%B8%AD%E6%A0%91.html&quot;}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{&quot;enable&quot;:true,&quot;github_id&quot;:&quot;fightinggg&quot;,&quot;repo&quot;:&quot;fightinggg.github.io&quot;,&quot;client_id&quot;:&quot;309dbdc0e1928fcdab0c&quot;,&quot;client_secret&quot;:&quot;963f51f5577a4ce1bbfdb632e1779fb5ed6808bb&quot;,&quot;admin_user&quot;:&quot;fightinggg&quot;,&quot;distraction_free_mode&quot;:true,&quot;proxy&quot;:&quot;https:&#x2F;&#x2F;cors-anywhere.azm.workers.dev&#x2F;https:&#x2F;&#x2F;github.com&#x2F;login&#x2F;oauth&#x2F;access_token&quot;,&quot;language&quot;:null,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;gitalk@1.7.2&#x2F;dist&#x2F;gitalk.min.js&quot;,&quot;integrity&quot;:&quot;sha256-Pmj85ojLaPOWwRtlMJwmezB&#x2F;Qg8BzvJp5eTzvXaYAfA&#x3D;&quot;},&quot;path_md5&quot;:&quot;62b5f68eb2ab5808ea2d042b9601218b&quot;}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
