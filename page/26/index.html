@@ -89,8 +89,8 @@
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">97</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">86</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">459</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">87</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">462</span></a></li>
         <li class="menu-item menu-item-友链"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -164,14 +164,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">459</span>
+          <span class="site-state-item-count">462</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">86</span>
+        <span class="site-state-item-count">87</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -236,6 +236,330 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q5KMBU.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Q5KMBU.html" class="post-title-link" itemprop="url">Java内存区域于内存溢出异常</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-12 12:11:54" itemprop="dateCreated datePublished" datetime="2020-02-12T12:11:54+08:00">2020-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="java运行时的数据区域">Java运行时的数据区域</h3>
+<p>方法区、虚拟机栈、本地方法栈、堆、程序计数器</p>
+<h4 id="程序计数器">程序计数器</h4>
+<p>线程私有 为了支持多线程，Java虚拟机为每个线程设置独立的程序计数器，各条线程之间计数器互不影响，独立储存。 如果线程执行的是Java方法，计数器指向正在执行的字节码指令地址，如果线程执行的是Native方法，这个计数器则为空 程序计数器区域是唯一一个没有任何OutOfMemoryError情况的区域。</p>
+<!---more-->
+<h4 id="java虚拟机栈">Java虚拟机栈</h4>
+<p>线程私有 每个方法在执行的同时都会向虚拟机栈申请一个栈帧用于储存局部变量表、操作数栈、动态链接、方法出口等信息，每个方法的调用直到执行完成，对应一个栈帧在虚拟机栈中入栈到出栈的过程，局部变量表存放了方法执行过程中的所有局部变量，编译期间就确定了。所以，这个栈帧的大小是完全固定的。 虚拟机栈会有StackOverflowError和OutOfMemoryError，前者在固定长度的虚拟机栈中出现，后者在变长虚拟机栈中出现。这要看虚拟机是哪一种虚拟机。</p>
+<h4 id="本地方法栈">本地方法栈</h4>
+<p>类似于Java方法使用Java虚拟机的栈,这一区域是本地方法使用的栈。 有StackOverflowError和OutOfMemoryError。</p>
+<h4 id="java堆">Java堆</h4>
+<p>线程共享 此内存唯一目的是存放对象实例，Java虚拟机规范中描述到:所有对象实例以及数组都要在堆上分配。但是随着JIT编译器等技术等发展，所有对象都分配在堆上也渐渐不那么绝对了。 Java堆允许不连续 Java堆有OutOfMemoryError</p>
+<h4 id="方法区">方法区</h4>
+<p>线程共享 储存虚拟机加载的类信息，常量，静态变量，即时编译后的代码等数据 可以选择不进行垃圾回收，但这不明智 有OutOfMemoryError</p>
+<h4 id="运行时常量池">运行时常量池</h4>
+<p>是方法区的一部分 允许在程序运行时创建常量 有OutOfMemoryError</p>
+<h4 id="直接内存">直接内存</h4>
+<p>不是虚拟机的一部分，在NIO类中，允许Native函数库向操作系统申请内存，提供一些方式访问，使得在一些场景提高性能， 有OutOfMemoryError</p>
+<h3 id="hotspot-vm">HotSpot VM</h3>
+<h4 id="对象的创建">对象的创建</h4>
+<p>当虚拟机碰到new的时候，会先检查类是否被加载、解析、初始化，如果没有，则先执行相应的加载过程，当类检查通过以后，会为对象分配内存，这个内存大小是完全确定的，虚拟机会从虚拟机堆中分配这块内存并将这块内存初始化为0,然后执行init方法。 因为Java需要支持多线程，所以这里实际需要同步处理，还有一种解决方案叫做TLAB（Thread Local Allocation Buffer）预先为每个线程分配一小块内存，就不会受到多线程影响，当TLAB用完以后，需要分配新的TLAB，这时才需要同步<a href="/QPI740.html#第28章-锁">锁</a>定，在TLAB分配时即可提前初始化这块内存为0,当然也可以不提前。</p>
+<h4 id="对象的内存布局">对象的内存布局</h4>
+<p>内存中储存的布局可以分为3块区域: 对象头、实例数据和对齐填充。 对象头分为两部分，第一部分储存了哈希码、GC分代年龄、<a href="/QPI740.html#第28章-锁">锁</a>状态、线程持有<a href="/QPI740.html#第28章-锁">锁</a>、偏向线程ID等等这部分在32位机器上为32bit，在64位机器上为64bit，第二部分可有可无，储存类型指针，指向类元数据。另外对于Java数组，就还有第三部分用于记录数组长度。 对齐填充就是为了让对象大小变成8字节的整数倍</p>
+<h4 id="对象的访问定位">对象的访问定位</h4>
+<p>Java程序通过栈上的reference数据来操作堆上的具体对象，主流的对象访问方式有两种，第一种是句柄访问，Java堆会划分出一块内存用作句柄池，reference储存句柄地址，句柄储存对象实例和类型各自的具体地址；第二种是直接访问，这种情况Java对象的布局中就要考虑储存类型数据，reference就储存对象的直接地址。前者在垃圾收集时移动时快，后者访问速度快。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q5KF8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Q5KF8D.html" class="post-title-link" itemprop="url">走进Java</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-12 09:38:37" itemprop="dateCreated datePublished" datetime="2020-02-12T09:38:37+08:00">2020-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>337</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="whats-that">what's that</h3>
+<p>这是学习《深入理解Java虚拟机》周志明 著. 的笔记</p>
+<h3 id="java-的优点">Java 的优点</h3>
+<p>结构严谨、面向对象、脱平台、相对安全的内存管理和访问机制、热点代码检测和运行时编译及优化、拥有完善的应用程序接口及第三方类库......</p>
+<h3 id="jdkjrejava-se-api-的区别">JDK,JRE,Java SE API 的区别</h3>
+<p><img data-src="/images/JDK,JRE,Java-SE-API的区别.png" /> 图片来源于《深入理解Java虚拟机》</p>
+<h3 id="java平台">Java平台</h3>
+<p>Java Card: 支持一些Java小程序运行在校内次设备（智能卡）上的平台 Java ME: 支持Java程序运行在移动终端上的平台,对Java API所精简 Java SE: 支持面向桌面级应用的平台，有完整的Java核心API Java EE:支持多层架构的企业应用的平台，出Java核心API外还做了大量补充</p>
+<h3 id="sun-hotspot-vm">Sun HotSpot VM</h3>
+<p>这是Sun JDK和OpenJDK中所带的虚拟机</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q2JVXK.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Q2JVXK.html" class="post-title-link" itemprop="url">EulerTourTree</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-15 19:00:56" itemprop="dateCreated datePublished" datetime="2019-12-15T19:00:56+08:00">2019-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/" itemprop="url" rel="index"><span itemprop="name">树</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>145</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="euler-tour-tree">Euler Tour Tree</h3>
+<p>任何一颗树都能够用欧拉旅行路径来表示，欧拉旅行路径是一个序列，他记录了一颗树的dfs的时候的顺序，记录了进入每个节点的时间和退出该节点的时间，这样以后，子树就成了ETT上连续的区间 ，当我们对子树进行交换的时候，我们就可以将这个区间平移。这里我们用splay维护即可</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1147,419 +1471,8 @@ There are only two positive integers n and k which are separated by spaces.<br /
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q03076.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
-      <meta itemprop="name" content="fightinggg">
-      <meta itemprop="description" content="O ever youthful, O ever weeping">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Believe it">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/Q03076.html" class="post-title-link" itemprop="url">min25筛</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-10-28 19:06:42" itemprop="dateCreated datePublished" datetime="2019-10-28T19:06:42+08:00">2019-10-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="min25筛是什么">min25筛是什么</h1>
-<p>min25筛是一种筛法，他能以亚线性的时间复杂度筛出一类函数的前缀和</p>
-<h1 id="定义一部分符号">定义一部分符号</h1>
-<p><span class="math inline">\(M(x) x\gt1\)</span>代表<span class="math inline">\(x\)</span>的最小质因子</p>
-<p>我们再设<span class="math inline">\(P_j\)</span>为第<span class="math inline">\(j\)</span>小的质数, <span class="math inline">\(P_1=2,P_2=3,P_3=5...\)</span></p>
-<!---more-->
-<h1 id="先看最简单的第一类函数">先看最简单的第一类函数</h1>
-<p><span class="math display">\[
-\begin{aligned}
-f(x)=\left\{\begin{matrix}
-x^k&amp;x\in primes\\
-0&amp;x \notin primes
-\end{matrix}\right.
-\end{aligned}
-\]</span> 对于这个函数我们可以利用min25筛来达到<span class="math inline">\(O(\frac{n^\frac{3}{4}}{lg(n)})\)</span>的时间复杂度，我们没有办法直接求这个函数的前缀和，但是我们可以另外设一个相对好求的函数<span class="math inline">\(h(x)=x^k\)</span>，通过h来求f，因为<span class="math inline">\(\begin{aligned}\sum_{i=2}^nh(i)[i\in primes]=\sum_{i=2}^nf(i)[i\in primes]\end{aligned}\)</span></p>
-<p>设<span class="math inline">\(\begin{aligned} g(n,j)=\sum_{i=2}^nh(i)[i \in primes或M(i)\gt P_j] \end{aligned}\)</span></p>
-<p>即 i要么是质数，要么i的最小质因子大于<span class="math inline">\(P_j\)</span>。对g函数的理解，我们甚至可以回忆埃式筛,每一轮都会选择一个最小的质数，然后筛掉他的所有倍数，最终唯有所有的质数不会被筛掉，我们的这个函数就是那些没有被筛掉的数的函数值的和。<br />
-<span class="math display">\[
-\begin{aligned}
-g(n,j)=\left\{\begin{matrix}
-g(n,j-1)-x&amp;M(n)\le P_j\\
-g(n,j-1)&amp; M(n)\gt P_j
-\end{matrix}\right.
-\end{aligned}
-\]</span> x处是什么呢?第j-1次的结果和第j次的结果有什么不同呢？第j次埃式筛筛掉了<span class="math inline">\(P_j\)</span>的倍数，他们的最小质因子都是<span class="math inline">\(P_j\)</span>,所以<br />
-<span class="math display">\[
-\begin{aligned}
-x&amp;=\sum_{i=2P_j}^nh(i)[M(i)=P_j]
-\\&amp;=\sum_{i=2}^{\frac{n}{P_j}}h(iP_j)[M(iP_j)=P_j]
-\\&amp;=h(P_j)\sum_{i=2}^{\frac{n}{P_j}}h(i)[M(i)\ge P_j]
-\\&amp;=h(P_j)\sum_{i=2}^{\frac{n}{P_j}}h(i)[M(i)\gt P_{j-1}]
-\\&amp;=h(P_j)(\sum_{i=2}^{\frac{n}{P_j}}h(i)[M(i)\gt P_{j-1}或i \in primes]-\sum_{i=1}^{j-1}h(P_i))
-\\&amp;=h(P_j)(g(\frac{n}{P_j},j-1)-\sum_{i=1}^{j-1}h(P_i))
-\end{aligned}
-\]</span></p>
-<p>最后就成了这个<br />
-<span class="math display">\[
-\begin{aligned}
-g(n,j)=\left\{\begin{matrix}
-g(n,j-1)-h(P_j)(g(\frac{n}{P_j},j-1)-\sum_{i=1}^{j-1}h(P_i))&amp;M(n)\le P_j\\
-g(n,j-1)&amp; M(n)\gt P_j
-\end{matrix}\right.
-\end{aligned}
-\]</span> 到这里就已经可以记忆化递归解决了,但是递归比较慢,我们考虑把它变成非递归,我们观察这个式子。</p>
-<p>我们发现我们可以先枚举j因为<span class="math inline">\(g(n,j)\)</span>是由<span class="math inline">\(g(?,j-1)\)</span>推导过来的，然后从大到小枚举n，来更新数组，又因为n的前一项可能与<span class="math inline">\(\frac{n}{P_j}\)</span>有关，所以我们可以把他们都用map映射一下，再进一步分析，根据整除分块的传递性，<span class="math inline">\(\frac{\frac{a}{b}}{c}=\frac{a}{bc}\)</span>我们可以得出所有<span class="math inline">\(g(x,y)\)</span>中x构成的集合，恰好是集合<span class="math inline">\(\{x|x=\frac{n}{t},t\in [1,n]\}\)</span>,最后预处理一下<span class="math inline">\(\sum^{j-1}_{i=1}h(P_i)\)</span>即可，对于整除分块的映射，我们又可以加速到O(1)此处不做过多分析。</p>
-<p>最后我们得到了这个<span class="math inline">\(O(\frac{n^{\frac{3}{4}}}{lg(n)})\)</span>算法</p>
-<h1 id="再看复杂一些的第二类函数">再看复杂一些的第二类函数</h1>
-<p>第二类函数是抽象的积性函数<span class="math inline">\(f\)</span>。</p>
-<p>如果我们能够通过一些方法求出<span class="math inline">\(\sum_{i=1}^{n}f(P_i)\)</span>和<span class="math inline">\(f(P_i^k)\)</span>,那么我们就能够很简单得推出f的前缀和。</p>
-<p>对于<span class="math inline">\(\sum_{i=1}^{n}f(P_i)\)</span>, 我们这样来求，比如说f(x)在x是一个质数的时候能表示为某个简单多项式，那么我们就可以通过将多项式函数看做某些幂函数的线形组合，先求出幂函数各自的质数前缀和，然后相加就可以得到f的质数前缀和。</p>
-<p>而对于另外一个<span class="math inline">\(f(P_i^k)\)</span>则需要通过函数的定义来求了。</p>
-<p>现在假设我们已经预处理出了<span class="math inline">\(\sum_{i=1}^xf(P_i)(x \in n的数论分块即x=\frac{n}{?})其实就是g(x,\infty)\)</span>。</p>
-<p>我们设<span class="math inline">\(\begin{aligned}S(n,j)=\sum_{i=2}^nf(i)[M(i)\ge P_j]\end{aligned}\)</span>注意和<span class="math inline">\(g(n,j)\)</span>对比。<br />
-<span class="math display">\[
-\begin{aligned}
-&amp;S(n,j)
-\\=&amp;\sum_{i=j}^{P_i\le n}f(P_i)+f(P_i)S(\frac{n}{P_j},j+1)+f(P_i^2)S(\frac{n}{P_i^2},j+1)+f(P_i^3)S(\frac{n}{P_i^3},j+1)+...
-\end{aligned}
-\]</span> 这里已经可以了，第一项可以通过两个前缀和相减得到，后边的递归。这就是min25筛的灵魂所在。</p>
-<p>我们现在好好来分析一下这个递归式子。我们发现第一项是最好求的，就是第一类函数，但是后边的几项必须要求积性函数。这也是min25筛只能对积性函数起作用的地方。</p>
-<h1 id="min25筛能处理更多的函数吗">min25筛能处理更多的函数吗？</h1>
-<p>我们暂定这些函数为f，显然我们必须要能够求出g和s，这就是min25筛,对于g，这里不对此作过多分析，没有这个必要，我们假定都是一类与幂函数线形组合有关的函数，抑或是某几项与幂函数有关，反正只要能够找到完全积性函数h在质数自变量和f函数存在相等关系即可。s的话，第一项简单差分，后边的看似要求f是积性函数，其实不然，我们仔细分析，其实他要求的是这样的要求: 假定y是x的最小质因子，<span class="math inline">\(z=y^k且z｜x且k最大\)</span>，我们只要能够通过<span class="math inline">\(f(z)和f(\frac{x}{z})\)</span>这两项能够推出f(x)即可，这里并没有强制要求<span class="math inline">\(f(x)=f(z)*f(\frac{x}{z})即f(x)=f(M(x))\)</span>。举个例子，若<span class="math inline">\(f(x)=f(z)=f(y)=y\)</span>，我们也是可以求的。</p>
-<p>贴一个求<span class="math inline">\(f(a^b)=a \bigotimes b\)</span>和<span class="math inline">\(f(x)=M(x)\)</span>的代码 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ll sqr=<span class="number">2e5</span>+<span class="number">10</span>;<span class="comment">// 2sqrt(n)</span></span><br><span class="line">ll p[sqr],np[sqr]=&#123;<span class="number">1</span>,<span class="number">1</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">prime_ini</span><span class="params">()</span></span>&#123;<span class="comment">// 素数不可能筛到longlong范围</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;sqr; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!np[i])p[++p[<span class="number">0</span>]]=i;<span class="comment">//把质数收录</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; <span class="number">1ll</span>*i*p[j]&lt;sqr; j++)&#123;</span><br><span class="line">            np[i*p[j]]=<span class="number">1</span>;<span class="comment">//对每一个数字枚举他的最小因子</span></span><br><span class="line">            <span class="keyword">if</span>(i%p[j]==<span class="number">0</span>)<span class="keyword">break</span>;<span class="comment">//在往后的话就不是最小因子了</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ll mod=<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line">ll w[sqr],g[sqr][<span class="number">2</span>],sp[sqr][<span class="number">2</span>],id1[sqr],id2[sqr],mpn;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll&amp; <span class="title">mp</span><span class="params">(ll x)</span></span>&#123;<span class="keyword">return</span> x&lt;sqr?id1[x]:id2[mpn/x];&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">min25</span><span class="params">(ll n)</span></span>&#123;<span class="comment">// 计算质数位置之和的时候 只用到了f(x,1) 和 oddsum(x)</span></span><br><span class="line">    mpn=n;</span><br><span class="line">    ll m=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll l=<span class="number">1</span>,r;l&lt;=n;l=r+<span class="number">1</span>)&#123;<span class="comment">// i从小到大  n/i从到小</span></span><br><span class="line">        r=n/(n/l);</span><br><span class="line">        <span class="built_in">mp</span>(n/l)=++m;</span><br><span class="line">        w[m]=n/l;</span><br><span class="line">        g[m][<span class="number">0</span>]=(w[m]<span class="number">-1</span>)%mod;<span class="comment">// f(x)=1, s(x)=x</span></span><br><span class="line">        g[m][<span class="number">1</span>]=(__int128(w[m])*(w[m]+<span class="number">1</span>)/<span class="number">2</span><span class="number">-1</span>)%mod; <span class="comment">// f(x)=x, s(x)=x(x+1)/2  这里的int128非常关键，因为n是1e10级别的</span></span><br><span class="line">    &#125;<span class="comment">//assert(w[m]==1);</span></span><br><span class="line">    <span class="keyword">for</span>(ll j=<span class="number">1</span>;p[j]*p[j]&lt;=n;j++)&#123;</span><br><span class="line">        sp[j][<span class="number">0</span>]=sp[j<span class="number">-1</span>][<span class="number">0</span>]+<span class="number">1</span>;<span class="comment">// f(x)=1</span></span><br><span class="line">        sp[j][<span class="number">1</span>]=(sp[j<span class="number">-1</span>][<span class="number">1</span>]+p[j])%mod;<span class="comment">// f(x)=x</span></span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;w[i]&gt;=p[j]*p[j];++i)&#123;<span class="comment">// w[i]从大到小 当i等于m的时候 w[i]&gt;=p[j]*p[j]恒不成立</span></span><br><span class="line">            g[i][<span class="number">0</span>]-=(g[<span class="built_in">mp</span>(w[i]/p[j])][<span class="number">0</span>]-sp[j<span class="number">-1</span>][<span class="number">0</span>])*<span class="number">1</span>;<span class="comment">// f(x)=1</span></span><br><span class="line">            g[i][<span class="number">1</span>]-=(g[<span class="built_in">mp</span>(w[i]/p[j])][<span class="number">1</span>]-sp[j<span class="number">-1</span>][<span class="number">1</span>])*p[j];<span class="comment">// f(x)=x</span></span><br><span class="line">            g[i][<span class="number">0</span>]=(g[i][<span class="number">0</span>]%mod+mod)%mod;</span><br><span class="line">            g[i][<span class="number">1</span>]=(g[i][<span class="number">1</span>]%mod+mod)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// f(pow(a,b))=a^b f为积性函数</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">f</span><span class="params">(ll a,ll b)</span></span>&#123;<span class="keyword">return</span> a^b;&#125; <span class="comment">// 当且仅当a是一个素数</span></span><br><span class="line"><span class="function">ll <span class="title">s</span><span class="params">(ll n,ll j)</span></span>&#123;<span class="comment">// sum of f(x) x&lt;=n minfac(x)&gt;=p[j]</span></span><br><span class="line">    ll res=(g[<span class="built_in">mp</span>(n)][<span class="number">1</span>]-g[<span class="built_in">mp</span>(n)][<span class="number">0</span>])-(sp[j<span class="number">-1</span>][<span class="number">1</span>]-sp[j<span class="number">-1</span>][<span class="number">0</span>])+<span class="number">2</span>*mod;<span class="comment">// 减掉p[j]前面的质数 ： [p[j],n]上的质数的函数的和</span></span><br><span class="line">    <span class="keyword">if</span>(n&gt;=<span class="number">2</span>&amp;&amp;j==<span class="number">1</span>) res+=<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll k=j;p[k]*p[k]&lt;=n;k++)&#123;<span class="comment">// 枚举的最小质因子</span></span><br><span class="line">        <span class="keyword">for</span>(ll x=p[k],e=<span class="number">1</span>;x*p[k]&lt;=n;x*=p[k],e++)&#123;<span class="comment">//枚举该因子出现次数</span></span><br><span class="line">            res+=<span class="built_in">s</span>(n/x,k+<span class="number">1</span>)*<span class="built_in">f</span>(p[k],e)%mod+<span class="built_in">f</span>(p[k],e+<span class="number">1</span>);<span class="comment">// 每次增加2mod res不可能超过 long long</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res%mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// f(x)=minfac(x)  f不为积性函数 但我们用积性函数来做他</span></span><br><span class="line"><span class="keyword">typedef</span> pair&lt;ll,ll&gt; pll;</span><br><span class="line"><span class="function">pll <span class="title">s2</span><span class="params">(ll n,ll j)</span></span>&#123;<span class="comment">//</span></span><br><span class="line">    ll res1=g[<span class="built_in">mp</span>(n)][<span class="number">0</span>]-sp[j<span class="number">-1</span>][<span class="number">0</span>]+<span class="number">2</span>*mod;</span><br><span class="line">    ll res2=g[<span class="built_in">mp</span>(n)][<span class="number">1</span>]-sp[j<span class="number">-1</span>][<span class="number">1</span>]+<span class="number">2</span>*mod;<span class="comment">// 减掉p[j]前面的质数 ： [p[j],n]上的质数的函数的和</span></span><br><span class="line">    <span class="keyword">for</span>(ll k=j;p[k]*p[k]&lt;=n;k++)&#123;<span class="comment">// 枚举的最小质因子</span></span><br><span class="line">        <span class="keyword">for</span>(ll x=p[k],e=<span class="number">1</span>;x*p[k]&lt;=n;x*=p[k],e++)&#123;<span class="comment">//枚举该因子出现次数</span></span><br><span class="line">            pll tmp=<span class="built_in">s2</span>(n/x,k+<span class="number">1</span>);</span><br><span class="line">            res1+=tmp.first*<span class="number">1</span>%mod+<span class="number">1</span>;</span><br><span class="line">            res2+=tmp.first*p[k]%mod+p[k];<span class="comment">// 每次增加2mod res不可能超过 long long</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pll</span>(res1%mod,res2%mod);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">prime_ini</span>();</span><br><span class="line">    ll n;</span><br><span class="line">    <span class="keyword">while</span>(cin&gt;&gt;n)&#123;</span><br><span class="line">        <span class="built_in">min25</span>(n);</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>) cout&lt;&lt;<span class="number">1</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">else</span> cout&lt;&lt;(<span class="built_in">s</span>(n,<span class="number">1</span>)+<span class="number">1</span>)%mod&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/P5EQ9Y.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
-      <meta itemprop="name" content="fightinggg">
-      <meta itemprop="description" content="O ever youthful, O ever weeping">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Believe it">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/P5EQ9Y.html" class="post-title-link" itemprop="url">常用数论函数变换</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-03-11 11:41:58" itemprop="dateCreated datePublished" datetime="2018-03-11T11:41:58+08:00">2018-03-11</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-10-26 16:56:48" itemprop="dateModified" datetime="2019-10-26T16:56:48+08:00">2019-10-26</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="中间结论">中间结论</h1>
-<p><span class="math display">\[
-f_n = \sum_{i=0}^n (-1)^i {n \choose i} g_i
-\Leftrightarrow
-g_n = \sum_{i=0}^n (-1)^i {n \choose i} f_i
-\]</span></p>
-<p><span class="math display">\[
-f_n = \sum_{i=0}^n {n \choose i} g_i 
-\Leftrightarrow
-g_n = \sum_{i=0}^n (-1)^{n-i} {n \choose i} f_i
-\]</span></p>
-<h1 id="杜教筛">杜教筛</h1>
-<p><span class="math display">\[
-g(1)\sum_{i=1}^nf(i)=\sum_{i=1}^{n}(f*g)(i)-\sum_{d=2}^{n}g(d) \sum_{i=1}^{\lfloor\frac{n}{d}\rfloor}f(i)
-\]</span></p>
-<h1 id="数论变换">数论变换</h1>
-<p><span class="math display">\[
-\begin{aligned}
-&amp;e(n)=[n=1]
-\\&amp;id(n)=n
-\\&amp;I(n)=1
-\\&amp;d(n)=\sum_{x|n}1 （就是因子个数）
-\\&amp;σ(n)=\sum_{x|n}x   (就是因子和)
-\\&amp;\mu(n) 莫比乌斯函数
-\\&amp;\phi(n) 欧拉函数
-\\&amp;I\ast I=d
-\\&amp;I\ast id=σ
-\\&amp;I\ast \phi=id
-\\&amp;I\ast \mu=e
-\end{aligned}
-\]</span></p>
-<h1 id="自变量互质的前缀和函数分析">自变量互质的前缀和函数分析</h1>
-<p><span class="math display">\[
-\begin{aligned}
-&amp;\sum_{i=1}^n{f(i)[gcd(i,j)=1]}=\sum_{d|j}{\mu(d)\sum_{i=1}^{\lfloor\frac{n}{d}\rfloor}f(i*d)}\\
-&amp;\sum_{i=1}^n{[gcd(i,j)=1]}=\sum_{d|j}{\mu(d)\lfloor\frac{n}{d}\rfloor}\\
-&amp;\sum_{i=1}^n{[gcd(i,n)=1]}=\phi(n)\\
-&amp;\sum_{i=1}^n{i[gcd(i,j)=1]}=\sum_{d|j}{\mu(d)d\frac{\lfloor\frac{n}{d}\rfloor(\lfloor\frac{n}{d}\rfloor+1)}{2}}\\
-&amp;\sum_{i=1}^n{i[gcd(i,n)=1]}=\frac{n}{2}(\phi(n)+e(n))\\
-&amp;\sum_{i=1}^n\sum_{j=1}^nij[gcd(i,j)=1]=\sum_{j=1}^nj^2\phi(j)\\
-\end{aligned}
-\]</span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/PZRZBZ.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
-      <meta itemprop="name" content="fightinggg">
-      <meta itemprop="description" content="O ever youthful, O ever weeping">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Believe it">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/PZRZBZ.html" class="post-title-link" itemprop="url">牛客挑战赛33D</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-10-22 20:14:23" itemprop="dateCreated datePublished" datetime="2019-10-22T20:14:23+08:00">2019-10-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">刷题实战</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">牛客</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>###name 种花家的零食</p>
-<p>###descirption 在很久以前，有一颗蓝星，蓝星上有一个种花家。 种花家有1到n共n包零食，同时种花家的兔子又有1到n共n个朋友(比如毛熊，鹰酱，脚盆鸡等）。 昨天，兔子的n个朋友都到他家来玩了。他的n个朋友瓜分了他的n包零食，每个人都恰好吃了一包零食，没有两个人吃了同一包零食。 兔子发现，第i个朋友吃第j包零食能获得的愉悦值是<span class="math inline">\(i\mod j\)</span>。 今天，兔子想回忆起每个朋友吃的是哪包零食，他想不起来了，但是他却记得了所有人的愉悦值之和s。于是，兔子找上了你，请你构造出一种可能的方案。 由于兔子记忆力不好，他有可能记错了s，所以可能会存在无解的情况。</p>
-<!---more-->
-<p>###input 一行两个整数<span class="math inline">\(n(1\leq n\leq 10^6)\)</span>和<span class="math inline">\(s(1\leq s\leq10^{18})\)</span></p>
-<p>###output 如果不存在满足条件的方案，输出一行-1。 否则输出n行，每行一个整数，第i行的整数表示第i个朋友吃的是哪包零食。</p>
-<p>###sample input 5 7</p>
-<p>###sample output 1 4 3 5 2</p>
-<p>###sample input 5 100</p>
-<p>###sample output -1</p>
-<p>###toturial 分析出上界为<span class="math inline">\(\frac{n(n-1)}{2}\)</span>后，分类讨论，用数学归纳法证明特例即可</p>
-<p>###code <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rep(i,j,k) for(ll i=(j);i&lt;=(k);++i)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1e6</span>+<span class="number">10</span>;</span><br><span class="line">ll ans[maxn];</span><br><span class="line">vector&lt;ll&gt;vec;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(ll n,ll s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>) &#123;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// choose n-1</span></span><br><span class="line">    s-=n<span class="number">-1</span>;</span><br><span class="line">    n--;</span><br><span class="line">    <span class="keyword">if</span>(s!=n*(n<span class="number">-1</span>)/<span class="number">2</span><span class="number">-1</span>&amp;&amp;s!=<span class="number">2</span>&amp;&amp;s!=<span class="number">0</span>&amp;&amp;s&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(n);</span><br><span class="line">        <span class="built_in">solve</span>(n,s);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    n++;</span><br><span class="line">    s+=n<span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">solve</span>(n<span class="number">-1</span>,s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ll n,s;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;s;</span><br><span class="line">    <span class="keyword">if</span>(s&gt;n*(n<span class="number">-1</span>)/<span class="number">2</span>) ans[<span class="number">0</span>]=<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(n==<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s==<span class="number">0</span>) ans[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> ans[<span class="number">0</span>]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(n==<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s==<span class="number">0</span>) ans[<span class="number">1</span>]=<span class="number">1</span>,ans[<span class="number">2</span>]=<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(s==<span class="number">1</span>) ans[<span class="number">1</span>]=<span class="number">2</span>,ans[<span class="number">2</span>]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> ans[<span class="number">0</span>]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(s==<span class="number">0</span>) <span class="built_in">rep</span>(i,<span class="number">1</span>,n) ans[i]=i;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(s==<span class="number">2</span>) &#123;</span><br><span class="line">        ans[<span class="number">1</span>]=<span class="number">3</span>;;</span><br><span class="line">        ans[<span class="number">2</span>]=<span class="number">1</span>;</span><br><span class="line">        ans[<span class="number">3</span>]=<span class="number">2</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">4</span>,n) ans[i]=i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(s==n*(n<span class="number">-1</span>)/<span class="number">2</span><span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n%<span class="number">2</span>==<span class="number">0</span>)&#123;</span><br><span class="line">            ans[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">rep</span>(i,<span class="number">2</span>,n<span class="number">-1</span>) ans[i]=i+<span class="number">1</span>;</span><br><span class="line">            ans[n]=<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            ans[<span class="number">1</span>]=<span class="number">3</span>;</span><br><span class="line">            ans[<span class="number">2</span>]=<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">rep</span>(i,<span class="number">3</span>,n<span class="number">-1</span>) ans[i]=i+<span class="number">1</span>;</span><br><span class="line">            ans[n]=<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(n);</span><br><span class="line">        <span class="built_in">solve</span>(n,s);</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n) ans[i]=i;</span><br><span class="line">        <span class="keyword">int</span> sz=vec.<span class="built_in">size</span>();</span><br><span class="line">       <span class="comment">// rep(i,0,sz-1) cout&lt;&lt;vec[i]&lt;&lt;endl;</span></span><br><span class="line">       <span class="comment">// cout&lt;&lt;endl;</span></span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">0</span>,sz<span class="number">-1</span>)ans[vec[i]]=vec[(i<span class="number">-1</span>+sz)%sz];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans[<span class="number">0</span>]==<span class="number">-1</span>) <span class="built_in">printf</span>(<span class="string">&quot;-1\n&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        ll ss=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">rep</span>(i,<span class="number">1</span>,n) ss+=i%ans[i],<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,ans[i]);</span><br><span class="line">        <span class="built_in">assert</span>(ss==s);</span><br><span class="line">       <span class="comment">// cout&lt;&lt;s&lt;&lt;endl;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1588,7 +1501,7 @@ g(1)\sum_{i=1}^nf(i)=\sum_{i=1}^{n}(f*g)(i)-\sum_{d=2}^{n}g(d) \sum_{i=1}^{\lflo
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">19:30</span>
+    <span title="站点阅读时长">19:36</span>
   </span>
 </div>
 <div class="busuanzi-count">
