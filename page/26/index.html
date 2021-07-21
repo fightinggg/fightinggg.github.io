@@ -90,7 +90,7 @@
         <li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">97</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">87</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">462</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">463</span></a></li>
         <li class="menu-item menu-item-友链"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -164,7 +164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">462</span>
+          <span class="site-state-item-count">463</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -236,6 +236,104 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q5QPOK.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/Q5QPOK.html" class="post-title-link" itemprop="url">Java内存模型与线程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-15 19:09:56" itemprop="dateCreated datePublished" datetime="2020-02-15T19:09:56+08:00">2020-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>854</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="硬件间速度的差距">硬件间速度的差距</h3>
+<p>因为计算机各种硬件之间速度的差距实在是太大了，这严重地影响了计算机的整体效率，很多时候软件并不能够充分地利用计算机的资源，让处理器去等待内存，一种解决方案就是在内存和处理器之间引入一个缓存，来尽量减轻这个速度的差距。在多处理器系统中，往往对应着多个缓存。 ### 缓存一致性 往往这些缓存都储存着和内存一样的数据，他们互为拷贝，我们必须保证他们的数据是同步修改的。这有很多种协议来维护。 ### 乱序执行 为了更好的利用处理器的运算单元，处理器可能会对输入的代码片段进行乱序执行优化，Java虚拟机也是如此。 <!---more--> ### Java内存模型 Java内存模型中有两种内存，第一种是一个主内存，第二种是多个线程工作内存，线程私有。 ### 内存间的互相操作 Java内存模型有8种原子操作 lock:作用与主内存中的变量，让其变为线程独占 unlock:和lock相反 read:把主内存中的变量传输到工作内存，准备load load:把read的值放入线程工作内存的变量副本中 use:把线程工作内存中的值拿到执行引擎中 assign:从执行引擎中获得值写入工作内存 store:把工作内存中的变量传输到主内存，准备write write:把store得到的值写入主内存。 这些操作的相互执行关系很复杂，但都能推导出，这里不赘述 long和double是64位数据，Java内存模型不强制但推荐把他们也实现为原子操作 ### volatile型变量 volatile类型有两种特点，第一是保证对所有线程的可见行，即所有线程使用其前都要在工作内存中刷新他的值，但是这些操作并非原子性，所以不能保证并发安全。第二是禁止语义重排。他前面的代码不能排到他后面去，他后面的代码不能重排到他前面。 ### Java线程调度 Java有10种优先级，但是操作系统却不一定是10种，若&lt;10则导致Java线程某些级别无差距，若&gt;10则导致有些系统线程优先级无法使用。 ### Java线程状态 新建、运行、无限期等待(不能主动苏醒，能被唤醒)、期限等待、阻塞、结束</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1360,117 +1458,6 @@ k度限制最小生成树与k-1度限制最小生成树最多有一条边的区�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://fightinggg.top/Q056L8.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="http://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
-      <meta itemprop="name" content="fightinggg">
-      <meta itemprop="description" content="O ever youthful, O ever weeping">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Believe it">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/Q056L8.html" class="post-title-link" itemprop="url">hdu6607</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-10-29 23:19:56" itemprop="dateCreated datePublished" datetime="2019-10-29T23:19:56+08:00">2019-10-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">刷题实战</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" itemprop="url" rel="index"><span itemprop="name">hdu</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="name">name</h3>
-<p>Easy Math Problem ### descirption One day, Touma Kazusa encountered a easy math problem. Given n and k, she need to calculate the following sum modulo <span class="math inline">\(1e9+7\)</span>.<br />
-<span class="math display">\[∑_{i=1}^n∑^n_{j=1}gcd(i,j)^klcm(i,j)\[gcd(i,j)∈prime\]\%(1e9+7) \]</span> However, as a poor student, Kazusa obviously did not, so Touma Kazusa went to ask Kitahara Haruki. But Kitahara Haruki is too busy, in order to prove that he is a skilled man, so he threw this problem to you. Can you answer this easy math problem quickly? <!---more--></p>
-<h3 id="input">input</h3>
-<p>There are multiple test cases.<span class="math inline">\(（T=5）\)</span> The first line of the input contains an integer<span class="math inline">\(T\)</span>, indicating the number of test cases. For each test case:<br />
-There are only two positive integers n and k which are separated by spaces.<br />
-<span class="math inline">\(1≤n≤1e10\)</span> <span class="math inline">\(1≤k≤100\)</span> ### output An integer representing your answer. ### sample input 1 10 2 ### sample output 2829 ### toturial <span class="math display">\[
-\begin{aligned}
-&amp;\sum_{i=1}^n\sum_{j=1}^n i*j*gcd(i,j)^{k-1} gcd is prime
-\\=&amp;\sum_{d\in prime} \sum_{i=1}^n\sum_{j=1}^nijd^{k-1}[gcd(i,j)=d]
-\\=&amp;\sum_{d\in prime} \sum_{i=1}^{\lfloor\frac{n}{d}\rfloor}\sum_{j=1}^{\lfloor\frac{n}{d}\rfloor}ijd^{k+1}[gcd(i,j)=1]
-\\=&amp;\sum_{d\in prime}d^{k+1} \sum_{i=1}^{\lfloor\frac{n}{d}\rfloor}\sum_{j=1}^{\lfloor\frac{n}{d}\rfloor}ij[gcd(i,j)=1]
-\\=&amp;\sum_{d\in prime}d^{k+1} \sum_{j=1}^{\lfloor\frac{n}{d}\rfloor}j^2\phi(j)
-\end{aligned}
-\]</span> 我们可以对n分块了，前面可以min25筛 <span class="math inline">\(\begin{aligned}f(j)=j^2\phi(j)\end{aligned}\)</span> <span class="math inline">\(\begin{aligned}g(j)=j^2\end{aligned}\)</span> <span class="math inline">\(\begin{aligned}f\ast g(j)=\sum_{i|j}i^2\phi(i)(\frac{j}{i})^2=j^2\sum_{i|j}\phi(i)=j^2(\phi\ast 1)(j)=j^3\end{aligned}\)</span> 于是后面可以杜教筛 ### code <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模意义</span></span><br><span class="line"><span class="keyword">const</span> ll mod=<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line"><span class="function">ll <span class="title">qpow</span><span class="params">(ll a,ll b)</span></span>&#123;</span><br><span class="line">    <span class="built_in">assert</span>(a&lt;mod);</span><br><span class="line">    ll res=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>) res=res*a%mod;</span><br><span class="line">        a=a*a%mod;</span><br><span class="line">        b&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> ll inv2=<span class="built_in">qpow</span>(<span class="number">2</span>,mod<span class="number">-2</span>),inv3=<span class="built_in">qpow</span>(<span class="number">3</span>,mod<span class="number">-2</span>);</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">reduce</span><span class="params">(ll x)</span></span>&#123;<span class="keyword">return</span> x&lt;<span class="number">0</span>?x+mod:x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">A</span><span class="params">(ll a,ll b)</span></span>&#123;<span class="built_in">assert</span>(a&lt;mod&amp;&amp;b&lt;mod); <span class="keyword">return</span> <span class="built_in">reduce</span>(a+b-mod);&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">M</span><span class="params">(ll a,ll b)</span></span>&#123;<span class="built_in">assert</span>(a&lt;<span class="number">2</span>*mod&amp;&amp;b&lt;<span class="number">2</span>*mod); <span class="keyword">return</span> a*b%mod;&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">M</span><span class="params">(ll a,ll b,ll c)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">M</span>(<span class="built_in">M</span>(a,b),c);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线性筛</span></span><br><span class="line"><span class="comment">// 3e7 int = 120mb</span></span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">2.5e7</span>;</span><br><span class="line">bitset&lt;maxn&gt;vis;</span><br><span class="line"><span class="keyword">int</span> siiphi[maxn];</span><br><span class="line">ll p[<span class="number">1565927</span>+<span class="number">100</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">    siiphi[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (ll i=<span class="number">2</span>;i&lt;maxn;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!vis[i]) p[++p[<span class="number">0</span>]]=i,siiphi[i]=i<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (ll j=<span class="number">1</span>;i*p[j]&lt;maxn;j++)&#123;</span><br><span class="line">            vis[i*p[j]]=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(i%p[j])siiphi[i*p[j]]=siiphi[i]*(p[j]<span class="number">-1</span>);<span class="comment">//由积性函数性质推</span></span><br><span class="line">            <span class="keyword">else</span>&#123;siiphi[i*p[j]]=siiphi[i]*p[j];<span class="keyword">break</span>;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;maxn;i++) siiphi[i]=<span class="built_in">A</span>(siiphi[i<span class="number">-1</span>],<span class="built_in">M</span>(i,i,siiphi[i]));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 分块</span></span><br><span class="line"><span class="keyword">const</span> ll sqr=<span class="number">3e5</span>;</span><br><span class="line">ll id1[sqr],id2[sqr],w[sqr],idn,idm;<span class="comment">// w[x] 第几大的分块值是多少</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll&amp; <span class="title">id</span><span class="params">(ll x)</span></span>&#123;<span class="keyword">return</span> x&lt;sqr?id1[x]:id2[idn/x];&#125;<span class="comment">//返回x是第几大的整除分块值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ini</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">    idn=n;idm=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll l=<span class="number">1</span>,r;l&lt;=n;l=r+<span class="number">1</span>)&#123;</span><br><span class="line">        r=n/(n/l);</span><br><span class="line">        <span class="built_in">id</span>(n/l)=++idm;</span><br><span class="line">        w[idm]=n/l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> min25shai&#123;</span><br><span class="line">    ll g[sqr],sp[sqr];</span><br><span class="line">    <span class="function">ll <span class="title">getsum</span><span class="params">(ll x,ll n)</span></span>&#123;<span class="comment">// O(n) n次多项式有n+1项 y[0]...y[n] -&gt; y[x]</span></span><br><span class="line">        <span class="keyword">static</span> ll prepre[<span class="number">1000</span>],suf[<span class="number">1000</span>],r[<span class="number">1000</span>]=&#123;<span class="number">1</span>,<span class="number">1</span>&#125;,y[<span class="number">1000</span>],*pre=prepre+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(y[<span class="number">999</span>]!=++n) &#123;<span class="comment">//这里非常重要</span></span><br><span class="line">            y[<span class="number">999</span>]=n;</span><br><span class="line">            <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++) y[i]=<span class="built_in">A</span>(y[i<span class="number">-1</span>],<span class="built_in">qpow</span>(i,n<span class="number">-1</span>));</span><br><span class="line">            <span class="keyword">for</span>(ll i=<span class="number">2</span>;i&lt;=n;i++) r[i]=<span class="built_in">M</span>(mod-mod/i,r[mod%i]);</span><br><span class="line">            <span class="keyword">for</span>(ll i=<span class="number">2</span>;i&lt;=n;i++) r[i]=<span class="built_in">M</span>(r[i],r[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        pre[<span class="number">-1</span>]=suf[n+<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;=n;++i) pre[i]=<span class="built_in">M</span>(pre[i<span class="number">-1</span>],x%mod-i+mod);<span class="comment">//这个地方爆掉了</span></span><br><span class="line">        <span class="keyword">for</span>(ll i=n;i&gt;=<span class="number">0</span>;i--) suf[i]=<span class="built_in">M</span>(suf[i+<span class="number">1</span>],i-x%mod+mod);<span class="comment">//这个地方爆掉了</span></span><br><span class="line">        ll b=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;=n;++i) &#123;</span><br><span class="line">            ll up=<span class="built_in">M</span>(pre[i<span class="number">-1</span>],suf[i+<span class="number">1</span>]);</span><br><span class="line">            ll down=<span class="built_in">M</span>(r[i],r[n-i]);</span><br><span class="line">            b=<span class="built_in">A</span>(b,<span class="built_in">M</span>(y[i],up,down));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">min25</span><span class="params">(ll*g,ll n,ll k,ll(*f)(ll,ll),ll(*s)(ll,ll))</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=idm;++i) g[i]=<span class="built_in">A</span>(<span class="built_in">s</span>(w[i],k),mod<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">for</span>(ll j=<span class="number">1</span>;p[j]*p[j]&lt;=n;j++)&#123;</span><br><span class="line">            ll t=<span class="built_in">f</span>(p[j],k);</span><br><span class="line">            sp[j]=<span class="built_in">A</span>(sp[j<span class="number">-1</span>],t);</span><br><span class="line">            <span class="keyword">for</span>(ll i=<span class="number">1</span>;w[i]&gt;=p[j]*p[j];++i) g[i]=<span class="built_in">A</span>(g[i],<span class="built_in">M</span>(sp[j<span class="number">-1</span>]-g[<span class="built_in">id</span>(w[i]/p[j])]+mod,t));</span><br><span class="line">            <span class="comment">// w[i]从大到小 当i等于m的时候 w[i]&gt;=p[j]*p[j]恒不成立</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> dujiaoshai&#123;</span><br><span class="line">    <span class="comment">// g(1)S(n)=(1≤i≤n)h(i)+(2≤d≤n)g(d)S(n/d)</span></span><br><span class="line">    <span class="comment">// f(n)=n*n*phi(n)</span></span><br><span class="line">    <span class="comment">// g(n)=n*n</span></span><br><span class="line">    <span class="comment">// h(n)=n*n*n</span></span><br><span class="line">    ll s[sqr];<span class="comment">// 前缀和</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> ll <span class="title">s1</span><span class="params">(ll n)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">M</span>(n,n+<span class="number">1</span>,inv2);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> ll <span class="title">s2</span><span class="params">(ll n)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">M</span>(<span class="built_in">s1</span>(n),<span class="number">2</span>*n+<span class="number">1</span>,inv3);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> ll <span class="title">s3</span><span class="params">(ll n)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">M</span>(<span class="built_in">s1</span>(n),<span class="built_in">s1</span>(n));&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ini</span><span class="params">()</span></span>&#123;<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=idm;i++)s[i]=<span class="number">0</span>;&#125;</span><br><span class="line">    <span class="function">ll <span class="title">dujiao</span><span class="params">(ll n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;maxn) <span class="keyword">return</span> siiphi[n];</span><br><span class="line">        <span class="keyword">if</span>(s[<span class="built_in">id</span>(n)]!=<span class="number">0</span>) <span class="keyword">return</span> s[<span class="built_in">id</span>(n)];</span><br><span class="line">        s[<span class="built_in">id</span>(n)]=<span class="built_in">s3</span>(n%mod);</span><br><span class="line">        <span class="keyword">for</span>(ll l=<span class="number">2</span>,r;l&lt;=n;l=r+<span class="number">1</span>)&#123;</span><br><span class="line">            r=n/(n/l);</span><br><span class="line">            s[<span class="built_in">id</span>(n)]-=(<span class="built_in">s2</span>(r%mod)-<span class="built_in">s2</span>((l<span class="number">-1</span>)%mod))*<span class="built_in">dujiao</span>(n/l)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s[<span class="built_in">id</span>(n)]=(s[<span class="built_in">id</span>(n)]%mod+mod)%mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">solve</span><span class="params">(ll n,ll k)</span></span>&#123;</span><br><span class="line">    <span class="built_in">ini</span>(n);</span><br><span class="line">    dujiaoshai::<span class="built_in">ini</span>();</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> F(M) [](ll n,ll k)&#123;return ll(M);&#125;</span></span><br><span class="line">    min25shai::<span class="built_in">min25</span>(min25shai::g,n,k+<span class="number">1</span>,<span class="built_in">F</span>(<span class="built_in">qpow</span>(n%mod,k)),<span class="built_in">F</span>(min25shai::<span class="built_in">getsum</span>(n,k)));</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">undef</span> F</span></span><br><span class="line">    ll res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll l=<span class="number">1</span>,r;l&lt;=n;l=r+<span class="number">1</span>)&#123;</span><br><span class="line">        r=n/(n/l);</span><br><span class="line">        ll t1=dujiaoshai::<span class="built_in">dujiao</span>(n/l);</span><br><span class="line">        ll t2=min25shai::g[<span class="built_in">id</span>(r)];</span><br><span class="line">        <span class="keyword">if</span>(l!=<span class="number">1</span>) t2+=mod-min25shai::g[<span class="built_in">id</span>(l<span class="number">-1</span>)];</span><br><span class="line">        res+=<span class="built_in">M</span>(t1,t2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res%mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">read</span><span class="params">()</span></span>&#123;ll x;cin&gt;&gt;x;<span class="keyword">return</span> x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">f_ini</span>();</span><br><span class="line">    <span class="keyword">for</span>(ll t=<span class="built_in">read</span>();t&gt;=<span class="number">1</span>;t--)&#123;</span><br><span class="line">        ll n=<span class="built_in">read</span>(),k=<span class="built_in">read</span>();</span><br><span class="line">        cout&lt;&lt;<span class="built_in">solve</span>(n,k)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1501,7 +1488,7 @@ There are only two positive integers n and k which are separated by spaces.<br /
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">19:36</span>
+    <span title="站点阅读时长">19:37</span>
   </span>
 </div>
 <div class="busuanzi-count">
