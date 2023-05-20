@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            最大流最小割算法 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="O ever youthful, O ever weeping">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/PGMUCH.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/PGMUCH.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="最大流最小割算法 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="O ever youthful, O ever weeping">
+    
+
+    
+        <meta property="article:published_time" content="Mon Oct 15 2018 17:00:17 GMT+0800">
+        <meta property="article:modified_time" content="Tue Sep 03 2019 08:09:38 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/PGMUCH.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/PGMUCH.html",
+    "headline": "最大流最小割算法",
+    "datePublished": "Mon Oct 15 2018 17:00:17 GMT+0800",
+    "dateModified": "Tue Sep 03 2019 08:09:38 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "O ever youthful, O ever weeping",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E9%A1%B6%E7%82%B9%E8%A6%86%E7%9B%96"><span class="post-toc-number">1.</span> <span class="post-toc-text">二分图的最小顶点覆盖</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="post-toc-number">2.</span> <span class="post-toc-text">二分图的最大独立集</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E5%9B%A2"><span class="post-toc-number">3.</span> <span class="post-toc-text">二分图的最大团</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E5%B0%8F%E8%BE%B9%E8%A6%86%E7%9B%96"><span class="post-toc-number">4.</span> <span class="post-toc-text">最小边覆盖</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E5%A4%A7%E6%9D%83%E9%97%AD%E5%90%88%E5%AD%90%E5%9B%BE"><span class="post-toc-number">5.</span> <span class="post-toc-text">最大权闭合子图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E5%A4%A7%E5%AF%86%E5%BA%A6%E5%AD%90%E5%9B%BE"><span class="post-toc-number">6.</span> <span class="post-toc-text">最大密度子图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E5%AD%90%E5%9B%BE"><span class="post-toc-number">7.</span> <span class="post-toc-text">最小路径覆盖子图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E6%9C%80%E9%95%BF%E9%93%BE%E3%80%81%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE"><span class="post-toc-number">8.</span> <span class="post-toc-text">有向无环图最长链、最长反链</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E5%B0%8F%E9%93%BE%E8%A6%86%E7%9B%96%EF%BC%88%E5%8F%AF%E4%BB%A5%E7%9B%B8%E4%BA%A4%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%EF%BC%89%EF%BC%88%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE%E9%95%BF%E5%BA%A6%EF%BC%89%EF%BC%88%E7%94%A8%E6%9C%80%E5%B0%91%E7%9A%84%E9%93%BE%E8%A6%86%E7%9B%96%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%EF%BC%89"><span class="post-toc-number">9.</span> <span class="post-toc-text">最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                最大流最小割算法
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>10月 15, 2018</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=最大流最小割算法&url=http://fightinggg.github.io/material/material/PGMUCH.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=最大流最小割算法&url=http://fightinggg.github.io/material/material/PGMUCH.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/PGMUCH.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/PGMUCH.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="二分图的最小顶点覆盖"><a href="#二分图的最小顶点覆盖" class="headerlink" title="二分图的最小顶点覆盖"></a>二分图的最小顶点覆盖</h1><p>定义：假如选了一个点就相当于覆盖了以它为端点的所有边。最小顶点覆盖就是选择最少的点来覆盖所有的边。</p>
+<p>方法：最小顶点覆盖等于二分图的最大匹配。</p>
+<p>我们用二分图来构造最小顶点覆盖。</p>
+<h1 id="二分图的最大独立集"><a href="#二分图的最大独立集" class="headerlink" title="二分图的最大独立集"></a>二分图的最大独立集</h1><p>定义：选出一些顶点使得这些顶点两两不相邻，则这些点构成的集合称为独立集。找出一个包含顶点数最多的独立集称为最大独立集。</p>
+<p>方法：最大独立集&#x3D;所有顶点数-最小顶点覆盖。</p>
+<h1 id="二分图的最大团"><a href="#二分图的最大团" class="headerlink" title="二分图的最大团"></a>二分图的最大团</h1><p>定义：对于一般图来说，团是一个顶点集合，且由该顶点集合诱导的子图是一个完全图，简单说，就是选出一些顶点，这些顶点两两之间都有边。最大团就是使得选出的这个顶点集合最大。对于二分图来说，我们默认为左边的所有点之间都有边，右边的所有顶点之间都有边。那么，实际上，我们是要在左边找到一个顶点子集X，在右边找到一个顶点子集Y，使得X中每个顶点和Y中每个顶点之间都有边。</p>
+<p>方法：二分图的最大团&#x3D;补图的最大独立集。</p>
+<p>补图的定义是：对于二分图中左边一点x和右边一点y，若x和y之间有边，那么在补图中没有，否则有。</p>
+<p>这个方法很好理解，因为最大独立集是两两不相邻，所以最大独立集的补图两两相邻。</p>
+<h1 id="最小边覆盖"><a href="#最小边覆盖" class="headerlink" title="最小边覆盖"></a>最小边覆盖</h1><p>边覆盖集：通俗地讲，所谓边覆盖集，就是G中所有的顶点都是E中某条边的邻接顶点（边覆盖顶点），一条边只能覆盖2个顶点。</p>
+<p>注意：在无向图中存在用尽量少的边去“覆盖”住所有的顶点，所以边覆盖集有极小与最小的区别。</p>
+<p>极小边覆盖：若边覆盖E中的任何真子集都不是边覆盖集，则称E是极小边覆盖集。</p>
+<p>最小边覆盖：边数最小的边覆盖称为最小边覆盖，通俗地讲，就是极小边覆盖中的最小的一个集合。</p>
+<p>最小边覆盖 &#x3D; 最大独立集 &#x3D; n - 最大匹配</p>
+<h1 id="最大权闭合子图"><a href="#最大权闭合子图" class="headerlink" title="最大权闭合子图"></a>最大权闭合子图</h1><p>定义：有一个有向图，每一个点都有一个权值（可以为正或负或0），选择一个权值和最大的子图，使得每个点的后继都在子图里面，这个子图就叫最大权闭合子图。</p>
+<p>方法：将正权点连接s,容量为点权,负权点连接t容量为点权绝对值,所求得的最小割将图分为两部分,我们发现所有正点权的和减去该简单割便是与s相连的闭合图的权，通过最小割找到了最大权闭合图。</p>
+<h1 id="最大密度子图"><a href="#最大密度子图" class="headerlink" title="最大密度子图"></a>最大密度子图</h1><p>定义：给定一个无向图，要求它的一个子图，使得子图中边数 与点数 的比值最大，</p>
+<p>方法：定义$d_i$为与点i相连的所有边的权值和，定义$p_i$为点i的权，保留以前的图，新建源点s汇点t，s到i连边，权值为U，i到t连边，权值为$2g-d_i-2p_i$</p>
+<p>那么$h(g)$的值为$(U\cdot n-maxflow)$，二分答案就行了。</p>
+<h1 id="最小路径覆盖子图"><a href="#最小路径覆盖子图" class="headerlink" title="最小路径覆盖子图"></a>最小路径覆盖子图</h1><p>定义：对于一个有向图，找出最小的路径条数，使之成为一个路径覆盖．</p>
+<p>方法：用原图建立一个两层的新图，如果原图中存在边i-&gt;j我们建立的新图就有第一层的点i流到第二层的点j，最后建立超级源点流向 所有的第一层图的点，建立超级汇点，由所有第二层的图流入，用n减去所 求的最大流就是最小路径。</p>
+<h1 id="有向无环图最长链、最长反链"><a href="#有向无环图最长链、最长反链" class="headerlink" title="有向无环图最长链、最长反链"></a>有向无环图最长链、最长反链</h1><p>在有向无环图中，有如下的一些定义和性质：</p>
+<p>链：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。</p>
+<p>反链：一条反链是一些点的集合，链上任意两个点x, y，满足 x 不能到达 y，且 y 也不能到达 x。</p>
+<p>一个定理：最长反链长度&#x3D;最小链覆盖（用最少的链覆盖所有顶点）</p>
+<p>对偶定理：最长链长度&#x3D;最小反链覆盖    </p>
+<h1 id="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"><a href="#最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）" class="headerlink" title="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"></a>最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</h1><p>定义：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。有向无环图中，找出最小的路径条数，使之成为的一个路径覆盖。</p>
+<p>方法：我们将原图做一次Floyd传递闭包，在新图中寻找最小路径覆盖，这样其实就是相当于将原图改造了一下，只要 x 能到达 y ，就直接连一条边 (x, y)，这样就可以“绕过”原图的一些被其他路径占用的点，直接构造新路径了。这样就将可以相交的最小路径覆盖转化为了路径不能相交的最小路径覆盖了。</p>
+<p>最大团 &#x3D; 补图的最大独立集</p>
+<p>最小边覆盖 &#x3D; 二分图最大独立集 &#x3D; |V| - 最小路径覆盖</p>
+<p>最小路径覆盖 &#x3D; |V| - 最大匹配数</p>
+<p>最小顶点覆盖 &#x3D; 最大匹配数</p>
+<p>最小顶点覆盖 + 最大独立数 &#x3D; |V|</p>
+<p>最小割 &#x3D; 最小点权覆盖集 &#x3D; 点权和 - 最大点权独立集</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> rep(i,j,k) for(int i=j;i&lt;=(k);++i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> per(i,j,k) for(int i=j;i&gt;=(k);--i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> repe(i,u) for(int i=head[u];i;i=nex[i])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// graph</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> V=<span class="number">5e4</span>+<span class="number">5</span>,E=<span class="number">5e4</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> head[V];</span><br><span class="line"><span class="type">int</span> to[E],nex[E],ew[E],tot=<span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">addedge1</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> w)</span> </span>&#123;to[++tot]=v,nex[tot]=head[u],ew[tot]=w,head[u]=tot;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;<span class="built_in">repe</span>(i,u) head[u]=<span class="number">0</span>,<span class="built_in">del</span>(to[i]);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最大流最小割算法</span></span><br><span class="line"><span class="type">int</span> lv[V],current[V],src,dst;</span><br><span class="line"><span class="type">int</span> *cap=ew;<span class="comment">//容量等于边权</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">maxflowbfs</span><span class="params">()</span></span>&#123;</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    lv[src]=<span class="number">0</span>, q.<span class="built_in">push</span>(src);</span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="type">int</span> u=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="built_in">repe</span>(i,u)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[to[i]]&gt;=<span class="number">0</span>)<span class="keyword">continue</span>;</span><br><span class="line">            lv[to[i]]=lv[u]+<span class="number">1</span>, q.<span class="built_in">push</span>(to[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lv[dst]&gt;=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxflowdfs</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> f)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(u==dst)<span class="keyword">return</span> f;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span>&amp;i=current[u];i;i=nex[i])&#123;<span class="comment">//当前弧优化</span></span><br><span class="line">        <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[u]&gt;=lv[to[i]])<span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> flow=<span class="built_in">maxflowdfs</span>(to[i],<span class="built_in">min</span>(f,cap[i]));</span><br><span class="line">        <span class="keyword">if</span>(flow==<span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        cap[i]-=flow,cap[i^<span class="number">1</span>]+=flow;</span><br><span class="line">        <span class="keyword">return</span> flow;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">maxflow</span><span class="params">(<span class="type">int</span> base,<span class="type">int</span> n,<span class="type">int</span> s,<span class="type">int</span> t)</span></span>&#123;</span><br><span class="line">    src=base+s,dst=base+t;</span><br><span class="line">    ll flow=<span class="number">0</span>,f=<span class="number">0</span>;<span class="comment">// 计算最大流的过程中不可能爆int 唯独在最后对流量求和对时候可能会比较大 所以只有这里用ll</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">rep</span>(i,base+<span class="number">1</span>,base+n) current[i]=head[i],lv[i]=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">maxflowbfs</span>())<span class="keyword">return</span> flow;</span><br><span class="line">        <span class="keyword">while</span>(f=<span class="built_in">maxflowdfs</span>(src,<span class="number">2e9</span>))</span><br><span class="line">            flow+=f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/PGMUCH.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/PGMUCH.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/PGOVKM.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/PGMNAB.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

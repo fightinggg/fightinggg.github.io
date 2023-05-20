@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  分布式session客户端储存通过加密的方式储存在客户端 有安全隐患，cookie大小被限制，对网络传输造成压力 session复制通过广播来异步同步session，还是存在一致性问题 session绑定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式session">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/QQQOWM.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  分布式session客户端储存通过加密的方式储存在客户端 有安全隐患，cookie大小被限制，对网络传输造成压力 session复制通过广播来异步同步session，还是存在一致性问题 session绑定">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-03-30-11.35.46.497.png">
+<meta property="article:published_time" content="2021-03-29T16:38:46.000Z">
+<meta property="article:modified_time" content="2021-03-29T16:38:46.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-03-30-11.35.46.497.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>分布式session</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/QQRN80.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/QQPQAR.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QQQOWM.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QQQOWM.html&text=分布式session"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QQQOWM.html&is_video=false&description=分布式session"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分布式session&body=Check out this article: http://fightinggg.github.io/cactus/QQQOWM.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QQQOWM.html&name=分布式session&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QQQOWM.html&t=分布式session"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8Fsession"><span class="toc-number">1.</span> <span class="toc-text">分布式session</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%82%A8%E5%AD%98"><span class="toc-number">1.1.</span> <span class="toc-text">客户端储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session%E5%A4%8D%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text">session复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session%E7%BB%91%E5%AE%9A%EF%BC%8C%E4%BC%9A%E8%AF%9D%E4%BF%9D%E6%8C%81"><span class="toc-number">1.3.</span> <span class="toc-text">session绑定，会话保持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis"><span class="toc-number">1.4.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8A%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B-2-1-3-%E5%88%86%E5%B8%83%E5%BC%8Fsession"><span class="toc-number">1.5.</span> <span class="toc-text">《大型分布式网站架构设计与实践》-2.1.3 分布式session</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        分布式session
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-29T16:38:46.000Z" class="dt-published" itemprop="datePublished">2021-03-30</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QQQOWM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="分布式session"><a href="#分布式session" class="headerlink" title="分布式session"></a>分布式session</h1><h2 id="客户端储存"><a href="#客户端储存" class="headerlink" title="客户端储存"></a>客户端储存</h2><p>通过加密的方式储存在客户端</p>
+<p>有安全隐患，cookie大小被限制，对网络传输造成压力</p>
+<h2 id="session复制"><a href="#session复制" class="headerlink" title="session复制"></a>session复制</h2><p>通过广播来异步同步session，还是存在一致性问题</p>
+<h2 id="session绑定，会话保持"><a href="#session绑定，会话保持" class="headerlink" title="session绑定，会话保持"></a>session绑定，会话保持</h2><p>一个客户端每次都被代理到同一个服务器上</p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>把session缓存在redis中，在cookie中保留sessionid</p>
+<h2 id="《大型分布式网站架构设计与实践》-2-1-3-分布式session"><a href="#《大型分布式网站架构设计与实践》-2-1-3-分布式session" class="headerlink" title="《大型分布式网站架构设计与实践》-2.1.3 分布式session"></a>《大型分布式网站架构设计与实践》-2.1.3 分布式session</h2><p>如果我们需要非常高的系统可靠性，则可以把session持久化到DB中。但是这会导致吞吐降低。</p>
+<p><img src='/image-2021-03-30-11.35.46.497.png'></img></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8Fsession"><span class="toc-number">1.</span> <span class="toc-text">分布式session</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%82%A8%E5%AD%98"><span class="toc-number">1.1.</span> <span class="toc-text">客户端储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session%E5%A4%8D%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text">session复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session%E7%BB%91%E5%AE%9A%EF%BC%8C%E4%BC%9A%E8%AF%9D%E4%BF%9D%E6%8C%81"><span class="toc-number">1.3.</span> <span class="toc-text">session绑定，会话保持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis"><span class="toc-number">1.4.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8A%E5%A4%A7%E5%9E%8B%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B-2-1-3-%E5%88%86%E5%B8%83%E5%BC%8Fsession"><span class="toc-number">1.5.</span> <span class="toc-text">《大型分布式网站架构设计与实践》-2.1.3 分布式session</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QQQOWM.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QQQOWM.html&text=分布式session"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QQQOWM.html&is_video=false&description=分布式session"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=分布式session&body=Check out this article: http://fightinggg.github.io/cactus/QQQOWM.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QQQOWM.html&title=分布式session"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QQQOWM.html&name=分布式session&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QQQOWM.html&t=分布式session"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

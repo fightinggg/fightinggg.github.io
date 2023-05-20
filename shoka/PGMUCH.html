@@ -1,0 +1,683 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PGMUCH.html">
+
+
+
+  <title>
+最大流最小割算法 - 图论 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">最大流最小割算法
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2018-10-15 17:00:17">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2018-10-15T17:00:17+08:00">2018-10-15</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclh3brzpj20zk0m8ann.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclip4jbpj20zk0m87cv.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph47e9vtj20zk0m8x6l.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitht3xtj20zk0m8k5v.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclgi503lj20zk0m8hdt.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" itemprop="item" rel="index" title="分类于 图论"><span itemprop="name">图论</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PGMUCH.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="二分图的最小顶点覆盖"><a href="#二分图的最小顶点覆盖" class="headerlink" title="二分图的最小顶点覆盖"></a>二分图的最小顶点覆盖</h1><p>定义：假如选了一个点就相当于覆盖了以它为端点的所有边。最小顶点覆盖就是选择最少的点来覆盖所有的边。</p>
+<p>方法：最小顶点覆盖等于二分图的最大匹配。</p>
+<p>我们用二分图来构造最小顶点覆盖。</p>
+<h1 id="二分图的最大独立集"><a href="#二分图的最大独立集" class="headerlink" title="二分图的最大独立集"></a>二分图的最大独立集</h1><p>定义：选出一些顶点使得这些顶点两两不相邻，则这些点构成的集合称为独立集。找出一个包含顶点数最多的独立集称为最大独立集。</p>
+<p>方法：最大独立集&#x3D;所有顶点数-最小顶点覆盖。</p>
+<h1 id="二分图的最大团"><a href="#二分图的最大团" class="headerlink" title="二分图的最大团"></a>二分图的最大团</h1><p>定义：对于一般图来说，团是一个顶点集合，且由该顶点集合诱导的子图是一个完全图，简单说，就是选出一些顶点，这些顶点两两之间都有边。最大团就是使得选出的这个顶点集合最大。对于二分图来说，我们默认为左边的所有点之间都有边，右边的所有顶点之间都有边。那么，实际上，我们是要在左边找到一个顶点子集X，在右边找到一个顶点子集Y，使得X中每个顶点和Y中每个顶点之间都有边。</p>
+<p>方法：二分图的最大团&#x3D;补图的最大独立集。</p>
+<p>补图的定义是：对于二分图中左边一点x和右边一点y，若x和y之间有边，那么在补图中没有，否则有。</p>
+<p>这个方法很好理解，因为最大独立集是两两不相邻，所以最大独立集的补图两两相邻。</p>
+<h1 id="最小边覆盖"><a href="#最小边覆盖" class="headerlink" title="最小边覆盖"></a>最小边覆盖</h1><p>边覆盖集：通俗地讲，所谓边覆盖集，就是G中所有的顶点都是E中某条边的邻接顶点（边覆盖顶点），一条边只能覆盖2个顶点。</p>
+<p>注意：在无向图中存在用尽量少的边去“覆盖”住所有的顶点，所以边覆盖集有极小与最小的区别。</p>
+<p>极小边覆盖：若边覆盖E中的任何真子集都不是边覆盖集，则称E是极小边覆盖集。</p>
+<p>最小边覆盖：边数最小的边覆盖称为最小边覆盖，通俗地讲，就是极小边覆盖中的最小的一个集合。</p>
+<p>最小边覆盖 &#x3D; 最大独立集 &#x3D; n - 最大匹配</p>
+<h1 id="最大权闭合子图"><a href="#最大权闭合子图" class="headerlink" title="最大权闭合子图"></a>最大权闭合子图</h1><p>定义：有一个有向图，每一个点都有一个权值（可以为正或负或0），选择一个权值和最大的子图，使得每个点的后继都在子图里面，这个子图就叫最大权闭合子图。</p>
+<p>方法：将正权点连接s,容量为点权,负权点连接t容量为点权绝对值,所求得的最小割将图分为两部分,我们发现所有正点权的和减去该简单割便是与s相连的闭合图的权，通过最小割找到了最大权闭合图。</p>
+<h1 id="最大密度子图"><a href="#最大密度子图" class="headerlink" title="最大密度子图"></a>最大密度子图</h1><p>定义：给定一个无向图，要求它的一个子图，使得子图中边数 与点数 的比值最大，</p>
+<p>方法：定义$d_i$为与点i相连的所有边的权值和，定义$p_i$为点i的权，保留以前的图，新建源点s汇点t，s到i连边，权值为U，i到t连边，权值为$2g-d_i-2p_i$</p>
+<p>那么$h(g)$的值为$(U\cdot n-maxflow)$，二分答案就行了。</p>
+<h1 id="最小路径覆盖子图"><a href="#最小路径覆盖子图" class="headerlink" title="最小路径覆盖子图"></a>最小路径覆盖子图</h1><p>定义：对于一个有向图，找出最小的路径条数，使之成为一个路径覆盖．</p>
+<p>方法：用原图建立一个两层的新图，如果原图中存在边i-&gt;j我们建立的新图就有第一层的点i流到第二层的点j，最后建立超级源点流向 所有的第一层图的点，建立超级汇点，由所有第二层的图流入，用n减去所 求的最大流就是最小路径。</p>
+<h1 id="有向无环图最长链、最长反链"><a href="#有向无环图最长链、最长反链" class="headerlink" title="有向无环图最长链、最长反链"></a>有向无环图最长链、最长反链</h1><p>在有向无环图中，有如下的一些定义和性质：</p>
+<p>链：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。</p>
+<p>反链：一条反链是一些点的集合，链上任意两个点x, y，满足 x 不能到达 y，且 y 也不能到达 x。</p>
+<p>一个定理：最长反链长度&#x3D;最小链覆盖（用最少的链覆盖所有顶点）</p>
+<p>对偶定理：最长链长度&#x3D;最小反链覆盖    </p>
+<h1 id="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"><a href="#最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）" class="headerlink" title="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"></a>最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</h1><p>定义：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。有向无环图中，找出最小的路径条数，使之成为的一个路径覆盖。</p>
+<p>方法：我们将原图做一次Floyd传递闭包，在新图中寻找最小路径覆盖，这样其实就是相当于将原图改造了一下，只要 x 能到达 y ，就直接连一条边 (x, y)，这样就可以“绕过”原图的一些被其他路径占用的点，直接构造新路径了。这样就将可以相交的最小路径覆盖转化为了路径不能相交的最小路径覆盖了。</p>
+<p>最大团 &#x3D; 补图的最大独立集</p>
+<p>最小边覆盖 &#x3D; 二分图最大独立集 &#x3D; |V| - 最小路径覆盖</p>
+<p>最小路径覆盖 &#x3D; |V| - 最大匹配数</p>
+<p>最小顶点覆盖 &#x3D; 最大匹配数</p>
+<p>最小顶点覆盖 + 最大独立数 &#x3D; |V|</p>
+<p>最小割 &#x3D; 最小点权覆盖集 &#x3D; 点权和 - 最大点权独立集</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> rep(i,j,k) for(int i=j;i&lt;=(k);++i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> per(i,j,k) for(int i=j;i&gt;=(k);--i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> repe(i,u) for(int i=head[u];i;i=nex[i])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// graph</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> V=<span class="number">5e4</span>+<span class="number">5</span>,E=<span class="number">5e4</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> head[V];</span><br><span class="line"><span class="type">int</span> to[E],nex[E],ew[E],tot=<span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">addedge1</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> w)</span> </span>&#123;to[++tot]=v,nex[tot]=head[u],ew[tot]=w,head[u]=tot;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;<span class="built_in">repe</span>(i,u) head[u]=<span class="number">0</span>,<span class="built_in">del</span>(to[i]);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最大流最小割算法</span></span><br><span class="line"><span class="type">int</span> lv[V],current[V],src,dst;</span><br><span class="line"><span class="type">int</span> *cap=ew;<span class="comment">//容量等于边权</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">maxflowbfs</span><span class="params">()</span></span>&#123;</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    lv[src]=<span class="number">0</span>, q.<span class="built_in">push</span>(src);</span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="type">int</span> u=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="built_in">repe</span>(i,u)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[to[i]]&gt;=<span class="number">0</span>)<span class="keyword">continue</span>;</span><br><span class="line">            lv[to[i]]=lv[u]+<span class="number">1</span>, q.<span class="built_in">push</span>(to[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lv[dst]&gt;=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxflowdfs</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> f)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(u==dst)<span class="keyword">return</span> f;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span>&amp;i=current[u];i;i=nex[i])&#123;<span class="comment">//当前弧优化</span></span><br><span class="line">        <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[u]&gt;=lv[to[i]])<span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> flow=<span class="built_in">maxflowdfs</span>(to[i],<span class="built_in">min</span>(f,cap[i]));</span><br><span class="line">        <span class="keyword">if</span>(flow==<span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        cap[i]-=flow,cap[i^<span class="number">1</span>]+=flow;</span><br><span class="line">        <span class="keyword">return</span> flow;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">maxflow</span><span class="params">(<span class="type">int</span> base,<span class="type">int</span> n,<span class="type">int</span> s,<span class="type">int</span> t)</span></span>&#123;</span><br><span class="line">    src=base+s,dst=base+t;</span><br><span class="line">    ll flow=<span class="number">0</span>,f=<span class="number">0</span>;<span class="comment">// 计算最大流的过程中不可能爆int 唯独在最后对流量求和对时候可能会比较大 所以只有这里用ll</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">rep</span>(i,base+<span class="number">1</span>,base+n) current[i]=head[i],lv[i]=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">maxflowbfs</span>())<span class="keyword">return</span> flow;</span><br><span class="line">        <span class="keyword">while</span>(f=<span class="built_in">maxflowdfs</span>(src,<span class="number">2e9</span>))</span><br><span class="line">            flow+=f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2019-09-03 16:09:38" itemprop="dateModified" datetime="2019-09-03T16:09:38+08:00">2019-09-03</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PGMUCH.html" title="最大流最小割算法">http://fightinggg.github.io/shoka/PGMUCH.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PGMNAB.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicm0fdw5cj20zk0m8hdt.jpg" title="球盒模型">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 数学</span>
+  <h3>球盒模型</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PGOVKM.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclip4jbpj20zk0m87cv.jpg" title="构造">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 思维</span>
+  <h3>构造</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E9%A1%B6%E7%82%B9%E8%A6%86%E7%9B%96"><span class="toc-number">1.</span> <span class="toc-text">二分图的最小顶点覆盖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">二分图的最大独立集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E5%9B%A2"><span class="toc-number">3.</span> <span class="toc-text">二分图的最大团</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E8%BE%B9%E8%A6%86%E7%9B%96"><span class="toc-number">4.</span> <span class="toc-text">最小边覆盖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%9D%83%E9%97%AD%E5%90%88%E5%AD%90%E5%9B%BE"><span class="toc-number">5.</span> <span class="toc-text">最大权闭合子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%AF%86%E5%BA%A6%E5%AD%90%E5%9B%BE"><span class="toc-number">6.</span> <span class="toc-text">最大密度子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E5%AD%90%E5%9B%BE"><span class="toc-number">7.</span> <span class="toc-text">最小路径覆盖子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E6%9C%80%E9%95%BF%E9%93%BE%E3%80%81%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE"><span class="toc-number">8.</span> <span class="toc-text">有向无环图最长链、最长反链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%93%BE%E8%A6%86%E7%9B%96%EF%BC%88%E5%8F%AF%E4%BB%A5%E7%9B%B8%E4%BA%A4%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%EF%BC%89%EF%BC%88%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE%E9%95%BF%E5%BA%A6%EF%BC%89%EF%BC%88%E7%94%A8%E6%9C%80%E5%B0%91%E7%9A%84%E9%93%BE%E8%A6%86%E7%9B%96%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/PGMDBM.html" rel="bookmark" title="最小费用最大流">最小费用最大流</a></li><li class="active"><a href="/shoka/PGMUCH.html" rel="bookmark" title="最大流最小割算法">最大流最小割算法</a></li><li><a href="/shoka/PGYGU3.html" rel="bookmark" title="网络流24题">网络流24题</a></li><li><a href="/shoka/PH2UB0.html" rel="bookmark" title="最小顶点覆盖二分图">最小顶点覆盖二分图</a></li><li><a href="/shoka/PH5S7Y.html" rel="bookmark" title="二分图最小费用固定流">二分图最小费用固定流</a></li><li><a href="/shoka/PPJIW2.html" rel="bookmark" title="最大团">最大团</a></li><li><a href="/shoka/PQWPYU.html" rel="bookmark" title="最短路和第k短路">最短路和第k短路</a></li><li><a href="/shoka/PRCNKV.html" rel="bookmark" title="LCA">LCA</a></li><li><a href="/shoka/PREMDT.html" rel="bookmark" title="Tarjan联通算法">Tarjan联通算法</a></li><li><a href="/shoka/PUKAKX.html" rel="bookmark" title="树的最小路径覆盖">树的最小路径覆盖</a></li><li><a href="/shoka/PUPS7Y.html" rel="bookmark" title="斯坦纳树">斯坦纳树</a></li><li><a href="/shoka/PW86WJ.html" rel="bookmark" title="霍尔定理">霍尔定理</a></li><li><a href="/shoka/PX3YQ4.html" rel="bookmark" title="支配树">支配树</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PGMNAB.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PGOVKM.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringCloud/" title="分类于 SpringCloud">SpringCloud</a>
+</div>
+
+    <span><a href="/shoka/Q9JK3W.html" title="SpringCloud3">SpringCloud3</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Go/" title="分类于 Go">Go</a>
+</div>
+
+    <span><a href="/shoka/R1Z340.html" title="Go入门-常见陷阱">Go入门-常见陷阱</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/splay.html" title="splay">splay</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E9%98%9F%E5%88%97/" title="分类于 队列">队列</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E9%98%9F%E5%88%97/Kafka/" title="分类于 Kafka">Kafka</a>
+</div>
+
+    <span><a href="/shoka/QR4S3C.html" title="Kafka时间轮">Kafka时间轮</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/" title="分类于 树">树</a>
+</div>
+
+    <span><a href="/shoka/Q9K2JU.html" title="Kruskal重构树">Kruskal重构树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="分类于 操作系统">操作系统</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/" title="分类于 OS">OS</a>
+</div>
+
+    <span><a href="/shoka/Q96SDK.html" title="操作系统IO">操作系统IO</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/map.html" title="map">map</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/" title="分类于 树">树</a>
+</div>
+
+    <span><a href="/shoka/PWDVU7.html" title="树hash">树hash</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="分类于 大数据">大数据</a>
+</div>
+
+    <span><a href="/shoka/QFU1S0.html" title="Impala">Impala</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/Q7UAGN.html" title="Git使用总结">Git使用总结</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PGMUCH.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

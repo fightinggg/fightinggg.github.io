@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>区间加+区间乘+区间求和的双标记线段树 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                 线段树                    typedef long long ll; #define ls (rt&lt;&lt;1) #define">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区间加+区间乘+区间求和的双标记线段树">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                 线段树                    typedef long long ll; #define ls (rt&lt;&lt;1) #define">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:modified_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">区间加+区间乘+区间求和的双标记线段树</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">区间加+区间乘+区间求和的双标记线段树</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-05T15:23:08.000Z" itemprop="datePublished" class="page-time">
+  2019-08-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li></ul></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link"><span class="post-toc-number">1.</span> <span class="post-toc-text">线段树</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ACM/老Blog迁移/stencil/data_struct/区间加+区间乘+区间求和的双标记线段树"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">区间加+区间乘+区间求和的双标记线段树</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-05 23:23:08" datetime="2019-08-05T15:23:08.000Z"  itemprop="datePublished">2019-08-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li></ul></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/区间加+区间乘+区间求和的双标记线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+转移自<a href='/ACM/stencil/data_struct/区间加+区间乘+区间求和的双标记线段树.html'>老blog</a>
+
+<div type="text/javadiv" src="/ACM/js/web_begin.js"></div>
+<div>
+    <center>
+        <h1>线段树</h1>
+    </center>
+
+    <div id="code">
+        <pre><span class="k">typedef</span> <span class="kt">long</span> <span class="kt">long</span> <span
+                class="n">ll</span><span class="p">;</span>
+<span class="cp">#define ls (rt&lt;&lt;1)</span>
+<span class="cp">#define rs (ls|1)</span>
+<span class="cp">#define ml ((l+r)&gt;&gt;1)</span>
+<span class="cp">#define mr (ml+1)</span>
+<span class="k">const</span> <span class="n">ll</span> <span class="n">maxn</span><span class="o">=</span><span
+                    class="mf">1e5</span><span class="o">+</span><span class="mi">55</span><span class="p">;</span>
+<span class="n">ll</span> <span class="n">mod</span><span class="o">=</span><span class="mi">123456789</span><span
+                    class="p">;</span>
+<span class="n">ll</span> <span class="n">mul</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span
+                    class="mi">2</span><span class="p">],</span><span class="n">add</span><span class="p">[</span><span
+                    class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span
+                    class="p">],</span><span class="n">sum</span><span class="p">[</span><span
+                    class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span
+                    class="p">],</span><span class="n">a</span><span class="p">[</span><span class="n">maxn</span><span
+                    class="p">];</span>
+
+<span class="kt">void</span> <span class="n">push_down</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+    <span class="c1">// if(l!=r) push_down(ls,l,ml),push_down(rs,mr,r);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">mul</span><span class="p">[</span><span class="n">rt</span><span
+                    class="p">]</span><span class="o">!=</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">mul</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">mul</span><span class="p">[</span><span class="n">ls</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+        <span class="n">add</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">add</span><span class="p">[</span><span class="n">ls</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+
+        <span class="n">mul</span><span class="p">[</span><span class="n">rs</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">mul</span><span class="p">[</span><span class="n">rs</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+        <span class="n">add</span><span class="p">[</span><span class="n">rs</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">add</span><span class="p">[</span><span class="n">rs</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">mul</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+
+        <span class="n">mul</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">add</span><span class="p">[</span><span class="n">rt</span><span
+                    class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+        <span class="n">add</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">add</span><span class="p">[</span><span
+                    class="n">ls</span><span class="p">]</span><span class="o">+</span><span class="n">add</span><span
+                    class="p">[</span><span class="n">rt</span><span class="p">])</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">sum</span><span class="p">[</span><span
+                    class="n">ls</span><span class="p">]</span><span class="o">+</span><span class="n">add</span><span
+                    class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">*</span><span
+                    class="p">(</span><span class="n">ml</span><span class="o">-</span><span class="n">l</span><span
+                    class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+
+        <span class="n">add</span><span class="p">[</span><span class="n">rs</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">add</span><span class="p">[</span><span
+                    class="n">rs</span><span class="p">]</span><span class="o">+</span><span class="n">add</span><span
+                    class="p">[</span><span class="n">rt</span><span class="p">])</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">sum</span><span class="p">[</span><span
+                    class="n">rs</span><span class="p">]</span><span class="o">+</span><span class="n">add</span><span
+                    class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">*</span><span
+                    class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">mr</span><span
+                    class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+
+        <span class="n">add</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_up</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">sum</span><span class="p">[</span><span
+                    class="n">ls</span><span class="p">]</span><span class="o">+</span><span class="n">sum</span><span
+                    class="p">[</span><span class="n">rs</span><span class="p">])</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">mul</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">add</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span
+                    class="n">r</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">a</span><span class="p">[</span><span class="n">l</span><span
+                    class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="n">build</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span><span
+                    class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">);</span>
+        <span class="n">build</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span><span
+                    class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span
+                    class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">update_add</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">,</span><span
+                    class="n">ll</span> <span class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span
+                    class="n">qr</span><span class="p">,</span><span class="n">ll</span> <span class="n">d</span><span
+                    class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">!=</span><span
+                    class="n">r</span><span class="p">)</span><span class="n">push_down</span><span
+                    class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span
+                    class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+                    class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span
+                    class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="p">(</span><span class="n">sum</span><span class="p">[</span><span
+                    class="n">rt</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span
+                    class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span
+                    class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span
+                    class="p">)</span><span class="o">%</span><span class="n">mod</span><span class="p">;</span>
+        <span class="n">add</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span
+                    class="n">ql</span><span class="p">)</span> <span class="n">update_add</span><span
+                    class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span
+                    class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span
+                    class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+                    class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span
+                    class="n">qr</span><span class="p">)</span> <span class="n">update_add</span><span
+                    class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span
+                    class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span
+                    class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+                    class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span
+                    class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">update_mul</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">,</span><span
+                    class="n">ll</span> <span class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span
+                    class="n">qr</span><span class="p">,</span><span class="n">ll</span> <span class="n">d</span><span
+                    class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">!=</span><span
+                    class="n">r</span><span class="p">)</span><span class="n">push_down</span><span
+                    class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span
+                    class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+                    class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span
+                    class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span
+                    class="p">]</span><span class="o">*</span><span class="n">d</span><span class="o">%</span><span
+                    class="n">mod</span><span class="p">;</span>
+        <span class="n">mul</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span
+                    class="o">=</span><span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span
+                    class="n">ql</span><span class="p">)</span> <span class="n">update_mul</span><span
+                    class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span
+                    class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span
+                    class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+                    class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span
+                    class="n">qr</span><span class="p">)</span> <span class="n">update_mul</span><span
+                    class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span
+                    class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span
+                    class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+                    class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span
+                    class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">ll</span> <span class="n">query_sum</span><span class="p">(</span><span class="n">ll</span> <span
+                    class="n">rt</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span
+                    class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">,</span><span
+                    class="n">ll</span> <span class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span
+                    class="n">qr</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">!=</span><span
+                    class="n">r</span><span class="p">)</span><span class="n">push_down</span><span
+                    class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span
+                    class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+                    class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span
+                    class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span
+                    class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="n">ll</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span
+                    class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span
+                    class="n">ql</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span
+                    class="n">query_sum</span><span class="p">(</span><span class="n">ls</span><span
+                    class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span
+                    class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span
+                    class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span
+                    class="n">qr</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span
+                    class="n">query_sum</span><span class="p">(</span><span class="n">rs</span><span
+                    class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span
+                    class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span
+                    class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">%</span><span class="n">mod</span><span
+                    class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+    </div>
+</div>
+<div type="text/javadiv" src="/ACM/js/web_end.js"></div>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-08-05T15:23:08.000Z" itemprop="dateUpdated">2019-08-05 23:23:08</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&source=O ever youthful, O ever weeping" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/%E5%88%92%E5%88%86%E6%A0%91.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">划分树</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC+%E5%8C%BA%E9%97%B4p%E6%AC%A1%E6%96%B9%E6%B1%82%E5%92%8C%E7%9A%84%E4%B8%89%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">区间加+区间乘+区间赋值+区间p次方求和的三标记线段树</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&source=O ever youthful, O ever weeping" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《区间加+区间乘+区间求和的双标记线段树》 — Believe it&url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,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" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

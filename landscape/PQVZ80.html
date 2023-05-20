@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>浅谈缓存 | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial # Cache的基本理论指导  ​     由于计算机内部memery与 processor之间的速度差距过大，导致计算机整体速度降低，memery拖慢了速度。于是人们想出 了一个办法来解决他。缓存Cach">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈缓存">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/PQVZ80.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial # Cache的基本理论指导  ​     由于计算机内部memery与 processor之间的速度差距过大，导致计算机整体速度降低，memery拖慢了速度。于是人们想出 了一个办法来解决他。缓存Cach">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2019-05-03-01.00.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2019-05-03-01.00.00.001.png">
+<meta property="article:published_time" content="2019-05-02T17:00:00.000Z">
+<meta property="article:modified_time" content="2019-05-02T17:00:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2019-05-03-01.00.00.000.png">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-计算机组成原理/浅谈缓存/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/PQVZ80.html" class="article-date">
+  <time class="dt-published" datetime="2019-05-02T17:00:00.000Z" itemprop="datePublished">2019-05-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      浅谈缓存
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PQVZ80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+# Cache的基本理论指导
+
+<p>​     由于计算机内部memery与 processor之间的速度差距过大，导致计算机整体速度降低，memery拖慢了速度。于是人们想出 了一个办法来解决他。缓存Cache诞生了。<br>​     Cache相对于Memery来说，速度快了很多，速度快意味着造价高，容量小，这是代价，我们没有那么多钱来用Cache来当作 Memery，于是我们尝试，让他作为Processor与Memery的中介。<br>​     为什么要Cache，因为Memery太慢了，用Cache的话，容量问题很显然，Cache很小，没有Memery那么大。但是我们的初衷 是什么，用Cache去代替Memery，但是，Cache这个家伙小啊，我们不可能把一个大的东西放进一个小的盒子里面。 这是缓存 面临的最大问题。<br>​     重新思考计算机的运转，指令是一条一条执行的，当计算机运转的时候，CPU关心的不是整个Memery，他只要他的东西，他所需要的 只是局部的信息。于是我们开始思考，既然Cache没有Memery那么大，那我们就构建一个一对多的映射，一个Cache地址，去对应 多个Memery地址，问题似乎解决了，是的Cache就是那样工作的。<br>​     一对多的问题不好解决，你怎么知道一对多的时候，对应的是哪一个呢？我们是这样子解决的，把Memery的地址映射 Mx到Cache的地址Cx，这是唯一的，但是Cache是一对多啊，我们假设是一对四，然后我们在Cache的地址所指向的位置添 加一个标记，用来指示他目前对应是哪一个Memery地址，不妨说他目前对应的是第三个Memery。现在问题基本解决了。 例如：<br>​     有四个Memery地址Mx1，Mx2，Mx3，Mx4，都映射到了Cx，但是Cx上有一个标记，标记说Cx目前存的值等于Mx3 存的值。这样就完美解决了映射的问题。但是新的问题来了，无法逃避，Cache毕竟没有Memery那么大，我现在 要访问Mx1，结果我找到了Cx，Cx却告诉我他现在存的东西不是Mx1，而是Mx3，怎么办？？<br>​     没办法，这种情况叫miss，只能从Memery找了，我们是这样做的：把从Memery把Mx1以及他附近的其他东西搬过来 搬到Cache，然后更新Cache的标志。回到刚才的例子，也就是把Mx1以及他附近的其他信息的东西搬到了Cx上 然后改掉Cx的标记，说Cx现在不是Mx3了，他现在与Mx1一起了。<br>​     如此复杂的操作，真的回使得计算机变快吗？是的，平均性能上提高了，因为Cache和Memery速度差异巨大。不过杨老师曾指出一个 反例，他说，你要是有个恐怖分子，不用我们的Cache，当Cx与Mx1一致的时候你要用Mx2，当Cx变得根Mx2相同了，你 又要用Mx1，那岂不是凉凉？好像确实是这样子的。<br>​     为什么说是平均性能的提高呢？有两点，memery使用的时间局部性和空间局部性，当你使用了一个Memery的地址 后，你在不久的将来可能还会使用他 ，你也有肯能使用他附近的其他信息。所以我们把和他相关的东西一股脑都放进 Cache就可以了，但是放多少呢？这个问题，先辈们已经通过统计得出来结论。我们不必关心。 </p>
+<h3 id="Cache的基本实际实现"><a href="#Cache的基本实际实现" class="headerlink" title="Cache的基本实际实现"></a>Cache的基本实际实现</h3><p>​     之前我们谈到的只是口糊，具体实现的时候，不是一个地址对应一个地址，而是一块对应一块（block）， 我们曾谈到，空间局部性，所以说这里不要一个地址对应一个地址的玩了。我们引入block。也就是说 我们把地址Mx1_begin 到Mx1_end这一整块的地址映射到Cx_begin到Cx_end ， 然后放一个标记就可以了， 这样的优点很多，比如说省掉了很多标记的记录。。。等等的<br>​     Cache的地址分为三大块，tag,index,和offset<br>​     offset指的是一种偏移量，我们之前说过，Cache里面分了很多个block，每一个block都是一个整体，所以 当我们找到了正确的当block当时候，offset用来指向block里面的详细地址。显然，block里面有多少种地址 offset就有多少种值。举个例子，当block是64B的时候，他一共有2^6个byte，我们计算机寻址所关心的只是 哪一个byte，（一般而言，四个byte为一个words）所以我们的offset需要有6个bit，才能恰好指向这2^6个 byte。于是在这种情况下offset为6位<br>​     index指向我们要找的哪一个block，见杨老师的图<br><img src='/image-2019-05-03-01.00.00.000.png'></img><br>​     很明显，如果在上述条件下我们的Cache一共有64KB的话，那我们就有 64KB&#x2F;6B&#x3D;2^10个block，于是index就是10位的了，可是有一些Cache，特别的有趣，它允许多对多。这就很 头疼了，不过这确实是个好办法。有一定的优点。      多对多是个什么情况呢？类似于这样,有Cx1 Cx2，Mx1，Mx2，Mx3，Mx4，他们很乱，四个Mx都可能映射到 Cx1，也都可能映射到Cx2，注意对比之前的一对多:有Cx，Mx1，Mx2，Mx3，Mx4,四个Mx都可能映射到Cx 多对多多优点的话，不好说，其实是我不知道。这种多对多的骚操作，实现起来更复杂了，他叫n-way set-assoc. 中文名n路集相关。很shit，很神奇。下面是二路集相关（还是杨老师的）.<br><img src='/image-2019-05-03-01.00.00.001.png'></img><br>​     在n路及相关的情况下，index又叫做set，这是他的新名字，这个时候他指向一堆block，换句话说，一堆block共用 一个index。于是，如果刚刚的64KBCache是二路集相关的话，他的index是9位，因为一个index可以指向两个 block。<br>​     至于tag，我不是很清楚了。应对考试的话，他的位数用PPA(Physical Page Address )减去index和offset就得到了。<br>​     最后剩下的一个是Data Cache entry 他的大小等于Valid bit, Dirty bit, Cache tag + ？？ Bytes of Data， 有这些一起组成。Valid bit 一般是一位，他的作用是用来指示这个block是否有用，为什么会没有用呢 我们想到，程序总有启动的时候，当程序刚刚启动的时候，block是无效的，它里面的数据存在，但是 数据却不一定和Memery保持一致。这个问题无法避免，但是可以通过Valid bit解决。Dirty bit是一种懒惰 标记，一般的树形结构，例如线段树，spaly，以及各种可持久化数据结构里面都用这种东西。他用来表明 一种懒惰性，因为Memery慢，因为Cache是用来代替Memery的，当我们读取数据的时候，没有他的用途 单当我们更新数据的时候，我们一定要立即更新Memery吗，不是的，我们可以只更新Cache的block，等 到miss发生的时候，在把它们一起写入Memery即可，所以他叫脏位。是一位。Cache tag就是我们之前说的 标记，用来防止一对多的情况下的那个标记，他等于前面我们算出来的tag的大小。最后一个是Bytes of Data 他恰好等于block的大小，例如64KB的那个Cache，他的大小位64KB&#x3D;64*8bits&#x3D;512bits，于是总大小为 1+1+21+512&#x3D;535bits </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/PQVZ80.html" data-id="clhvp2d1f002szimc6ni3d65z" data-title="浅谈缓存" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/PQW200.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          补码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/PQVWG0.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">用数学浅谈浮点数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

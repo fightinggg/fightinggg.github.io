@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>凸四边形不等式优化dp | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    理论篇决策单调性对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移">
+<meta property="og:type" content="article">
+<meta property="og:title" content="凸四边形不等式优化dp">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/PQ8MNU.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    理论篇决策单调性对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-20T02:23:54.000Z">
+<meta property="article:modified_time" content="2021-05-19T15:10:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ACM/学习笔记/DP/凸四边形不等式优化dp/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/PQ8MNU.html" class="article-date">
+  <time class="dt-published" datetime="2019-04-20T02:23:54.000Z" itemprop="datePublished">2019-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/ACM/">ACM</a>►<a class="article-category-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>►<a class="article-category-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      凸四边形不等式优化dp
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="理论篇"><a href="#理论篇" class="headerlink" title="理论篇"></a>理论篇</h1><h2 id="决策单调性"><a href="#决策单调性" class="headerlink" title="决策单调性"></a>决策单调性</h2><p>对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移$j$，如果$pri[i]$关于$i$单调，那么我们称该$dp$具有决策单调性。</p>
+<p>对于一类二维$dp$,如果有转移$dp[i][j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) i&lt;&#x3D;k&lt;j $并假定$pro[i][j]$为到$dp[i][j]$的最优转移$k$,如果$pri[i][j]$关于$i$单调，且关于$j$单调，那么我们称该$dp$具有决策单调性。</p>
+<h2 id="四边形不等式"><a href="#四边形不等式" class="headerlink" title="四边形不等式"></a>四边形不等式</h2><p>对于二元数论函数，$w(i,j)$，若满足$a\le b\le c\le d$恒有 $w(a,d)+w(b,c) \ge w(a,c)+w(b,d)$则该二元函数满足四边形不等式</p>
+<p>他的充要条件是: 若$a\lt b$ 恒有$w(a,b)+w(a+1,b+1) \ge w(a,b+1)+w(a+1,b)$</p>
+<p>可以理解为，交叉小于包含</p>
+<h2 id="区间包含单调性"><a href="#区间包含单调性" class="headerlink" title="区间包含单调性"></a>区间包含单调性</h2><p>对于二元数论函数，$i&lt;j$的$w(i,j)$ 我们将参数看做区间，定义区间的包含为偏序关系， 若$w$的值关于该偏序关系单调，则称该函数具有区间包含单调性。</p>
+<span id="more"></span>
+
+<h2 id="新增定义"><a href="#新增定义" class="headerlink" title="新增定义"></a>新增定义</h2><p>如果存在转移$dp[j]\to dp[i]$不管此转移是否最优，我们都把$j$叫做一个决策点。</p>
+<p>强化的决策单调性：对于某一维$dp$，如果在某决策点集合中，若$x$为到$dp(i)$的最优决策，则对于所有的大于$i$的$j$，$x$依旧是此决策点集合中的最优决策。 二维同理。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="一维DP"><a href="#一维DP" class="headerlink" title="一维DP"></a>一维DP</h3><p>考虑转移式$dp[i]&#x3D;\min(dp[j]+w(j,i))$，其中$1\le j\lt i$ ，且函数$w$满足四边形不等式</p>
+<p>不妨假设$p_x$是$dp[x]$的最佳转移之一，$p$是一个$dp[x]$的任意一个转移</p>
+<p>则$\forall p \lt x$ 都有$dp[p_x]+w(p_x,x)\le dp[p]+w(p,x)$ 即 $dp[p_x]-dp[p]\le w(p,x) -w(p_x,x)$</p>
+<p>根据四边形不等式，$\forall p \le p_x \le x \le y $ 都有$w(p,y)+w(p_x,x)\ge w(p,x)+w(p_x,y)$ 即$w(p,x)-w(p_x,x)\le w(p,y)-w(p_x,y)$</p>
+<p>合并上面两个不等式得到了$dp[p_x]-dp[p]\le w(p,y)-w(p_x,y)$ 即$dp[p_x]+w(p_x,y)\le dp[p]+w(p,y)$, 根据这个不等式，我们发现他说明了这样一个事实，即:</p>
+<p><strong>如果$p_x$是$dp[x]$的最佳转移之一，则$\forall p\le p_x \le x \le y$，对于$dp[y]$都有决策点$p_x$优于$p$</strong></p>
+<h3 id="二维DP较复杂"><a href="#二维DP较复杂" class="headerlink" title="二维DP较复杂"></a>二维DP较复杂</h3><p>需要对每一纬单独证明决策单调性，其中涉及到$w$函数的四边形不等式性质和$dp$自身的四边形不等式性质，此处不做证明，实战中也不会遇到，决策单调性需要依靠敏感的直觉，你需要用最快的速度猜测决策点单调，然后用一两分钟编写程序验证其单调性。</p>
+<h1 id="做法篇"><a href="#做法篇" class="headerlink" title="做法篇"></a>做法篇</h1><h2 id="强化的决策单调性优化一维dp"><a href="#强化的决策单调性优化一维dp" class="headerlink" title="强化的决策单调性优化一维dp"></a>强化的决策单调性优化一维dp</h2><p>当此$dp$满足强化的决策单调性的时候，我们可以用单调队列来优化$dp$,此单调队列维护一个数据结构，该数据结构维护一个决策数组,当我们处理$dp[i]$的时候，该数组维护了$dp[i]$到$dp[n]$的在$[1,i)$中的最优决策点。 显然该决策数组单调增，我们拿出最优队首，为$dp[i]$赋值，下一步应该是更新该决策数组，怎么更新呢，我们二分即可。</p>
+<h2 id="用二分更新决策数组"><a href="#用二分更新决策数组" class="headerlink" title="用二分更新决策数组"></a>用二分更新决策数组</h2><p>先证明,对于新加进来的决策，对于旧决策数组的影响具有单调性，即存在一个分界点，分界点左边，新决策不如旧决策，分界点右边，新决策优于旧决策， 首先，我们假设新决策的影响不具有单调性，即新决策的影响杂乱无章，在这种情况下，我们取出靠左边的决策为新决策的元素的下标，根据强化的决策单调性，此元素右边的 元素的当前最优决策值必须且只能为$i$，因为当前大于等于i的决策只有$i$。矛盾发生，故新决策的影响具有单调性。</p>
+<p> 当于是我们二分出这个点即可解决 ，</p>
+<h2 id="单调队列优化"><a href="#单调队列优化" class="headerlink" title="单调队列优化"></a>单调队列优化</h2><p>为什么我们要用单调队列呢，我们先考虑，如果我们采取线段树优化，那么更新决策数组显然是$lg$级别的，但是 二分新决策边界的时候，复杂度为$lg*lg$，因为单点查询是$lg$级别的，再加个二分就双$lg$了。</p>
+<p>为了时间复杂度好写，我们采取单调队列来维护，单调队列维护一个三元组分别是决策点和目前以此决策点为最优决策的$dp$，因为这是个区间，所有要用两个数来维护。</p>
+<p>更新的时候，直接修改队尾的三元组即可，查询的时候，暴力枚举队尾的三元组，如果新决策完全不如旧决策， 此次修改结束，如果队尾的决策完全不如新决策弹掉了队尾，修改新队尾的区间为后缀区间，继续枚举，如果新决策优于队尾决策的一部分，二分出位置后直接修改即可。</p>
+<p>很容易证明单调队列优化的时间复杂度是$lg$的，优于线段树。</p>
+<h2 id="决策单调性优化二维dp"><a href="#决策单调性优化二维dp" class="headerlink" title="决策单调性优化二维dp"></a>决策单调性优化二维dp</h2><p>这个就特别简单了，$dp[i][j]$的转移在$dp[i][j-1]$和$dp[i+1][j]$之间枚举即可。</p>
+<h2 id="什么时候可以使用这些优化？"><a href="#什么时候可以使用这些优化？" class="headerlink" title="什么时候可以使用这些优化？"></a>什么时候可以使用这些优化？</h2><p>对于一维$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) $,若w满足四边形不等式则，此$dp$满足决策单调性,并且，满足强化的决策单调性。</p>
+<p>对于二维$dp[i,j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) $若w满足四边形不等式，且$w$满足区间 包含单调性，则$dp$满足四边形不等式，且具有决策单调性。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/PQ8MNU.html" data-id="clhvp2d5o0095zimc48qbe0zg" data-title="凸四边形不等式优化dp" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/PQBI61.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          莫队算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/PPJIW2.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">最大团</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

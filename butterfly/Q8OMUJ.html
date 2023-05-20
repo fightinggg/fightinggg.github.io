@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>java并发编程11-JUC | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程11-JUC">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/Q8OMUJ.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:modified_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/Q8OMUJ.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'java并发编程11-JUC',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-04-12 23:54:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">java并发编程11-JUC</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-04-12T15:54:19.000Z" title="发表于 2020-04-12 23:54:19">2020-04-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-04-12T15:54:19.000Z" title="更新于 2020-04-12 23:54:19">2020-04-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/Language/">Language</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/Language/Java/">Java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="java并发编程11-JUC"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p>&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架</p>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><h3 id="如何重入"><a href="#如何重入" class="headerlink" title="如何重入"></a>如何重入</h3><p>&amp;emsp;&amp;emsp; 用一个变量记录重入了多少次</p>
+<h3 id="NonfairSync"><a href="#NonfairSync" class="headerlink" title="NonfairSync"></a>NonfairSync</h3><h4 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h4><p>&amp;emsp;&amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中</p>
+<h4 id="acquire"><a href="#acquire" class="headerlink" title="acquire"></a>acquire</h4><p>&amp;emsp;&amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断</p>
+<span id="more"></span>
+<h4 id="unlock"><a href="#unlock" class="headerlink" title="unlock"></a>unlock</h4><p>&amp;emsp;&amp;emsp; 调用release</p>
+<h4 id="release"><a href="#release" class="headerlink" title="release"></a>release</h4><p>&amp;emsp;&amp;emsp; 如果成功，unpark唤醒后继，为什么是非公平呢？因为被唤醒以后，可能会有不在链表中线程来跟自己竞争，所以这不公平</p>
+<h4 id="acquireInterruptibly"><a href="#acquireInterruptibly" class="headerlink" title="acquireInterruptibly"></a>acquireInterruptibly</h4><p>&amp;emsp;&amp;emsp; 不忽略打断，抛出异常即可</p>
+<h3 id="FairSync"><a href="#FairSync" class="headerlink" title="FairSync"></a>FairSync</h3><p>&amp;emsp;&amp;emsp; 区别再也tryAccquire，如果c&#x3D;0,即没人占用锁，他还会去检测AQS队列是否为空，其实就是看一下链表队列首部是否为自己，或者链表队列是否为空</p>
+<h3 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h3><p>&amp;emsp;&amp;emsp; 条件变量又是一个链表，当我们调用await的时候，当前线程的节点会被放进其中，然后把节点状态设为CONDITION,</p>
+<h4 id="fullrelease"><a href="#fullrelease" class="headerlink" title="fullrelease"></a>fullrelease</h4><p>&amp;emsp;&amp;emsp; 拿到锁的重数，然后一次性释放，在唤醒后面的节点，然后park自己</p>
+<h4 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h4><p>&amp;emsp;&amp;emsp; 当调用的时候讲条件变量的链表中第一个元素取出并加入到锁的等待链表中。</p>
+<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><ul>
+<li>ReentrantReadWriteLock rw &#x3D; new ReentrantReadWriteLock()</li>
+<li>rw.readLock();</li>
+<li>rw.writeLock();</li>
+</ul>
+<h3 id="锁升级"><a href="#锁升级" class="headerlink" title="锁升级"></a>锁升级</h3><p>&amp;emsp;&amp;emsp; 下面的代码会写锁永久等待</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().lock();</span><br></pre></td></tr></table></figure>
+<h3 id="锁降级"><a href="#锁降级" class="headerlink" title="锁降级"></a>锁降级</h3><p>&amp;emsp;&amp;emsp; 你可以把写锁转化为读锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获得写锁</span></span><br><span class="line">rw.writeLock().lock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁降级</span></span><br><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().unlock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获得读锁</span></span><br><span class="line">rw.readLock().unlock();</span><br></pre></td></tr></table></figure>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>&amp;emsp;&amp;emsp; 我们可以把对数据库的某些操作缓存到内存中，来降低数据库的压力</p>
+<h4 id="query"><a href="#query" class="headerlink" title="query"></a>query</h4><p>&amp;emsp;&amp;emsp; 先在缓存中找，找不到就加锁进数据库找，然后更新缓存,可以考虑双重检查锁</p>
+<h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>&amp;emsp;&amp;emsp; 先更新数据库,后清除缓存</p>
+<h4 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h4><h5 id="先删缓存，后更新数据库"><a href="#先删缓存，后更新数据库" class="headerlink" title="先删缓存，后更新数据库"></a>先删缓存，后更新数据库</h5><p>&amp;emsp;&amp;emsp; A删了缓存，准备更新，结果B来了，B一查缓存没用，去数据找数据，就找到了旧值。</p>
+<h5 id="先更新数据库，后删缓存"><a href="#先更新数据库，后删缓存" class="headerlink" title="先更新数据库，后删缓存"></a>先更新数据库，后删缓存</h5><p>&amp;emsp;&amp;emsp; A更新数据库的时候，B去查了缓存的旧</p>
+<h4 id="保证强一致性"><a href="#保证强一致性" class="headerlink" title="保证强一致性"></a>保证强一致性</h4><p>&amp;emsp;&amp;emsp; query查缓存套读锁，查数据库更新缓存加写锁<br>&amp;emsp;&amp;emsp; update直接加写锁</p>
+<h4 id="没有考虑到的问题"><a href="#没有考虑到的问题" class="headerlink" title="没有考虑到的问题"></a>没有考虑到的问题</h4><ul>
+<li>上面的操作时候读多写少</li>
+<li>没有考虑缓存容量</li>
+<li>没有考虑缓存过期</li>
+<li>只适合单机</li>
+<li>并发度还是太低， 可以降低锁粒度</li>
+</ul>
+<h3 id="读写锁原理"><a href="#读写锁原理" class="headerlink" title="读写锁原理"></a>读写锁原理</h3><p>&amp;emsp;&amp;emsp; 写锁就是简单加锁，注意照顾读锁的情况就可以了<br>&amp;emsp;&amp;emsp; 源码太复杂了，我说不清了，留个坑吧</p>
+<h2 id="StampedLock"><a href="#StampedLock" class="headerlink" title="StampedLock"></a>StampedLock</h2><p>&amp;emsp;&amp;emsp; 乐观读，每个操作都可以返回一个戳，解锁的时候可以吧戳还回去，如果这中间有人进行了修改，会返回失败，否则成功</p>
+<ul>
+<li>stamp &#x3D; tryOptimisticRead() 乐观读</li>
+<li>validate(stamp)  校验是否被修改</li>
+<li>stamp &#x3D; readLock() 读锁</li>
+<li>stamp &#x3D; writeLock() 写锁</li>
+<li>unlockRead(stamp) 释放</li>
+<li>unlockWriteLock() 释放<br>&amp;emsp;&amp;emsp; 不支持条件变量，不支持重入</li>
+</ul>
+<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><p>&amp;emsp;&amp;emsp; acquire、release，和PV有点像</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&amp;emsp;&amp;emsp; 可以限流，在高峰区让线程阻塞，比如数据库连接池，</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; state存信号量的值<br>&amp;emsp;&amp;emsp; acquire 用cas，如果不成功但是位置还够就一直尝试，如果位置不够的话就吧当前线程节点加入AQS队列<br>&amp;emsp;&amp;emsp; release依然是先cas，失败就一直尝试，绝对会成功，成功以后，依然是改状态，然后唤醒后面的线程，</p>
+<h2 id="CountdownLatch"><a href="#CountdownLatch" class="headerlink" title="CountdownLatch"></a>CountdownLatch</h2><p>&amp;emsp;&amp;emsp; 可以用来同步，等待n个线程countDown以后，await的线程才会开始运行</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; 维护一个值，每当一个线程执行完成，就让他减少1，当减少为0的时候唤醒await的线程</p>
+<h3 id="为什么不用join？"><a href="#为什么不用join？" class="headerlink" title="为什么不用join？"></a>为什么不用join？</h3><p>&amp;emsp;&amp;emsp; 在线程池中，线程都不带停下来的，join没用</p>
+<h3 id="应用1"><a href="#应用1" class="headerlink" title="应用1"></a>应用1</h3><p>&amp;emsp;&amp;emsp; 在游戏中，每个玩家都自己加载自己的数据，当他们都加载完成的时候，游戏才能开始，<br>&amp;emsp;&amp;emsp; 我们设置10的倒计时，当10个玩家执行完的时候，让他们各自调用countdount，然后就能唤醒游戏开始线程</p>
+<h3 id="应用2"><a href="#应用2" class="headerlink" title="应用2"></a>应用2</h3><p>&amp;emsp;&amp;emsp; 在微服务中，我们可能需要请求多个信息，当信息都请求完成才能返回，如果串行，效率太低了，我们考虑并发，这里也是个倒计时</p>
+<h3 id="返回结果？"><a href="#返回结果？" class="headerlink" title="返回结果？"></a>返回结果？</h3><p>&amp;emsp;&amp;emsp; 如果线程需要返回结果，还是用fature更为合适，CountdownLatch不太适合</p>
+<h2 id="cyclicbarrier"><a href="#cyclicbarrier" class="headerlink" title="cyclicbarrier"></a>cyclicbarrier</h2><p>&amp;emsp;&amp;emsp; CountdownLatch 不能用多次，要多次用的话，只能反复创建才行。<br>&amp;emsp;&amp;emsp; await()即为CountdownLatch的countDown<br>&amp;emsp;&amp;emsp; cyclicbarrier 构造的时候可以传进一个Runnable，当信号值降低为0的时候，运行Runnable，然后信号量再次赋值为n达到重用的效果<br>&amp;emsp;&amp;emsp; 千万要注意nthreads和线程数要相等，不要搞骚操作,不是说不行，是不太好。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/Q8OMUJ.html">http://fightinggg.github.io/butterfly/Q8OMUJ.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/Q8OMUY.html" title="java并发编程12-集合的线程安全类"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">java并发编程12-集合的线程安全类</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/Q8OMU7.html" title="java并发编程10-异步模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">java并发编程10-异步模式</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JUC"><span class="toc-number">1.</span> <span class="toc-text">JUC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AQS"><span class="toc-number">1.1.</span> <span class="toc-text">AQS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantLock"><span class="toc-number">1.2.</span> <span class="toc-text">ReentrantLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%87%8D%E5%85%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">如何重入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NonfairSync"><span class="toc-number">1.2.2.</span> <span class="toc-text">NonfairSync</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lock"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">lock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquire"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">acquire</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlock"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">unlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#release"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">release</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquireInterruptibly"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">acquireInterruptibly</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FairSync"><span class="toc-number">1.2.3.</span> <span class="toc-text">FairSync</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Condition"><span class="toc-number">1.2.4.</span> <span class="toc-text">Condition</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fullrelease"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">fullrelease</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#signal"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">signal</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantReadWriteLock"><span class="toc-number">1.3.</span> <span class="toc-text">ReentrantReadWriteLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">锁升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E9%99%8D%E7%BA%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">锁降级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">缓存问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#query"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#update"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">缓存更新策略</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E5%88%A0%E7%BC%93%E5%AD%98%EF%BC%8C%E5%90%8E%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.3.3.1.</span> <span class="toc-text">先删缓存，后更新数据库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%90%8E%E5%88%A0%E7%BC%93%E5%AD%98"><span class="toc-number">1.3.3.3.2.</span> <span class="toc-text">先更新数据库，后删缓存</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E8%AF%81%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">保证强一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E8%80%83%E8%99%91%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.5.</span> <span class="toc-text">没有考虑到的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.4.</span> <span class="toc-text">读写锁原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StampedLock"><span class="toc-number">1.4.</span> <span class="toc-text">StampedLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Semaphore"><span class="toc-number">1.5.</span> <span class="toc-text">Semaphore</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountdownLatch"><span class="toc-number">1.6.</span> <span class="toc-text">CountdownLatch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.6.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8join%EF%BC%9F"><span class="toc-number">1.6.2.</span> <span class="toc-text">为什么不用join？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A81"><span class="toc-number">1.6.3.</span> <span class="toc-text">应用1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A82"><span class="toc-number">1.6.4.</span> <span class="toc-text">应用2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%EF%BC%9F"><span class="toc-number">1.6.5.</span> <span class="toc-text">返回结果？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cyclicbarrier"><span class="toc-number">1.7.</span> <span class="toc-text">cyclicbarrier</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,654 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/Q85J17.html">
+
+
+
+  <title>
+操作系统12-死锁 - OS - 操作系统 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">操作系统12-死锁
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-04-02 16:17:31">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-04-02T16:17:31+08:00">2020-04-02</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexe4oykj20zk0m87ji.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipey84bjtj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljgocqbj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipesrnqv3j20zk0m8ava.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicivghyooj20zk0m8dir.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="item" rel="index" title="分类于 操作系统"><span itemprop="name">操作系统</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/" itemprop="item" rel="index" title="分类于 OS"><span itemprop="name">OS</span></a>
+<meta itemprop="position" content="2" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/Q85J17.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h1><p> 有两个集合，一个是进程集合，另一个是资源集合，如果进程i需要某资源j的一部分，则连边$i\to j$, 如果一个资源j的一部分被分配给了进程i，则连边$j\to i$,<br> 资源分配图出现了有向环是发生了死锁的必要不充分条件。因为边只表示一部分资源的分配，而不是全部资源</p>
+<h1 id="死锁的必要条件"><a href="#死锁的必要条件" class="headerlink" title="死锁的必要条件"></a>死锁的必要条件</h1><p> 互斥、持有并等待、无抢占、循环等待</p>
+<span id="more"></span>
+
+<h1 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h1><p> 破坏互斥不现实，破快占用并等待不实现，因为资源无法动态预判，可能发生饥饿，破坏抢占也不现实，破坏循环等待有效，将资源排序并让进程按顺序申请。</p>
+<h1 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h1><p> 判断某个资源的分配是否导致了死锁，需要系统具有额外的先验信息提供，<br> 安全状态: 存在序列$P_1$，$P_2$…，针对每个$P_i$,$P_i$要求的资源能够由当前可用资源+所有的$P_j$持有的资源来满足$j\lt i$</p>
+<h1 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h1><p> 寻找安全序列是否存在的算法。</p>
+<h1 id="死锁的检测"><a href="#死锁的检测" class="headerlink" title="死锁的检测"></a>死锁的检测</h1><p> 1简化资源分配图为线程等待图，如果线程等待图出现了环则发生了死锁。<br> 2找到能结束的程序，假设他结束，然后拿走资源，循环。<br> 杀，按照优先级杀掉死锁，剩余运行时间，占用自用资源、完成所需要的资源、需要终止的进程数量等<br> 回滚，重启进程，这有可能导致某个进程一直被重启</p>
+<h1 id="IPC-进程间的通信"><a href="#IPC-进程间的通信" class="headerlink" title="IPC 进程间的通信"></a>IPC 进程间的通信</h1><p> 通信有两种模型，第一是直接通信，第二是通过内核间接通信<br> 通信可以是阻塞或者非阻塞的<br> 通信缓存区的大小可以是有限的或者无限的</p>
+<h1 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h1><p> 发出通知信息，软件中断和事件处理，收到信号的时候可以指定信号处理函数被调用或者依靠操作系统的默认操作，<br> 应用程序要先注册信号处理函数，当收到信号的时候，在内核态修改应用程序的堆栈，然后跳回用户态执行，即操作系统来帮助跳转到信号处理函数执行，然后返回之前的现场</p>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls | more</span><br></pre></td></tr></table></figure>
+<p> 发送数据 shell -&gt; ls -&gt; 管道 -&gt; more, 注意管道是有限的，可能会阻塞。</p>
+<h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><p> 管道是字节流，不是结构化数据。<br> Message是一个字节序列储存，Message Queues是消息数组，然后FIFO或者FILO实现。</p>
+<h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p> 方便、快速、高效、但是需要同步, 将同一块物理内存映射到不同的逻辑页面.</p>
+<h1 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h1><p> 套接字</p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/Q85J17.html" title="操作系统12-死锁">http://fightinggg.github.io/shoka/Q85J17.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/Q846CC.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgrvbd6j20zk0m8qv5.jpg" title="操作系统11-同步">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> OS</span>
+  <h3>操作系统11-同步</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/Q85LY4.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipesng5oej20zk0m87d4.jpg" title="操作系统13-文件系统">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> OS</span>
+  <h3>操作系统13-文件系统</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">资源分配图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E7%9A%84%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">死锁的必要条件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2"><span class="toc-number">3.</span> <span class="toc-text">死锁预防</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E9%81%BF%E5%85%8D"><span class="toc-number">4.</span> <span class="toc-text">死锁避免</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">银行家算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E7%9A%84%E6%A3%80%E6%B5%8B"><span class="toc-number">6.</span> <span class="toc-text">死锁的检测</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IPC-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">7.</span> <span class="toc-text">IPC 进程间的通信</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7"><span class="toc-number">8.</span> <span class="toc-text">信号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%A1%E9%81%93"><span class="toc-number">9.</span> <span class="toc-text">管道</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">10.</span> <span class="toc-text">消息队列</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">11.</span> <span class="toc-text">共享内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#socket"><span class="toc-number">12.</span> <span class="toc-text">socket</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q83OYN.html" rel="bookmark" title="操作系统1-操作系统">操作系统1-操作系统</a></li><li><a href="/shoka/Q84331.html" rel="bookmark" title="操作系统2-中断异常调用">操作系统2-中断异常调用</a></li><li><a href="/shoka/Q8433P.html" rel="bookmark" title="操作系统3-连续内存分配">操作系统3-连续内存分配</a></li><li><a href="/shoka/Q8433Z.html" rel="bookmark" title="操作系统4-非连续内存分配">操作系统4-非连续内存分配</a></li><li><a href="/shoka/Q8434C.html" rel="bookmark" title="操作系统5-虚拟内存">操作系统5-虚拟内存</a></li><li><a href="/shoka/Q8434P.html" rel="bookmark" title="操作系统6-页面置换算法">操作系统6-页面置换算法</a></li><li><a href="/shoka/Q84350.html" rel="bookmark" title="操作系统7-进程">操作系统7-进程</a></li><li><a href="/shoka/Q8435C.html" rel="bookmark" title="操作系统8-线程">操作系统8-线程</a></li><li><a href="/shoka/Q8436X.html" rel="bookmark" title="操作系统9-CPU调度">操作系统9-CPU调度</a></li><li><a href="/shoka/Q844OR.html" rel="bookmark" title="操作系统10-进入临界区">操作系统10-进入临界区</a></li><li><a href="/shoka/Q846CC.html" rel="bookmark" title="操作系统11-同步">操作系统11-同步</a></li><li class="active"><a href="/shoka/Q85J17.html" rel="bookmark" title="操作系统12-死锁">操作系统12-死锁</a></li><li><a href="/shoka/Q85LY4.html" rel="bookmark" title="操作系统13-文件系统">操作系统13-文件系统</a></li><li><a href="/shoka/Q96SDK.html" rel="bookmark" title="操作系统IO">操作系统IO</a></li><li><a href="/shoka/QQPI8C.html" rel="bookmark" title="操作系统进程如何通信">操作系统进程如何通信</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/Q846CC.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/Q85LY4.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QLYF40.html" title="typora">typora</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/hdu6183.html" title="hdu6183">hdu6183</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/%E8%AE%A1%E8%92%9C%E5%AE%A2A2000.html" title="计蒜客A2000">计蒜客A2000</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" title="分类于 图论">图论</a>
+</div>
+
+    <span><a href="/shoka/PX3YQ4.html" title="支配树">支配树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/01%E6%A0%91.html" title="01树">01树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/" title="分类于 平衡树">平衡树</a>
+</div>
+
+    <span><a href="/shoka/Q0NZW1.html" title="珂朵莉树">珂朵莉树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QN6V40.html" title="设计模式Java版">设计模式Java版</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/C/" title="分类于 C++">C++</a>
+</div>
+
+    <span><a href="/shoka/Q7BOTC.html" title="Boost">Boost</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8LY8O.html" title="java并发编程5-Java内存">java并发编程5-Java内存</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R91.html" title="Treap">Treap</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'Q85J17.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

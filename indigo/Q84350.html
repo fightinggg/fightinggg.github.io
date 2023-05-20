@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>操作系统7-进程 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    进程管理进程的组成 代码+数据+程序计数器中的值，堆和栈，一组资源(打开的文件) 进程的特点 动态创建，并发或者并行，独立(执行的正确性不受其他进程影响) 进程控制块(PCB) 操作系统为每个进程维护">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统7-进程">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/Q84350.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    进程管理进程的组成 代码+数据+程序计数器中的值，堆和栈，一组资源(打开的文件) 进程的特点 动态创建，并发或者并行，独立(执行的正确性不受其他进程影响) 进程控制块(PCB) 操作系统为每个进程维护">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-01T13:36:36.000Z">
+<meta property="article:modified_time" content="2020-04-01T13:36:36.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">操作系统7-进程</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">操作系统7-进程</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-04-01T13:36:36.000Z" itemprop="datePublished" class="page-time">
+  2020-04-01
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="post-toc-number">1.</span> <span class="post-toc-text">进程管理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="post-toc-number">2.</span> <span class="post-toc-text">进程的组成</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%89%B9%E7%82%B9"><span class="post-toc-number">3.</span> <span class="post-toc-text">进程的特点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%9D%97-PCB"><span class="post-toc-number">4.</span> <span class="post-toc-text">进程控制块(PCB)</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="post-toc-number">5.</span> <span class="post-toc-text">进程的创建的时机</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%BF%90%E8%A1%8C"><span class="post-toc-number">6.</span> <span class="post-toc-text">进程的运行</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%AD%89%E5%BE%85"><span class="post-toc-number">7.</span> <span class="post-toc-text">进程的等待</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%94%A4%E9%86%92"><span class="post-toc-number">8.</span> <span class="post-toc-text">进程的唤醒</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%80%80%E5%87%BA"><span class="post-toc-number">9.</span> <span class="post-toc-text">进程的退出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="post-toc-number">10.</span> <span class="post-toc-text">进程的状态</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8C%82%E8%B5%B7"><span class="post-toc-number">11.</span> <span class="post-toc-text">进程挂起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%98%BB%E5%A1%9E%E6%8C%82%E8%B5%B7"><span class="post-toc-number">12.</span> <span class="post-toc-text">阻塞挂起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B0%B1%E7%BB%AA%E6%8C%82%E8%B5%B7"><span class="post-toc-number">13.</span> <span class="post-toc-text">就绪挂起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%8A%B6%E6%80%81%E9%98%9F%E5%88%97"><span class="post-toc-number">14.</span> <span class="post-toc-text">状态队列</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-操作系统/OS/操作系统7-进程/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">操作系统7-进程</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-04-01 21:36:36" datetime="2020-04-01T13:36:36.000Z"  itemprop="datePublished">2020-04-01</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q84350.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h1 id="进程的组成"><a href="#进程的组成" class="headerlink" title="进程的组成"></a>进程的组成</h1><p> 代码+数据+程序计数器中的值，堆和栈，一组资源(打开的文件)</p>
+<h1 id="进程的特点"><a href="#进程的特点" class="headerlink" title="进程的特点"></a>进程的特点</h1><p> 动态创建，并发或者并行，独立(执行的正确性不受其他进程影响)</p>
+<h1 id="进程控制块-PCB"><a href="#进程控制块-PCB" class="headerlink" title="进程控制块(PCB)"></a>进程控制块(PCB)</h1><p> 操作系统为每个进程维护了一个进程控制块，用来保存与该进程有关的各种状态信息。是进程存在的唯一标示。<br> 包含了进程标识信息(父进程，用户标识)， 处理器状态信息保存区(用户可见寄存器，PC寄存器，程序状态字，栈指针)， 进程控制信息(调度和状态信息、进程键通讯信息，储存管理信息，进程所用资源信息，数据结构连接信息)<br> PCB的组织方式： 链表或者索引表</p>
+<h1 id="进程的创建的时机"><a href="#进程的创建的时机" class="headerlink" title="进程的创建的时机"></a>进程的创建的时机</h1><p> 系统初始化, 用户的请求，进程的请求</p>
+<span id="more"></span>
+<h1 id="进程的运行"><a href="#进程的运行" class="headerlink" title="进程的运行"></a>进程的运行</h1><p> 由操作系统调度执行</p>
+<h1 id="进程的等待"><a href="#进程的等待" class="headerlink" title="进程的等待"></a>进程的等待</h1><p> 请求并等待系统服务，启动某种操作，需要的数据没有到达</p>
+<h1 id="进程的唤醒"><a href="#进程的唤醒" class="headerlink" title="进程的唤醒"></a>进程的唤醒</h1><p> 被阻塞的进程需要的资源得到满足，等待的事件到达，PCB被插入到就绪队列。</p>
+<h1 id="进程的退出"><a href="#进程的退出" class="headerlink" title="进程的退出"></a>进程的退出</h1><p> 正常退出、错误退出、致命错误导致被强制退出，被其他进程杀掉</p>
+<h1 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h1><p> 运行 就绪 阻塞</p>
+<h1 id="进程挂起"><a href="#进程挂起" class="headerlink" title="进程挂起"></a>进程挂起</h1><p> 当进程被刮起的时候，他将没有占用内存空间,阻塞、就绪、运行都可能被挂起。</p>
+<h1 id="阻塞挂起"><a href="#阻塞挂起" class="headerlink" title="阻塞挂起"></a>阻塞挂起</h1><p> 进程在外存并等待某事件的出现</p>
+<h1 id="就绪挂起"><a href="#就绪挂起" class="headerlink" title="就绪挂起"></a>就绪挂起</h1><p> 进程在外存，只要进入内存就可以运行。</p>
+<h1 id="状态队列"><a href="#状态队列" class="headerlink" title="状态队列"></a>状态队列</h1><p> 不同的状态分别用不同的队列维护</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-01T13:36:36.000Z" itemprop="dateUpdated">2020-04-01 21:36:36</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q84350.html&title=《操作系统7-进程》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q84350.html&title=《操作系统7-进程》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q84350.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《操作系统7-进程》 — Believe it&url=http://fightinggg.github.io/indigo/Q84350.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q84350.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/Q8435C.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">操作系统8-线程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/Q8434P.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">操作系统6-页面置换算法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q84350.html&title=《操作系统7-进程》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q84350.html&title=《操作系统7-进程》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q84350.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《操作系统7-进程》 — Believe it&url=http://fightinggg.github.io/indigo/Q84350.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q84350.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aQW6FMAwFwN7/0u0BfkHPNq2EM1mh/hAYFq6d+OsrHt/B+JyZr1m9tzkwMDBey5i/XPWlP+cnz71fAQMD4wTG/cvdz7maefW6+bMKHw4DAwPj9jrB3M/pfT4MDAyMPHRWA26egGJgYGBUi9j7AjX5tXf9cC2OgYHxQka+6/7/139yvoGBgfEqxndx9Lbe8r/0BgYGxm7GUweQeZh+KuBiYGCcxsjLyDy8zldI7i3nsBgYGC9kJK1ave3+yZFknpJeZrgYGBjrGHlpmgOSMrX6Ccp7gRgYGCsYvQOAaiNFEoIn92JgYJzDmJSj85A9aVDDwMDYzageT/ZeOt9Wa7Z3YGBgHMDIDwaSgFsN09Wn/7ImBgbGaka+sdXbJusdi/aOHzAwMLYyegeK89A87xDBwMA4jVHdlM9h1RBc3UO77BnBwMA4hvFUs0UScBPG5T8GDAyM1Yy8vMw3wqozH+NhYGCsZkySs3xbv5cgVj80BgbGVsY8IFbvza8LMzEwMI5h5Dvt1faLXuoZla8YGBjHM+aJ4CR/KwwMDIyljHlIraaA1Y/YzG0xMDAWMSYxrXfQWGihKBa3GBgYuxnVZq9ea1f+5fJ3wMDAOI0xKVZ7DRP5alHSiYGBgREcGySrVZPIQmGMgYGB0Wr86oXspOZ+LDXEwMB4FSMJo8+G4OQUspBQYmBgrGZUS8c81E7Y89YxDAyMFYwfKYqJh3vpw5YAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Go进阶-协程的本质与CPU的争夺 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+1. 从协程谈起很多语言都支持协程，那什么是协程，和线程进程有什么区别呢？这里推荐一篇Blog，笔者直接提取其中最重要的部分
+
+进程、线程 和 协程 之间概念的区别
+　　对于 进程、线程，都是有内核进行调度，有 CPU 时间片的概念，进行 抢占式调度（有多种调度算法）
+　　对于 协程(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程&amp;#x2F;线程，通常只能进行 协作式调度，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。
+　goroutine 和协程区别
+　　本质上，goroutine 就是协程。 不同的是，Golang 在 runtime、系统调用等多方面对 goroutine 调度进行了封装和处理，当遇到长时间执行或者进行系统调用时，会主动把当前 goroutine 的CPU (P) 转让出去，让其他 goroutine 能被调度并执行，也就是 Golang 从语言层面支持了协程。Golang 的一大特色就是从语言层面原生支持协程，在函数或者方法前面加 go关键字就可创建一个协程。
+
+操作系统是不知道协程的，那么应用层如何实现协程呢？下面给一些伪代码
+12345678不断循环：    从任务队列获取任务    执行任务，如果任务运行结束:        进行下一轮循环(continue)    如果任务运行时进入阻塞状态:        把当前任务放入队列尾部(挂起)    如果任务主动释放CPU:        把当前任务放入队列尾部(挂起)
+
+我们可以看到，其实这里正在执行的任务就是协程，这样的线程模型，他的CPU利用率非常高，他的协程切换代价非常低，几乎只需要入队出队而已。
+但是这样的模型有一个很大的缺点，那就是CPU的公平性，如果一个协程迟迟不退出，且不进行系统调用，也不主动释放CPU，那么，这个协程将造成队头阻塞现象。">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/R0X17C.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/R0X17C.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Go进阶-协程的本质与CPU的争夺 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+1. 从协程谈起很多语言都支持协程，那什么是协程，和线程进程有什么区别呢？这里推荐一篇Blog，笔者直接提取其中最重要的部分
+
+进程、线程 和 协程 之间概念的区别
+　　对于 进程、线程，都是有内核进行调度，有 CPU 时间片的概念，进行 抢占式调度（有多种调度算法）
+　　对于 协程(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程&amp;#x2F;线程，通常只能进行 协作式调度，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。
+　goroutine 和协程区别
+　　本质上，goroutine 就是协程。 不同的是，Golang 在 runtime、系统调用等多方面对 goroutine 调度进行了封装和处理，当遇到长时间执行或者进行系统调用时，会主动把当前 goroutine 的CPU (P) 转让出去，让其他 goroutine 能被调度并执行，也就是 Golang 从语言层面支持了协程。Golang 的一大特色就是从语言层面原生支持协程，在函数或者方法前面加 go关键字就可创建一个协程。
+
+操作系统是不知道协程的，那么应用层如何实现协程呢？下面给一些伪代码
+12345678不断循环：    从任务队列获取任务    执行任务，如果任务运行结束:        进行下一轮循环(continue)    如果任务运行时进入阻塞状态:        把当前任务放入队列尾部(挂起)    如果任务主动释放CPU:        把当前任务放入队列尾部(挂起)
+
+我们可以看到，其实这里正在执行的任务就是协程，这样的线程模型，他的CPU利用率非常高，他的协程切换代价非常低，几乎只需要入队出队而已。
+但是这样的模型有一个很大的缺点，那就是CPU的公平性，如果一个协程迟迟不退出，且不进行系统调用，也不主动释放CPU，那么，这个协程将造成队头阻塞现象。">
+    
+
+    
+        <meta property="article:published_time" content="Wed Oct 13 2021 20:26:00 GMT+0800">
+        <meta property="article:modified_time" content="Wed Oct 13 2021 12:26:00 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/R0X17C.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/R0X17C.html",
+    "headline": "Go进阶-协程的本质与CPU的争夺",
+    "datePublished": "Wed Oct 13 2021 20:26:00 GMT+0800",
+    "dateModified": "Wed Oct 13 2021 12:26:00 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+1. 从协程谈起很多语言都支持协程，那什么是协程，和线程进程有什么区别呢？这里推荐一篇Blog，笔者直接提取其中最重要的部分
+
+进程、线程 和 协程 之间概念的区别
+　　对于 进程、线程，都是有内核进行调度，有 CPU 时间片的概念，进行 抢占式调度（有多种调度算法）
+　　对于 协程(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程&amp;#x2F;线程，通常只能进行 协作式调度，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。
+　goroutine 和协程区别
+　　本质上，goroutine 就是协程。 不同的是，Golang 在 runtime、系统调用等多方面对 goroutine 调度进行了封装和处理，当遇到长时间执行或者进行系统调用时，会主动把当前 goroutine 的CPU (P) 转让出去，让其他 goroutine 能被调度并执行，也就是 Golang 从语言层面支持了协程。Golang 的一大特色就是从语言层面原生支持协程，在函数或者方法前面加 go关键字就可创建一个协程。
+
+操作系统是不知道协程的，那么应用层如何实现协程呢？下面给一些伪代码
+12345678不断循环：    从任务队列获取任务    执行任务，如果任务运行结束:        进行下一轮循环(continue)    如果任务运行时进入阻塞状态:        把当前任务放入队列尾部(挂起)    如果任务主动释放CPU:        把当前任务放入队列尾部(挂起)
+
+我们可以看到，其实这里正在执行的任务就是协程，这样的线程模型，他的CPU利用率非常高，他的协程切换代价非常低，几乎只需要入队出队而已。
+但是这样的模型有一个很大的缺点，那就是CPU的公平性，如果一个协程迟迟不退出，且不进行系统调用，也不主动释放CPU，那么，这个协程将造成队头阻塞现象。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#1-%E4%BB%8E%E5%8D%8F%E7%A8%8B%E8%B0%88%E8%B5%B7"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 从协程谈起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2-Goroutine"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. Goroutine</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3-Bug%E5%A4%8D%E7%8E%B0"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. Bug复现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-1-%E5%9C%A8Go1-13-%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">3.1. 在Go1.13 中的表现</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3-2-%E5%9C%A8Go1-14-%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="post-toc-number">4.</span> <span class="post-toc-text">3.2. 在Go1.14 中的表现</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#4-%E5%A6%82%E4%BD%95%E4%B8%BB%E5%8A%A8%E9%87%8A%E6%94%BECPU"><span class="post-toc-number">5.</span> <span class="post-toc-text">4. 如何主动释放CPU</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Go进阶-协程的本质与CPU的争夺
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>10月 13, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Go进阶-协程的本质与CPU的争夺&url=http://fightinggg.github.io/material/material/R0X17C.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Go进阶-协程的本质与CPU的争夺&url=http://fightinggg.github.io/material/material/R0X17C.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/R0X17C.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/R0X17C.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="1-从协程谈起"><a href="#1-从协程谈起" class="headerlink" title="1. 从协程谈起"></a>1. 从协程谈起</h1><p>很多语言都支持协程，那什么是协程，和线程进程有什么区别呢？这里推荐一篇<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liang1101/p/7285955.html">Blog</a>，笔者直接提取其中最重要的部分</p>
+<blockquote>
+<p><strong>进程、线程 和 协程 之间概念的区别</strong></p>
+<p>　　对于 <strong>进程、线程</strong>，都是有内核进行调度，有 CPU 时间片的概念，进行 <strong>抢占式调度</strong>（有多种调度算法）</p>
+<p>　　对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程&#x2F;线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。</p>
+<p>　<strong>goroutine 和协程区别</strong></p>
+<p>　　<strong>本质上，goroutine 就是协程。</strong> 不同的是，Golang 在 runtime、系统调用等多方面对 goroutine 调度进行了封装和处理，当遇到长时间执行或者进行系统调用时，会主动把当前 goroutine 的CPU (P) 转让出去，让其他 goroutine 能被调度并执行，也就是 Golang 从语言层面支持了协程。Golang 的一大特色就是从语言层面原生支持协程，在函数或者方法前面加 go关键字就可创建一个协程。</p>
+</blockquote>
+<p>操作系统是不知道协程的，那么应用层如何实现协程呢？下面给一些伪代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">不断循环：</span><br><span class="line">    从任务队列获取任务</span><br><span class="line">    执行任务，如果任务运行结束:</span><br><span class="line">        进行下一轮循环(<span class="keyword">continue</span>)</span><br><span class="line">    如果任务运行时进入阻塞状态:</span><br><span class="line">        把当前任务放入队列尾部(挂起)</span><br><span class="line">    如果任务主动释放CPU:</span><br><span class="line">        把当前任务放入队列尾部(挂起)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到，其实这里正在执行的任务就是协程，这样的线程模型，他的CPU利用率非常高，他的协程切换代价非常低，几乎只需要入队出队而已。</p>
+<p>但是这样的模型有一个很大的缺点，那就是CPU的公平性，如果一个协程迟迟不退出，且不进行系统调用，也不主动释放CPU，那么，这个协程将造成队头阻塞现象。</p>
+<span id="more"></span>
+
+<h1 id="2-Goroutine"><a href="#2-Goroutine" class="headerlink" title="2. Goroutine"></a>2. Goroutine</h1><p>想必很多人都知道这个名词，这其实就是Go的协程(coroutine), 相比于普通的协程，Go做了特殊的处理，能够在一些适当的时候，交出CPU控制权，所以Go的调度是公平的。</p>
+<p>当然Go关于协程，也有一个<a target="_blank" rel="noopener" href="https://fengyoulin.com/for-block-all.html">Bug</a>，这个Bug在<a target="_blank" rel="noopener" href="https://golang.org/doc/go1.14#runtime">Go1.14</a>的时候被修复了，有兴趣的读者可以自己查看，当然笔者在下文也会通过一个更加简单的例子来复现这个Bug。</p>
+<h1 id="3-Bug复现"><a href="#3-Bug复现" class="headerlink" title="3. Bug复现"></a>3. Bug复现</h1><p>Bug的复现需要两个版本的Go进行对比才能看出来，笔者建议使用Docker。首先就是给出代码了,下面的代码启用了两个协程，第一个做CPU空轮询，第二个做不间断输出。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;runtime&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    runtime.GOMAXPROCS(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;begin1&quot;</span>)</span><br><span class="line">        s := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t := <span class="number">0</span>; t &lt; <span class="number">10000</span>; t++ &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++ &#123;</span><br><span class="line">                s += i</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//fmt.Println(1, &quot;-&gt;&quot;, s)</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">&quot;end1&quot;</span>, s)</span><br><span class="line"></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;begin2&quot;</span>)</span><br><span class="line">        s := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t := <span class="number">0</span>; t &lt; <span class="number">10</span>; t++ &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++ &#123;</span><br><span class="line">                s += i</span><br><span class="line">            &#125;</span><br><span class="line">            fmt.Println(<span class="number">2</span>, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">&quot;end2&quot;</span>, s)</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    time.Sleep(time.Second * <span class="number">10</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-1-在Go1-13-中的表现"><a href="#3-1-在Go1-13-中的表现" class="headerlink" title="3.1. 在Go1.13 中的表现"></a>3.1. 在Go1.13 中的表现</h2><p>用docker启动容器，用cat写入代码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --<span class="built_in">rm</span> golang:1.13 bash</span><br><span class="line">root@c6921e499184:/go<span class="comment"># cat&lt;&lt;EOF&gt;a.go</span></span><br><span class="line">&gt; package main</span><br><span class="line">&gt;</span><br><span class="line">&gt; import (</span><br><span class="line">&gt;     <span class="string">&quot;fmt&quot;</span></span><br><span class="line">&gt;     <span class="string">&quot;runtime&quot;</span></span><br><span class="line">&gt;     <span class="string">&quot;time&quot;</span></span><br><span class="line">&gt; )</span><br><span class="line">&gt;</span><br><span class="line">&gt; func <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;     runtime.GOMAXPROCS(1)</span><br><span class="line">&gt;</span><br><span class="line">&gt;     go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;begin1&quot;</span>)</span><br><span class="line">&gt;         s := 0</span><br><span class="line">&gt;         <span class="keyword">for</span> t := 0; t &lt; 10000; t++ &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;             <span class="keyword">for</span> i := 0; i &lt; 1000000000; i++ &#123;</span><br><span class="line">&gt;                 s += i</span><br><span class="line">&gt;             &#125;</span><br><span class="line">&gt;             //fmt.Println(1, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;end1&quot;</span>, s)</span><br><span class="line">&gt;</span><br><span class="line">&gt;     &#125;()</span><br><span class="line">&gt;</span><br><span class="line">&gt;     go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;begin2&quot;</span>)</span><br><span class="line">&gt;         s := 0</span><br><span class="line">&gt;         <span class="keyword">for</span> t := 0; t &lt; 10; t++ &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;             <span class="keyword">for</span> i := 0; i &lt; 1000000000; i++ &#123;</span><br><span class="line">&gt;                 s += i</span><br><span class="line">&gt;             &#125;</span><br><span class="line">&gt;             fmt.Println(2, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;end2&quot;</span>, s)</span><br><span class="line">&gt;     &#125;()</span><br><span class="line">&gt;</span><br><span class="line">&gt;     time.Sleep(time.Second * 10)</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; EOF</span><br></pre></td></tr></table></figure>
+
+<p>然后运行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run a.go</span><br></pre></td></tr></table></figure>
+
+<p>读者可以很容易地发现，这份代码只会输出一个<code>begin1</code></p>
+<h1 id="3-2-在Go1-14-中的表现"><a href="#3-2-在Go1-14-中的表现" class="headerlink" title="3.2. 在Go1.14 中的表现"></a>3.2. 在Go1.14 中的表现</h1><p>这次，进入docker的指令换成下面这条就行了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm golang:1.14 bash</span><br></pre></td></tr></table></figure>
+
+<p>在1.14中，会输出如下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">begin2</span><br><span class="line">begin1</span><br><span class="line">2 -&gt; 499999999500000000</span><br><span class="line">2 -&gt; 999999999000000000</span><br><span class="line">2 -&gt; 1499999998500000000</span><br><span class="line">2 -&gt; 1999999998000000000</span><br><span class="line">2 -&gt; 2499999997500000000</span><br><span class="line">2 -&gt; 2999999997000000000</span><br><span class="line">2 -&gt; 3499999996500000000</span><br><span class="line">2 -&gt; 3999999996000000000</span><br><span class="line">2 -&gt; 4499999995500000000</span><br><span class="line">2 -&gt; 4999999995000000000</span><br><span class="line">end2 4999999995000000000</span><br></pre></td></tr></table></figure>
+
+<p>由此可见，Go1.14解决了for循环长时间占用CPU的问题。</p>
+<h1 id="4-如何主动释放CPU"><a href="#4-如何主动释放CPU" class="headerlink" title="4. 如何主动释放CPU"></a>4. 如何主动释放CPU</h1><p>要注意释放的时机，函数调用、for循环中都可以，但是要注意控制释放的频率，不能太频繁，也不能太不频繁。</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/R0X17C.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/R0X17C.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/R162KO.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/R0T00O.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

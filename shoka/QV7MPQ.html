@@ -1,0 +1,712 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="读书,跟我一起写编译器" />
+
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QV7MPQ.html">
+
+
+
+  <title>
+跟我一起自己写编译器-4.词法分析 - 编译器 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">跟我一起自己写编译器-4.词法分析
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-06-24 22:25:02">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-06-24T22:25:02+08:00">2021-06-24</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclffsa1cj20zk0m811l.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclg5ms2rj20zk0m8u0x.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipet8c1a2j20zk0m8kct.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipesrnqv3j20zk0m8ava.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitcxhpij20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhnx9glj20zk0m8npd.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" itemprop="item" rel="index" title="分类于 编译器"><span itemprop="name">编译器</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QV7MPQ.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="5-词法分析"><a href="#5-词法分析" class="headerlink" title="5. 词法分析"></a>5. 词法分析</h1><p>词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。 </p>
+<h1 id="5-1-举个例子"><a href="#5-1-举个例子" class="headerlink" title="5.1. 举个例子"></a>5.1. 举个例子</h1><p>比如我们有一个代码,这个代码和c&#x2F;c++很相似（但是这个是pava代码，读者目前可以理解为c代码），这是一个计算斐波那契数列的代码，他的词法分析结果是什么呢？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fib</span>(x<span class="number">-1</span>) + <span class="built_in">fib</span>(x<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="built_in">fib</span>(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下文的代码就是词法分析结果, 词法分析器从源文件依次读取，然后分割出最小的词法单元，</p>
+<span id="more"></span>
+
+<p>最开始词法分析器读到了字符<code>i</code>，然后读到了字符<code>n</code>，然后读到了字符<code>t</code>,紧接着读到了空格字符<code> </code>，这时候词法分析器发力，进行分割，将前三个字符<code>int</code>划为最小词法单元<code>符号</code>。</p>
+<p>紧接着继续读取<code>f</code>,当他读入<code>f</code>这个字符的时候，词法分析器发力，将第四个字符<code> </code>(空格字符)划为词法单元<code>empty</code>,当然在下文中无法找到<code>emtpy</code>这个token，因为<code>empty</code>代表空字符，可有可无。</p>
+<p>然后词法分析器继续分析，不断地解析，一直解析出<code>fib(符号)</code>， <code>((左括号)</code>， <code>int(符号)</code>,<code>x(符号)</code>,<code>)(右括号)</code></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;&#123;&quot;(leftCurlyBracket)</span><br><span class="line">&quot;if&quot;(if)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;&lt;&quot;(lt)</span><br><span class="line">&quot;2&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;1&quot;(number)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;-&quot;(sub)</span><br><span class="line">&quot;1&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;+&quot;(add)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;-&quot;(sub)</span><br><span class="line">&quot;2&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;&#125;&quot;(rightCurlyBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;main&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;&#123;&quot;(leftCurlyBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;a&quot;(symbol)</span><br><span class="line">&quot;=&quot;(eq)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;5&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;a&quot;(symbol)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;&#125;&quot;(rightCurlyBracket)</span><br><span class="line">&quot;$END&quot;($END)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5-2-识别词法单元"><a href="#5-2-识别词法单元" class="headerlink" title="5.2. 识别词法单元"></a>5.2. 识别词法单元</h1><p>编译器的第一步就是词法分析，他需要从待分析的文本中，逐字符读取，并分割词法单元。一种高效而有简单的方式就是使用正则表达式构建NFA模型，然后优化为DFA，此后对文本进行分割。</p>
+<p>这里可能有一些抽象，突然来了这么多概念，下面一个一个来解释。</p>
+<h1 id="5-3-确定有限状态自动机"><a href="#5-3-确定有限状态自动机" class="headerlink" title="5.3. 确定有限状态自动机"></a>5.3. 确定有限状态自动机</h1><p><span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU3JUExJUFFJUU1JUFFJTlBJUU2JTlDJTg5JUU5JTk5JTkwJUU3JThBJUI2JUU2JTgwJTgxJUU4JTg3JUFBJUU1JThBJUE4JUU2JTlDJUJB">确定有限状态自动机</span> 被称为DFA</p>
+<blockquote>
+<p>确定有限状态自动机${\displaystyle {\mathcal {A}}}$是由</p>
+<ul>
+<li>一个非空有限的<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU3JThBJUI2JUU2JTgwJTgx">状态</span>集合${\displaystyle Q}$</li>
+<li>一个输入<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUFEJTk3JUU2JUFGJThEJUU4JUExJUE4XyglRTglQUUlQTElRTclQUUlOTclRTYlOUMlQkElRTclQTclOTElRTUlQUQlQTYp">字母表</span>${\displaystyle \Sigma }$（非空有限的字符集合)</li>
+<li>一个转移<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JTg3JUJEJUU2JTk1JUIw">函数</span>${\displaystyle \delta :Q\times \Sigma \rightarrow Q}$（例如：${\displaystyle \delta \left(q,\sigma \right)&#x3D;p,\left(p,q\in Q,\sigma \in \Sigma \right)}$)</li>
+<li>一个开始状态${\displaystyle s\in Q}$</li>
+<li>一个接受状态的集合${\displaystyle F\subseteq Q}$</li>
+</ul>
+<p>所组成的5-<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUE0JTlBJUU1JTg1JTgzJUU3JUJCJTg0">元组</span>。因此一个DFA可以写成这样的形式：${\displaystyle {\mathcal {A}}&#x3D;\left(Q,\Sigma ,\delta ,s,F\right)}$。</p>
+</blockquote>
+<h1 id="5-4-非确定有限状态自动机"><a href="#5-4-非确定有限状态自动机" class="headerlink" title="5.4. 非确定有限状态自动机"></a>5.4. 非确定有限状态自动机</h1><p>非确定有限状态自动机又被称为NFA，与DFA不同的是他的转移是不确定的，他的转移不唯一。</p>
+<h1 id="4-5-正则表达式识别原理"><a href="#4-5-正则表达式识别原理" class="headerlink" title="4.5. 正则表达式识别原理"></a>4.5. 正则表达式识别原理</h1><h2 id="4-5-1-正则例1"><a href="#4-5-1-正则例1" class="headerlink" title="4.5.1. 正则例1"></a>4.5.1. 正则例1</h2><p>首先给出一个正则表达式<code>a</code>， 这个正则表达式能识别，且仅能识别字符串<code>a</code>，那么如何来表示呢?下图是这个正则表达式所对应的nfa，最开始我们在状态<code>start</code>， 当我们读取字符a以后，会转移到<code>end</code>，当我们到达end的时候如果输入结束，自动机就输出匹配成功。所以该自动机能使被字符串<code>a</code>，如果输入为<code>b</code>， 自动机在start时，会因为没有<code>b</code>这个转移而直接输出匹配失败，如果输入为<code>ab</code>自动机会因为在end处无法找到转移<code>b</code>而输出匹配失败.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-5-2-正则例2"><a href="#4-5-2-正则例2" class="headerlink" title="4.5.2. 正则例2"></a>4.5.2. 正则例2</h2><p>考虑串联，来正则表达式<code>ab</code>， 这里如何构建呢，首先我们分别构建两个自动机。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1终结)</span><br><span class="line">    start2[start2起点] --&gt;|b| ed2(end2终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>然后将他们组装在一起， 注意到这里出现了一个<code>空</code>，这就意味着，当我们处于状态<code>end1</code>的时候可以不输入任何字符，直接转移到状态<code>start2</code> ，于是这个自动机最开始在<code>start1</code> 处，当他输入字符<code>a</code>，他会转移到<code>end1</code> 以及<code>start2</code>，当继续输入字符<code>b</code>，会转移到<code>end2</code>（end1无法转移,start2可转移）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1)</span><br><span class="line">    ed1 --&gt;|空| start2</span><br><span class="line">    start2[start2] --&gt;|b| ed2(end2终结)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-5-3-正则例3"><a href="#4-5-3-正则例3" class="headerlink" title="4.5.3. 正则例3"></a>4.5.3. 正则例3</h2><p>考虑并联,来正则表达式<code>a|b</code>， 这里如何构建? 依然构建两个自动机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1终结)</span><br><span class="line">    start2[start2起点] --&gt;|b| ed2(end2终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>然后串联， 这里不用再解释了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1] --&gt;|a| ed1(end1)</span><br><span class="line">    start2[start2] --&gt;|b| ed2(end2)</span><br><span class="line">    start[start起点] --&gt;|空| start1 &amp; start2</span><br><span class="line">      ed1 &amp; ed2 --&gt;|空| ed[end终结]</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-5-4-正则例4"><a href="#4-5-4-正则例4" class="headerlink" title="4.5.4. 正则例4"></a>4.5.4. 正则例4</h2><p>考虑自循环， 来正则表达式<code>a+</code>, 加号表示出现最少一次,可以为多次, 只需要引一条从end到start的边即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">     start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">      ed --&gt;|空| start</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>至此我们已经分析完了所有的正则单元，复杂的正则表达式均可由此合并而成。</p>
+<h1 id="4-6-NFA转DFA"><a href="#4-6-NFA转DFA" class="headerlink" title="4.6. NFA转DFA"></a>4.6. NFA转DFA</h1><p>nfa转dfa算法涉及到一个闭包，我们直接对这个nfa来计算闭包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">     start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">      ed --&gt;|空| start</span><br></pre></td></tr></table></figure>
+
+<p>最开始位于状态<code>start</code>， 当输入a以后，进入状态<code>end</code>， 计算end的空闭包<code>[start,end]</code>，当从状态<code>[start,end]</code>输入a以后，进入状态<code>end</code>，也就是<code>[start,end]</code>, 于是最终我们得到了这个dfa</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start[start] --&gt;|a| ed([start,end])</span><br><span class="line">      ed --&gt;|a| ed</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-7-DFA识别"><a href="#4-7-DFA识别" class="headerlink" title="4.7. DFA识别"></a>4.7. DFA识别</h1><p>如何为一门语言设计他的dfa呢？实际上一门语言涉及到多个token，每个token都会由一个正则，那么就会出现正则冲突，即一个字符串可以被识别为多种token，这时候就定义优先级即可。</p>
+<p>另一种情况，即是否贪婪，如果一个字符串的前缀可以被识别为一个token，即字符串<code>ifhaha</code>的前缀<code>if</code>可以被识别为token<code>if</code> ,而他自身可以被识别为token<code>symbol</code>，这时候，我们需要选择最长的那个，即最长匹配即可。</p>
+<h1 id="4-8-效果展示"><a href="#4-8-效果展示" class="headerlink" title="4.8. 效果展示"></a>4.8. 效果展示</h1><p>笔者的项目中又涉及到一款c类语言(pava语言)的token配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;number&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0|[123456789]\\d*&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;doubleQuotes&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;blank&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\s+&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftCurlyBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\&#123;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightCurlyBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\&#125;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;string&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;[\\s\\w\\d]*\&quot;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;include&quot;</span><span class="punctuation">:</span> <span class="string">&quot;#include&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;while&quot;</span><span class="punctuation">:</span> <span class="string">&quot;while&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;if&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;for&quot;</span><span class="punctuation">:</span> <span class="string">&quot;for&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="string">&quot;return&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;break&quot;</span><span class="punctuation">:</span> <span class="string">&quot;break&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;continue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;continue&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;do&quot;</span><span class="punctuation">:</span> <span class="string">&quot;do&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;goto&quot;</span><span class="punctuation">:</span> <span class="string">&quot;goto&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;else&quot;</span><span class="punctuation">:</span> <span class="string">&quot;else&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;comma&quot;</span><span class="punctuation">:</span> <span class="string">&quot;,&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\(&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\)&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;add&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\+&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;sub&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\-&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;mul&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\*&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;div&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;mod&quot;</span><span class="punctuation">:</span> <span class="string">&quot;%&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;doubleEq&quot;</span><span class="punctuation">:</span> <span class="string">&quot;==&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;eq&quot;</span><span class="punctuation">:</span> <span class="string">&quot;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;ne&quot;</span><span class="punctuation">:</span> <span class="string">&quot;!=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftShift&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;&lt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightShift&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;&gt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;be&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;le&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;bt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;lt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;semicolon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;symbol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[_\\w][_\\w\\d]*&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>该配置在经过自动构建工具<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZpZ2h0aW5nZ2cvY29tcGlsZXIvYmxvYi9tYXN0ZXIvbWFpbi9zcmMvbWFpbi9qYXZhL2NvbS9leGFtcGxlL2xhbmcvcmVnL1JlZy5qYXZh">compiler&#x2F;Reg.java at master · fightinggg&#x2F;compiler · GitHub</span>构建以后得到了下图的nfa, 如果此图太小，读者可以右键点击到新页面查看，此处不对此工具进行解释，因为它涉及到更深层次的内容，笔者将在后面的章节中予适当的时候对此工具进行描述，另一方面由于此dfa也不是很大，人工绘制也不是不可能，综上此处不做解析了。</p>
+<p><img data-src='/image-2021-08-22-17.27.00.000.svg'></img></p>
+
+      <div class="tags">
+          <a href="/shoka/tags/%E8%AF%BB%E4%B9%A6/" rel="tag"><i class="ic i-tag"></i> 读书</a>
+          <a href="/shoka/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag"><i class="ic i-tag"></i> 跟我一起写编译器</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-08-29 17:41:02" itemprop="dateModified" datetime="2021-08-29T17:41:02+08:00">2021-08-29</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QV7MPQ.html" title="跟我一起自己写编译器-4.词法分析">http://fightinggg.github.io/shoka/QV7MPQ.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QV7MPO.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgrvbd6j20zk0m8qv5.jpg" title="跟我一起自己写编译器-123.引言">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-123.引言</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QV7MPR.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipet4bz0yj20zk0m8e81.jpg" title="跟我一起自己写编译器-5.语法分析">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-5.语法分析</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">5. 词法分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">5.1. 举个例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-%E8%AF%86%E5%88%AB%E8%AF%8D%E6%B3%95%E5%8D%95%E5%85%83"><span class="toc-number">3.</span> <span class="toc-text">5.2. 识别词法单元</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3-%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">4.</span> <span class="toc-text">5.3. 确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-%E9%9D%9E%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">5.</span> <span class="toc-text">5.4. 非确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-5-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%86%E5%88%AB%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">4.5. 正则表达式识别原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-1-%E6%AD%A3%E5%88%99%E4%BE%8B1"><span class="toc-number">6.1.</span> <span class="toc-text">4.5.1. 正则例1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-2-%E6%AD%A3%E5%88%99%E4%BE%8B2"><span class="toc-number">6.2.</span> <span class="toc-text">4.5.2. 正则例2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-3-%E6%AD%A3%E5%88%99%E4%BE%8B3"><span class="toc-number">6.3.</span> <span class="toc-text">4.5.3. 正则例3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-4-%E6%AD%A3%E5%88%99%E4%BE%8B4"><span class="toc-number">6.4.</span> <span class="toc-text">4.5.4. 正则例4</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-6-NFA%E8%BD%ACDFA"><span class="toc-number">7.</span> <span class="toc-text">4.6. NFA转DFA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-7-DFA%E8%AF%86%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">4.7. DFA识别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-8-%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-number">9.</span> <span class="toc-text">4.8. 效果展示</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/QV7MPO.html" rel="bookmark" title="跟我一起自己写编译器-123.引言">跟我一起自己写编译器-123.引言</a></li><li class="active"><a href="/shoka/QV7MPQ.html" rel="bookmark" title="跟我一起自己写编译器-4.词法分析">跟我一起自己写编译器-4.词法分析</a></li><li><a href="/shoka/QV7MPR.html" rel="bookmark" title="跟我一起自己写编译器-5.语法分析">跟我一起自己写编译器-5.语法分析</a></li><li><a href="/shoka/QV7MPS.html" rel="bookmark" title="跟我一起自己写编译器-5.10.LR语法分析">跟我一起自己写编译器-5.10.LR语法分析</a></li><li><a href="/shoka/QV7MPT.html" rel="bookmark" title="跟我一起自己写编译器-6.语义分析">跟我一起自己写编译器-6.语义分析</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QV7MPO.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QV7MPR.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/hdu5726.html" title="hdu5726">hdu5726</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Hexo/" title="分类于 Hexo">Hexo</a>
+</div>
+
+    <span><a href="/shoka/QS2CIO.html" title="latex常用公式">latex常用公式</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cf517D.html" title="cf517D">cf517D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R72.html" title="AVL">AVL</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/PGMJAU.html" title="字符串Hash">字符串Hash</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" title="分类于 编译器">编译器</a>
+</div>
+
+    <span><a href="/shoka/QV7MPT.html" title="跟我一起自己写编译器-6.语义分析">跟我一起自己写编译器-6.语义分析</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/C/" title="分类于 C++">C++</a>
+</div>
+
+    <span><a href="/shoka/Q7BOTC.html" title="Boost">Boost</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="分类于 操作系统">操作系统</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/" title="分类于 OS">OS</a>
+</div>
+
+    <span><a href="/shoka/Q8436X.html" title="操作系统9-CPU调度">操作系统9-CPU调度</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/" title="分类于 平衡树">平衡树</a>
+</div>
+
+    <span><a href="/shoka/Q0NZW1.html" title="珂朵莉树">珂朵莉树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/" title="分类于 math">math</a>
+</div>
+
+    <span><a href="/shoka/bzoj-2655.html" title="bzoj-2655">bzoj-2655</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QV7MPQ.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

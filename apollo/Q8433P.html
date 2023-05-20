@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 操作系统3-连续内存分配 · Believe it</title><meta name="description" content="操作系统3-连续内存分配 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">操作系统3-连续内存分配</h1><div class="post-info">2020年4月1日</div><div class="post-content"><div><a href="/next/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="CPU内存"><a href="#CPU内存" class="headerlink" title="CPU内存"></a>CPU内存</h1><p> CPU-L1cache-L2cache-memery-disk</p>
+<h1 id="逻辑地址空间"><a href="#逻辑地址空间" class="headerlink" title="逻辑地址空间"></a>逻辑地址空间</h1><p> 抽象、隔离、保护、共享、虚拟化(临时放入disk)</p>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p> 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存</p>
+<h1 id="地址空间和地址生成"><a href="#地址空间和地址生成" class="headerlink" title="地址空间和地址生成"></a>地址空间和地址生成</h1><p> C程序用变量表示地址，汇编还是用符号，机器码就开始使用逻辑地址了，CPU的MMU中有一段区域来映射逻辑地址到物理地址</p>
+<h1 id="约束程序的内存"><a href="#约束程序的内存" class="headerlink" title="约束程序的内存"></a>约束程序的内存</h1><p> 程序只可以访问他自己的内存，当他访问其他地方的时候，操作系统应该使用安全检测</p>
+<h1 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h1><p> 外部碎片，是分配单元之间的内存碎片<br> 内部碎片，已经分配给了应用程序，但是应用程序没法使用它</p>
+<h1 id="连续内存分配"><a href="#连续内存分配" class="headerlink" title="连续内存分配"></a>连续内存分配</h1><p> 程序启动的时候要分配，运行的时候要分配</p>
+<span id="more"></span>
+<h1 id="第一匹配分配算法"><a href="#第一匹配分配算法" class="headerlink" title="第一匹配分配算法"></a>第一匹配分配算法</h1><p> 一个一个找，第一个碰到的合法的就分出去，<br> 需要按地址排序，分配的时候需要寻找合适的分区，还有看自由分区能否与相邻空闲分区合并<br> 简单，容易产生更大的空闲块，<br>容易产生外碎片</p>
+<h1 id="最优分配算法"><a href="#最优分配算法" class="headerlink" title="最优分配算法"></a>最优分配算法</h1><p> 找差值最小的分区，分过去<br> 按尺寸排序，分配需要查找，也要合并相邻空闲分区<br> 避免分割大空间块，当大部分分配的是小尺寸的时候非常有效，<br> 容易产生外部碎片，合并空闲分区慢，容易产生大量微小碎片</p>
+<h1 id="最差匹配分配"><a href="#最差匹配分配" class="headerlink" title="最差匹配分配"></a>最差匹配分配</h1><p> 找最大的分区分过去<br> 按尺寸排序，分配快，也要合并<br> 分配中等尺寸有效<br> 合并慢，外部碎片，破碎空间没有大空间了</p>
+<h1 id="压缩式碎片整理"><a href="#压缩式碎片整理" class="headerlink" title="压缩式碎片整理"></a>压缩式碎片整理</h1><p> 挪动已经分配过的空间，<br> 什么时候挪动？销量？</p>
+<h1 id="交换式碎片整理"><a href="#交换式碎片整理" class="headerlink" title="交换式碎片整理"></a>交换式碎片整理</h1><p> 和硬盘交换，使用虚拟内存的方法。<br> 把哪个换出去？什么时候换？</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8433Z.html" class="prev">PREV</a><a href="/apollo/Q84331.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>操作系统6-页面置换算法 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    页面置换算法 当缺页中断发生的时候，需要做交换，我们需要尽量减少交换的次数。 最优页面置换算法 将等待下一层的访问时间最长的那个页面置换出去，这个算法不可能实现，但是可作为评价其他算法的标准 先进先出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统6-页面置换算法">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/Q8434P.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    页面置换算法 当缺页中断发生的时候，需要做交换，我们需要尽量减少交换的次数。 最优页面置换算法 将等待下一层的访问时间最长的那个页面置换出去，这个算法不可能实现，但是可作为评价其他算法的标准 先进先出">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-01T13:36:25.000Z">
+<meta property="article:modified_time" content="2021-03-29T12:54:27.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">操作系统6-页面置换算法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">操作系统6-页面置换算法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-04-01T13:36:25.000Z" itemprop="datePublished" class="page-time">
+  2020-04-01
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">1.</span> <span class="post-toc-text">页面置换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E4%BC%98%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">最优页面置换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%85%88%E8%BF%9B%E5%85%88%E5%87%BA%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">先进先出页面置换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E8%BF%91%E6%9C%80%E4%B9%85%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%AE%97%E6%B3%95-LRU"><span class="post-toc-number">4.</span> <span class="post-toc-text">最近最久未使用算法 LRU</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%97%B6%E9%92%9F%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">时钟页面置换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%9C%BA%E4%BC%9A%E6%B3%95"><span class="post-toc-number">6.</span> <span class="post-toc-text">二次机会法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%80%E4%B8%8D%E5%B8%B8%E7%94%A8%E6%B3%95-LFU"><span class="post-toc-number">7.</span> <span class="post-toc-text">最不常用法 LFU</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Belady%E7%8E%B0%E8%B1%A1"><span class="post-toc-number">8.</span> <span class="post-toc-text">Belady现象</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B7%A5%E4%BD%9C%E9%9B%86%E6%9B%BF%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">9.</span> <span class="post-toc-text">工作集替换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BC%BA%E9%A1%B5%E7%8E%87%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="post-toc-number">10.</span> <span class="post-toc-text">缺页率页面置换算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%8A%96%E5%8A%A8%E9%97%AE%E9%A2%98"><span class="post-toc-number">11.</span> <span class="post-toc-text">抖动问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%87%8F%E5%8C%96%E6%8A%96%E5%8A%A8"><span class="post-toc-number">12.</span> <span class="post-toc-text">量化抖动</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-操作系统/OS/操作系统6-页面置换算法/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">操作系统6-页面置换算法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-04-01 21:36:25" datetime="2020-04-01T13:36:25.000Z"  itemprop="datePublished">2020-04-01</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8434P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p> 当缺页中断发生的时候，需要做交换，我们需要尽量减少交换的次数。</p>
+<h1 id="最优页面置换算法"><a href="#最优页面置换算法" class="headerlink" title="最优页面置换算法"></a>最优页面置换算法</h1><p> 将等待下一层的访问时间最长的那个页面置换出去，这个算法不可能实现，但是可作为评价其他算法的标准</p>
+<h1 id="先进先出页面置换算法"><a href="#先进先出页面置换算法" class="headerlink" title="先进先出页面置换算法"></a>先进先出页面置换算法</h1><p> 维护一个队列，FIFO即可<br> 性能很差，被调出的页面可能是要经常访问的页面</p>
+<h1 id="最近最久未使用算法-LRU"><a href="#最近最久未使用算法-LRU" class="headerlink" title="最近最久未使用算法 LRU"></a>最近最久未使用算法 LRU</h1><p> 这个算法基于空间局部性<br> 维护一个页面链表，将刚刚使用过的页面作为首节点，那么缺页中断的时候淘汰链表尾部即可</p>
+<span id="more"></span>
+<h1 id="时钟页面置换算法"><a href="#时钟页面置换算法" class="headerlink" title="时钟页面置换算法"></a>时钟页面置换算法</h1><p> 让页表组织成一个环形链表，把指针指向最老的页面，当发生缺页中断的时候，从老页面开始扫描，对碰到的访问位为0的页表置换出去，如果都是1以后，把他们清0</p>
+<h1 id="二次机会法"><a href="#二次机会法" class="headerlink" title="二次机会法"></a>二次机会法</h1><p> 同时利用修改位和访问位来指导置换，当访问位位0修改位为1的时候，将它保留下来，并把修改位改为0，这里改为0以后还要写回内存。给这个页面第二次机会。</p>
+<h1 id="最不常用法-LFU"><a href="#最不常用法-LFU" class="headerlink" title="最不常用法 LFU"></a>最不常用法 LFU</h1><p> 淘汰掉访问次数最少的那个，对每个页面都增加一个访问计数器，当访问后计数器+1，注意到这个算法新页很吃亏，我们尝试定期将计数器除以2，又是ADMI和式增加积式减少的手段。</p>
+<h1 id="Belady现象"><a href="#Belady现象" class="headerlink" title="Belady现象"></a>Belady现象</h1><p> 在FIFO算法中，会出现分配物理页面数增加缺页率反而提高的异常现象。</p>
+<h1 id="工作集替换算法"><a href="#工作集替换算法" class="headerlink" title="工作集替换算法"></a>工作集替换算法</h1><p> 工作集大小 单位时间内访问的页面总类，<br> 将不再工作集中的页面换走</p>
+<h1 id="缺页率页面置换算法"><a href="#缺页率页面置换算法" class="headerlink" title="缺页率页面置换算法"></a>缺页率页面置换算法</h1><p> 缺页率: 缺页次数除以内存访问次数<br> 基于缺页率来动态调整常驻集的大小<br> 常驻集大小 当前实际驻内存的页面种类，</p>
+<h1 id="抖动问题"><a href="#抖动问题" class="headerlink" title="抖动问题"></a>抖动问题</h1><p> 随着驻留内存的进程数目不断增加，分配给每个进程的物理页面数不断减少，缺页率上升，造成频繁的替换，这就是抖动</p>
+<h1 id="量化抖动"><a href="#量化抖动" class="headerlink" title="量化抖动"></a>量化抖动</h1><p> 缺页频度： 两次缺页的平均间隔时间，<br> 工作集大小</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-03-29T12:54:27.000Z" itemprop="dateUpdated">2021-03-29 20:54:27</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q8434P.html&title=《操作系统6-页面置换算法》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q8434P.html&title=《操作系统6-页面置换算法》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q8434P.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《操作系统6-页面置换算法》 — Believe it&url=http://fightinggg.github.io/indigo/Q8434P.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q8434P.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/Q84350.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">操作系统7-进程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/Q8434C.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">操作系统5-虚拟内存</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q8434P.html&title=《操作系统6-页面置换算法》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q8434P.html&title=《操作系统6-页面置换算法》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q8434P.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《操作系统6-页面置换算法》 — Believe it&url=http://fightinggg.github.io/indigo/Q8434P.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q8434P.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3a0W6DMAwF0P7/T3evk7aGaxumEU6eUEsJJ5M8x/HrFY/3t/Hzk0+fT575umJgYGDclvFejvWUP6/zWZJvk3fDwMB4DuPTxJ/uWU+8/lU+V3I/BgYGRnKdYNb35MuHgYGBMX9cNUznCSgGBgZGMsF6g5p827s+eS+OgYFxQ0Zedf/760vONzAwMG7FeBdHHhx7n/QGBgbG3oz5AWQ1KTwr4GJgYDyHkRe2qg1hSbNXL0D/8rYYGBiPZCTl/gTQO2DIg/tBwMXAwNiIsS615+G1WtyvLkE5b8XAwNiOkSRteYishuDJbzEwMPZmVFu7qlNelzhGHR8YGBhbMNbTVwv91SazakAv/9/AwMDYiDE5eqxud3ttZwfPxMDA2Joxb2PtbYN7aWKShmJgYOzHSEzVwn2+Zs3WiqTQhoGBsREj33Ze99LJkwt/EwwMjE0ZebNX3ioxCeXVpcHAwNibUQ2gvUJYbw+db48xMDD2ZlQPIydl/WqCWC3VYWBgPIGRpHRJmlg9Wsg3tAd3YmBgPIAxGfPSf29BCwcDGBgYGzGqk/VK+Sf0fZy7ZhgYGP+YcVZgnYfO6mHDKCnEwMC4FeOsoFxN+E7YsvYwGBgYt2XkTRXz8lwv04uOBzAwMB7AuOJgstq0MUo6MTAwMFoNE0lLR771PZgFAwMDozhBObFbvk/UxoqBgfEARrKJTV5r0i42SigxMDC2ZlS3jnkjxYQ9bx3DwMDYgvEFYbaJh5Fs2dEAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

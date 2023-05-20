@@ -1,0 +1,690 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PGMNAB.html">
+
+
+
+  <title>
+球盒模型 - 数学 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">球盒模型
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2018-10-15 14:27:47">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2018-10-15T14:27:47+08:00">2018-10-15</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicliierfjj20zk0m8npd.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicmnywqgpj20zk0m8dwx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitht3xtj20zk0m8k5v.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipesrnqv3j20zk0m8ava.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhtuo6nj20zk0m8ttm.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" itemprop="item" rel="index" title="分类于 数学"><span itemprop="name">数学</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PGMNAB.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGMNAB.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>球盒模型指的是把球放入盒子里的题目模型（强行解释）</p>
+<p>分为盒子同或不同，球同或不同，盒子允许空或不空，所以一共八种问题</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>不妨假设n个球，m个盒子</p>
+<p>盒异，球同，盒子允许空 $C_{m+n-1}^{m-1}$    </p>
+<p>盒异，球同，盒不允许空$C_{n-1}^{m-1}$</p>
+<p>盒同，球同，盒子允许空$\begin{aligned}\prod _{j&#x3D;1}^{m}\frac{1}{1-x^{j}}\end{aligned}$中的$x^n$系数</p>
+<p>盒同，球同，盒不允许空$\begin{aligned}x^m\prod _{j&#x3D;1}^{m}\frac{1}{1-x^{j}}\end{aligned}$中$x^n$的系数</p>
+<p>盒异，球异，盒子允许空  $m^n$</p>
+<p>盒异，球异，盒不允许空$\begin{aligned}\sum _{k&#x3D;0}^{m}(C_m^k(-1)^{m-k}k^n)\end{aligned}$</p>
+<p>盒同，球异，盒子允许空$$\begin{aligned}\sum_{i&#x3D;0}^{m} \sum_{k&#x3D;0}^i\frac{C_i^k(-1)^{i-k}k^n}{i!}\end{aligned}$$</p>
+<p>盒同，球异，盒不允许空$\begin{aligned}\sum _{k&#x3D;0}^m\frac{C_m^k(-1)^{m-k}k^n}{m!}\end{aligned}$</p>
+<span id="more"></span>
+
+
+<h1 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h1><h2 id="盒异，球同，盒子允许空"><a href="#盒异，球同，盒子允许空" class="headerlink" title="盒异，球同，盒子允许空"></a>盒异，球同，盒子允许空</h2><h3 id="做法1"><a href="#做法1" class="headerlink" title="做法1"></a>做法1</h3><p>考虑母函数，我们用指数代表球的个数，显然每个盒子可以放0个，1个，2个，3个，等等，一共m个盒子，则这些多项式直接乘起来即可，则定义母函数<br>$$<br>f(x)&#x3D;(\sum_{i&#x3D;0}^{\infty} x^i)^m&#x3D;(\frac{1}{1-x})^m&#x3D;(1-x)^{-m}<br>$$</p>
+<p>很明显，其中的$x^n$的系数就是答案。</p>
+<p>根据二项式定理，我们考虑$(-x)^n$这一项，他是<br>$$<br>\begin{aligned}<br>&amp;C_{-m}^{n}(-x)^n<br>\&amp;&#x3D;\frac{\prod _{k&#x3D;-m-n+1}^{-m}k}{n!}(-x)^n<br>\&amp;&#x3D;\frac{\prod <em>{k&#x3D;m}^{ m+n-1}k}{n!}x^n<br>\&amp;&#x3D;C</em>{m+n-1}^{m-1}x^n<br>\end{aligned}<br>$$</p>
+<p>如果大家认为这个解释很牵强，那我们对$f(x)$进行泰勒展开，根据泰勒公式$f(𝑥)&#x3D;\sum_{i&#x3D;0}^{\infty}\frac{𝑓^{(i)}(x_0)}{i!}(𝑥−𝑥_0)^i$</p>
+<p>我们先对$f(x)$进行求导<br>$$<br>\begin{aligned}<br>&amp;f’(x) &#x3D; -m\cdot(1-x)^{m-1} \cdot (-1)<br>\&amp;f’’(x) &#x3D; -m\cdot (-m-1)\cdot(1-x)^{m-2} \cdot (-1)^2<br>\&amp;f’’’(x) &#x3D; -m\cdot (-m-1)\cdot(-m-2)\cdot(1-x)^{m-3} \cdot (-1)^3<br>\&amp;…<br>\&amp;f^{(n)}(x)&#x3D; (\prod_{i&#x3D;0}^{n-1}(-m-i))\cdot(1-x)^{m-n} \cdot (-1)^n<br>\end{aligned}<br>$$<br>我们取出$f(x)$在$x_0&#x3D;0$的泰勒展开中的n次方项<br>$$<br>\begin{aligned}<br>&amp;\frac{(\prod_{j&#x3D;0}^{n-1}(-m-i))\cdot(1-0)^{m-n}}{n!}(𝑥−0)^𝑛\cdot (-1)^n<br>\&amp;&#x3D;\frac{\prod_{j&#x3D;0}^{n-1}(m+i)}{n!}𝑥^𝑛<br>\&amp;&#x3D;\frac{\frac{(m+n-1)!}{(m-1)!}}{n!}𝑥^𝑛<br>\&amp;&#x3D;C_{m+n-1}^{m-1} x^n<br>\end{aligned}<br>$$</p>
+<h3 id="做法2"><a href="#做法2" class="headerlink" title="做法2"></a>做法2</h3><p>我们可以假设一共有n+m个球，然后每个盒子至少放一个球，可以证明这个问题与当前问题等价</p>
+<h2 id="盒异，球同，盒不允许空"><a href="#盒异，球同，盒不允许空" class="headerlink" title="盒异，球同，盒不允许空"></a>盒异，球同，盒不允许空</h2><p>考虑隔板，n个球一共n-1个间隙，向其中置入m-1个隔板，形成m个段，每一段放入一个盒子即可。即$C_{n-1}^{m-1}$</p>
+<h2 id="盒同，球同，盒子允许空"><a href="#盒同，球同，盒子允许空" class="headerlink" title="盒同，球同，盒子允许空"></a>盒同，球同，盒子允许空</h2><p>由于盒子相同，我们不妨设这m个盒子中球的大小分别是 $a_1a_2…a_m$</p>
+<p>更一般的，由于盒子相同，所以$a$的顺序不影响结果。所以我们让其单增。设$b_i&#x3D;a_i-a_{i-1}\ge 0且b_1&#x3D;a_1$ </p>
+<p>则$a_i&#x3D;\sum_{j&#x3D;1}^ib_j$</p>
+<p>则$a_1+a_2+…+a_m&#x3D;n$可以写作$m\cdot b_1+(m-1)\cdot b_2+(m-2)\cdot b_3+…+b_m&#x3D;m$</p>
+<p>这里b的唯一约束仅仅只是非负整数。于是构造生成函数, 首先是$b_1$,他可以是$0,1,2…$, 则它对应的多项式就是$(x^m)^0+(x^m)^1+(x^m)^2+…$, 然后是$b_2$，他对应是$(x^{m-1})^0+(x^{m-1})^1+(x^{m-1})^2+…$，然后乘起来，得到了<br>$$<br>\begin{aligned}<br>&amp;f(x)<br>\&amp;&#x3D;(\space(x^m)^0+(x^m)^1+(x^m)^2+…)(\space(x^{m-1})^0+(x^{m-1})^1+(x^{m-1})^2+…)…<br>\&amp;&#x3D;\frac{1}{1-x^m}\frac{1}{1-x^{m-1}}\frac{1}{1-x^{m-2}}…\frac{1}{1-x}<br>\&amp;&#x3D;\prod _{j&#x3D;1}^{m}\frac{1}{1-x^{j}}<br>\end{aligned}<br>$$</p>
+<h2 id="盒同，球同，盒子不允许空"><a href="#盒同，球同，盒子不允许空" class="headerlink" title="盒同，球同，盒子不允许空"></a>盒同，球同，盒子不允许空</h2><p>显然对于上一种情况的$b_1$，他的约束从非负变成了恒正。所以生成函数第一个变成了$(x^m)^1+(x^m)^2+…$</p>
+<p>于是<br>$$<br>\begin{aligned}<br>&amp;f(x)<br>\&amp;&#x3D;(\space(x^m)^1+(x^m)^2+…)(\space(x^{m-1})^0+(x^{m-1})^1+(x^{m-1})^2+…)…<br>\&amp;&#x3D;\frac{x^m}{1-x^m}\frac{1}{1-x^{m-1}}\frac{1}{1-x^{m-2}}…\frac{1}{1-x}<br>\&amp;&#x3D;x^m\prod _{j&#x3D;1}^{m}\frac{1}{1-x^{j}}<br>\end{aligned}<br>$$</p>
+<h2 id="盒异，球异，盒子允许空"><a href="#盒异，球异，盒子允许空" class="headerlink" title="盒异，球异，盒子允许空"></a>盒异，球异，盒子允许空</h2><p>每个球都有m中选择，即放入任何一个盒子。所以答案是$m^n$</p>
+<h2 id="盒异，球异，盒子不允许空"><a href="#盒异，球异，盒子不允许空" class="headerlink" title="盒异，球异，盒子不允许空"></a>盒异，球异，盒子不允许空</h2><p>不妨设第一个盒子有$a_1$个球，第二个有$a_2$个球，后面同理，得到了一个a序列，考虑母函数$f(x)&#x3D;(x^1+x^2+…)^m$，这个函数体现了盒子非空、盒异，但是没有体现出球异。实际上，如果要体现球异，首先要乘以全排$n!$，其次由于多个球放入了一个盒子，这里也要去全排，考虑序列a的放置方法，最终答案为$n!\frac{1}{a_1!}\frac{1}{a_2!}\frac{1}{a_3!}…$ 体现到母函数上就是<br>$$<br>\begin{aligned}<br>&amp;f(x)<br>\&amp;&#x3D;n!\cdot (\frac{x^{1}}{1!}+\frac{x^{2}}{2!}+\frac{x^{3}}{3!}+…)^{m}<br>\&amp;&#x3D;n!\cdot (e^{x}-1)^{m}<br>\&amp;&#x3D;n!\cdot\sum <em>{k&#x3D;0}^{m}(C</em>{m}^{k}(-1)^{m-k}(e^{x})^{k})<br>\&amp;&#x3D;n!\cdot\sum <em>{k&#x3D;0}^{m}(C</em>{m}^{k}(-1)^{m-k}(1+\frac{(kx)^{1}}{1!}+\frac{(kx)^{2}}{2!}+\frac{(kx)^{3}}{3!}+…))<br>\end{aligned}<br>$$<br>考虑$x^n$项<br>$$<br>\begin{aligned}<br>&amp;n!\cdot\sum <em>{k&#x3D;0}^{m}(C</em>{m}^{k}(-1)^{m-k}\frac{(kx)^{n}}{n!})<br>\&amp;&#x3D;(\sum_{k&#x3D;0}^m C_m^k\cdot (-1)^{m-k}\cdot k^n)\cdot x^n<br>\end{aligned}<br>$$</p>
+<h2 id="盒同，球异，盒子允许空"><a href="#盒同，球异，盒子允许空" class="headerlink" title="盒同，球异，盒子允许空"></a>盒同，球异，盒子允许空</h2><p>根据下一问枚举空盒子个数$i$<br>$$<br>\begin{aligned}<br>\sum_{i&#x3D;0}^{m}\sum _{k&#x3D;0}^i\frac{(C_i^k(-1)^{i-k}k^n)}{i!}<br>\end{aligned}<br>$$</p>
+<h2 id="盒同，球异，盒不允许空"><a href="#盒同，球异，盒不允许空" class="headerlink" title="盒同，球异，盒不允许空"></a>盒同，球异，盒不允许空</h2><p>相当于盒异，球异，盒不允许空去全排。即除以$m!$</p>
+<p>读者在这里可以花大部分时间想想为什么前面不能使用这种方式来推导。</p>
+<h1 id="第二类斯特林数"><a href="#第二类斯特林数" class="headerlink" title="第二类斯特林数"></a>第二类斯特林数</h1><p>即盒同，球异，盒不允许空的解</p>
+<p>我们回忆一下，这个解是$\begin{aligned}\sum _{k&#x3D;0}^m\frac{(C_m^k(-1)^{m-k}k^n)}{m!}\end{aligned}$</p>
+<p>可以直接定义斯特林数<br>$$<br>S(n,m)&#x3D;\lbrace^n_m\rbrace&#x3D;\begin{aligned}\sum _{k&#x3D;0}^m\frac{(C_m^k(-1)^{m-k}k^n)}{m!}\end{aligned}<br>$$</p>
+<h2 id="第二类斯特林数递推"><a href="#第二类斯特林数递推" class="headerlink" title="第二类斯特林数递推"></a>第二类斯特林数递推</h2><p>$$<br>S(n,m)&#x3D;S(n-1,m-1)+S(n-1,m)\cdot m<br>$$</p>
+<h2 id="计算斯特林数的某一整行"><a href="#计算斯特林数的某一整行" class="headerlink" title="计算斯特林数的某一整行"></a>计算斯特林数的某一整行</h2><p>即一次性计算$S(n,0), S(n,1), S(n,2)…$</p>
+<p>我们对这个S的通项公式稍微变形,分离变量,然后就可以卷积运算了<br>$$<br>\begin{aligned}<br>&amp;\sum _{k&#x3D;0}^m\frac{C_m^k(-1)^{m-k}k^n}{m!}<br>\&amp;&#x3D;\sum _{k&#x3D;0}^m\frac{(-1)^{m-k}k^n}{k!(m-k)!}<br>\&amp;&#x3D;\sum _{k&#x3D;0}^m\frac{(-1)^{m-k}}{(m-k)!}\frac{k^n}{k!}<br>\end{aligned}<br>$$</p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-05-07 13:32:00" itemprop="dateModified" datetime="2021-05-07T13:32:00+08:00">2021-05-07</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PGMNAB.html" title="球盒模型">http://fightinggg.github.io/shoka/PGMNAB.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PGMN1Z.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giph4lm9i7j20zk0m84qp.jpg" title="位运算">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 黑科技</span>
+  <h3>位运算</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PGMUCH.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclxfdlttj20zk0m8npd.jpg" title="最大流最小割算法">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 图论</span>
+  <h3>最大流最小割算法</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">2.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%81%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">证明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%BC%82%EF%BC%8C%E7%90%83%E5%90%8C%EF%BC%8C%E7%9B%92%E5%AD%90%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.1.</span> <span class="toc-text">盒异，球同，盒子允许空</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9A%E6%B3%951"><span class="toc-number">3.1.1.</span> <span class="toc-text">做法1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9A%E6%B3%952"><span class="toc-number">3.1.2.</span> <span class="toc-text">做法2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%BC%82%EF%BC%8C%E7%90%83%E5%90%8C%EF%BC%8C%E7%9B%92%E4%B8%8D%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.2.</span> <span class="toc-text">盒异，球同，盒不允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%90%8C%EF%BC%8C%E7%90%83%E5%90%8C%EF%BC%8C%E7%9B%92%E5%AD%90%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.3.</span> <span class="toc-text">盒同，球同，盒子允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%90%8C%EF%BC%8C%E7%90%83%E5%90%8C%EF%BC%8C%E7%9B%92%E5%AD%90%E4%B8%8D%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.4.</span> <span class="toc-text">盒同，球同，盒子不允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%BC%82%EF%BC%8C%E7%90%83%E5%BC%82%EF%BC%8C%E7%9B%92%E5%AD%90%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.5.</span> <span class="toc-text">盒异，球异，盒子允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%BC%82%EF%BC%8C%E7%90%83%E5%BC%82%EF%BC%8C%E7%9B%92%E5%AD%90%E4%B8%8D%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.6.</span> <span class="toc-text">盒异，球异，盒子不允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%90%8C%EF%BC%8C%E7%90%83%E5%BC%82%EF%BC%8C%E7%9B%92%E5%AD%90%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.7.</span> <span class="toc-text">盒同，球异，盒子允许空</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%92%E5%90%8C%EF%BC%8C%E7%90%83%E5%BC%82%EF%BC%8C%E7%9B%92%E4%B8%8D%E5%85%81%E8%AE%B8%E7%A9%BA"><span class="toc-number">3.8.</span> <span class="toc-text">盒同，球异，盒不允许空</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">第二类斯特林数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0%E9%80%92%E6%8E%A8"><span class="toc-number">4.1.</span> <span class="toc-text">第二类斯特林数递推</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%96%AF%E7%89%B9%E6%9E%97%E6%95%B0%E7%9A%84%E6%9F%90%E4%B8%80%E6%95%B4%E8%A1%8C"><span class="toc-number">4.2.</span> <span class="toc-text">计算斯特林数的某一整行</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/P5EQ9Y.html" rel="bookmark" title="常用数论函数变换">常用数论函数变换</a></li><li class="active"><a href="/shoka/PGMNAB.html" rel="bookmark" title="球盒模型">球盒模型</a></li><li><a href="/shoka/PGU74V.html" rel="bookmark" title="合数分解">合数分解</a></li><li><a href="/shoka/PGY13F.html" rel="bookmark" title="广义组合数">广义组合数</a></li><li><a href="/shoka/PH7QQ8.html" rel="bookmark" title="FFT">FFT</a></li><li><a href="/shoka/POEN4U.html" rel="bookmark" title="快速幂">快速幂</a></li><li><a href="/shoka/PS5H5E.html" rel="bookmark" title="积性函数">积性函数</a></li><li><a href="/shoka/PS5HGM.html" rel="bookmark" title="杜教筛">杜教筛</a></li><li><a href="/shoka/PSZ23L.html" rel="bookmark" title="bsgs算法">bsgs算法</a></li><li><a href="/shoka/PT8XEX.html" rel="bookmark" title="多项式">多项式</a></li><li><a href="/shoka/PV8ORI.html" rel="bookmark" title="类欧几里得算法">类欧几里得算法</a></li><li><a href="/shoka/PVX1S3.html" rel="bookmark" title="两分数间分母最小的分数">两分数间分母最小的分数</a></li><li><a href="/shoka/PWA5HS.html" rel="bookmark" title="二次剩余">二次剩余</a></li><li><a href="/shoka/PWBLQZ.html" rel="bookmark" title="中国剩余定理">中国剩余定理</a></li><li><a href="/shoka/PWBTOX.html" rel="bookmark" title="广义斐波那契循环节">广义斐波那契循环节</a></li><li><a href="/shoka/PZNY2U.html" rel="bookmark" title="自变量互质的前缀和函数分析">自变量互质的前缀和函数分析</a></li><li><a href="/shoka/Q03076.html" rel="bookmark" title="min25筛">min25筛</a></li><li><a href="/shoka/QSFAYC.html" rel="bookmark" title="群论">群论</a></li><li><a href="/shoka/QSRVQC.html" rel="bookmark" title="生成函数与形式幂级数">生成函数与形式幂级数</a></li><li><a href="/shoka/QSSECC.html" rel="bookmark" title="反演">反演</a></li><li><a href="/shoka/QSUB3C.html" rel="bookmark" title="数论分块">数论分块</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PGMN1Z.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PGMUCH.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+</div>
+
+    <span><a href="/shoka/R5MNS0.html" title="Springfox使用">Springfox使用</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Spring/" title="分类于 Spring">Spring</a>
+</div>
+
+    <span><a href="/shoka/Q8BOQD.html" title="spring10-配置AOP">spring10-配置AOP</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/C/" title="分类于 C++">C++</a>
+</div>
+
+    <span><a href="/shoka/Q7BOTC.html" title="Boost">Boost</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/QQPNNQ.html" title="PING的时候发生了什么">PING的时候发生了什么</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" title="分类于 数学">数学</a>
+</div>
+
+    <span><a href="/shoka/P5EQ9Y.html" title="常用数论函数变换">常用数论函数变换</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/hdu5727.html" title="hdu5727">hdu5727</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/poj3177.html" title="poj3177">poj3177</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Docker/K8s/" title="分类于 K8s">K8s</a>
+</div>
+
+    <span><a href="/shoka/QHHB40.html" title="k8s">k8s</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/bzoj3992.html" title="bzoj3992">bzoj3992</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QRTMJC.html" title="httpd">httpd</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PGMNAB.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

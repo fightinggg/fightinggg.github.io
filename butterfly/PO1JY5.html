@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>后缀自动机 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  前言本文力争用理性分析的手段，来推测此算法发明者的思维过程， 尝试感受其在设计此算法的时所展现出的思维方式， 力求用数学证明的手段，尽可能多的为读者证明相关结论，建议有其他自动机学习的基础，最好已经学会A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀自动机">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/PO1JY5.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  前言本文力争用理性分析的手段，来推测此算法发明者的思维过程， 尝试感受其在设计此算法的时所展现出的思维方式， 力求用数学证明的手段，尽可能多的为读者证明相关结论，建议有其他自动机学习的基础，最好已经学会A">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2019-03-08T09:34:53.000Z">
+<meta property="article:modified_time" content="2019-03-08T09:34:53.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/PO1JY5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '后缀自动机',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2019-03-08 17:34:53'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">后缀自动机</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-03-08T09:34:53.000Z" title="发表于 2019-03-08 17:34:53">2019-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2019-03-08T09:34:53.000Z" title="更新于 2019-03-08 17:34:53">2019-03-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/">ACM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="后缀自动机"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文力争用理性分析的手段，来推测此算法发明者的思维过程， 尝试感受其在设计此算法的时所展现出的思维方式， 力求用数学证明的手段，尽可能多的为读者证明相关结论，建议有其他自动机学习的基础，最好已经学会AC自动机和回文自动机，后缀自动机很难，他 和其他自动机不一样，它的状态更加复杂，一个算法的创作过程很 复杂，学起来当然会感到很难。强烈建议看陈立杰的ppt，看一遍肯定看不懂，仔细看，一遍看不懂看多遍，第一次可能只能看懂几面，第二次可 能就能看懂到十几面了，慢慢的就全懂了。</p>
+<span id="more"></span>
+<h1 id="后缀自动机为什么难？"><a href="#后缀自动机为什么难？" class="headerlink" title="后缀自动机为什么难？"></a>后缀自动机为什么难？</h1><p>后缀自动机是三个自动机里面最难的一个，难的地方不在与编码，在于他背后的数学推导，</p>
+<p>想要完全理解后缀自动机，就必须深入理解什么叫自动机，这和AC自动机、回文自动机不同，因为AC自动机、回文自动机背后的数学推导过于简单。</p>
+<h1 id="自动机"><a href="#自动机" class="headerlink" title="自动机"></a>自动机</h1><p>百度百科里面说的很清楚，也很抽象。自动机，是一个五元组，包含字符集，状态集合，初始状态，结束状态集合，状态转移函数。<br>五元组中，有四个包含了”状态”这个名词。难以理解的，正是这个状态。</p>
+<h1 id="状态是什么"><a href="#状态是什么" class="headerlink" title="状态是什么"></a>状态是什么</h1><p>此处的状态，其实和动态规划算法中出现的名词”状态”，是同一个东西。状态的 本质就是集合，是满足某种条件的所有元素的一个集合体，当然我们很多 时候不好用计算机来储存这样的一个集合体，很多时候我们也不需要去储存他，更多的时候我们只需要储存这个集合体的某一个或者多个性质即可，</p>
+<h1 id="自动机的状态"><a href="#自动机的状态" class="headerlink" title="自动机的状态"></a>自动机的状态</h1><p>字符集好理解，状态集合就是自动机中所有的节点，状态转移函数就是自动机中节点之间 的边。初始状态就是自动机中字典树上的根，结束状态就是自动 机之中包含了结束标记的节点。</p>
+<h1 id="后缀自动机和后缀数组有关吗？"><a href="#后缀自动机和后缀数组有关吗？" class="headerlink" title="后缀自动机和后缀数组有关吗？"></a>后缀自动机和后缀数组有关吗？</h1><p>后缀自动机是建立在一颗后缀树上的，当然他不像AC自动机来源于KMP算法，不像回文自动机来源于 manacher算法一样,他并不是后缀数组算法的加强。<br>一个字符串的后缀树肯定是非常庞大的，n个后缀，如果我们直接把它建立出来，那么空间复杂度和 时间复杂度无疑都是O(n^2),必须优化。<br>我们发现后缀树上的很多节点所代表的状态有某些共同点，毕竟他们都是同一个母串的后缀， AC自动机所定义的节点代表的状态指的是:从根到此节点的路径连接成的字符串以及他的所有后缀。后缀自动机在这一点上 根AC自动机有点类似,此处暂时不先说。</p>
+<h1 id="我们来创建一个最小状态数的后缀自动机"><a href="#我们来创建一个最小状态数的后缀自动机" class="headerlink" title="我们来创建一个最小状态数的后缀自动机"></a>我们来创建一个最小状态数的后缀自动机</h1><p>我们先假设我们已经建立好了一个后缀自动机,此自动机不一定状态数最少,后缀自动机的存在性就不必证明了。 然后我们尝试分析这个不太完美的后缀自动机，来尝试优化他。</p>
+<h1 id="约定一些符号表示"><a href="#约定一些符号表示" class="headerlink" title="约定一些符号表示"></a>约定一些符号表示</h1><p>我们称自动机的初始状态为init，转移函数为trans(state,str),表示状态state经过字符串str的转移后得到的新的状态。 因为是术语，此处暂时不对状态做定义。如果某个状态为结束状态，那么我们用end(state)&#x3D;true来表示。</p>
+<h1 id="将状态形象化，然后造一个暴力的后缀自动机"><a href="#将状态形象化，然后造一个暴力的后缀自动机" class="headerlink" title="将状态形象化，然后造一个暴力的后缀自动机"></a>将状态形象化，然后造一个暴力的后缀自动机</h1><p>我们假设我们建立的后缀自动机，是一棵究极大的，n^2级别状态数量的自动机。我们先来定义此自动机的状态：某个节点 所代表的状态，就是母串的一个子串。显然这不是一个好状态。显然其中的字典树 的根节点root就是初始状态 。</p>
+<h1 id="想办法来优化这个暴力的自动机"><a href="#想办法来优化这个暴力的自动机" class="headerlink" title="想办法来优化这个暴力的自动机"></a>想办法来优化这个暴力的自动机</h1><p>我们必须减少状态，然而，一个串的子串数量明显就是平方级别的，根本就没有多余的状态，对此已经无解，必须减少状态数量，我们考虑后缀自动机关心 的是后缀，而不是子串，那么可能存在某些状态，他们在另外一种状态的定义下，是等价的。我们考虑某个状态state,如果存在某个字符串 str,使得end (trans(state,str))&#x3D;true,那意味着什么？state状态中的元素：子串substring，追加上str，是一个结束状态。</p>
+<h1 id="再具体一点，我们来举例子"><a href="#再具体一点，我们来举例子" class="headerlink" title="再具体一点，我们来举例子"></a>再具体一点，我们来举例子</h1><p>母串是abcabcde，考虑他的某个子串abc，显然此子串对应的状态trans(root,”abc”)在经历串abcde的转移后得到了结束状态，同时此状态在经历串 de的转移后也可以得到结束状态，也就是说，子串abc对应的状态在经历串abcde或de的转移后可以得到结束状态。</p>
+<h1 id="发现了可以优化的地方"><a href="#发现了可以优化的地方" class="headerlink" title="发现了可以优化的地方"></a>发现了可以优化的地方</h1><p>当我们考虑串bc、串c的时候，我们发此案这两个串能够转移到的结束状态根串abc一摸一样，这可不是开玩笑的。如果可能，我们将可以合并串abc、bc、 和c对应的状态，也就是说，trans(root,”abc”),trans(root,”bc”),trans(root,”c”)可以用一个状态来表示。我们来仔细研究研究，为什么会发生这种 事情？如果某两个状态trans(root,str1),trans(root,str2)能够转移的结果是完全一样的，那意味着什么？先考虑trans(root,str)能够转移到某个 结束状态，也就是说str+??？将会成为母串的后缀。</p>
+<h1 id="约定一些符号表示-1"><a href="#约定一些符号表示-1" class="headerlink" title="约定一些符号表示"></a>约定一些符号表示</h1><p>right(str)表示字符串str在母串中出现时的所有右端点的集合，suf(index)表示从下标为index开始的后缀，</p>
+<h1 id="继续分析"><a href="#继续分析" class="headerlink" title="继续分析"></a>继续分析</h1><p>容易证明状态state&#x3D;trans(root,str)能转移到的结束状态，就是对于所有在right(str)中的元素x，计算出的状态：trans(state，suf(x+1)) 当right(str1)与right(str2)一摸一样的时候，其能够转移到的结束状态是一摸一样的，因为这只受到right集合的影响。既然一摸一样，有什么理由 不去利用这个优点呢？</p>
+<h1 id="开始实现优化"><a href="#开始实现优化" class="headerlink" title="开始实现优化"></a>开始实现优化</h1><p>我们尝试修改状态的定义，尝试把right集合一摸一样的串用一个状态来表示。让笔者来概括一下这个新状态:我们对母串 的每一个子串都统计一下right集合，将子串按照right集合分类，每一类就是一个状态。如无特殊声明，下文的出现的状态将不再指的是原状态 ，而是表示新状态。</p>
+<h1 id="证明状态数是线性的"><a href="#证明状态数是线性的" class="headerlink" title="证明状态数是线性的"></a>证明状态数是线性的</h1><p>证明分为两个部分，先证明right集合间的关系只有两种，包含关系和无交集关系，于是right集合间的关系可以用一颗叶子节点最多n个的树来表示。（n是 母串的长度。）再证明此树最多有2n个节点来完成证明。第一部分的证明：考虑串str1，和str2，并假设str2更长，如果str1不是str2的后缀，那么他们的 right集合一定不一样，且没有交集，可以反证，若是后缀，那么str2出现的地方的右端点，也是str1出现的右端点，于是right(str2)是right(str1)的子集 。第二部分的证明很简单，笔者就不再赘述了。<br>既然状态数是线性，转移(边的条数)当然也是线性的。</p>
+<h1 id="证明状态数是最小的"><a href="#证明状态数是最小的" class="headerlink" title="证明状态数是最小的"></a>证明状态数是最小的</h1><p>此处笔者由于水平原因，实在是无法证明，罪过罪过。</p>
+<h1 id="增量法构建最小状态"><a href="#增量法构建最小状态" class="headerlink" title="增量法构建最小状态"></a>增量法构建最小状态</h1><p>所谓增量法，就是一个一个增加的意思，具体一点，如果我们要算f(10),我们先算f(1)，通过f(1)来计算f(2),通过f(2)来算f(3)…最后算出f(10),这就是增量法， 他和数学归纳法有点像。第一步，我们拥有一个初始状态：根，第二步，假设我们已经的到了字符串str的一个后缀自动机SAM(str),x是一个字符，我们怎么得到字符串 str+x的后缀自动机呢?考虑这两个字符串的区别，str+x多了一个x，后缀自动机是来识别后缀的，所以SAM(str)以前能够识别的后缀suf的那些状态全部要改，除此之外 没有其他修改的地方。怎么改呢？那些状态在SAM(str)里面确实是结束状态，但是在SAM(str+x)中却不是。但是他们能够向x字符转移，得到新的结束状态。之前证明过 状态是按照right集合来划分的，而right集合有只有两种关系，于是我们发现了一个新的东西，SAM(str)的所有结束状态在right构成的树上是一条链，也就是说right 构成的树不知可以用来证明状态树是线性的，还可以用来帮助我们建设状态。那么我们就把这棵树取出来，叫做parent树。</p>
+<p>在parent树上，如果我们知道了状态trans(root,str)在哪，就可以根据parent树上面的边遍历所有的结束状态，因为这些结束状态的right集合一定包含了len(str) 也就是说他们都是状态trans(root,str)在parent树上面的祖先。</p>
+<h1 id="细节处理"><a href="#细节处理" class="headerlink" title="细节处理"></a>细节处理</h1><p>现在我们来总结一下，从自动机SAM(str) 增量构建自动机SAM(str+x)，我们需要更改的只是trans(root，str)以及他在parent树上面的所有祖先，容易证明如果状态 q是trans(root，str)的第一个包含字符x转移的状态，那么q的所有祖先都包含了字符x的转移。trans(root,str)到q之间(不包含q)的所有状态都不包含字符x的转移。 可以证明:如果不包含x的转移，我们直接构建一个新的状态p表示trans(root，str+x)状态,此处可以证明他的right集合只有一个元素， 就是len(str+x)。那些不包含x转移的状态，可以直接转移到p，因为那样转移之后的right集合是就是p的right集合。那么我们就一直这样做即可，那么q以及q的祖先呢？他们包含了字符x的转移 但是我们可以直接在那个地方设置一个结束标志吗？这不一定？为什么呢？首先，我们的状态定义是依据right集合的，也就是说right集合一摸一样的，才能用一个状态表示。 如果我们那样做，会造成什么后果呢？节点q向x转移的状态trans(q,x)的right集合是不包含len(str+x)的，我们那样做，会导致right集合扩大。right集合扩大，可能会 导致以前能够用trans(q,x)表示的某些串，不能用trans(q,x)表示了。</p>
+<p>举个例子,abcxabc+x和abcxbc+x，对于第一个，原本abc拥有向x的转移，当时还不是结束标记，当我们加入字符x后我们强行让这个转移变为结束标记，一点问题都没有，abcx 确实是新的结束标记，然而对于第二个，原本bc拥有向x的转移，当时还不是结束标记，当我们加入字符x后，如果还是强行让这个转移变为结束标记，出现问题了，abcx也可以转移到 那里，可是abcx不是串的结束状态。</p>
+<h1 id="到底什么时候需要创建新的节点"><a href="#到底什么时候需要创建新的节点" class="headerlink" title="到底什么时候需要创建新的节点"></a>到底什么时候需要创建新的节点</h1><p>我们来思考一下，什么时候那样做是对的。如果无脑加结束标记是对的，那就意味着，以前能够到达trans(q,x)的串，他们的right集合，现在都能够到达len(str+x),我们再一次 思考状态state的意义，相同right集合的串，用同一个状态表示，这些串之间有什么关系吗？如果我们定义max(state)为这个状态能表达的串的最大长度，min(state)表示这个 状态&#x3D;能表达的串的最小长度，可以证明，这个state能表达的所有串，恰好为max(state)和min(state)之间的所有串，举个例子:如果max(state)为abcdef,min（state)为 def,实际上，state的所有串是:def,cdef,bcdef,abcdef，还可以证明,min(state)&#x3D;max(fa(state))-1，fa(state)表示在parent树上state的父亲。</p>
+<p>我们不难证明在原串中如果max(q+x)&#x3D;max(q)+1的时候，无脑加入结束标记是对的，这确保没有比max(q)更大的其他状态能够转移到trans(root,q+x)在这种情况下，直接设置一下 fa(p)&#x3D;trans（root,q+x),可以证明整个更新到此就已经结束了。</p>
+<p>但是如果不等呢？肯定是不可以那样做的，我们考虑状态到定义，我们发现我们必须重建一个新的状态，来把目前到这个trans(root，q+x)状态分解为两个状态，一个储存串使得max(q’+x)&#x3D;max（q)+x 另一个储存剩余的，那些东西要移到q’+x去呢？我们发现那些q的祖先中，能够转移到trans(root，q+x)的都要改到q’+x ，如此过后，我们发现现在的情况变得根上一段一摸一样了， 终于，整个后缀自动机构建完成。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SAM</span>&#123;<span class="comment">//下标从1开始，0作为保留位，用于做哨兵</span></span><br><span class="line">    <span class="comment">//如果没有特殊要求，尽量选择合适的自动机，要算好内存</span></span><br><span class="line">    <span class="comment">//经过hdu1000测试，10000个map大概是10kb,对于1e6的字符串，不建议使用后缀自动机</span></span><br><span class="line">    <span class="keyword">typedef</span> map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;::iterator IT;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">2e5</span>+<span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> cnt,last,par[MAXN&lt;&lt;<span class="number">1</span>],len[MAXN&lt;&lt;<span class="number">1</span>];</span><br><span class="line"><span class="comment">//    map&lt;int,int&gt;trans[MAXN&lt;&lt;1];//map用于字符集特别大的时候，注意这里占内存可能会特别大</span></span><br><span class="line">    <span class="type">int</span> trans[MAXN&lt;&lt;<span class="number">1</span>][<span class="number">26</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">newnode</span><span class="params">(<span class="type">int</span> parent,<span class="type">int</span> length)</span></span>&#123;</span><br><span class="line">        par[++cnt]=parent;</span><br><span class="line">        len[cnt]=length;</span><br><span class="line"><span class="comment">//        trans[cnt].clear();</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++) trans[cnt][i]=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cnt=<span class="number">0</span>;</span><br><span class="line">        last=<span class="built_in">newnode</span>(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> p=last;</span><br><span class="line">        <span class="type">int</span> np=<span class="built_in">newnode</span>(<span class="number">1</span>,len[last]+<span class="number">1</span>);<span class="comment">//新建状态，先让parent指向根（1）</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">0</span>&amp;&amp;trans[p][c]==<span class="number">-1</span>)&#123;<span class="comment">//如果没有边，且不为空，根也是要转移的</span></span><br><span class="line">            trans[p][c]=np;<span class="comment">//他们都没有向np转移的边，直接连过去</span></span><br><span class="line">            p=par[p];<span class="comment">//往parent走</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(p!=<span class="number">0</span>)&#123;<span class="comment">//如果p==0，直接就结束了，什么都不用做，否则节点p是第一个拥有转移c的状态，他的祖先都有转移c</span></span><br><span class="line">            <span class="type">int</span> q=trans[p][c];<span class="comment">//q是p转移后的状态</span></span><br><span class="line">            <span class="keyword">if</span>(len[q]==len[p]+<span class="number">1</span>)par[np]=q;<span class="comment">//len[q]是以前的最长串，len[p]+1是合并后的最长串，相等的话，不会影响，直接结束了，</span></span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="type">int</span> nq=<span class="built_in">newnode</span>(par[q],len[p]+<span class="number">1</span>);</span><br><span class="line"><span class="comment">//                trans[nq]=trans[q];//copy出q来，</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++) trans[nq][i]=trans[q][i];</span><br><span class="line">                par[np]=par[q]=nq;<span class="comment">//改变parent树的形态</span></span><br><span class="line">                <span class="keyword">while</span>(trans[p][c]==q)&#123;<span class="comment">//一直往上面走</span></span><br><span class="line">                    trans[p][c]=nq;<span class="comment">//所有向q连边的状态都连向nq</span></span><br><span class="line">                    p=par[p];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        last=np;<span class="comment">//最后的那个节点</span></span><br><span class="line">    &#125;<span class="comment">//SAM到此结束</span></span><br><span class="line">&#125;sam;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/PO1JY5.html">http://fightinggg.github.io/butterfly/PO1JY5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/POEN4U.html" title="快速幂"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">快速幂</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/PNHISH.html" title="Educational Codeforces Round 60 (Rated for Div. 2) - D"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Educational Codeforces Round 60 (Rated for Div. 2) - D</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9A%BE%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">后缀自动机为什么难？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">4.</span> <span class="toc-text">状态是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%9C%BA%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-number">5.</span> <span class="toc-text">自动机的状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%92%8C%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E6%9C%89%E5%85%B3%E5%90%97%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">后缀自动机和后缀数组有关吗？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E6%9D%A5%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%9C%80%E5%B0%8F%E7%8A%B6%E6%80%81%E6%95%B0%E7%9A%84%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">7.</span> <span class="toc-text">我们来创建一个最小状态数的后缀自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A6%E5%AE%9A%E4%B8%80%E4%BA%9B%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA"><span class="toc-number">8.</span> <span class="toc-text">约定一些符号表示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%86%E7%8A%B6%E6%80%81%E5%BD%A2%E8%B1%A1%E5%8C%96%EF%BC%8C%E7%84%B6%E5%90%8E%E9%80%A0%E4%B8%80%E4%B8%AA%E6%9A%B4%E5%8A%9B%E7%9A%84%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">9.</span> <span class="toc-text">将状态形象化，然后造一个暴力的后缀自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%83%B3%E5%8A%9E%E6%B3%95%E6%9D%A5%E4%BC%98%E5%8C%96%E8%BF%99%E4%B8%AA%E6%9A%B4%E5%8A%9B%E7%9A%84%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">10.</span> <span class="toc-text">想办法来优化这个暴力的自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%8D%E5%85%B7%E4%BD%93%E4%B8%80%E7%82%B9%EF%BC%8C%E6%88%91%E4%BB%AC%E6%9D%A5%E4%B8%BE%E4%BE%8B%E5%AD%90"><span class="toc-number">11.</span> <span class="toc-text">再具体一点，我们来举例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%91%E7%8E%B0%E4%BA%86%E5%8F%AF%E4%BB%A5%E4%BC%98%E5%8C%96%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">12.</span> <span class="toc-text">发现了可以优化的地方</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A6%E5%AE%9A%E4%B8%80%E4%BA%9B%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA-1"><span class="toc-number">13.</span> <span class="toc-text">约定一些符号表示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%A7%E7%BB%AD%E5%88%86%E6%9E%90"><span class="toc-number">14.</span> <span class="toc-text">继续分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E4%BC%98%E5%8C%96"><span class="toc-number">15.</span> <span class="toc-text">开始实现优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%81%E6%98%8E%E7%8A%B6%E6%80%81%E6%95%B0%E6%98%AF%E7%BA%BF%E6%80%A7%E7%9A%84"><span class="toc-number">16.</span> <span class="toc-text">证明状态数是线性的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%81%E6%98%8E%E7%8A%B6%E6%80%81%E6%95%B0%E6%98%AF%E6%9C%80%E5%B0%8F%E7%9A%84"><span class="toc-number">17.</span> <span class="toc-text">证明状态数是最小的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E6%B3%95%E6%9E%84%E5%BB%BA%E6%9C%80%E5%B0%8F%E7%8A%B6%E6%80%81"><span class="toc-number">18.</span> <span class="toc-text">增量法构建最小状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%86%E8%8A%82%E5%A4%84%E7%90%86"><span class="toc-number">19.</span> <span class="toc-text">细节处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E8%8A%82%E7%82%B9"><span class="toc-number">20.</span> <span class="toc-text">到底什么时候需要创建新的节点</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

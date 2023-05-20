@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Codeforces Round #729 (Div. 2) - E1 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    题目大意：你需要计算有多少对满足长度为n的排列$p$和$q$，满足$p$字典序&gt;$q$ 且 $inv(p)&lt;inv(q)$，答案取模  $inv$ 为逆序对个数 做法：设$f(i,j)$为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codeforces Round #729 (Div. 2) - E1">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/QWBQXV.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    题目大意：你需要计算有多少对满足长度为n的排列$p$和$q$，满足$p$字典序&gt;$q$ 且 $inv(p)&lt;inv(q)$，答案取模  $inv$ 为逆序对个数 做法：设$f(i,j)$为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2021-07-16T06:20:19.000Z">
+<meta property="article:modified_time" content="2021-07-16T06:20:19.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/QWBQXV.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Codeforces Round #729 (Div. 2) - E1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-16 14:20:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Codeforces Round #729 (Div. 2) - E1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-16T06:20:19.000Z" title="发表于 2021-07-16 14:20:19">2021-07-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-16T06:20:19.000Z" title="更新于 2021-07-16 14:20:19">2021-07-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/">ACM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Codeforces Round #729 (Div. 2) - E1"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QWBQXV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="题目大意："><a href="#题目大意：" class="headerlink" title="题目大意："></a>题目大意：</h1><p>你需要计算有多少对满足长度为n的排列$p$和$q$，满足$p$字典序&gt;$q$ 且 $inv(p)&lt;inv(q)$，答案取模</p>
+<p> $inv$ 为逆序对个数</p>
+<h1 id="做法："><a href="#做法：" class="headerlink" title="做法："></a>做法：</h1><p>设$f(i,j)$为长度为$i$、逆序对个数为$j$的排列的个数 , 考虑第一个数字为$t$</p>
+<p>$f(i,j) &#x3D; \sum_{t \in [1,i]} f(i-1,j-t+1)$</p>
+<p>一个填$u$，另一个填$v$ $u&lt;v$</p>
+<p>$$<br>\begin{aligned}<br>ans[i] \&amp;&#x3D; i * ans[i-1] + \sum_{1&lt;&#x3D;u&lt;v&lt;&#x3D;i, x+u&gt;y+v} f(i-1,x)\cdot f(i-1,y)<br>     \&amp;&#x3D; i * ans[i-1] + \sum_{x-y&gt;v-u, 1&lt;&#x3D;u&lt;v&lt;&#x3D;i} f(i-1,x)\cdot f(i-1,y)<br>    \&amp;&#x3D; i * ans[i-1] + \sum_{x-y&gt;d, 1&lt;&#x3D;d&lt;i} (i-d)*f(i-1,x)\cdot f(i-1,y)<br>    \&amp;&#x3D; i * ans[i-1] + \sum_{x,y} f(i-1,x)\cdot f(i-1,y) \cdot \sum_{x-y&gt;d, 1&lt;&#x3D;d&lt;i} (i-d)<br>\end{aligned}<br>$$</p>
+<span id="more"></span>
+
+
+
+
+
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 题目大意： </span></span><br><span class="line"><span class="comment"> * http://codeforces.com/contest/1542/problem/E1</span></span><br><span class="line"><span class="comment"> * 你需要计算有多少对满足长度为n的排列p和q，满足p字典序&gt;q 且 inv(p)&lt;inv(q)，答案取模</span></span><br><span class="line"><span class="comment"> * inv 为逆序对个数</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 做法：</span></span><br><span class="line"><span class="comment"> * 设f(i,j)为长度为i、逆序对个数为j的排列的个数 , 考虑第一个数字为t</span></span><br><span class="line"><span class="comment"> * f(i,j) = sum_&#123;t \in [1,i]&#125; f(i-1,j-t+1)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 一个填u，另一个填v u&lt;v</span></span><br><span class="line"><span class="comment"> * ans[i] = i * ans[i-1] + sum_&#123;1&lt;=u&lt;v&lt;=i, x+u&gt;y+v&#125; f(i-1,x)*f(i-1,y)</span></span><br><span class="line"><span class="comment"> *        = i * ans[i-1] + sum_&#123;x-y&gt;v-u, 1&lt;=u&lt;v&lt;=i&#125; f(i-1,x)*f(i-1,y)</span></span><br><span class="line"><span class="comment"> *        = i * ans[i-1] + sum_&#123;x-y&gt;d, 1&lt;=d&lt;i&#125; (i-d)*f(i-1,x)*f(i-1,y)</span></span><br><span class="line"><span class="comment"> *        = i * ans[i-1] + sum_&#123;x,y&#125; f(i-1,x)*f(i-1,y) *  sum_&#123;x-y&gt;d, 1&lt;=d&lt;i&#125; (i-d)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 4 403458273</span></span><br><span class="line"><span class="comment"> * 17</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">50</span> + <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> f[maxn][maxn * maxn];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n, mod;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; mod;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// O(n^4)</span></span><br><span class="line">    f[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= n * n; j++) &#123;</span><br><span class="line">            f[i][j] = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> t = <span class="number">1</span>; t &lt;= i; t++) &#123;</span><br><span class="line">                f[i][j] = (f[i][j] + f[i - <span class="number">1</span>][j - t + <span class="number">1</span>]) % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// O(n^5)</span></span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="type">int</span> add = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> upi = (<span class="number">0</span> + i - <span class="number">1</span>) * i / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> x = <span class="number">0</span>; x &lt;= upi; x++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> y = <span class="number">0</span>; y &lt; x; y++) &#123;</span><br><span class="line">                <span class="type">int</span> tmp = <span class="built_in">min</span>(i - <span class="number">1</span>, x - y - <span class="number">1</span>);</span><br><span class="line">                <span class="type">int</span> sd = (i - <span class="number">1</span> + i - tmp) * tmp / <span class="number">2</span>;</span><br><span class="line"><span class="comment">//                printf(&quot;x=%d y=%d %d\n&quot;, x, y, sd);</span></span><br><span class="line">                add = (add + <span class="number">1ll</span> * sd * f[i - <span class="number">1</span>][x] % mod * f[i - <span class="number">1</span>][y]) % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//        cout &lt;&lt; &quot;i=&quot; &lt;&lt; i &lt;&lt; &quot; add=&quot; &lt;&lt; add &lt;&lt; endl;</span></span><br><span class="line">        ans = (<span class="number">1ll</span> * i * ans + add) % mod;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= n * n; j++) &#123;</span><br><span class="line"><span class="comment">//            printf(&quot;%d%c&quot;, f[i][j], j == n * n ? &#x27;\n&#x27; : &#x27; &#x27;);</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 123 0</span></span><br><span class="line"><span class="comment"> * 132 1</span></span><br><span class="line"><span class="comment"> * 213 1</span></span><br><span class="line"><span class="comment"> * 231 2</span></span><br><span class="line"><span class="comment"> * 312 2</span></span><br><span class="line"><span class="comment"> * 321 3</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/QWBQXV.html">http://fightinggg.github.io/butterfly/QWBQXV.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/QWG52O.html" title="VK Cup 2021 - Elimination (Engine)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">VK Cup 2021 - Elimination (Engine)</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/QVZE5O.html" title="通过开源项目获取jetbrains全家桶License"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">通过开源项目获取jetbrains全家桶License</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%A4%A7%E6%84%8F%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">题目大意：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%81%9A%E6%B3%95%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">做法：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  集合的线程安全类遗留的线程安全类 Hashtable，Vector直接把同步加到方法上 修饰的安全集合 装饰器模式，Syncronize* JUC安全集合Blocking型 大部分实现基于锁并提供阻塞的方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程12-集合的线程安全类">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q8OMUY.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  集合的线程安全类遗留的线程安全类 Hashtable，Vector直接把同步加到方法上 修饰的安全集合 装饰器模式，Syncronize* JUC安全集合Blocking型 大部分实现基于锁并提供阻塞的方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-12T15:54:34.000Z">
+<meta property="article:modified_time" content="2020-04-12T15:54:34.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java并发编程12-集合的线程安全类</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q8PM7R.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q8OMUJ.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8OMUY.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8OMUY.html&text=java并发编程12-集合的线程安全类"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8OMUY.html&is_video=false&description=java并发编程12-集合的线程安全类"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java并发编程12-集合的线程安全类&body=Check out this article: http://fightinggg.github.io/cactus/Q8OMUY.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8OMUY.html&name=java并发编程12-集合的线程安全类&description=&lt;div&gt;&lt;a href=&#34;/next/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;集合的线程安全类&#34;&gt;&lt;a href=&#34;#集合的线程安全类&#34; class=&#34;headerlink&#34; title=&#34;集合的线程安全类&#34;&gt;&lt;/a&gt;集合的线程安全类&lt;/h1&gt;&lt;h2 id=&#34;遗留的线程安全类&#34;&gt;&lt;a href=&#34;#遗留的线程安全类&#34; class=&#34;headerlink&#34; title=&#34;遗留的线程安全类&#34;&gt;&lt;/a&gt;遗留的线程安全类&lt;/h2&gt;&lt;p&gt; Hashtable，Vector直接把同步加到方法上&lt;/p&gt;
+&lt;h2 id=&#34;修饰的安全集合&#34;&gt;&lt;a href=&#34;#修饰的安全集合&#34; class=&#34;headerlink&#34; title=&#34;修饰的安全集合&#34;&gt;&lt;/a&gt;修饰的安全集合&lt;/h2&gt;&lt;p&gt; 装饰器模式，Syncronize*&lt;/p&gt;
+&lt;h2 id=&#34;JUC安全集合&#34;&gt;&lt;a href=&#34;#JUC安全集合&#34; class=&#34;headerlink&#34; title=&#34;JUC安全集合&#34;&gt;&lt;/a&gt;JUC安全集合&lt;/h2&gt;&lt;h3 id=&#34;Blocking型&#34;&gt;&lt;a href=&#34;#Blocking型&#34; class=&#34;headerlink&#34; title=&#34;Blocking型&#34;&gt;&lt;/a&gt;Blocking型&lt;/h3&gt;&lt;p&gt; 大部分实现基于锁并提供阻塞的方法&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8OMUY.html&t=java并发编程12-集合的线程安全类"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">集合的线程安全类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%97%E7%95%99%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">遗留的线程安全类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E7%9A%84%E5%AE%89%E5%85%A8%E9%9B%86%E5%90%88"><span class="toc-number">1.2.</span> <span class="toc-text">修饰的安全集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUC%E5%AE%89%E5%85%A8%E9%9B%86%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">JUC安全集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Blocking%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">Blocking型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CopyOnWrite"><span class="toc-number">1.3.2.</span> <span class="toc-text">CopyOnWrite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Concurrent"><span class="toc-number">1.3.3.</span> <span class="toc-text">Concurrent</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentHashMap"><span class="toc-number">1.4.</span> <span class="toc-text">ConcurrentHashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HashMap"><span class="toc-number">1.4.1.</span> <span class="toc-text">HashMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E6%AD%BB%E9%93%BE"><span class="toc-number">1.4.2.</span> <span class="toc-text">并发死链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E5%A4%B1%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">丢失数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ConcurrentHashMap-%E6%BA%90%E7%A0%81"><span class="toc-number">1.4.4.</span> <span class="toc-text">ConcurrentHashMap 源码</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java并发编程12-集合的线程安全类
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-12T15:54:34.000Z" class="dt-published" itemprop="datePublished">2020-04-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/Java/">Java</a> › <a class="category-link" href="/cactus/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="集合的线程安全类"><a href="#集合的线程安全类" class="headerlink" title="集合的线程安全类"></a>集合的线程安全类</h1><h2 id="遗留的线程安全类"><a href="#遗留的线程安全类" class="headerlink" title="遗留的线程安全类"></a>遗留的线程安全类</h2><p> Hashtable，Vector直接把同步加到方法上</p>
+<h2 id="修饰的安全集合"><a href="#修饰的安全集合" class="headerlink" title="修饰的安全集合"></a>修饰的安全集合</h2><p> 装饰器模式，Syncronize*</p>
+<h2 id="JUC安全集合"><a href="#JUC安全集合" class="headerlink" title="JUC安全集合"></a>JUC安全集合</h2><h3 id="Blocking型"><a href="#Blocking型" class="headerlink" title="Blocking型"></a>Blocking型</h3><p> 大部分实现基于锁并提供阻塞的方法</p>
+<span id="more"></span>
+<h3 id="CopyOnWrite"><a href="#CopyOnWrite" class="headerlink" title="CopyOnWrite"></a>CopyOnWrite</h3><p> 在修改的时候会拷贝一份</p>
+<h3 id="Concurrent"><a href="#Concurrent" class="headerlink" title="Concurrent"></a>Concurrent</h3><p> 使用CAS优化，使用多个锁，但是是弱一致性，如迭代的时候得到的内容是旧的，求大小未必100%准确，读取也是弱一致性</p>
+<h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><p> 细粒度锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LongAdder</span> <span class="variable">value</span> <span class="operator">=</span> concurrentHashMap.computeIfAbsent(word,(key)-&gt;<span class="keyword">new</span> <span class="title class_">LongAdder</span>());</span><br><span class="line">value.increment();</span><br></pre></td></tr></table></figure>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><h3 id="并发死链"><a href="#并发死链" class="headerlink" title="并发死链"></a>并发死链</h3><p> 在jdk7中链表是头插法，插入16，35，1,得到了1-&gt;35-&gt;16<br> 线程A准备扩容 e 1-&gt;35-&gt;16-&gt;null ,  next 35-&gt;16-&gt;null,然后被中断<br> 线程B扩容完成， 导致链表成了 head-&gt;35-&gt;1-&gt;null， 然后中断<br> 线程A继续扩容 e 1-&gt;null, next 35-&gt;1-&gt;null, 把e插入到next新的位置,得到了head-&gt;1-&gt;35-&gt;1-&gt;<br> 继续扩容 e &#x3D; 35-&gt;1-&gt; next &#x3D; 1-&gt;35-&gt; ，把e插入，得到了head-&gt;35-&gt;1-&gt;35, 这里已经死循环了</p>
+<h3 id="丢失数据"><a href="#丢失数据" class="headerlink" title="丢失数据"></a>丢失数据</h3><p> jdk8扩容会丢失数据</p>
+<h3 id="ConcurrentHashMap-源码"><a href="#ConcurrentHashMap-源码" class="headerlink" title="ConcurrentHashMap 源码"></a>ConcurrentHashMap 源码</h3><p> ForwardingNode, 当扩容的时候，我们搬运一次就把老位置上连接ForwardingNode， 当查询来临的时候，就会知道去新的table里面找了，<br> TreeBin， 是红黑树来替换链表,添加值优先考虑扩容而不是转化为红黑树<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?p=281">???怎么不讲了??</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">集合的线程安全类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%97%E7%95%99%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">遗留的线程安全类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E7%9A%84%E5%AE%89%E5%85%A8%E9%9B%86%E5%90%88"><span class="toc-number">1.2.</span> <span class="toc-text">修饰的安全集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUC%E5%AE%89%E5%85%A8%E9%9B%86%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">JUC安全集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Blocking%E5%9E%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">Blocking型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CopyOnWrite"><span class="toc-number">1.3.2.</span> <span class="toc-text">CopyOnWrite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Concurrent"><span class="toc-number">1.3.3.</span> <span class="toc-text">Concurrent</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConcurrentHashMap"><span class="toc-number">1.4.</span> <span class="toc-text">ConcurrentHashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HashMap"><span class="toc-number">1.4.1.</span> <span class="toc-text">HashMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E6%AD%BB%E9%93%BE"><span class="toc-number">1.4.2.</span> <span class="toc-text">并发死链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E5%A4%B1%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">丢失数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ConcurrentHashMap-%E6%BA%90%E7%A0%81"><span class="toc-number">1.4.4.</span> <span class="toc-text">ConcurrentHashMap 源码</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8OMUY.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8OMUY.html&text=java并发编程12-集合的线程安全类"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8OMUY.html&is_video=false&description=java并发编程12-集合的线程安全类"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java并发编程12-集合的线程安全类&body=Check out this article: http://fightinggg.github.io/cactus/Q8OMUY.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUY.html&title=java并发编程12-集合的线程安全类"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8OMUY.html&name=java并发编程12-集合的线程安全类&description=&lt;div&gt;&lt;a href=&#34;/next/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8OMUY.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;集合的线程安全类&#34;&gt;&lt;a href=&#34;#集合的线程安全类&#34; class=&#34;headerlink&#34; title=&#34;集合的线程安全类&#34;&gt;&lt;/a&gt;集合的线程安全类&lt;/h1&gt;&lt;h2 id=&#34;遗留的线程安全类&#34;&gt;&lt;a href=&#34;#遗留的线程安全类&#34; class=&#34;headerlink&#34; title=&#34;遗留的线程安全类&#34;&gt;&lt;/a&gt;遗留的线程安全类&lt;/h2&gt;&lt;p&gt; Hashtable，Vector直接把同步加到方法上&lt;/p&gt;
+&lt;h2 id=&#34;修饰的安全集合&#34;&gt;&lt;a href=&#34;#修饰的安全集合&#34; class=&#34;headerlink&#34; title=&#34;修饰的安全集合&#34;&gt;&lt;/a&gt;修饰的安全集合&lt;/h2&gt;&lt;p&gt; 装饰器模式，Syncronize*&lt;/p&gt;
+&lt;h2 id=&#34;JUC安全集合&#34;&gt;&lt;a href=&#34;#JUC安全集合&#34; class=&#34;headerlink&#34; title=&#34;JUC安全集合&#34;&gt;&lt;/a&gt;JUC安全集合&lt;/h2&gt;&lt;h3 id=&#34;Blocking型&#34;&gt;&lt;a href=&#34;#Blocking型&#34; class=&#34;headerlink&#34; title=&#34;Blocking型&#34;&gt;&lt;/a&gt;Blocking型&lt;/h3&gt;&lt;p&gt; 大部分实现基于锁并提供阻塞的方法&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8OMUY.html&t=java并发编程12-集合的线程安全类"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

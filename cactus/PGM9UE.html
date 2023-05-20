@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    核心思想蒙哥马利运算是一种新的运算，他把乘模简化为对进制数的除法，以及简单加法，这就使得乘模避开了大量的取模试除。 蒙哥马利表示法例如$a%mod$的蒙哥马利表示法为$f(a) &#x3D; a\ti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蒙哥马利模乘">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/PGM9UE.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    核心思想蒙哥马利运算是一种新的运算，他把乘模简化为对进制数的除法，以及简单加法，这就使得乘模避开了大量的取模试除。 蒙哥马利表示法例如$a%mod$的蒙哥马利表示法为$f(a) &#x3D; a\ti">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-10-15T01:37:26.000Z">
+<meta property="article:modified_time" content="2021-05-01T16:42:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>蒙哥马利模乘</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/PGMDBM.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/P5EQ9Y.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/PGM9UE.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/PGM9UE.html&text=蒙哥马利模乘"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/PGM9UE.html&is_video=false&description=蒙哥马利模乘"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蒙哥马利模乘&body=Check out this article: http://fightinggg.github.io/cactus/PGM9UE.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/PGM9UE.html&name=蒙哥马利模乘&description=&lt;div&gt;&lt;a href=&#34;/next/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;h1 id=&#34;核心思想&#34;&gt;&lt;a href=&#34;#核心思想&#34; class=&#34;headerlink&#34; title=&#34;核心思想&#34;&gt;&lt;/a&gt;核心思想&lt;/h1&gt;&lt;p&gt;蒙哥马利运算是一种新的运算，他把乘模简化为对进制数的除法，以及简单加法，这就使得乘模避开了大量的取模试除。&lt;/p&gt;
+&lt;h1 id=&#34;蒙哥马利表示法&#34;&gt;&lt;a href=&#34;#蒙哥马利表示法&#34; class=&#34;headerlink&#34; title=&#34;蒙哥马利表示法&#34;&gt;&lt;/a&gt;蒙哥马利表示法&lt;/h1&gt;&lt;p&gt;例如$a%mod$的蒙哥马利表示法为$f(a) &amp;#x3D; a\times p% mod$，$p$是一个进制数， 我们储存$f(a)$的值，而不是a的值。&lt;/p&gt;
+&lt;h1 id=&#34;复原&#34;&gt;&lt;a href=&#34;#复原&#34; class=&#34;headerlink&#34; title=&#34;复原&#34;&gt;&lt;/a&gt;复原&lt;/h1&gt;&lt;p&gt;于是我们很容易发现，对于蒙哥马利表示法变回普通表示法时只需要乘p对mod的逆元即可。&lt;/p&gt;
+&lt;h1 id=&#34;p的取值&#34;&gt;&lt;a href=&#34;#p的取值&#34; class=&#34;headerlink&#34; title=&#34;p的取值&#34;&gt;&lt;/a&gt;p的取值&lt;/h1&gt;&lt;p&gt;蒙哥马利表示法会找一个进制数使得普通数字转化为蒙哥马利表示法，一般来说这是一个刚好大于模数的进制数。&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/PGM9UE.html&t=蒙哥马利模乘"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">核心思想</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%92%99%E5%93%A5%E9%A9%AC%E5%88%A9%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">蒙哥马利表示法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%8D%E5%8E%9F"><span class="toc-number">3.</span> <span class="toc-text">复原</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p%E7%9A%84%E5%8F%96%E5%80%BC"><span class="toc-number">4.</span> <span class="toc-text">p的取值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%98%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">乘法</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        蒙哥马利模乘
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-10-15T01:37:26.000Z" class="dt-published" itemprop="datePublished">2018-10-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/ACM/">ACM</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGM9UE.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h1><p>蒙哥马利运算是一种新的运算，他把乘模简化为对进制数的除法，以及简单加法，这就使得乘模避开了大量的取模试除。</p>
+<h1 id="蒙哥马利表示法"><a href="#蒙哥马利表示法" class="headerlink" title="蒙哥马利表示法"></a>蒙哥马利表示法</h1><p>例如$a%mod$的蒙哥马利表示法为$f(a) &#x3D; a\times p% mod$，$p$是一个进制数， 我们储存$f(a)$的值，而不是a的值。</p>
+<h1 id="复原"><a href="#复原" class="headerlink" title="复原"></a>复原</h1><p>于是我们很容易发现，对于蒙哥马利表示法变回普通表示法时只需要乘p对mod的逆元即可。</p>
+<h1 id="p的取值"><a href="#p的取值" class="headerlink" title="p的取值"></a>p的取值</h1><p>蒙哥马利表示法会找一个进制数使得普通数字转化为蒙哥马利表示法，一般来说这是一个刚好大于模数的进制数。</p>
+<span id="more"></span>
+
+<h1 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h1><p>如果我们要计算$a\cdot b%mod$</p>
+<p>在蒙哥马利表示法中，$f(a\cdot b)$并不是简单的$f(a)\cdot f(b)$, 实际上应该是$\frac{f(a)\cdot f(b)}{p}$</p>
+<p>于是这里出现了除法，我们就是靠着这个除以p，避开了对非进制数取模，由于p是一个2进制幂，所以可以依靠移位，借此避开了很多高复杂度的除法。</p>
+<p>由拓展欧几里得算法我们可以找到这样一个数字$x$，使得在模$p$时$x\cdot mod \equiv 1$，找到这样的数字以后，我们可以让分子增加一个mod的倍数，很明显这不会影响结果。令 $t&#x3D;x\cdot f(a)\cdot f(b)\mod p$ , 则有</p>
+<p>$\frac{f(a)\cdot f(b)}{p}%mod&#x3D;\frac{f(a)\cdot f(b)- t\cdot mod }{p}%mod$</p>
+<p>不难证明在模$p$的时候$f(a)\cdot f(b)\equiv t\cdot mod $, 于是我们直接使用移位来计算$\frac{f(a)\cdot f(b)- t\cdot mod }{p}$。 至于取模不取模已经无所谓了，至少在数量级上已经同阶了。</p>
+<p>最后给出dls的代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll; </span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> u64; </span><br><span class="line"><span class="keyword">typedef</span> <span class="type">__int128_t</span> i128; </span><br><span class="line"><span class="keyword">typedef</span> <span class="type">__uint128_t</span> u128; </span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Mod64</span> &#123; </span><br><span class="line">    <span class="type">static</span> u64 mod,inv,r2; </span><br><span class="line">    u64 n_; </span><br><span class="line">    <span class="built_in">Mod64</span>():<span class="built_in">n_</span>(<span class="number">0</span>) &#123;&#125; </span><br><span class="line">    <span class="built_in">Mod64</span>(u64 n):<span class="built_in">n_</span>(<span class="built_in">init</span>(n)) &#123;&#125; </span><br><span class="line">    <span class="function"><span class="type">static</span> u64 <span class="title">init</span><span class="params">(u64 w)</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">reduce</span>(<span class="built_in">u128</span>(w) * r2); &#125; </span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">set_mod</span><span class="params">(u64 m)</span> </span>&#123; </span><br><span class="line">        mod=m; <span class="comment">//assert(mod&amp;1); </span></span><br><span class="line">        inv=m; <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++) inv*=<span class="number">2</span>-inv*m; </span><br><span class="line">        r2=-<span class="built_in">u128</span>(m)%m; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="function"><span class="type">static</span> u64 <span class="title">reduce</span><span class="params">(u128 x)</span> </span>&#123; </span><br><span class="line">        u64 y=<span class="built_in">u64</span>(x&gt;&gt;<span class="number">64</span>)-<span class="built_in">u64</span>((<span class="built_in">u128</span>(<span class="built_in">u64</span>(x)*inv)*mod)&gt;&gt;<span class="number">64</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">ll</span>(y)&lt;<span class="number">0</span>?y+mod:y; </span><br><span class="line">    &#125; </span><br><span class="line">    Mod64&amp; <span class="keyword">operator</span> += (Mod64 rhs) &#123; n_+=rhs.n_-mod; <span class="keyword">if</span> (<span class="built_in">ll</span>(n_)&lt;<span class="number">0</span>) n_+=mod; <span class="keyword">return</span> *<span class="keyword">this</span>; &#125; </span><br><span class="line">    Mod64 <span class="keyword">operator</span> + (Mod64 rhs) <span class="type">const</span> &#123; <span class="keyword">return</span> <span class="built_in">Mod64</span>(*<span class="keyword">this</span>)+=rhs; &#125; </span><br><span class="line">    Mod64&amp; <span class="keyword">operator</span> -= (Mod64 rhs) &#123; n_-=rhs.n_; <span class="keyword">if</span> (<span class="built_in">ll</span>(n_)&lt;<span class="number">0</span>) n_+=mod; <span class="keyword">return</span> *<span class="keyword">this</span>; &#125; </span><br><span class="line">    Mod64 <span class="keyword">operator</span> - (Mod64 rhs) <span class="type">const</span> &#123; <span class="keyword">return</span> <span class="built_in">Mod64</span>(*<span class="keyword">this</span>)-=rhs; &#125; </span><br><span class="line">    Mod64&amp; <span class="keyword">operator</span> *= (Mod64 rhs) &#123; n_=<span class="built_in">reduce</span>(<span class="built_in">u128</span>(n_)*rhs.n_); <span class="keyword">return</span> *<span class="keyword">this</span>; &#125; </span><br><span class="line">    Mod64 <span class="keyword">operator</span> * (Mod64 rhs) <span class="type">const</span> &#123; <span class="keyword">return</span> <span class="built_in">Mod64</span>(*<span class="keyword">this</span>)*=rhs; &#125; </span><br><span class="line">    <span class="function">u64 <span class="title">get</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">reduce</span>(n_); &#125; </span><br><span class="line">&#125;; </span><br><span class="line">u64 Mod64::mod,Mod64::inv,Mod64::r2;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">核心思想</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%92%99%E5%93%A5%E9%A9%AC%E5%88%A9%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">蒙哥马利表示法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%8D%E5%8E%9F"><span class="toc-number">3.</span> <span class="toc-text">复原</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#p%E7%9A%84%E5%8F%96%E5%80%BC"><span class="toc-number">4.</span> <span class="toc-text">p的取值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%98%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">乘法</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/PGM9UE.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/PGM9UE.html&text=蒙哥马利模乘"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/PGM9UE.html&is_video=false&description=蒙哥马利模乘"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=蒙哥马利模乘&body=Check out this article: http://fightinggg.github.io/cactus/PGM9UE.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/PGM9UE.html&title=蒙哥马利模乘"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/PGM9UE.html&name=蒙哥马利模乘&description=&lt;div&gt;&lt;a href=&#34;/next/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/PGM9UE.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;h1 id=&#34;核心思想&#34;&gt;&lt;a href=&#34;#核心思想&#34; class=&#34;headerlink&#34; title=&#34;核心思想&#34;&gt;&lt;/a&gt;核心思想&lt;/h1&gt;&lt;p&gt;蒙哥马利运算是一种新的运算，他把乘模简化为对进制数的除法，以及简单加法，这就使得乘模避开了大量的取模试除。&lt;/p&gt;
+&lt;h1 id=&#34;蒙哥马利表示法&#34;&gt;&lt;a href=&#34;#蒙哥马利表示法&#34; class=&#34;headerlink&#34; title=&#34;蒙哥马利表示法&#34;&gt;&lt;/a&gt;蒙哥马利表示法&lt;/h1&gt;&lt;p&gt;例如$a%mod$的蒙哥马利表示法为$f(a) &amp;#x3D; a\times p% mod$，$p$是一个进制数， 我们储存$f(a)$的值，而不是a的值。&lt;/p&gt;
+&lt;h1 id=&#34;复原&#34;&gt;&lt;a href=&#34;#复原&#34; class=&#34;headerlink&#34; title=&#34;复原&#34;&gt;&lt;/a&gt;复原&lt;/h1&gt;&lt;p&gt;于是我们很容易发现，对于蒙哥马利表示法变回普通表示法时只需要乘p对mod的逆元即可。&lt;/p&gt;
+&lt;h1 id=&#34;p的取值&#34;&gt;&lt;a href=&#34;#p的取值&#34; class=&#34;headerlink&#34; title=&#34;p的取值&#34;&gt;&lt;/a&gt;p的取值&lt;/h1&gt;&lt;p&gt;蒙哥马利表示法会找一个进制数使得普通数字转化为蒙哥马利表示法，一般来说这是一个刚好大于模数的进制数。&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/PGM9UE.html&t=蒙哥马利模乘"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     Zookeeper介绍 Zookeeper是一个为分布式应用提供一致性服务的软件，是Hadoop项目的一个子项目，是分布式应用程序协调服务 Zookeeper安装 这里有一个下载地址,也可以bre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zookeeper">
+<meta property="og:url" content="https://fightinggg.github.io/Q8X72K.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     Zookeeper介绍 Zookeeper是一个为分布式应用提供一致性服务的软件，是Hadoop项目的一个子项目，是分布式应用程序协调服务 Zookeeper安装 这里有一个下载地址,也可以bre">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-17T06:51:56.000Z">
+<meta property="article:modified_time" content="2020-04-17T06:51:56.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="Zookeeper">
+<meta property="article:tag" content="集群">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="Hadoop">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/Q8X72K.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/Q8X72K.html","path":"Q8X72K.html","title":"Zookeeper"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Zookeeper | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E4%BB%8B%E7%BB%8D"><span class="nav-text">Zookeeper介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E5%AE%89%E8%A3%85"><span class="nav-text">Zookeeper安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E5%8D%95%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="nav-text">Zookeeper单机启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E9%85%8D%E7%BD%AE"><span class="nav-text">Zookeeper配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-text">Zookeeper数据模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">Zookeeper持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="nav-text">Zookeeper数据加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E7%85%A7%E7%94%9F%E6%88%90%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="nav-text">快照生成的时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97%E7%9A%84%E5%82%A8%E5%AD%98"><span class="nav-text">事务日志的储存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E6%9E%B6%E6%9E%84"><span class="nav-text">Zookeeper架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE"><span class="nav-text">Zookeeper一致性协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper%E9%80%89%E4%B8%BB"><span class="nav-text">Zookeeper选主</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper%E9%80%89%E4%B8%BB%E5%90%8E%E7%9A%84%E5%90%8C%E6%AD%A5"><span class="nav-text">Zookeeper选主后的同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4"><span class="nav-text">两阶段提交</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zookeeper%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-text">Zookeeper的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%91%BD%E5%90%8D%E6%9C%8D%E5%8A%A1"><span class="nav-text">统一命名服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/Q8X72K.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Zookeeper | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Zookeeper<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/Zookeeper/Zookeeper/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-17 14:51:56" itemprop="dateCreated datePublished" datetime="2020-04-17T14:51:56+08:00">2020-04-17</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8X72K.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h1 id="zookeeper介绍">Zookeeper介绍</h1>
+<p>Zookeeper是一个为分布式应用提供一致性服务的软件，是Hadoop项目的一个子项目，是分布式应用程序协调服务</p>
+<h1 id="zookeeper安装">Zookeeper安装</h1>
+<p>这里有一个下载<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/releases.html#download">地址</a>,也可以<code>brew install zookeeper</code>安装还可以<code>docker pull zookeeper</code>安装</p>
+<span id="more"></span>
+<p>我们这里采取docker的方式</p>
+<h1 id="zookeeper单机启动">Zookeeper单机启动</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 2181:2181 --name zookeeper --restart always zookeeper</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it zookeeper bash</span><br><span class="line">./bin/zkCli.sh</span><br></pre></td></tr></table></figure>
+<p>然后我们能看到下面的输出, 我只截取前几行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Connecting to localhost:2181</span><br><span class="line">2020-04-17 07:54:30,252 [myid:] - INFO  [main:Environment@98] - Client environment:zookeeper.version=3.6.0--b4c89dc7f6083829e18fae6e446907ae0b1f22d7, built on 02/25/2020 14:38 GMT</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>输入<code>quit</code>可以退出 # Zookeeper集群启动 嘿嘿嘿</p>
+<h1 id="zookeeper配置">Zookeeper配置</h1>
+<p>在conf目录下有配置文件zoo_sample.cfg和log4j.properties,他们分别是zoo的配置文件模版和日志配置，我们可以将zoo_sample.cfg改为zoo.cfg，这个才是Zookeeper默认的配置文件，其中有几个地方比较重要</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>配置</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tickTime=2000</td>
+<td>这个是心跳时间间隔，单位是毫秒</td>
+</tr>
+<tr class="even">
+<td>dataDir=</td>
+<td>Zookeeper保存数据的目录，默认将日志也保存在其中</td>
+</tr>
+<tr class="odd">
+<td>clientPort=2181</td>
+<td>客户端连接Zookeeper服务器的端口</td>
+</tr>
+<tr class="even">
+<td>initLimit=5</td>
+<td>当客户端超过5个心跳间隔仍然与服务器连接失败，则认为他宕机</td>
+</tr>
+<tr class="odd">
+<td>synLimit=2</td>
+<td>Leader和Follower之间发送消息的响应、请求时间长度不能超过的心跳间隔</td>
+</tr>
+<tr class="even">
+<td>server.1=192.168.211.1:2888:3888</td>
+<td>server.A=B:C:D, A是数字表示服务器编号，B是这个服务器的ip，C是服务器于集群leader交流信息的端口，D是Leader宕机以后选举新Leader的端口</td>
+</tr>
+</tbody>
+</table>
+<h1 id="zookeeper数据模型">Zookeeper数据模型</h1>
+<p>Zookeeper会维护一个层次数据结构，他就像一个文件系统一样, 凑合着看吧 <pre><code class="highlight mermaid">graph LR;
+a((/)) --&gt; b((/NameService));
+a((/)) --&gt; c((/Configuration));
+a((/)) --&gt; d((/GroupMembers));
+a((/)) --&gt; e((/Apps));
+b((/NameService)) --&gt; b1((/Server1))
+b((/NameService)) --&gt; b2((/Server2))</code></pre> ## Zookeeper数据结构的特点 - 所有的目录项都被叫做znode，这个zndoe是被他所在的路径唯一标识， - znode分4类，EPHEMERAL or PERSISTENT, SEQUENTIAL or N - 大部分znode都可以有子节点，都可以储存数据， 只有EPHEMERAL不可以有子节点 - znode储存的数据可以拥有版本号 - EPHEMERAL 是临时节点，服务器客户端用心跳机制来保证长连接，如果客户端宕机，这个节点会被删除 - znode可以被监控，是一种观察者模式，客户端可以在目录上注册观察，当目录发生变化，客户端会得到通知</p>
+<h1 id="zookeeper持久化">Zookeeper持久化</h1>
+<p>Zookeeper的数据分为两个部分，一部分是内存数据，另一部分是磁盘数据，内存数据提供对外服务，磁盘数据用来恢复内存数据，用来在集群汇总不同节点间数据的同步，磁盘数据包括快照和事务日志，快照是粗粒度，事务日志是细粒度。</p>
+<h2 id="zookeeper数据加载">Zookeeper数据加载</h2>
+<p>先加载快照然后加载日志</p>
+<h2 id="快照生成的时机">快照生成的时机</h2>
+<p>基于阈值，引入随机因素，我们要避免所有节点同时制造快照，这会导致消耗大量磁盘IO和CPU，降低对外服务能力，参见一个公式 <span class="math display">\[countLog&gt;snapCount/2+randRoll\]</span> 这里的countLog是累计执行的事务个数，snapCount是一个预先设定的阈值，randRoll是一个随机数</p>
+<h2 id="事务日志的储存">事务日志的储存</h2>
+<p>事务日志是不断写入的，会触发底层磁盘IO，为了减少分配磁盘块对写入的影响，Zookeeper使用预分配的策略，每次分配64MB,当这64MB的空间被使用到只剩下4KB的时候，就开始再次分配空间了</p>
+<h1 id="zookeeper架构">Zookeeper架构</h1>
+<p><strong>过半:</strong>当leader广播一个事务消息以后，收到了半数以上的ack，就认为集群中所有的节点都收到了消息，leader不会等待剩余节点的ack，直接广播commit消息，提交事务，选举投票中也是如此</p>
+<p>Zookeeper集群中有3种角色</p>
+<table>
+<thead>
+<tr class="header">
+<th>角色</th>
+<th>任务</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>leader</td>
+<td>一个集群只有一个leader，通过选举产生，负责所有事务的写操作，保证集群事务处理的顺序性</td>
+</tr>
+<tr class="even">
+<td>follower</td>
+<td>处理非事务请求，转发事务给leader，参与leader选举投票，</td>
+</tr>
+<tr class="odd">
+<td>observer</td>
+<td>提供读取服务，不参与投票</td>
+</tr>
+</tbody>
+</table>
+<h1 id="zookeeper一致性协议">Zookeeper一致性协议</h1>
+<ul>
+<li>集群在半数以下节点宕机的情况下，能够正常对外提供服务</li>
+<li>客户端的写请求全部转交给leader处理，以确保变更能实时同步到所有的follower和observer</li>
+<li>leader宕机或者整个集群重启的时候，要确保在leader上提交的事务最终被所有服务器提交，确保只在leader上提出单未被提交的事务被丢弃</li>
+</ul>
+<h2 id="zookeeper选主">Zookeeper选主</h2>
+<p>当集群中的服务器初始化启动或者运行期无法与leader保持连接的时候，会触发选主，投票者们混线传递投票的信息，包含了被推举的leader的服务id、事务zxid、逻辑时钟、选举状态，显然要选举事务zxid最大的那个,如果事务id相同，就选择服务id最大的那个</p>
+<p>广播的时候每当外边传入的(id,zxid)比自己内存中的要优的时候，就更新自己的数据，然后向外广播[^理解zookeeper选举机制]</p>
+<p>这里有一个有意思的东西，我们什么时候选举结束呢？</p>
+<p>当一个(id,zxid)被超过半数的节点所选举的时候，它就有力担当leader，为什么是半数？因为Zookeeper集群的每一条事务，都是在超过半数ack的情况下才能被leader提交，所以如果一个节点在半数中为最优，那么它一定是最优者之一</p>
+<p>这就好比一个数列，数列中的最大值的数量超过了半数，那么该序列的任何一个元素个数超过一半的子序列的最值，一定等于整个序列的最值。比方有一个序列[1,2,3,5,5,5,5], 你在其中选择至少4个数，那么他们中的最大值一定是5，其实就是鸽巢原理</p>
+<p>另一方面选主的时候，每个节点都是三个线程，一个负责接收投票并放入队列，另一个用于发送投票信息，还有一个用于外部投票同自己的信息比较，选出新的结果</p>
+<h2 id="zookeeper选主后的同步">Zookeeper选主后的同步</h2>
+<p>这里的数据不一致可能有两种，要么比leader旧，要么比leader新，旧的话同步即可，新的话撤销这个未提交的事务即可, 两个不一致性的原因这里有谈到[^分析Zookeeper的一致性原理]</p>
+<h2 id="两阶段提交">两阶段提交</h2>
+<p>事务由leader发起，follower执行，然后返回ack，最终由leader决定是否提交。</p>
+<h1 id="zookeeper的应用">Zookeeper的应用</h1>
+<h2 id="统一命名服务">统一命名服务</h2>
+<p>路径就是名字 ## 配置管理 我们的集群，每台机器都有自己的配置文件，这会非常难以维护，实际上我们会把配置文件储存在Zookeeper的某个目录节点中，让集群的每台机器都注册该节点的观察，当配置文件发生改变的时候，这些机器都会的得到通知，然后从Zookeeper更新自己的配置文件。 ## 集群管理 我们的集群需要有一个总管知道集群中每台机器的状态，当一些机器发生故障或者新添加机器的时候，总管必须知道，这就可以用Zookeeper管理</p>
+<p>甚至当总管宕机以后，Zookeeper能够重新选出总管，总管会在Zookeeper中创建一个EPHEMERAL类型的目录节点，每个Server会注册这个节点的watch，总管死去的时候，这个目录会被删除，所有的子节点都会收到通知，这时大家都知道总管宕机了，集群默认会选择接待你编号最小的Server作为新的Master。 ## 分布式锁 同样，我们让第一个创建某目录成功的机器获得锁，其他机器在其子目录下创建新的目录节点，当它需要释放锁的时候，只需要删除目录，然后让子节点中编号最小的节点作文新的目录获得锁，其他节点继续跟随即可。 ## 队列管理 同步队列，即当所有成员达到某个条件是，才能以前向后执行，我们创建一个同步目录，每当一个成员满足条件，就去Zookeeper上注册节点，如果当前节点的个数达到n，就创建start节点，否则注册watch，等待start节点被创建，当其被创建就会收到通知，然后执行自己的事情</p>
+<p>FIFO队列， 如生产者消费者模型，创建子目录/queue,当生产者生产出东西的时候，在/queue上创建新节点，当消费者需要消费的时候，从当前目录去除编号最小的节点即可</p>
+<h1 id="参考资料">参考资料</h1>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LUA123/p/11428113.html">Docker下安装zookeeper（单机 &amp; 集群）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41863129/article/details/105028766">ZooKeeper学习 一:安装</a></p>
+<p><a target="_blank" rel="noopener" href="http://jm.taobao.org/2010/12/21/665/">zookeeper使用和原理探究</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/">分布式服务框架 Zookeeper — 管理分布式环境中的数据</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jinzhidao/p/12534064.html">mac安装的docker替换镜像</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/3847203/blog/3098735/print">Zookeeper持久化原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/varyall/article/details/795644180">ZooKeeper 技术内幕：数据的存储(持久化机制)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jpf254/article/details/80769525">Zookeeper-持久化</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.51cto.com/welcomeweb/2103292?utm_source=oschina-app">分析Zookeeper的一致性原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shuaiandjun/p/9383655.html">理解zookeeper选举机制</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/Q8X72K.html" title="Zookeeper">https://fightinggg.github.io/Q8X72K.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Zookeeper/" rel="tag"><i class="fa fa-tag"></i> Zookeeper</a>
+              <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"><i class="fa fa-tag"></i> 集群</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+              <a href="/tags/Hadoop/" rel="tag"><i class="fa fa-tag"></i> Hadoop</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Q8VYLN.html" rel="prev" title="美团笔试">
+                  <i class="fa fa-chevron-left"></i> 美团笔试
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Q8Y0IS.html" rel="next" title="mac中ping-docker容器">
+                  mac中ping-docker容器 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/Q8X72K.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1353f20d14376e28ebc7a6759c548d05"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

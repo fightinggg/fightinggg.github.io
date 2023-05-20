@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AC自动机 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  AC自动机所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。 自动机自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AC自动机">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/PHRG42.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  AC自动机所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。 自动机自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2018-11-06T07:14:26.000Z">
+<meta property="article:modified_time" content="2018-11-06T07:14:26.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/PHRG42.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AC自动机',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2018-11-06 15:14:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AC自动机</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-11-06T07:14:26.000Z" title="发表于 2018-11-06 15:14:26">2018-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2018-11-06T07:14:26.000Z" title="更新于 2018-11-06 15:14:26">2018-11-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/">ACM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AC自动机"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="AC自动机"><a href="#AC自动机" class="headerlink" title="AC自动机"></a>AC自动机</h1><p>所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。</p>
+<h1 id="自动机"><a href="#自动机" class="headerlink" title="自动机"></a>自动机</h1><p>自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字典树上，增加了两个新的东西，一个标记了终止状态集合，另一个辅助了状态转移函数。 我们利用字典树上 的节点来表示状态，而边则用来表示状态转移函数的一部分。</p>
+<span id="more"></span>
+
+<h1 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h1><p>当AC自动机建立好了以后，我们就可以在AC自动机上进行匹配了，我们在自动机上一 个一个 节点忘下跑，一直到失配，即到达AC自动机上某个节点后，此节点所代表的字符串，与母串的当前前缀子串相差刚好只为最后一个字母，这 时候，我们跳跃到fail指针即可进行后面的继续匹配。</p>
+<h1 id="file指针"><a href="#file指针" class="headerlink" title="file指针"></a>file指针</h1><p>fail指针当然跳得越深越好，这时候fail所代表的意义到底是什么呢？很明显，此时 要求与母串有 尽可能长得公共前缀，也就是说与失配发生的时候AC自动机所在节点（所表示的状态）表示的字符串的尽可能长的后缀相同的新节点 ， 这里我们明显可以采取树形dp来得到。</p>
+<h1 id="内存开销"><a href="#内存开销" class="headerlink" title="内存开销"></a>内存开销</h1><p>我们用fail[u]表示节点u的失配指针，用<code>nex[u][i]</code>表示节点u的指向 字符i的节点， 于是我们发现 了转移式子： <code>fail[nex[u][i]]= nex[fail[u]][i]</code>;如果fail[u]有儿子i的话，但如果没有呢？我们又要不断往上面跳跃对吧。 复杂度不是特别高，能忍受，当然这是在u有节点i的情况下。如果没有节点呢？sorry，这个问题有点复杂，一般的AC自动机不关心这种事情。因为那 会增加很多额外的开销，我们不愿意去给他们建立新节点来储存fail指针的。</p>
+<h1 id="字典图"><a href="#字典图" class="headerlink" title="字典图"></a>字典图</h1><p>有一种AC自动机，他索性把字典树建成了字典图，如果nex指针指向空节点，他 一定会导致失配，他的nex指针就直接指向了应该是fail指针的地方，很漂亮的做法，但是我们失去了很多，比方说，树没有了，AC自动机不能再加入新 的模式串了。这让我们很难受，抉择产生了，要么选择字典树+好几倍的新空间开销，要么选择字典图。</p>
+<h1 id="更好的解决方案"><a href="#更好的解决方案" class="headerlink" title="更好的解决方案"></a>更好的解决方案</h1><p>笔者对此思考了很久，很久，考虑到我们要么用-1要么用0来表示nex指针指向的 是空节点，也就是说，负数没有被使用到，我们可以这样做，如果一条边在字典树上，我们正常储存，如果他不在字典树，而是在字典图上，那我们存储 他所指向的节点的相反数，一者表示此指针指向空节点，再者表示此指针指向的节点的fail指针，这样的做法集合了上诉两种做法的优点于一身。下面是我的代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Aho_Corasick_automation</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e6</span>+<span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> trans[maxn][<span class="number">26</span>],fail[maxn],end[maxn];</span><br><span class="line">    <span class="type">int</span> root,cnt;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">new_node</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//fail指针不需要初始化,因为在bfs的时候他被更新</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)trans[cnt][i]=<span class="number">0</span>;</span><br><span class="line">        end[cnt]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> cnt++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cnt=<span class="number">0</span>;</span><br><span class="line">        root=<span class="built_in">new_node</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">char</span>*buf)</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> len=(<span class="type">int</span>)<span class="built_in">strlen</span>(buf+<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> u=root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]==<span class="number">0</span>)</span><br><span class="line">                trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]=<span class="built_in">new_node</span>();</span><br><span class="line">            u=trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        end[u]++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">get_fail</span><span class="params">()</span></span>&#123;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="type">int</span> u=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(trans[u][i]==<span class="number">0</span>)&#123;</span><br><span class="line">                    trans[u][i]=-<span class="built_in">abs</span>(trans[fail[u]][i]);<span class="comment">//采用负数来表示非树边。。</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    q.<span class="built_in">push</span>(trans[u][i]);</span><br><span class="line">                    fail[trans[u][i]]=<span class="built_in">abs</span>(trans[fail[u]][i]);</span><br><span class="line">                    <span class="keyword">if</span>(u==root)fail[trans[u][i]]=root;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">char</span>*buf)</span></span>&#123;<span class="comment">//统计母串里面出现了几种子串</span></span><br><span class="line">        <span class="type">int</span> len=(<span class="type">int</span>)<span class="built_in">strlen</span>(buf+<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> u=root ,ret=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=len;i++)&#123;</span><br><span class="line">            u=<span class="built_in">abs</span>(trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> p=u;p!=root;p=fail[p])&#123;</span><br><span class="line">                <span class="keyword">if</span>(end[p]==<span class="number">-1</span>)<span class="keyword">break</span>;</span><br><span class="line">                ret+=end[p];</span><br><span class="line">                end[p]=<span class="number">-1</span>;<span class="comment">//为什么要搞-1呢？可以用来剪枝，预防这样的特殊数据-&gt; aaaaaaaaaaa......</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">debug</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">35</span>;i++)<span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">26</span>;j++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%2c&quot;</span>,j+<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;cnt;i++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;id=%3d | fail=%3d | end=%3d | chi=[&quot;</span>,i,fail[i],end[i]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">26</span>;j++)&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%2d&quot;</span>,trans[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;]\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/PHRG42.html">http://fightinggg.github.io/butterfly/PHRG42.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/PJEZJ9.html" title="Manacher算法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Manacher算法</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/PHMIY1.html" title="回文自动机"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">回文自动机</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AC%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">AC自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#file%E6%8C%87%E9%92%88"><span class="toc-number">4.</span> <span class="toc-text">file指针</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%BC%80%E9%94%80"><span class="toc-number">5.</span> <span class="toc-text">内存开销</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E5%85%B8%E5%9B%BE"><span class="toc-number">6.</span> <span class="toc-text">字典图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">7.</span> <span class="toc-text">更好的解决方案</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

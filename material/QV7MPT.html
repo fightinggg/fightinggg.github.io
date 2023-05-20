@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            跟我一起自己写编译器-6.语义分析 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+6. 语义分析6.1. 语法制导翻译语法制导翻译分为两类，一类是S型语法制导翻译，另一类是L型语法制导翻译。这里我们主要介绍S型语法制导翻译，因为他更简单，更加适用于语法树。
+6.2. S型语法制导翻译当我们构建出语法书以后，其每个节点与自己的子节点的关系就是产生式的关系，对语法树进行DFS就是遍历整个语法树，很多信息可以在遍历的过程中自底向上进行逐步翻译。">
+    <meta name="keywords" content=",读书,跟我一起写编译器">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/QV7MPT.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/QV7MPT.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="跟我一起自己写编译器-6.语义分析 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+6. 语义分析6.1. 语法制导翻译语法制导翻译分为两类，一类是S型语法制导翻译，另一类是L型语法制导翻译。这里我们主要介绍S型语法制导翻译，因为他更简单，更加适用于语法树。
+6.2. S型语法制导翻译当我们构建出语法书以后，其每个节点与自己的子节点的关系就是产生式的关系，对语法树进行DFS就是遍历整个语法树，很多信息可以在遍历的过程中自底向上进行逐步翻译。">
+    <meta property="og:article:tag" content="读书"> <meta property="og:article:tag" content="跟我一起写编译器"> 
+
+    
+        <meta property="article:published_time" content="Thu Jun 24 2021 22:25:05 GMT+0800">
+        <meta property="article:modified_time" content="Sun Aug 29 2021 09:41:05 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/QV7MPT.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/QV7MPT.html",
+    "headline": "跟我一起自己写编译器-6.语义分析",
+    "datePublished": "Thu Jun 24 2021 22:25:05 GMT+0800",
+    "dateModified": "Sun Aug 29 2021 09:41:05 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": ",读书,跟我一起写编译器",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+6. 语义分析6.1. 语法制导翻译语法制导翻译分为两类，一类是S型语法制导翻译，另一类是L型语法制导翻译。这里我们主要介绍S型语法制导翻译，因为他更简单，更加适用于语法树。
+6.2. S型语法制导翻译当我们构建出语法书以后，其每个节点与自己的子节点的关系就是产生式的关系，对语法树进行DFS就是遍历整个语法树，很多信息可以在遍历的过程中自底向上进行逐步翻译。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="post-toc-number">1.</span> <span class="post-toc-text">6. 语义分析</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-1-%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="post-toc-number">2.</span> <span class="post-toc-text">6.1. 语法制导翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-2-S%E5%9E%8B%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="post-toc-number">3.</span> <span class="post-toc-text">6.2. S型语法制导翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-3-%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="post-toc-number">4.</span> <span class="post-toc-text">6.3. 正则文法语法制导翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-4-JSON%E6%96%87%E6%B3%95%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="post-toc-number">5.</span> <span class="post-toc-text">6.4. JSON文法语法制导翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-5-Pava%E5%AD%90%E9%A1%B9%E7%9B%AE%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="post-toc-number">6.</span> <span class="post-toc-text">6.5. Pava子项目语法制导翻译</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-1-%E4%B8%89%E5%9C%B0%E5%9D%80%E4%BB%A3%E7%A0%81"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">6.5.1. 三地址代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-2-%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">6.5.2. 变量定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-3-%E5%8F%98%E9%87%8F%E8%AE%A1%E7%AE%97"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">6.5.3. 变量计算</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-4-if-%E6%9D%A1%E4%BB%B6%E5%88%86%E6%94%AF"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">6.5.4. if 条件分支</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-5-for-x2F-while%E5%BE%AA%E7%8E%AF"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">6.5.5. for&#x2F;while循环</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-5-6-%E5%87%BD%E6%95%B0"><span class="post-toc-number">6.6.</span> <span class="post-toc-text">6.5.6. 函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-6-IF%E6%9D%A1%E4%BB%B6%E5%88%86%E6%94%AF%E7%BF%BB%E8%AF%91"><span class="post-toc-number">7.</span> <span class="post-toc-text">6.6. IF条件分支翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-7-WHILE%E5%BE%AA%E7%8E%AF%E7%BF%BB%E8%AF%91"><span class="post-toc-number">8.</span> <span class="post-toc-text">6.7. WHILE循环翻译</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6-8-FOR-x2F-DOWHILE%E5%BE%AA%E7%8E%AF"><span class="post-toc-number">9.</span> <span class="post-toc-text">6.8. FOR&#x2F;DOWHILE循环</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                跟我一起自己写编译器-6.语义分析
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>6月 24, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/material/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/material/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=跟我一起自己写编译器-6.语义分析&url=http://fightinggg.github.io/material/material/QV7MPT.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=跟我一起自己写编译器-6.语义分析&url=http://fightinggg.github.io/material/material/QV7MPT.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/QV7MPT.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/QV7MPT.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="6-语义分析"><a href="#6-语义分析" class="headerlink" title="6. 语义分析"></a>6. 语义分析</h1><h1 id="6-1-语法制导翻译"><a href="#6-1-语法制导翻译" class="headerlink" title="6.1. 语法制导翻译"></a>6.1. 语法制导翻译</h1><p>语法制导翻译分为两类，一类是S型语法制导翻译，另一类是L型语法制导翻译。这里我们主要介绍S型语法制导翻译，因为他更简单，更加适用于语法树。</p>
+<h1 id="6-2-S型语法制导翻译"><a href="#6-2-S型语法制导翻译" class="headerlink" title="6.2. S型语法制导翻译"></a>6.2. S型语法制导翻译</h1><p>当我们构建出语法书以后，其每个节点与自己的子节点的关系就是产生式的关系，对语法树进行DFS就是遍历整个语法树，很多信息可以在遍历的过程中自底向上进行逐步翻译。</p>
+<span id="more"></span>
+
+<h1 id="6-3-正则文法语法制导翻译"><a href="#6-3-正则文法语法制导翻译" class="headerlink" title="6.3. 正则文法语法制导翻译"></a>6.3. 正则文法语法制导翻译</h1><p>这里列举一个笔者的项目compiler中一个有趣的子模块，<a target="_blank" rel="noopener" href="https://github.com/fightinggg/compiler/blob/master/main/src/main/java/com/example/lang/reg/RegSyntaxDirectedTranslation.java">正则子模块</a>，</p>
+<p>直接看代码, 这里是一个语法制导翻译片段，在产生式<code>unit -&gt; char</code>下， </p>
+<p>其中有四个参数，fa是上下问信息，rt是当前节点，sonlist是子节点数组，accessAllSon是一个子树分析的接口。</p>
+<p>首先调用<code> accessAllSon.run();</code>将子树进行翻译</p>
+<p>当子树翻译完成以后，sonlist中会有子节点的所有信息，这时候我们只需要将子树所生产的nfa放入当前节点的nfa即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map.entry(<span class="string">&quot;unit -&gt; char&quot;</span>, (fa, rt, sonList, accessAllSon) -&gt; &#123;</span><br><span class="line">    accessAllSon.run();</span><br><span class="line">    rt.put(<span class="string">&quot;nfa&quot;</span>, sonList.get(<span class="number">0</span>).get(<span class="string">&quot;nfa&quot;</span>));</span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+
+<p>然后看星号片段，一个正则后面紧跟着一个add代表这个正则可以出现1次或者多次，所以我们只需要先对子树进行翻译，然后取出翻译后的unit的nfa，对他进行自循环操作。何为自循环可见<code>5.5.4. 正则例4</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map.entry(<span class="string">&quot;unit -&gt; unit add&quot;</span>, (fa, rt, sonList, accessAllSon) -&gt; &#123;</span><br><span class="line">    accessAllSon.run();</span><br><span class="line">    Nfa&lt;Object, String&gt; nfa = toNfa(sonList.get(<span class="number">0</span>).get(<span class="string">&quot;nfa&quot;</span>));</span><br><span class="line">    rt.put(<span class="string">&quot;nfa&quot;</span>, NfaUtils.series(nfa, NfaUtils.selfLoop(nfa, Nfa.EMPTY_TRANS), Nfa.EMPTY_TRANS));</span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="6-4-JSON文法语法制导翻译"><a href="#6-4-JSON文法语法制导翻译" class="headerlink" title="6.4. JSON文法语法制导翻译"></a>6.4. JSON文法语法制导翻译</h1><p>然后来看笔者i项目中另一个有趣的子模块，<a target="_blank" rel="noopener" href="https://github.com/fightinggg/compiler/blob/master/main/src/main/java/com/example/lang/json/JsonSyntaxDirectedTranslation.java">JSON子模块</a>, 这部分代码非常短，我们就直接全部贴过来，</p>
+<p><code>object -&gt; string | array | leftCurlyBracket kvs rightCurlyBracket  </code>等 则直接将子树的结果放入当前的obj</p>
+<p><code>kv -&gt; string colon object</code>则将子树的string变为key，obj当作value，制造一个map</p>
+<p><code>kvs -&gt; kvs comma kv</code>则合并子树的map</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, SyntaxDirectedTranslationUtils.SyntaxDirectedTranslationConsumer&gt; innerNodeConfig = Map.ofEntries(</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; string&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;tokenRaw&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; number&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>();</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; array&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; leftCurlyBracket kvs rightCurlyBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">1</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; leftCurlyBracket rightCurlyBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, Map.of());</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;target -&gt; object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;array -&gt; leftSquareBracket objects rightSquareBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">1</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;array -&gt; leftSquareBracket rightSquareBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, List.of());</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kvs -&gt; kv&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kvs -&gt; kvs comma kv&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        Map&lt;String, Object&gt; kvs = toMap(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        Map&lt;String, Object&gt; kv = toMap(son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, MergeableMap.merge(kvs, kv));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kv -&gt; string colon object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> toString(son.get(<span class="number">0</span>).get(<span class="string">&quot;tokenRaw&quot;</span>));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">value</span> <span class="operator">=</span> son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>);</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, Map.of(key, value));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;objects -&gt; object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, List.of(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>)));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;objects -&gt; objects comma object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        Collection&lt;Object&gt; l1 = toList(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        Collection&lt;Object&gt; l2 = List.of(son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, MergeableCollection.merge(l1, l2));</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-5-Pava子项目语法制导翻译"><a href="#6-5-Pava子项目语法制导翻译" class="headerlink" title="6.5. Pava子项目语法制导翻译"></a>6.5. Pava子项目语法制导翻译</h1><p>pava语言是一门类c语言，其支持函数、整形、字符串、加减乘除等运算、for、if、while等循环。</p>
+<p>pava项目非常复杂，其中涉及到了三地址代码、作用域、CPU抽象、寄存器分配等信息，这里不打算展开，笔者会在另一篇Blog中进行详细分析。这里只做简要介绍。</p>
+<h2 id="6-5-1-三地址代码"><a href="#6-5-1-三地址代码" class="headerlink" title="6.5.1. 三地址代码"></a>6.5.1. 三地址代码</h2><p>三地址代码是一种类似于汇编的代码，每个代码最多只有三个地址，一个运算，往往为第二和第三个地址操作以后，其值存入地址1。</p>
+<h2 id="6-5-2-变量定义"><a href="#6-5-2-变量定义" class="headerlink" title="6.5.2. 变量定义"></a>6.5.2. 变量定义</h2><p>当定义一个变量时，将其作用域提升至函数入口，具体方案为在语法制导翻译的时候将子树的作用域合并到自己身上</p>
+<h2 id="6-5-3-变量计算"><a href="#6-5-3-变量计算" class="headerlink" title="6.5.3. 变量计算"></a>6.5.3. 变量计算</h2><p>按照语法制导翻译，所有的二元运算、一元运算，都需要新建一个临时变量来储存</p>
+<h2 id="6-5-4-if-条件分支"><a href="#6-5-4-if-条件分支" class="headerlink" title="6.5.4. if 条件分支"></a>6.5.4. if 条件分支</h2><p>if只需要支持jump指令即可翻译，先计算if的条件的值，将其结果放入临时变量，然后使用jumpIfTrue这种指令来进行跳转。</p>
+<h2 id="6-5-5-for-x2F-while循环"><a href="#6-5-5-for-x2F-while循环" class="headerlink" title="6.5.5. for&#x2F;while循环"></a>6.5.5. for&#x2F;while循环</h2><p>稍微改改if的跳转即可实现</p>
+<h2 id="6-5-6-函数"><a href="#6-5-6-函数" class="headerlink" title="6.5.6. 函数"></a>6.5.6. 函数</h2><p>函数是一个很复杂的东西，当调用一个函数的时候，需要保存当前所有的变量，然后参数入栈，跳转，</p>
+<p>当一个函数执行时， 需要从栈中取出变量，执行函数体以后，需要从栈中取出返回地址（PC指针），将返回值存入寄存器，然后返回。</p>
+<h1 id="6-6-IF条件分支翻译"><a href="#6-6-IF条件分支翻译" class="headerlink" title="6.6. IF条件分支翻译"></a>6.6. IF条件分支翻译</h1><p>查看下面的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if condititon code1 else code2</span><br></pre></td></tr></table></figure>
+
+
+
+<p>假设condition的代码为conditon.code,这段代码执行完以后值保留在地址condition.address中，</p>
+<p>假设code1的代码为code1.code, code2的代码为code2.code，</p>
+<p>这是的代码布局为四段，第一段对应if，先执行完condition.code，然后根据conditon.address来决定是否跳转到code2Begin，</p>
+<p>如果为真则跳转，否则继续向下执行</p>
+<p>注意到code1.code和code2.code执行完以后，都会跳转的到LABEL IFEND</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$&#123;conditon.code&#125;</span><br><span class="line">JUMIFFALSE conditon.address code2Begin</span><br><span class="line"></span><br><span class="line">LABEL code1Begin</span><br><span class="line">$&#123;code1.code&#125;</span><br><span class="line">JUMP IFEND</span><br><span class="line"></span><br><span class="line">LABEL code2Begin</span><br><span class="line">$&#123;code2.code&#125;</span><br><span class="line">JUMP IFEND</span><br><span class="line"></span><br><span class="line">LABEL IFEND</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="6-7-WHILE循环翻译"><a href="#6-7-WHILE循环翻译" class="headerlink" title="6.7. WHILE循环翻译"></a>6.7. WHILE循环翻译</h1><p>还是一样</p>
+<p>假设condition的代码为conditon.code,这段代码执行完以后值保留在地址condition.address中，</p>
+<p>假设code的代码为code.code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while condititon code</span><br></pre></td></tr></table></figure>
+
+<p>代码分为四段</p>
+<p>第一段为while的开始，</p>
+<p>第二段为条件判断，如果为真则跳转到whileEnd，否则向下执行</p>
+<p>第三段为code，执行以后跳转到whileBegin进行重新循环</p>
+<p>第四段为whlieEnd,是while循环的出口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LABEL whileBegin</span><br><span class="line"></span><br><span class="line">$&#123;conditon.code&#125;</span><br><span class="line">JUMIFFALSE conditon.address whileEnd</span><br><span class="line"></span><br><span class="line">$&#123;code1.code&#125;</span><br><span class="line">JUMP whileBegin</span><br><span class="line"></span><br><span class="line">LABEL whileEnd</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="6-8-FOR-x2F-DOWHILE循环"><a href="#6-8-FOR-x2F-DOWHILE循环" class="headerlink" title="6.8. FOR&#x2F;DOWHILE循环"></a>6.8. FOR&#x2F;DOWHILE循环</h1><p>和while一样</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/QV7MPT.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/QV7MPT.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/QVAQR0.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/QV7MPS.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

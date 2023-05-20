@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kafka权威指南 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial       由于这是第三篇Kafka方面的学习资源，参见 深入理解Kafka-核心设计与实践原理和Kafka，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka权威指南">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/QR6OSO.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial       由于这是第三篇Kafka方面的学习资源，参见 深入理解Kafka-核心设计与实践原理和Kafka，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2021-04-07T07:58:00.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:58:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/QR6OSO.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kafka权威指南',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-07 15:58:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Kafka权威指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-07T07:58:00.000Z" title="发表于 2021-04-07 15:58:00">2021-04-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-07T07:58:00.000Z" title="更新于 2021-04-07 15:58:00">2021-04-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/%E9%98%9F%E5%88%97/">队列</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kafka权威指南"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+
+
+<p><img src='/image-2021-04-07-16.25.47.090.png'></img></p>
+<p>由于这是第三篇Kafka方面的学习资源，参见 <a href="/QQRN80.html">深入理解Kafka-核心设计与实践原理</a>和<a href="/Q90SQR.html">Kafka</a>，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。</p>
+<span id="more"></span>
+
+<h1 id="第三章-Kafka生产者-向kafka写入数据"><a href="#第三章-Kafka生产者-向kafka写入数据" class="headerlink" title="第三章 Kafka生产者-向kafka写入数据"></a>第三章 Kafka生产者-向kafka写入数据</h1><h2 id="生产者配置"><a href="#生产者配置" class="headerlink" title="生产者配置"></a>生产者配置</h2><h3 id="acks-再重复一遍这个配置"><a href="#acks-再重复一遍这个配置" class="headerlink" title="acks(再重复一遍这个配置)"></a>acks(再重复一遍这个配置)</h3><blockquote>
+<p>acks参数指定了必须要有多少个分区副本收到消息,生产者才会认为消息写入是成功的。这个参数对消息丢失的可能性有重要影响。该参数有如下选项</p>
+<p>如果acks&#x3D;0,生产者在成功写入消息之前不会等待任何来自服务器的响应。也就是说如果当中出现了问题,导致服务器没有收到消息,那么生产者就无从得知,消息也就丢失了。不过,因为生产者不需要等待服务器的响应,所以它可以以网络能够支持的最大速度发送消息,从而达到很高的吞吐量</p>
+<p>如果acks&#x3D;1,只要集群的首领节点收到消息,生产者就会收到一个来自服务器的成功响应。如果消息无法到达首领节点(比如首领节点崩溃,新的首领还没有被选举出来)生产者会收到一个错误响应,为了避免数据丢失,生产者会重发消息。不过,如果一个没有收到消息的节点成为新首领,消息还是会丢失。这个时候的吞吐量取决于使用的是同步发送还是异步发送。如果让发送客户端等待服务器的响应(通过调用 Future对象的get()方法),显然会增加延迟(在网络上传输一个来回的延退)。如果客户端使用回调,延迟问题就可以得到缓解,不过吞吐量还是会受发送中消息数量的限制(比如,生产者在收到服务器响应之前可以发送多少个消息)。</p>
+<p>如果acks&#x3D;all,只有当所有参与复制的节点全部收到消息时,生产者オ会收到一个来自服务器的成功响应。这种模式是最安全的,它可以保证不止一个服务器收到消息,就算有服务器发生崩溃,整个集群仍然可以运行(第5章将讨论更多的细节)。不过,它的延迟比acks&#x3D;1时更高,因为我们要等待不只一个服务器节点接收消息</p>
+<p>Page: 36</p>
+</blockquote>
+<h3 id="max-in-flight-requests-per-connection"><a href="#max-in-flight-requests-per-connection" class="headerlink" title="max.in.flight.requests.per.connection"></a>max.in.flight.requests.per.connection</h3><p>这个参数影响了消息能否乱序</p>
+<blockquote>
+<p>该参数指定了生产者在收到服务器响应之前可以发送多少个消息。它的值越高,就会占用越多的内存,不过也会提升吞吐量。把它设为1可以保证消息是按照发送的顺序写入服务器的,即使发生了重试</p>
+<p>Kafka 可以保证同一个分区里的消息是有序的。也就是说，如果生产者按照 一定的顺序发送消息，broker 就会按照这个顺序把它们写入分区，消费者也 会按照同样的顺序读取它们。在某些情况下，顺序是非常重要的。例如，往 一个账户存入 100 元再取出来，这个与先取钱再存钱是截然不同的！不过， 有些场景对顺序不是很敏感。 如果把 retries 设为非零整数，同时把 max.in.flight.requests.per.connection 设为比 1 大的数，那么，如果第一个批次消息写入失败，而第二个批次写入 成功，broker 会重试写入第一个批次。如果此时第一个批次也写入成功，那 么两个批次的顺序就反过来了。 一般来说，如果某些场景要求消息是有序的，那么消息是否写入成功也是 很关键的，所以不建议把 retries 设为 0。可以把 max.in.flight.requests. per.connection 设为 1，这样在生产者尝试发送第一批消息时，就不会有其 他的消息发送给 broker。不过这样会严重影响生产者的吞吐量，所以只有在 对消息的顺序有严格要求的情况下才能这么做。</p>
+</blockquote>
+<h1 id="第四章-Kafka消费者-从Kafka读取数据"><a href="#第四章-Kafka消费者-从Kafka读取数据" class="headerlink" title="第四章 Kafka消费者-从Kafka读取数据"></a>第四章 Kafka消费者-从Kafka读取数据</h1><p>如果一个消费者组中的消费者数量发生了变化，则会引发Kafka分区的重分配，这被称为<strong>再均衡</strong></p>
+<blockquote>
+<p>再均衡非常 重要，它为消费者群组带来了高可用性和伸缩性（我们可以放心地添加或移除消费者）， 不过在正常情况下，我们并不希望发生这样的行为。在再均衡期间，消费者无法读取消 息，造成整个群组一小段时间的不可用。另外，当分区被重新分配给另一个消费者时，消 费者当前的读取状态会丢失，它有可能还需要去刷新缓存，在它重新恢复状态之前会拖慢 应用程序。</p>
+</blockquote>
+<p>消费者需要向broker的协调器发送心跳，如果消费者长时间不发，则被视为不活跃，会触发分区的重分配。</p>
+<blockquote>
+<p><strong>4.4 谁来执行rebalance和consumer group管理？</strong></p>
+<p>Kafka提供了一个角色：coordinator来执行对于consumer group的管理。坦率说kafka对于coordinator的设计与修改是一个很长的故事。最新版本的coordinator也与最初的设计有了很大的不同。这里我只想提及两次比较大的改变。</p>
+<p>首先是0.8版本的coordinator，那时候的coordinator是依赖zookeeper来实现对于consumer group的管理的。Coordinator监听zookeeper的&#x2F;consumers&#x2F;<group>&#x2F;ids的子节点变化以及&#x2F;brokers&#x2F;topics&#x2F;<topic>数据变化来判断是否需要进行rebalance。group下的每个consumer都自己决定要消费哪些分区，并把自己的决定抢先在zookeeper中的&#x2F;consumers&#x2F;<group>&#x2F;owners&#x2F;<topic>&#x2F;<partition>下注册。很明显，这种方案要依赖于zookeeper的帮助，而且每个consumer是单独做决定的，没有那种“大家属于一个组，要协商做事情”的精神。</p>
+<p>基于这些潜在的弊端，0.9版本的kafka改进了coordinator的设计，提出了group coordinator——每个consumer group都会被分配一个这样的coordinator用于组管理和位移管理。这个group coordinator比原来承担了更多的责任，比如组成员管理、位移提交保护机制等。当新版本consumer group的第一个consumer启动的时候，它会去和kafka server确定谁是它们组的coordinator。之后该group内的所有成员都会和该coordinator进行协调通信。显而易见，这种coordinator设计不再需要zookeeper了，性能上可以得到很大的提升。后面的所有部分我们都将讨论最新版本的coordinator设计。</p>
+<p>原文链接： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/huxi2b/p/6223228.html">https://www.cnblogs.com/huxi2b/p/6223228.html</a></p>
+</blockquote>
+<h2 id="消费者配置"><a href="#消费者配置" class="headerlink" title="消费者配置"></a>消费者配置</h2><blockquote>
+<ul>
+<li>auto.offset.reset</li>
+</ul>
+<p>该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下（因消费者长 时间失效，包含偏移量的记录已经过时并被删除）该作何处理。它的默认值是 latest，意 思是说，在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之 后生成的记录）。另一个值是 earliest，意思是说，在偏移量无效的情况下，消费者将从 起始位置读取分区的记录。</p>
+<ul>
+<li>enable.auto.commit</li>
+</ul>
+<p>我们稍后将介绍几种不同的提交偏移量的方式。该属性指定了消费者是否自动提交偏移 量，默认值是 true。为了尽量避免出现重复数据和数据丢失，可以把它设为 false，由自 己控制何时提交偏移量。如果把它设为 true，还可以通过配置 auto.commit.interval.ms 属性来控制提交的频率。</p>
+<p>Range: 该策略会把主题的若干个连续的分区分配给消费者。假设消费者 C1 和消费者 C2 同时 订阅了主题 T1 和主题 T2，并且每个主题有 3 个分区。那么消费者 C1 有可能分配到这 两个主题的分区 0 和分区 1，而消费者 C2 分配到这两个主题的分区 2。因为每个主题 拥有奇数个分区，而分配是在主题内独立完成的，第一个消费者最后分配到比第二个消 费者更多的分区。只要使用了 Range 策略，而且分区数量无法被消费者数量整除，就会 出现这种情况。</p>
+<p>RoundRobin:  该策略把主题的所有分区逐个分配给消费者。如果使用 RoundRobin 策略来给消费者 C1 和消费者 C2 分配分区，那么消费者 C1 将分到主题 T1 的分区 0 和分区 2 以及主题 T2 的分区 1，消费者 C2 将分配到主题 T1 的分区 1 以及主题 T2 的分区 0 和分区 2。一般 来说，如果所有消费者都订阅相同的主题（这种情况很常见），RoundRobin 策略会给所 有消费者分配相同数量的分区（或最多就差一个分区）。</p>
+</blockquote>
+<h2 id="自动提交偏移量"><a href="#自动提交偏移量" class="headerlink" title="自动提交偏移量"></a>自动提交偏移量</h2><p>简单，但是后果是无法避免重复消息</p>
+<h2 id="手动提交偏移量"><a href="#手动提交偏移量" class="headerlink" title="手动提交偏移量"></a>手动提交偏移量</h2><p>同步提交commitSync： 影响吞吐，只要没有发生不可恢复的错误，一直尝试直至提交成功</p>
+<p>异步提交commitASync： 异步提交又会引发一个新的问题，异步提交失败了怎么办？</p>
+<blockquote>
+<p>在成功提交或碰到无法恢复的错误之前，commitSync() 会一直重试，但是 commitAsync() 不会，这也是 commitAsync() 不好的一个地方。它之所以不进行重试，是因为在它收到 服务器响应的时候，可能有一个更大的偏移量已经提交成功。</p>
+<p>解决办法：</p>
+<p>我们可以使用一个单调递增的序列号来维护异步提交的顺序。在每次提交偏 移量之后或在回调里提交偏移量时递增序列号。在进行重试前，先检查回调 的序列号和即将提交的偏移量是否相等，如果相等，说明没有新的提交，那么可以安全地进行重试。如果序列号比较大，说明有一个新的提交已经发送 出去了，应该停止重试。</p>
+<p>Page: 60</p>
+</blockquote>
+<p>笔者对这个解决办法有一个问题，异步提交请求发送了乱序怎么办？</p>
+<p>考虑一次异步提交请求A，然后由于网络阻塞，导致这个提交超时了，然后去检查发现序列号没变，重试提交请求A，由于第一次提交请求A和第二次提交请求A直接经过了一段时间，提交请求B出现了，紧跟着提交请求A发送了出去，结果提交B先到达。</p>
+<p>考虑到Kafka使用的是TCP协议，先发的消息一定先到，这个问题就解决了。</p>
+<p>但是，发请求和增加偏移量是两个步骤，这里涉及到并发问题，如果请求B先发了请求，后增加偏移量，此时发生线程调度，请求A发了出去，那还是会导致一样的问题，</p>
+<p>所以笔者认为这里需要加锁。</p>
+<h2 id="组合同步与异步提交"><a href="#组合同步与异步提交" class="headerlink" title="组合同步与异步提交"></a>组合同步与异步提交</h2><p>消费者在下线的时候，也是需要提交偏移量的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">            System.out.println(</span><br><span class="line">                <span class="string">&quot;topic = %s, partition = %s, offset = %d,&quot;</span></span><br><span class="line">                + <span class="string">&quot;customer = %s, country = %s\n&quot;</span>,</span><br><span class="line">                record.topic(), record.partition(),</span><br><span class="line">                record.offset(), record.key(), record.value());</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitAsync(); <span class="comment">//➊</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;Unexpected error&quot;</span>, e);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        consumer.commitSync(); <span class="comment">//➋</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        consumer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➊    如果一切正常，我们使用 commitAsync() 方法来提交。这样速度更快，而且即使这次提交失败，下一次提交很可能会成功。</p>
+<p>➋    如果直接关闭消费者，就没有所谓的“下一次提交”了。使用 commitSync() 方法会一直重试，直到提交成功或发生无法恢复的错误。</p>
+<h2 id="提交特定的偏移量"><a href="#提交特定的偏移量" class="headerlink" title="提交特定的偏移量"></a>提交特定的偏移量</h2><blockquote>
+<p>消费者 API 允许在调用 commitSync() 和 commitAsync() 方法时传进去希望提交 的分区和偏移量的 map。假设你处理了半个批次的消息，最后一个来自主题“customers” 分区 3 的消息的偏移量是 5000，你可以调用 commitSync() 方法来提交它。不过，因为消 费者可能不只读取一个分区，你需要跟踪所有分区的偏移量，所以在这个层面上控制偏移 量的提交会让代码变复杂。</p>
+</blockquote>
+<h2 id="独立的消费者"><a href="#独立的消费者" class="headerlink" title="独立的消费者"></a>独立的消费者</h2><p>有时候我们不需要消费者组，我们只有一个消费者。</p>
+<blockquote>
+<p>如果是这样的话，就不需要订阅主题，取而代之的是为自己分配分区。一个消费者可以订 阅主题（并加入消费者群组），或者为自己分配分区，但不能同时做这两件事情。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">List&lt;PartitionInfo&gt; partitionInfos = <span class="literal">null</span>;</span><br><span class="line">partitionInfos = consumer.partitionsFor(<span class="string">&quot;topic&quot;</span>); <span class="comment">//➊</span></span><br><span class="line"><span class="keyword">if</span> (partitionInfos != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (PartitionInfo partition : partitionInfos)&#123;</span><br><span class="line">        partitions.add(<span class="keyword">new</span> <span class="title class_">TopicPartition</span>(</span><br><span class="line">            partition.topic(), partition.partition()));</span><br><span class="line">    &#125;</span><br><span class="line">    consumer.assign(partitions); <span class="comment">//➋</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records =</span><br><span class="line">            consumer.poll(<span class="number">1000</span>);</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record: records) &#123;</span><br><span class="line">            System.out.println(</span><br><span class="line">                <span class="string">&quot;topic = %s, partition = %s, &quot;</span></span><br><span class="line">                + <span class="string">&quot;offset = %d,customer = %s, country = %s\n&quot;</span>, </span><br><span class="line">                record.topic(), record.partition(), record.offset(),</span><br><span class="line">                record.key(), record.value());</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitSync();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>➊    向集群请求主题可用的分区。如果只打算读取特定分区，可以跳过这一步。<br>        ➋    知道需要哪些分区之后，调用 assign() 方法。</p>
+<blockquote>
+<p>除了不会发生再均衡，也不需要手动查找分区，其他的看起来一切正常。不过要记住，如 果主题增加了新的分区，消费者并不会收到通知。所以，要么周期性地调用 consumer. partitionsFor() 方法来检查是否有新分区加入，要么在添加新分区后重启应用程序。</p>
+</blockquote>
+<h1 id="第-5-章-深入Kafka"><a href="#第-5-章-深入Kafka" class="headerlink" title="第 5 章 深入Kafka"></a>第 5 章 深入Kafka</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/QR6OSO.html">http://fightinggg.github.io/butterfly/QR6OSO.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/QR767C.html" title="八股文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">八股文</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/QR4S3C.html" title="Kafka时间轮"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Kafka时间轮</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-Kafka%E7%94%9F%E4%BA%A7%E8%80%85-%E5%90%91kafka%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">第三章 Kafka生产者-向kafka写入数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">生产者配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#acks-%E5%86%8D%E9%87%8D%E5%A4%8D%E4%B8%80%E9%81%8D%E8%BF%99%E4%B8%AA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.1.</span> <span class="toc-text">acks(再重复一遍这个配置)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#max-in-flight-requests-per-connection"><span class="toc-number">1.1.2.</span> <span class="toc-text">max.in.flight.requests.per.connection</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-Kafka%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BB%8EKafka%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">第四章 Kafka消费者-从Kafka读取数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">消费者配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">自动提交偏移量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="toc-number">2.3.</span> <span class="toc-text">手动提交偏移量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%8F%90%E4%BA%A4"><span class="toc-number">2.4.</span> <span class="toc-text">组合同步与异步提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E7%89%B9%E5%AE%9A%E7%9A%84%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="toc-number">2.5.</span> <span class="toc-text">提交特定的偏移量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E7%9A%84%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">2.6.</span> <span class="toc-text">独立的消费者</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-5-%E7%AB%A0-%E6%B7%B1%E5%85%A5Kafka"><span class="toc-number">3.</span> <span class="toc-text">第 5 章 深入Kafka</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

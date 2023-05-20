@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                                                               线段树套线段树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线段树套线段树">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                                                               线段树套线段树">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:modified_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>线段树套线段树</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/%E9%95%9C%E5%83%8F%E5%B9%B6%E6%9F%A5%E9%9B%86.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&text=线段树套线段树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&is_video=false&description=线段树套线段树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=线段树套线段树&body=Check out this article: http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&name=线段树套线段树&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&t=线段树套线段树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#left_in"><span class="toc-number">1.</span> <span class="toc-text">线段树套线段树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.1.</span> <span class="toc-text">建树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.2.</span> <span class="toc-text">更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.3.</span> <span class="toc-text">查询</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        线段树套线段树
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-05T15:23:08.000Z" class="dt-published" itemprop="datePublished">2019-08-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/ACM/">ACM</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/线段树套线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+转移自<a href='/ACM/stencil/data_struct/线段树套线段树.html'>老blog</a>
+
+<div id="myweb">
+
+    <!--    啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦-->
+    <div type="text/javadiv" src="/ACM/js/up_and_right.js"></div>
+    <!--    啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦-->
+
+    <div id="left">
+        <div id="left_in">
+            <center>
+                <h1>线段树套线段树</h1>
+            </center>
+            <div id="text">
+
+                我的第一颗树套树</br>
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                树套树的思路估计都这样子了，树套树分为外树和内树，也可以分为第一维树和
+                第二维树，我这里把他们叫做x树和y树，即x树为外树，y树为内树。我们描述时
+                用内外，代码用xy。
+
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                首先树套树，顾名思义，给出定义，树套树是一棵节点是树的树。
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+                于是作为一棵树,他有这些函数：
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                建树build，更新update，查询query
+
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                一个一个来说
+
+                </br>
+                <h2>建树</h2>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                建树先建外层树，递归建树，递归出口为当前外树所代表的只有一行，
+                他是叶子结点树，这时调用建内层树，并退出函数，回溯时，意味着此时
+                是非叶子节点树，意味着外树所代表的不止一行，<span style="color:red;">
+                    意味着此节点树的儿子 节点树以经建立完成</span>，此时我们调用建
+                内层树，
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                建树建内层树，依旧递归，和一维线段树相比，只是递归出口有所区别，
+                建内层树时，如果该树为叶子节点树，直接处理，但是当他为非叶节点树
+                的时候要注意，此时不能直接对当前节点（不是节点树，是节点树的递归
+                出口所对应的节点）修改值，而是借助上诉结论“意味着此节点树的儿子
+                节点树以经建立完成”，我们可以通过跨越树来更新值，
+                </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                这里有点难以理解，其实仔细的想想，我们建立的虽然说是一颗二维的
+                二叉树，两颗内树之间的关系确并不是我们想象的那么简单，举个例子，
+                如果mi[i][j]记录了外树节点树i对应的内树节点j的数据，那么mi[i][j]只能
+                由mi[i][j<<1]和mi[i][j<<1|1]推过来吗,这里显然不对,如果细心点,我们会发现 我们建立的并不是简单的二维树,它更是一个超级复杂的图,我们站在更高的
+                    角度上看,mi[i<<1][j]和mi[i<<1|1][j]又何尝不能作为mi[i][j]的后继呢? </br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    于是我们就有了通过mi[i<<1][j]和mi[i<<1|1][j]来更新值的做法,跨越树,用另一棵树 来更新自己,ok? 于是建树完成. </br>
+                        <h2>更新</h2>
+
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        和建树是一样的
+
+
+                        </br>
+                        <h2>查询</h2>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        查询的话就简单很多了，不需要跨越树就能完成，这个的依据是区间的可加性
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </br>
+
+
+
+
+                        </br>
+                        </br>
+                        这只是一颗单点修改，区间最值查询的树
+
+            </div>
+            <div id="code">
+                <pre>
+<span class="cp">#define pii pair&lt;int,int&gt;</span>
+<span class="k">struct</span> <span class="n">segment</span><span class="p">{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span><span class="o">=</span><span class="mi">1000</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ma</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">][</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">mi</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">][</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">tmp</span><span class="p">[</span><span class="n">maxn</span><span class="p">][</span><span class="n">maxn</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">lenx</span><span class="p">,</span><span class="n">leny</span><span class="p">;</span>
+    <span class="c1">//x为行 y为列</span>
+    
+    <span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
+        <span class="n">lenx</span><span class="o">=</span><span class="n">leny</span><span class="o">=</span><span class="n">n</span><span class="p">;</span>
+        <span class="n">build_x</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">build_x</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span><span class="kt">int</span> <span class="n">x2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x1</span><span class="o">==</span><span class="n">x2</span><span class="p">){</span>
+            <span class="n">build_y</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">leny</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">midx</span><span class="o">=</span><span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">build_x</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">midx</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">build_x</span><span class="p">(</span><span class="n">midx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">);</span>
+        
+        <span class="n">build_y</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">leny</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">build_y</span><span class="p">(</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span><span class="kt">int</span> <span class="n">x2</span><span class="p">,</span><span class="kt">int</span> <span class="n">y1</span><span class="p">,</span><span class="kt">int</span> <span class="n">y2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">,</span><span class="kt">int</span> <span class="n">rty</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">y1</span><span class="o">==</span><span class="n">y2</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">x1</span><span class="o">==</span><span class="n">x2</span><span class="p">){</span>
+                <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">tmp</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y1</span><span class="p">];</span>
+                <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">tmp</span><span class="p">[</span><span class="n">x1</span><span class="p">][</span><span class="n">y1</span><span class="p">];</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">min</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">],</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">]);</span>
+                <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">],</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">midy</span><span class="o">=</span><span class="p">(</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">build_y</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">midy</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">build_y</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">midy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">);</span>
+        
+        <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">min</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">],</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">],</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+    
+    
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">){</span>
+        <span class="n">update_x</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">lenx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">update_x</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span><span class="kt">int</span> <span class="n">x2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x1</span><span class="o">==</span><span class="n">x2</span><span class="p">){</span>
+            <span class="n">update_y</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">leny</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">midx</span><span class="o">=</span><span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;=</span><span class="n">midx</span><span class="p">)</span><span class="n">update_x</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">midx</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">update_x</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">midx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">update_y</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">leny</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">update_y</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span><span class="kt">int</span> <span class="n">x2</span><span class="p">,</span><span class="kt">int</span> <span class="n">y1</span><span class="p">,</span><span class="kt">int</span> <span class="n">y2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">,</span><span class="kt">int</span> <span class="n">rty</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">y1</span><span class="o">==</span><span class="n">y2</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">x1</span><span class="o">==</span><span class="n">x2</span><span class="p">){</span>
+                <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">d</span><span class="p">;</span>
+                <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">d</span><span class="p">;</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">min</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">],</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">]);</span>
+                <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">],</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">][</span><span class="n">rty</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">midy</span><span class="o">=</span><span class="p">(</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">y</span><span class="o">&lt;=</span><span class="n">midy</span><span class="p">)</span><span class="n">update_y</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">midy</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">update_y</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">midy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">min</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">],</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">],</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+    
+    
+    <span class="n">pii</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">qx1</span><span class="p">,</span><span class="kt">int</span> <span class="n">qx2</span><span class="p">,</span><span class="kt">int</span> <span class="n">qy1</span><span class="p">,</span><span class="kt">int</span> <span class="n">qy2</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">query_x</span><span class="p">(</span><span class="n">qx1</span><span class="p">,</span><span class="n">qx2</span><span class="p">,</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">lenx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">pii</span> <span class="n">getpii</span><span class="p">(</span><span class="n">pii</span> <span class="n">a</span><span class="p">,</span><span class="n">pii</span> <span class="n">b</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">pii</span><span class="p">(</span><span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">first</span><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">first</span><span class="p">),</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">second</span><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">second</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="n">pii</span> <span class="n">query_x</span><span class="p">(</span><span class="kt">int</span> <span class="n">qx1</span><span class="p">,</span><span class="kt">int</span> <span class="n">qx2</span><span class="p">,</span><span class="kt">int</span> <span class="n">qy1</span><span class="p">,</span><span class="kt">int</span> <span class="n">qy2</span><span class="p">,</span><span class="kt">int</span> <span class="n">x1</span><span class="p">,</span><span class="kt">int</span> <span class="n">x2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">qx1</span><span class="o">&lt;=</span><span class="n">x1</span><span class="o">&amp;&amp;</span><span class="n">x2</span><span class="o">&lt;=</span><span class="n">qx2</span><span class="p">){</span>
+            <span class="k">return</span> <span class="n">query_y</span><span class="p">(</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">leny</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="n">pii</span> <span class="n">ret</span><span class="o">=</span><span class="n">pii</span><span class="p">(</span><span class="mf">2e9</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">midx</span><span class="o">=</span><span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">midx</span><span class="o">&gt;=</span><span class="n">qx1</span><span class="p">)</span><span class="n">ret</span><span class="o">=</span><span class="n">getpii</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span><span class="n">query_x</span><span class="p">(</span><span class="n">qx1</span><span class="p">,</span><span class="n">qx2</span><span class="p">,</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span><span class="n">midx</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">));</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">midx</span><span class="o">+</span><span class="mi">1</span><span class="o">&lt;=</span><span class="n">qx2</span><span class="p">)</span><span class="n">ret</span><span class="o">=</span><span class="n">getpii</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span><span class="n">query_x</span><span class="p">(</span><span class="n">qx1</span><span class="p">,</span><span class="n">qx2</span><span class="p">,</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="n">midx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">rtx</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">));</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">pii</span> <span class="n">query_y</span><span class="p">(</span><span class="kt">int</span> <span class="n">qy1</span><span class="p">,</span><span class="kt">int</span> <span class="n">qy2</span><span class="p">,</span><span class="kt">int</span> <span class="n">y1</span><span class="p">,</span><span class="kt">int</span> <span class="n">y2</span><span class="p">,</span><span class="kt">int</span> <span class="n">rtx</span><span class="p">,</span><span class="kt">int</span> <span class="n">rty</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">qy1</span><span class="o">&lt;=</span><span class="n">y1</span><span class="o">&amp;&amp;</span><span class="n">y2</span><span class="o">&lt;=</span><span class="n">qy2</span><span class="p">){</span>
+            <span class="k">return</span> <span class="n">pii</span><span class="p">(</span><span class="n">mi</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">],</span><span class="n">ma</span><span class="p">[</span><span class="n">rtx</span><span class="p">][</span><span class="n">rty</span><span class="p">]);</span>
+        <span class="p">}</span>
+        
+        <span class="n">pii</span> <span class="n">ret</span><span class="p">(</span><span class="mf">2e9</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">midy</span><span class="o">=</span><span class="p">(</span><span class="n">y1</span><span class="o">+</span><span class="n">y2</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">midy</span><span class="o">&gt;=</span><span class="n">qy1</span><span class="p">)</span><span class="n">ret</span><span class="o">=</span><span class="n">getpii</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span><span class="n">query_y</span><span class="p">(</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">midy</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">));</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">midy</span><span class="o">+</span><span class="mi">1</span><span class="o">&lt;=</span><span class="n">qy2</span><span class="p">)</span><span class="n">ret</span><span class="o">=</span><span class="n">getpii</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span><span class="n">query_y</span><span class="p">(</span><span class="n">qy1</span><span class="p">,</span><span class="n">qy2</span><span class="p">,</span><span class="n">midy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">rtx</span><span class="p">,</span><span class="n">rty</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span class="mi">1</span><span class="p">));</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span><span class="n">tree</span><span class="p">;</span>
+</pre>
+            </div>
+
+        </div>
+
+    </div>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#left_in"><span class="toc-number">1.</span> <span class="toc-text">线段树套线段树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.1.</span> <span class="toc-text">建树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.2.</span> <span class="toc-text">更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#text"><span class="toc-number">1.3.</span> <span class="toc-text">查询</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&text=线段树套线段树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&is_video=false&description=线段树套线段树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=线段树套线段树&body=Check out this article: http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=线段树套线段树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&name=线段树套线段树&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html&t=线段树套线段树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

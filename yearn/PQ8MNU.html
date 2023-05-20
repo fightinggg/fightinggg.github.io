@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>凸四边形不等式优化dp</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    凸四边形不等式优化dp
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2019-04-20T02:23:54.000Z" itemprop="datePublished">2019-04-20</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2021-05-19T15:10:00.000Z" itemprop="dateUpdated">2021-05-19</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="理论篇"><a href="#理论篇" class="headerlink" title="理论篇"></a>理论篇</h1><h2 id="决策单调性"><a href="#决策单调性" class="headerlink" title="决策单调性"></a>决策单调性</h2><p>对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移$j$，如果$pri[i]$关于$i$单调，那么我们称该$dp$具有决策单调性。</p>
+<p>对于一类二维$dp$,如果有转移$dp[i][j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) i&lt;&#x3D;k&lt;j $并假定$pro[i][j]$为到$dp[i][j]$的最优转移$k$,如果$pri[i][j]$关于$i$单调，且关于$j$单调，那么我们称该$dp$具有决策单调性。</p>
+<h2 id="四边形不等式"><a href="#四边形不等式" class="headerlink" title="四边形不等式"></a>四边形不等式</h2><p>对于二元数论函数，$w(i,j)$，若满足$a\le b\le c\le d$恒有 $w(a,d)+w(b,c) \ge w(a,c)+w(b,d)$则该二元函数满足四边形不等式</p>
+<p>他的充要条件是: 若$a\lt b$ 恒有$w(a,b)+w(a+1,b+1) \ge w(a,b+1)+w(a+1,b)$</p>
+<p>可以理解为，交叉小于包含</p>
+<h2 id="区间包含单调性"><a href="#区间包含单调性" class="headerlink" title="区间包含单调性"></a>区间包含单调性</h2><p>对于二元数论函数，$i&lt;j$的$w(i,j)$ 我们将参数看做区间，定义区间的包含为偏序关系， 若$w$的值关于该偏序关系单调，则称该函数具有区间包含单调性。</p>
+<span id="more"></span>
+
+<h2 id="新增定义"><a href="#新增定义" class="headerlink" title="新增定义"></a>新增定义</h2><p>如果存在转移$dp[j]\to dp[i]$不管此转移是否最优，我们都把$j$叫做一个决策点。</p>
+<p>强化的决策单调性：对于某一维$dp$，如果在某决策点集合中，若$x$为到$dp(i)$的最优决策，则对于所有的大于$i$的$j$，$x$依旧是此决策点集合中的最优决策。 二维同理。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="一维DP"><a href="#一维DP" class="headerlink" title="一维DP"></a>一维DP</h3><p>考虑转移式$dp[i]&#x3D;\min(dp[j]+w(j,i))$，其中$1\le j\lt i$ ，且函数$w$满足四边形不等式</p>
+<p>不妨假设$p_x$是$dp[x]$的最佳转移之一，$p$是一个$dp[x]$的任意一个转移</p>
+<p>则$\forall p \lt x$ 都有$dp[p_x]+w(p_x,x)\le dp[p]+w(p,x)$ 即 $dp[p_x]-dp[p]\le w(p,x) -w(p_x,x)$</p>
+<p>根据四边形不等式，$\forall p \le p_x \le x \le y $ 都有$w(p,y)+w(p_x,x)\ge w(p,x)+w(p_x,y)$ 即$w(p,x)-w(p_x,x)\le w(p,y)-w(p_x,y)$</p>
+<p>合并上面两个不等式得到了$dp[p_x]-dp[p]\le w(p,y)-w(p_x,y)$ 即$dp[p_x]+w(p_x,y)\le dp[p]+w(p,y)$, 根据这个不等式，我们发现他说明了这样一个事实，即:</p>
+<p><strong>如果$p_x$是$dp[x]$的最佳转移之一，则$\forall p\le p_x \le x \le y$，对于$dp[y]$都有决策点$p_x$优于$p$</strong></p>
+<h3 id="二维DP较复杂"><a href="#二维DP较复杂" class="headerlink" title="二维DP较复杂"></a>二维DP较复杂</h3><p>需要对每一纬单独证明决策单调性，其中涉及到$w$函数的四边形不等式性质和$dp$自身的四边形不等式性质，此处不做证明，实战中也不会遇到，决策单调性需要依靠敏感的直觉，你需要用最快的速度猜测决策点单调，然后用一两分钟编写程序验证其单调性。</p>
+<h1 id="做法篇"><a href="#做法篇" class="headerlink" title="做法篇"></a>做法篇</h1><h2 id="强化的决策单调性优化一维dp"><a href="#强化的决策单调性优化一维dp" class="headerlink" title="强化的决策单调性优化一维dp"></a>强化的决策单调性优化一维dp</h2><p>当此$dp$满足强化的决策单调性的时候，我们可以用单调队列来优化$dp$,此单调队列维护一个数据结构，该数据结构维护一个决策数组,当我们处理$dp[i]$的时候，该数组维护了$dp[i]$到$dp[n]$的在$[1,i)$中的最优决策点。 显然该决策数组单调增，我们拿出最优队首，为$dp[i]$赋值，下一步应该是更新该决策数组，怎么更新呢，我们二分即可。</p>
+<h2 id="用二分更新决策数组"><a href="#用二分更新决策数组" class="headerlink" title="用二分更新决策数组"></a>用二分更新决策数组</h2><p>先证明,对于新加进来的决策，对于旧决策数组的影响具有单调性，即存在一个分界点，分界点左边，新决策不如旧决策，分界点右边，新决策优于旧决策， 首先，我们假设新决策的影响不具有单调性，即新决策的影响杂乱无章，在这种情况下，我们取出靠左边的决策为新决策的元素的下标，根据强化的决策单调性，此元素右边的 元素的当前最优决策值必须且只能为$i$，因为当前大于等于i的决策只有$i$。矛盾发生，故新决策的影响具有单调性。</p>
+<p> 当于是我们二分出这个点即可解决 ，</p>
+<h2 id="单调队列优化"><a href="#单调队列优化" class="headerlink" title="单调队列优化"></a>单调队列优化</h2><p>为什么我们要用单调队列呢，我们先考虑，如果我们采取线段树优化，那么更新决策数组显然是$lg$级别的，但是 二分新决策边界的时候，复杂度为$lg*lg$，因为单点查询是$lg$级别的，再加个二分就双$lg$了。</p>
+<p>为了时间复杂度好写，我们采取单调队列来维护，单调队列维护一个三元组分别是决策点和目前以此决策点为最优决策的$dp$，因为这是个区间，所有要用两个数来维护。</p>
+<p>更新的时候，直接修改队尾的三元组即可，查询的时候，暴力枚举队尾的三元组，如果新决策完全不如旧决策， 此次修改结束，如果队尾的决策完全不如新决策弹掉了队尾，修改新队尾的区间为后缀区间，继续枚举，如果新决策优于队尾决策的一部分，二分出位置后直接修改即可。</p>
+<p>很容易证明单调队列优化的时间复杂度是$lg$的，优于线段树。</p>
+<h2 id="决策单调性优化二维dp"><a href="#决策单调性优化二维dp" class="headerlink" title="决策单调性优化二维dp"></a>决策单调性优化二维dp</h2><p>这个就特别简单了，$dp[i][j]$的转移在$dp[i][j-1]$和$dp[i+1][j]$之间枚举即可。</p>
+<h2 id="什么时候可以使用这些优化？"><a href="#什么时候可以使用这些优化？" class="headerlink" title="什么时候可以使用这些优化？"></a>什么时候可以使用这些优化？</h2><p>对于一维$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) $,若w满足四边形不等式则，此$dp$满足决策单调性,并且，满足强化的决策单调性。</p>
+<p>对于二维$dp[i,j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) $若w满足四边形不等式，且$w$满足区间 包含单调性，则$dp$满足四边形不等式，且具有决策单调性。</p>
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

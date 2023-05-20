@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     需求 员工列表    普通CRUD restfulCRUD      查询 getEmp emp...GET   添加 addEmp? emp...POST   修改 updateEmp? emp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot4-Web5-烂尾">
+<meta property="og:url" content="https://fightinggg.github.io/Q973UK.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     需求 员工列表    普通CRUD restfulCRUD      查询 getEmp emp...GET   添加 addEmp? emp...POST   修改 updateEmp? emp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-22T15:18:20.000Z">
+<meta property="article:modified_time" content="2020-04-22T15:18:20.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="lis">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="SpringBoot">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/Q973UK.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/Q973UK.html","path":"Q973UK.html","title":"SpringBoot4-Web5-烂尾"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SpringBoot4-Web5-烂尾 | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-text">需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%98%E5%B7%A5%E5%88%97%E8%A1%A8"><span class="nav-text">员工列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-text">架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E4%BB%A5%E5%88%B0%E5%BA%95%E5%A6%82%E4%BD%95%E5%AE%9A%E5%88%B6"><span class="nav-text">所以到底如何定制？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8Fservlet%E5%AE%B9%E5%99%A8"><span class="nav-text">嵌入式servlet容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%9A%84tomcat%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">嵌入式的tomcat如何实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9%E6%98%AF%E5%A6%82%E4%BD%95%E7%94%9F%E6%95%88%E7%9A%84"><span class="nav-text">配置修改是如何生效的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8Fservlet%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%88%9B%E5%BB%BA"><span class="nav-text">嵌入式servlet什么时候创建</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/Q973UK.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SpringBoot4-Web5-烂尾 | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringBoot4-Web5-烂尾<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/Language/Java/SpringBoot/SpringBoot4-Web5-%E7%83%82%E5%B0%BE/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-22 23:18:20" itemprop="dateCreated datePublished" datetime="2020-04-22T23:18:20+08:00">2020-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/Java/SpringBoot/" itemprop="url" rel="index"><span itemprop="name">SpringBoot</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q973UK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h2 id="需求">需求</h2>
+<h3 id="员工列表">员工列表</h3>
+<table>
+<thead>
+<tr class="header">
+<th>普通CRUD</th>
+<th>restfulCRUD</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>查询</td>
+<td>getEmp</td>
+<td>emp...GET</td>
+</tr>
+<tr class="even">
+<td>添加</td>
+<td>addEmp?</td>
+<td>emp...POST</td>
+</tr>
+<tr class="odd">
+<td>修改</td>
+<td>updateEmp?</td>
+<td>emp/{id}...PUT</td>
+</tr>
+<tr class="even">
+<td>删除</td>
+<td>deleteEmp?</td>
+<td>emp/{id}...DELETE</td>
+</tr>
+</tbody>
+</table>
+<span id="more"></span>
+<h3 id="架构">架构</h3>
+<table>
+<thead>
+<tr class="header">
+<th>请求URL</th>
+<th>请求方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>查询所有员工</td>
+<td>emps</td>
+<td>GET</td>
+</tr>
+<tr class="even">
+<td>查询单个员工</td>
+<td>emp/{id}</td>
+<td>GET</td>
+</tr>
+<tr class="odd">
+<td>来到添加页面</td>
+<td>emp</td>
+<td>GET</td>
+</tr>
+<tr class="even">
+<td>添加员工</td>
+<td>emp</td>
+<td>POST</td>
+</tr>
+<tr class="odd">
+<td>来到修改页面</td>
+<td>emp/{id}</td>
+<td>GET</td>
+</tr>
+<tr class="even">
+<td>修改员工</td>
+<td>emp</td>
+<td>PUT</td>
+</tr>
+<tr class="odd">
+<td>删除员工</td>
+<td>emp/{id}</td>
+<td>DELETE</td>
+</tr>
+</tbody>
+</table>
+<p>修改|updateEmp?|emp/{id}...PUT 删除|deleteEmp?|emp/{id}...DELETE</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">footer</span> <span class="attr">th:fragment</span>=<span class="string">&quot;copy&quot;</span>&gt;</span></span><br><span class="line">hello</span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:insert</span>=<span class="string">&quot;footer :: copy&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">&quot;footer :: copy&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:include</span>=<span class="string">&quot;footer :: copy&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>insert 是将整个元素插入到引用中 replace 是替换 include 是包含进去 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:fragment</span>=<span class="string">&quot;topbar&quot;</span>&gt;</span> 这里测试 include replace 和insert<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure> <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;include&quot;</span> <span class="attr">th:include</span>=<span class="string">&quot;~&#123;templates_hello::topbar&#125;&quot;</span>&gt;</span>hi<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;replace&quot;</span> <span class="attr">th:replace</span>=<span class="string">&quot;templates_hello::topbar&quot;</span>&gt;</span>hi<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;insert&quot;</span> <span class="attr">th:insert</span>=<span class="string">&quot;templates_hello::topbar&quot;</span>&gt;</span>hai<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure> <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;include&quot;</span>&gt;</span> 这里测试 include replace 和insert<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 这里测试 include replace 和insert<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;insert&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span> 这里测试 include replace 和insert<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure> 挺前端的 ## 错误响应 如何定制错误页面？ 这个是ErrorMvcAutoConfiguration <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(value = ErrorAttributes.class, search = SearchStrategy.CURRENT)</span></span><br><span class="line"><span class="keyword">public</span> DefaultErrorAttributes <span class="title function_">errorAttributes</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DefaultErrorAttributes</span>(<span class="built_in">this</span>.serverProperties.getError().isIncludeException());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(value = ErrorController.class, search = SearchStrategy.CURRENT)</span></span><br><span class="line"><span class="keyword">public</span> BasicErrorController <span class="title function_">basicErrorController</span><span class="params">(ErrorAttributes errorAttributes,</span></span><br><span class="line"><span class="params">        ObjectProvider&lt;ErrorViewResolver&gt; errorViewResolvers)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BasicErrorController</span>(errorAttributes, <span class="built_in">this</span>.serverProperties.getError(),</span><br><span class="line">            errorViewResolvers.orderedStream().collect(Collectors.toList()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ErrorPageCustomizer <span class="title function_">errorPageCustomizer</span><span class="params">(DispatcherServletPath dispatcherServletPath)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ErrorPageCustomizer</span>(<span class="built_in">this</span>.serverProperties, dispatcherServletPath);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnBean(DispatcherServlet.class)</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(ErrorViewResolver.class)</span></span><br><span class="line">    DefaultErrorViewResolver <span class="title function_">conventionErrorViewResolver</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DefaultErrorViewResolver</span>(<span class="built_in">this</span>.applicationContext, <span class="built_in">this</span>.resourceProperties);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure> 系统出现错误以后去/error处理请求</p>
+<p>这老师是源码杀手，我要炸了，我现在开始怕源码了 这里分两类，一个返回html，另一个返回json，区分浏览器,浏览器优先接受html，但是客户端优先接受/*， 没有要求，所以对浏览器返回，html,对客户端返回json</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)</span></span><br><span class="line"><span class="keyword">public</span> ModelAndView <span class="title function_">errorHtml</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> &#123;</span><br><span class="line">    <span class="type">HttpStatus</span> <span class="variable">status</span> <span class="operator">=</span> getStatus(request);</span><br><span class="line">    Map&lt;String, Object&gt; model = Collections</span><br><span class="line">            .unmodifiableMap(getErrorAttributes(request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));</span><br><span class="line">    response.setStatus(status.value());</span><br><span class="line">    <span class="type">ModelAndView</span> <span class="variable">modelAndView</span> <span class="operator">=</span> resolveErrorView(request, response, status, model);</span><br><span class="line">    <span class="keyword">return</span> (modelAndView != <span class="literal">null</span>) ? modelAndView : <span class="keyword">new</span> <span class="title class_">ModelAndView</span>(<span class="string">&quot;error&quot;</span>, model);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span></span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">error</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">    <span class="type">HttpStatus</span> <span class="variable">status</span> <span class="operator">=</span> getStatus(request);</span><br><span class="line">    <span class="keyword">if</span> (status == HttpStatus.NO_CONTENT) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ResponseEntity</span>&lt;&gt;(status);</span><br><span class="line">    &#125;</span><br><span class="line">    Map&lt;String, Object&gt; body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ResponseEntity</span>&lt;&gt;(body, status);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="所以到底如何定制">所以到底如何定制？</h3>
+<p>有模版引擎的话，就在error下写一个404.html就可以了，你甚至可以用4xx.html来批评所有的4开头的错误 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>status:[[$&#123;status&#125;]]<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure> 没有模版引擎就在静态资源文件夹找</p>
+<h2 id="嵌入式servlet容器">嵌入式servlet容器</h2>
+<p>默认是tomcat ### 如何定制修改servlet容器 - 方法1 使用server.port = 8081 server.tomcat.xxx <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;server&quot;, ignoreUnknownFields = true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServerProperties</span> &#123;</span><br></pre></td></tr></table></figure> - 方法2 使用Bean, springboot中有很多xxxConfiguier来拓展配置 有很多xxxCustomizer来定制配置 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> WebServerFactoryCustomizer&lt;ConfigurableWebServerFactory&gt; <span class="title function_">webServerFactoryWebServerFactoryCustomizer</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WebServerFactoryCustomizer</span>&lt;ConfigurableWebServerFactory&gt;()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">customize</span><span class="params">(ConfigurableWebServerFactory factory)</span> &#123;</span><br><span class="line">            factory.setPort(<span class="number">8083</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure> - 注册Servlet、Filter、Listener 使用ServletReristrationBean、FilterRegistrationBean、Listener...把他们Bean到容器中就可以了 - 切换Servlet容器 Jetty 适用长链接 Undertow 适用于高并发不带jsp 1. 排除tomcat依赖 2. 引入其他依赖</p>
+<h3 id="嵌入式的tomcat如何实现">嵌入式的tomcat如何实现</h3>
+<p><strong>源码警告</strong> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(ServerProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EmbeddedWebServerFactoryCustomizerAutoConfiguration</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Nested configuration if Tomcat is being used.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line">    <span class="meta">@ConditionalOnClass(&#123; Tomcat.class, UpgradeProtocol.class &#125;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">TomcatWebServerFactoryCustomizerConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Bean</span></span><br><span class="line">        <span class="keyword">public</span> TomcatWebServerFactoryCustomizer <span class="title function_">tomcatWebServerFactoryCustomizer</span><span class="params">(Environment environment,</span></span><br><span class="line"><span class="params">                ServerProperties serverProperties)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">TomcatWebServerFactoryCustomizer</span>(environment, serverProperties);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure> 源码变了。。。 <iframe src="//player.bilibili.com/player.html?aid=38657363&bvid=BV1Et411Y7tQ&cid=67953935&page=48" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe> 以前是放一个嵌入式的容器工厂，然后配置tomcat，最后传给TomcatEmbeddedServletContainer，并且启动tomcat容器</p>
+<h3 id="配置修改是如何生效的">配置修改是如何生效的</h3>
+<p>配置文件+定制器， 他们本质上都是定制器 有一个BeanPostProcessorRegistrar， 导入了EmbeddedServletContainerCustomizerBeanPostProcessor</p>
+<p>SpringBoot根据导入的依赖情况，给容器添加相应的容器工厂， 容器中某个组件要创建对象就会惊动后置处理器， 只要是嵌入式的servlet容器工厂，后置处理器就会工作, 后置处理器会从容器中获取所有的定制器，调用定制器的方法。</p>
+<h3 id="嵌入式servlet什么时候创建">嵌入式servlet什么时候创建</h3>
+<p>springboot启动， 运行run， 创建IOC容器， 并初始化， 创建容器中的每个bean， 如果是web应用就创建web容器，否则创建AnnotationConfigApplicationContext, 在web的IOC容器中， 重写了onRefresh， 在这里创建了嵌入式的Servlet， 获取容器工厂， tomcatembeddedservletcontainerfactory创建对象以后，后置处理器就开始配置，然后获得新的servlet容器，最后启动 ### 优点 简单便携 ### 缺点 不支持jsp</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/Q973UK.html" title="SpringBoot4-Web5-烂尾">https://fightinggg.github.io/Q973UK.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/lis/" rel="tag"><i class="fa fa-tag"></i> lis</a>
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+              <a href="/tags/SpringBoot/" rel="tag"><i class="fa fa-tag"></i> SpringBoot</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Q96SDK.html" rel="prev" title="操作系统IO">
+                  <i class="fa fa-chevron-left"></i> 操作系统IO
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Q988YW.html" rel="next" title="SpringMVC1-开头">
+                  SpringMVC1-开头 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/Q973UK.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"1f618344c18fe02ad55804762cb60088"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

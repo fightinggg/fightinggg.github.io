@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>AC自动机 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  AC自动机所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。 自动机自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AC自动机">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/PHRG42.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  AC自动机所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。 自动机自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-06T07:14:26.000Z">
+<meta property="article:modified_time" content="2018-11-06T07:14:26.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AC自动机</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">AC自动机</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-11-06T07:14:26.000Z" itemprop="datePublished" class="page-time">
+  2018-11-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li></ul></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#AC%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="post-toc-number">1.</span> <span class="post-toc-text">AC自动机</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="post-toc-number">2.</span> <span class="post-toc-text">自动机</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8C%B9%E9%85%8D"><span class="post-toc-number">3.</span> <span class="post-toc-text">匹配</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#file%E6%8C%87%E9%92%88"><span class="post-toc-number">4.</span> <span class="post-toc-text">file指针</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%86%85%E5%AD%98%E5%BC%80%E9%94%80"><span class="post-toc-number">5.</span> <span class="post-toc-text">内存开销</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AD%97%E5%85%B8%E5%9B%BE"><span class="post-toc-number">6.</span> <span class="post-toc-text">字典图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="post-toc-number">7.</span> <span class="post-toc-text">更好的解决方案</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ACM/学习笔记/字符串/AC自动机/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">AC自动机</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-11-06 15:14:26" datetime="2018-11-06T07:14:26.000Z"  itemprop="datePublished">2018-11-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li></ul></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PHRG42.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="AC自动机"><a href="#AC自动机" class="headerlink" title="AC自动机"></a>AC自动机</h1><p>所谓AC自动机，其实是kmp算法与字典树的结合,不懂这两个，是无法学会的。</p>
+<h1 id="自动机"><a href="#自动机" class="headerlink" title="自动机"></a>自动机</h1><p>自动机，是一个五元组，包括了状态的非空有穷集合，符号的有限集合，状态转移函 数， 开始状态，终止状态集合，而在字典树上，增加了两个新的东西，一个标记了终止状态集合，另一个辅助了状态转移函数。 我们利用字典树上 的节点来表示状态，而边则用来表示状态转移函数的一部分。</p>
+<span id="more"></span>
+
+<h1 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h1><p>当AC自动机建立好了以后，我们就可以在AC自动机上进行匹配了，我们在自动机上一 个一个 节点忘下跑，一直到失配，即到达AC自动机上某个节点后，此节点所代表的字符串，与母串的当前前缀子串相差刚好只为最后一个字母，这 时候，我们跳跃到fail指针即可进行后面的继续匹配。</p>
+<h1 id="file指针"><a href="#file指针" class="headerlink" title="file指针"></a>file指针</h1><p>fail指针当然跳得越深越好，这时候fail所代表的意义到底是什么呢？很明显，此时 要求与母串有 尽可能长得公共前缀，也就是说与失配发生的时候AC自动机所在节点（所表示的状态）表示的字符串的尽可能长的后缀相同的新节点 ， 这里我们明显可以采取树形dp来得到。</p>
+<h1 id="内存开销"><a href="#内存开销" class="headerlink" title="内存开销"></a>内存开销</h1><p>我们用fail[u]表示节点u的失配指针，用<code>nex[u][i]</code>表示节点u的指向 字符i的节点， 于是我们发现 了转移式子： <code>fail[nex[u][i]]= nex[fail[u]][i]</code>;如果fail[u]有儿子i的话，但如果没有呢？我们又要不断往上面跳跃对吧。 复杂度不是特别高，能忍受，当然这是在u有节点i的情况下。如果没有节点呢？sorry，这个问题有点复杂，一般的AC自动机不关心这种事情。因为那 会增加很多额外的开销，我们不愿意去给他们建立新节点来储存fail指针的。</p>
+<h1 id="字典图"><a href="#字典图" class="headerlink" title="字典图"></a>字典图</h1><p>有一种AC自动机，他索性把字典树建成了字典图，如果nex指针指向空节点，他 一定会导致失配，他的nex指针就直接指向了应该是fail指针的地方，很漂亮的做法，但是我们失去了很多，比方说，树没有了，AC自动机不能再加入新 的模式串了。这让我们很难受，抉择产生了，要么选择字典树+好几倍的新空间开销，要么选择字典图。</p>
+<h1 id="更好的解决方案"><a href="#更好的解决方案" class="headerlink" title="更好的解决方案"></a>更好的解决方案</h1><p>笔者对此思考了很久，很久，考虑到我们要么用-1要么用0来表示nex指针指向的 是空节点，也就是说，负数没有被使用到，我们可以这样做，如果一条边在字典树上，我们正常储存，如果他不在字典树，而是在字典图上，那我们存储 他所指向的节点的相反数，一者表示此指针指向空节点，再者表示此指针指向的节点的fail指针，这样的做法集合了上诉两种做法的优点于一身。下面是我的代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Aho_Corasick_automation</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e6</span>+<span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> trans[maxn][<span class="number">26</span>],fail[maxn],end[maxn];</span><br><span class="line">    <span class="type">int</span> root,cnt;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">new_node</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//fail指针不需要初始化,因为在bfs的时候他被更新</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)trans[cnt][i]=<span class="number">0</span>;</span><br><span class="line">        end[cnt]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> cnt++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cnt=<span class="number">0</span>;</span><br><span class="line">        root=<span class="built_in">new_node</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">char</span>*buf)</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> len=(<span class="type">int</span>)<span class="built_in">strlen</span>(buf+<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> u=root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=len;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]==<span class="number">0</span>)</span><br><span class="line">                trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]=<span class="built_in">new_node</span>();</span><br><span class="line">            u=trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        end[u]++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">get_fail</span><span class="params">()</span></span>&#123;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="type">int</span> u=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(trans[u][i]==<span class="number">0</span>)&#123;</span><br><span class="line">                    trans[u][i]=-<span class="built_in">abs</span>(trans[fail[u]][i]);<span class="comment">//采用负数来表示非树边。。</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    q.<span class="built_in">push</span>(trans[u][i]);</span><br><span class="line">                    fail[trans[u][i]]=<span class="built_in">abs</span>(trans[fail[u]][i]);</span><br><span class="line">                    <span class="keyword">if</span>(u==root)fail[trans[u][i]]=root;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">char</span>*buf)</span></span>&#123;<span class="comment">//统计母串里面出现了几种子串</span></span><br><span class="line">        <span class="type">int</span> len=(<span class="type">int</span>)<span class="built_in">strlen</span>(buf+<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> u=root ,ret=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=len;i++)&#123;</span><br><span class="line">            u=<span class="built_in">abs</span>(trans[u][buf[i]-<span class="string">&#x27;a&#x27;</span>]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> p=u;p!=root;p=fail[p])&#123;</span><br><span class="line">                <span class="keyword">if</span>(end[p]==<span class="number">-1</span>)<span class="keyword">break</span>;</span><br><span class="line">                ret+=end[p];</span><br><span class="line">                end[p]=<span class="number">-1</span>;<span class="comment">//为什么要搞-1呢？可以用来剪枝，预防这样的特殊数据-&gt; aaaaaaaaaaa......</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">debug</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">35</span>;i++)<span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">26</span>;j++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%2c&quot;</span>,j+<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;cnt;i++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;id=%3d | fail=%3d | end=%3d | chi=[&quot;</span>,i,fail[i],end[i]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;<span class="number">26</span>;j++)&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%2d&quot;</span>,trans[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;]\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-11-06T07:14:26.000Z" itemprop="dateUpdated">2018-11-06 15:14:26</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/PHRG42.html&title=《AC自动机》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/PHRG42.html&title=《AC自动机》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/PHRG42.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AC自动机》 — Believe it&url=http://fightinggg.github.io/indigo/PHRG42.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/PHRG42.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/PJEZJ9.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Manacher算法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/PHMIY1.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">回文自动机</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/PHRG42.html&title=《AC自动机》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/PHRG42.html&title=《AC自动机》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/PHRG42.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AC自动机》 — Believe it&url=http://fightinggg.github.io/indigo/PHRG42.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/PHRG42.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aQXKDMAwF0Nz/0ukBWsj/MukM5nnFtAHzWGgkWa9XvN7B+v3L/JntvcOFgYFxW0b7cr+3aV/66AnJvodUDAyMBzCONj66Pt/46Mmzvc5/j4GBgbG+fQJe2RcDAwPjPHSeh9QkBTwvYjEwMDDaIva8QE3+O7u+uBbHwMC4ISPvuv//9VfONzAwMG7FeJcrD46zv8wWBgbG3oz1A8g2Kbwq4GJgYDyNkTS2knZbOyg2C9AfqBgYGI9kJGMT+dBY3uhPgnsRcDEwMG7LmI2NzgrdfK/8477ySI+BgXFbRl4i5uEvOW5sDymH5S4GBsZ2jPXRh6QMbhPHtsGHgYGxHyN/lVl7Lm/A5UnhH3dhYGA8gDEboZiVxG24j1JVDAyMrRntwUDbJss/TYtZOsLEwMC4FSNPv/LGfZ5oroxWYGBgPIeRjH+1Df32pb8yM4KBgbERo22NtSMUV416fPisGBgYD2Bc1fqflbvrz8fAwNibkSSFbWssJ33lSAADA2NrxqwBlx8ttPj2LgwMjOcw2uPJq1r/+Qf90C/EwMB4JGM9EZx9gnphYGBsyniXaz3ta4NykRRiYGBsypjFtJXJjtnvi5kRDAyMTRn5yEVboM4SwTzgYmBgPI2xkurl42L5MUObgGJgYGCsbJzfNUsZMTAwMNYDbvshhsNhGBgYD2AkRWySAiYFcH4KWYRvDAyMrRkrAxn5q+SFbhuIMTAwtmb8AMRYslC/Gi0NAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

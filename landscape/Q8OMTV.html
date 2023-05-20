@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>java并发编程9-JDK线程池 | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  JDK的线程池 线程池状态，RUNNING，SHUTDOWN(不会再接受新任务了)，STOP(立刻停止)，TIDYING(任务执行完毕，即将TERMINATED)，TERMINATED 构造函数1publ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程9-JDK线程池">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/Q8OMTV.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  JDK的线程池 线程池状态，RUNNING，SHUTDOWN(不会再接受新任务了)，STOP(立刻停止)，TIDYING(任务执行完毕，即将TERMINATED)，TERMINATED 构造函数1publ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-12T15:53:55.000Z">
+<meta property="article:modified_time" content="2020-04-12T15:53:55.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Language/Java/Java并发/java并发编程9-JDK线程池/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/Q8OMTV.html" class="article-date">
+  <time class="dt-published" datetime="2020-04-12T15:53:55.000Z" itemprop="datePublished">2020-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/Language/">Language</a>►<a class="article-category-link" href="/landscape/categories/Language/Java/">Java</a>►<a class="article-category-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      java并发编程9-JDK线程池
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="JDK的线程池"><a href="#JDK的线程池" class="headerlink" title="JDK的线程池"></a>JDK的线程池</h1><p> 线程池状态，RUNNING，SHUTDOWN(不会再接受新任务了)，STOP(立刻停止)，TIDYING(任务执行完毕，即将TERMINATED)，TERMINATED</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ThreadPollExecutor</span><span class="params">(<span class="type">int</span> corePoolsize,<span class="type">int</span> maximumPoolSize,<span class="type">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>核心线程数量</li>
+<li>最大线程数量</li>
+<li>就急线程生存时间</li>
+<li>时间单位</li>
+<li>阻塞队列</li>
+<li>线程工厂: 给线程起个名字</li>
+<li>拒绝策略</li>
+</ul>
+<span id="more"></span>
+<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3><ul>
+<li>AbortPolicy 让调用者抛出异常</li>
+<li>CallerRunsPolicy 让调用者运行任务</li>
+<li>DiscardPolicy 放弃本次任务</li>
+<li>DIcardOldestPolicy 放弃队列中最先进入的任务</li>
+<li>Dubbo 抛出异常并记录线程栈信息</li>
+<li>Netty 创建新的线程来执行</li>
+<li>ActiveMQ 等待超时</li>
+<li>PinPoint 拒绝策略链， 比如先用方法A，如果失败就要方法B，…</li>
+</ul>
+<h2 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h2><p> 固定大小的线程池<br> 阻塞队列无界，没有就急线程，nThreads个核心线程, 是非守护线程<br> 当然我们也可以自己创建线程工厂，自己给线程取名字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newFixedThreadPool</span><span class="params">(<span class="type">int</span> nThreads)</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(nThreads, nThreads,</span><br><span class="line">                                     <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                     <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="newCachedThraedPool"><a href="#newCachedThraedPool" class="headerlink" title="newCachedThraedPool"></a>newCachedThraedPool</h2><p> 不固定大小的线程池<br> 阻塞队列无界，没有核心线程，全是救急线程，但不是无限个，活60秒</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newCachedThreadPool</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SynchronousQueue"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</h3><p> 如果没有人取出东西，放入操作会被阻塞, 如果没有人放入东西，同理拿出会被阻塞，如果有多个同时拿，这时候就像栈一样，后来的人，会先拿到东西</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">test10_f1</span><span class="params">(SynchronousQueue&lt;Integer&gt; integers, String string)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;begin&quot;</span>);</span><br><span class="line">            integers.put(<span class="number">1</span>);</span><br><span class="line">            logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, string).start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">test10_f2</span><span class="params">(SynchronousQueue&lt;Integer&gt; integers, String string)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;begin&quot;</span>);</span><br><span class="line">            integers.take();</span><br><span class="line">            logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, string).start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test10</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    SynchronousQueue&lt;Integer&gt; integers = <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;&gt;();</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;3&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;5&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;6&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;7&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;8&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;a&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;b&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;c&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;d&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;e&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;f&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;g&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;h&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 下面是输出, 可以看到，1234按顺序进入，4321按顺序出来</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">16:33:54.391 [1] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.591 [2] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.792 [3] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.996 [4] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.202 [5] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.202 [5] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.202 [4] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.407 [6] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.409 [6] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.409 [3] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.609 [7] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.609 [2] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.609 [7] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.813 [8] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.814 [8] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.814 [1] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:56.017 [a] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.221 [b] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.425 [c] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.630 [d] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.835 [e] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.836 [e] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:56.836 [d] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.038 [f] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.039 [f] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.039 [c] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.244 [g] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.244 [g] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.244 [b] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.448 [h] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.449 [h] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.449 [a] DEBUG com.wsx.test.ThreadTest - end</span><br></pre></td></tr></table></figure>
+
+<h2 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h2><p> 1个核心线程，0个救急线程，使用无界队列,于是任务可以无数个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newSingleThreadExecutor</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FinalizableDelegatedExecutorService</span></span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 1个线程的线程池能叫池吗？我干嘛不自己用？ 实际上我们自己创建的话如果碰到一些错误的任务，可能线程就退出了，这里不好处理，但是线程池在该线程退出以后会帮我们重新创建线程<br> FinalizableDelegatedExecutorService 是一个装饰者模式，只暴露部分接口，避免后期被修改容量</p>
+<h2 id="TimerTask"><a href="#TimerTask" class="headerlink" title="TimerTask"></a>TimerTask</h2><p> 这个不重要，他很差，他是串行执行的，如果前面的太耗时会导致后面的被推迟，如果前面发生异常，后面的不会执行</p>
+<h2 id="ScheduledExecutorService"><a href="#ScheduledExecutorService" class="headerlink" title="ScheduledExecutorService"></a>ScheduledExecutorService</h2><p> 用法和TimerTask很像，但是他不会出现上面的异常影响后续任务的情况</p>
+<h3 id="ScheduledExecutorService-scheduleAtFixedTate"><a href="#ScheduledExecutorService-scheduleAtFixedTate" class="headerlink" title="ScheduledExecutorService.scheduleAtFixedTate()"></a>ScheduledExecutorService.scheduleAtFixedTate()</h3><p> 在初始延迟以后，能够在单位时间内被反复执行</p>
+<h3 id="ScheduledExecutorService-scheduleWithFixedDelay"><a href="#ScheduledExecutorService-scheduleWithFixedDelay" class="headerlink" title="ScheduledExecutorService.scheduleWithFixedDelay()"></a>ScheduledExecutorService.scheduleWithFixedDelay()</h3><p> 在初始延迟以后，反复执行的两个任务之间隔固定时间</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="submit"><a href="#submit" class="headerlink" title="submit"></a>submit</h3><p> 用future来返回，future.get();</p>
+<h3 id="invokeAll-tasks"><a href="#invokeAll-tasks" class="headerlink" title="invokeAll(tasks)"></a>invokeAll(tasks)</h3><p> 提交tasks中的所有任务</p>
+<h3 id="invokeAll-tasks-timeout-unit"><a href="#invokeAll-tasks-timeout-unit" class="headerlink" title="invokeAll(tasks,timeout,unit)"></a>invokeAll(tasks,timeout,unit)</h3><p> 带一个超时时间</p>
+<h3 id="invokeAny"><a href="#invokeAny" class="headerlink" title="invokeAny"></a>invokeAny</h3><p> 谁最先执行完就返回谁，其他的就不管了</p>
+<h3 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h3><p> 无阻塞，不会接受新提交的任务，但已提交的任务后执行完。</p>
+<h3 id="shutdownNow"><a href="#shutdownNow" class="headerlink" title="shutdownNow"></a>shutdownNow</h3><p> 打断所有的线程，并返回队列中的任务，</p>
+<h3 id="isShutdown"><a href="#isShutdown" class="headerlink" title="isShutdown"></a>isShutdown</h3><p> 只要不是running， 就返回true</p>
+<h3 id="isTerminated"><a href="#isTerminated" class="headerlink" title="isTerminated"></a>isTerminated</h3><p> 只有TREMINATED返回真</p>
+<h3 id="awaitTermination"><a href="#awaitTermination" class="headerlink" title="awaitTermination"></a>awaitTermination</h3><p> 就一直等，等到超时或者线程结束</p>
+<h2 id="正确处理异常"><a href="#正确处理异常" class="headerlink" title="正确处理异常"></a>正确处理异常</h2><p> 如果执行过程中没有异常，future.get()正常返回,如果出现异常，future.get()会抛出异常</p>
+<h2 id="Fork-x2F-Join"><a href="#Fork-x2F-Join" class="headerlink" title="Fork&#x2F;Join"></a>Fork&#x2F;Join</h2><p> fork能创建新的线程来执行，join会阻塞，这就实现了并行，下面是100的阶乘模998244353</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(RecursiveTaskTest.class);</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Task</span> <span class="keyword">extends</span> <span class="title class_">RecursiveTask</span>&lt;Integer&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> begin;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> end;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> mod;</span><br><span class="line"></span><br><span class="line">        Task(<span class="type">int</span> begin, <span class="type">int</span> end, <span class="type">int</span> mod) &#123;</span><br><span class="line">            <span class="built_in">this</span>.begin = begin;</span><br><span class="line">            <span class="built_in">this</span>.end = end;</span><br><span class="line">            <span class="built_in">this</span>.mod = mod;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> Integer <span class="title function_">compute</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (begin == end) <span class="keyword">return</span> begin;</span><br><span class="line">            <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> begin + end &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="type">Task</span> <span class="variable">task1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Task</span>(begin, mid, mod);</span><br><span class="line">            <span class="type">Task</span> <span class="variable">task2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Task</span>(mid + <span class="number">1</span>, end, mod);</span><br><span class="line">            task1.fork();</span><br><span class="line">            task2.fork();</span><br><span class="line">            <span class="keyword">return</span> Math.toIntExact(<span class="number">1L</span> * task1.join() * task2.join() % mod);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">ForkJoinPool</span> <span class="variable">forkJoinPool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>(<span class="number">3</span>);</span><br><span class="line">    logger.debug(<span class="string">&quot;&#123;&#125;&quot;</span>, forkJoinPool.invoke(<span class="keyword">new</span> <span class="title class_">Task</span>(<span class="number">1</span>, <span class="number">100</span>, <span class="number">998244353</span>)));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/Q8OMTV.html" data-id="clhvp2d8l00d3zimc77sf408y" data-title="java并发编程9-JDK线程池" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/Q8OMU7.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          java并发编程10-异步模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/Q8OMTK.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">java并发编程8-自定义线程池</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

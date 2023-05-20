@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>凸四边形不等式优化dp | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    理论篇决策单调性对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移">
+<meta property="og:type" content="article">
+<meta property="og:title" content="凸四边形不等式优化dp">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/PQ8MNU.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    理论篇决策单调性对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-20T02:23:54.000Z">
+<meta property="article:modified_time" content="2021-05-19T15:10:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">凸四边形不等式优化dp</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">凸四边形不等式优化dp</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-20T02:23:54.000Z" itemprop="datePublished" class="page-time">
+  2019-04-20
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li></ul></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%90%86%E8%AE%BA%E7%AF%87"><span class="post-toc-number">1.</span> <span class="post-toc-text">理论篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">决策单调性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">四边形不等式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8C%BA%E9%97%B4%E5%8C%85%E5%90%AB%E5%8D%95%E8%B0%83%E6%80%A7"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">区间包含单调性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%B0%E5%A2%9E%E5%AE%9A%E4%B9%89"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">新增定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%AF%81%E6%98%8E"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">证明</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E7%BB%B4DP"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">一维DP</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%8C%E7%BB%B4DP%E8%BE%83%E5%A4%8D%E6%9D%82"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">二维DP较复杂</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%81%9A%E6%B3%95%E7%AF%87"><span class="post-toc-number">2.</span> <span class="post-toc-text">做法篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BC%BA%E5%8C%96%E7%9A%84%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%E4%B8%80%E7%BB%B4dp"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">强化的决策单调性优化一维dp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%94%A8%E4%BA%8C%E5%88%86%E6%9B%B4%E6%96%B0%E5%86%B3%E7%AD%96%E6%95%B0%E7%BB%84"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">用二分更新决策数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%E4%BC%98%E5%8C%96"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">单调队列优化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%E4%BA%8C%E7%BB%B4dp"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">决策单调性优化二维dp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E8%BF%99%E4%BA%9B%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">什么时候可以使用这些优化？</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ACM/学习笔记/DP/凸四边形不等式优化dp/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">凸四边形不等式优化dp</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-20 10:23:54" datetime="2019-04-20T02:23:54.000Z"  itemprop="datePublished">2019-04-20</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li></ul></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="理论篇"><a href="#理论篇" class="headerlink" title="理论篇"></a>理论篇</h1><h2 id="决策单调性"><a href="#决策单调性" class="headerlink" title="决策单调性"></a>决策单调性</h2><p>对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移$j$，如果$pri[i]$关于$i$单调，那么我们称该$dp$具有决策单调性。</p>
+<p>对于一类二维$dp$,如果有转移$dp[i][j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) i&lt;&#x3D;k&lt;j $并假定$pro[i][j]$为到$dp[i][j]$的最优转移$k$,如果$pri[i][j]$关于$i$单调，且关于$j$单调，那么我们称该$dp$具有决策单调性。</p>
+<h2 id="四边形不等式"><a href="#四边形不等式" class="headerlink" title="四边形不等式"></a>四边形不等式</h2><p>对于二元数论函数，$w(i,j)$，若满足$a\le b\le c\le d$恒有 $w(a,d)+w(b,c) \ge w(a,c)+w(b,d)$则该二元函数满足四边形不等式</p>
+<p>他的充要条件是: 若$a\lt b$ 恒有$w(a,b)+w(a+1,b+1) \ge w(a,b+1)+w(a+1,b)$</p>
+<p>可以理解为，交叉小于包含</p>
+<h2 id="区间包含单调性"><a href="#区间包含单调性" class="headerlink" title="区间包含单调性"></a>区间包含单调性</h2><p>对于二元数论函数，$i&lt;j$的$w(i,j)$ 我们将参数看做区间，定义区间的包含为偏序关系， 若$w$的值关于该偏序关系单调，则称该函数具有区间包含单调性。</p>
+<span id="more"></span>
+
+<h2 id="新增定义"><a href="#新增定义" class="headerlink" title="新增定义"></a>新增定义</h2><p>如果存在转移$dp[j]\to dp[i]$不管此转移是否最优，我们都把$j$叫做一个决策点。</p>
+<p>强化的决策单调性：对于某一维$dp$，如果在某决策点集合中，若$x$为到$dp(i)$的最优决策，则对于所有的大于$i$的$j$，$x$依旧是此决策点集合中的最优决策。 二维同理。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="一维DP"><a href="#一维DP" class="headerlink" title="一维DP"></a>一维DP</h3><p>考虑转移式$dp[i]&#x3D;\min(dp[j]+w(j,i))$，其中$1\le j\lt i$ ，且函数$w$满足四边形不等式</p>
+<p>不妨假设$p_x$是$dp[x]$的最佳转移之一，$p$是一个$dp[x]$的任意一个转移</p>
+<p>则$\forall p \lt x$ 都有$dp[p_x]+w(p_x,x)\le dp[p]+w(p,x)$ 即 $dp[p_x]-dp[p]\le w(p,x) -w(p_x,x)$</p>
+<p>根据四边形不等式，$\forall p \le p_x \le x \le y $ 都有$w(p,y)+w(p_x,x)\ge w(p,x)+w(p_x,y)$ 即$w(p,x)-w(p_x,x)\le w(p,y)-w(p_x,y)$</p>
+<p>合并上面两个不等式得到了$dp[p_x]-dp[p]\le w(p,y)-w(p_x,y)$ 即$dp[p_x]+w(p_x,y)\le dp[p]+w(p,y)$, 根据这个不等式，我们发现他说明了这样一个事实，即:</p>
+<p><strong>如果$p_x$是$dp[x]$的最佳转移之一，则$\forall p\le p_x \le x \le y$，对于$dp[y]$都有决策点$p_x$优于$p$</strong></p>
+<h3 id="二维DP较复杂"><a href="#二维DP较复杂" class="headerlink" title="二维DP较复杂"></a>二维DP较复杂</h3><p>需要对每一纬单独证明决策单调性，其中涉及到$w$函数的四边形不等式性质和$dp$自身的四边形不等式性质，此处不做证明，实战中也不会遇到，决策单调性需要依靠敏感的直觉，你需要用最快的速度猜测决策点单调，然后用一两分钟编写程序验证其单调性。</p>
+<h1 id="做法篇"><a href="#做法篇" class="headerlink" title="做法篇"></a>做法篇</h1><h2 id="强化的决策单调性优化一维dp"><a href="#强化的决策单调性优化一维dp" class="headerlink" title="强化的决策单调性优化一维dp"></a>强化的决策单调性优化一维dp</h2><p>当此$dp$满足强化的决策单调性的时候，我们可以用单调队列来优化$dp$,此单调队列维护一个数据结构，该数据结构维护一个决策数组,当我们处理$dp[i]$的时候，该数组维护了$dp[i]$到$dp[n]$的在$[1,i)$中的最优决策点。 显然该决策数组单调增，我们拿出最优队首，为$dp[i]$赋值，下一步应该是更新该决策数组，怎么更新呢，我们二分即可。</p>
+<h2 id="用二分更新决策数组"><a href="#用二分更新决策数组" class="headerlink" title="用二分更新决策数组"></a>用二分更新决策数组</h2><p>先证明,对于新加进来的决策，对于旧决策数组的影响具有单调性，即存在一个分界点，分界点左边，新决策不如旧决策，分界点右边，新决策优于旧决策， 首先，我们假设新决策的影响不具有单调性，即新决策的影响杂乱无章，在这种情况下，我们取出靠左边的决策为新决策的元素的下标，根据强化的决策单调性，此元素右边的 元素的当前最优决策值必须且只能为$i$，因为当前大于等于i的决策只有$i$。矛盾发生，故新决策的影响具有单调性。</p>
+<p> 当于是我们二分出这个点即可解决 ，</p>
+<h2 id="单调队列优化"><a href="#单调队列优化" class="headerlink" title="单调队列优化"></a>单调队列优化</h2><p>为什么我们要用单调队列呢，我们先考虑，如果我们采取线段树优化，那么更新决策数组显然是$lg$级别的，但是 二分新决策边界的时候，复杂度为$lg*lg$，因为单点查询是$lg$级别的，再加个二分就双$lg$了。</p>
+<p>为了时间复杂度好写，我们采取单调队列来维护，单调队列维护一个三元组分别是决策点和目前以此决策点为最优决策的$dp$，因为这是个区间，所有要用两个数来维护。</p>
+<p>更新的时候，直接修改队尾的三元组即可，查询的时候，暴力枚举队尾的三元组，如果新决策完全不如旧决策， 此次修改结束，如果队尾的决策完全不如新决策弹掉了队尾，修改新队尾的区间为后缀区间，继续枚举，如果新决策优于队尾决策的一部分，二分出位置后直接修改即可。</p>
+<p>很容易证明单调队列优化的时间复杂度是$lg$的，优于线段树。</p>
+<h2 id="决策单调性优化二维dp"><a href="#决策单调性优化二维dp" class="headerlink" title="决策单调性优化二维dp"></a>决策单调性优化二维dp</h2><p>这个就特别简单了，$dp[i][j]$的转移在$dp[i][j-1]$和$dp[i+1][j]$之间枚举即可。</p>
+<h2 id="什么时候可以使用这些优化？"><a href="#什么时候可以使用这些优化？" class="headerlink" title="什么时候可以使用这些优化？"></a>什么时候可以使用这些优化？</h2><p>对于一维$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) $,若w满足四边形不等式则，此$dp$满足决策单调性,并且，满足强化的决策单调性。</p>
+<p>对于二维$dp[i,j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) $若w满足四边形不等式，且$w$满足区间 包含单调性，则$dp$满足四边形不等式，且具有决策单调性。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-05-19T15:10:00.000Z" itemprop="dateUpdated">2021-05-19 23:10:00</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/PQ8MNU.html&title=《凸四边形不等式优化dp》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/PQ8MNU.html&title=《凸四边形不等式优化dp》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/PQ8MNU.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《凸四边形不等式优化dp》 — Believe it&url=http://fightinggg.github.io/indigo/PQ8MNU.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/PQ8MNU.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/PQBI61.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">莫队算法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/PPJIW2.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">最大团</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/PQ8MNU.html&title=《凸四边形不等式优化dp》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/PQ8MNU.html&title=《凸四边形不等式优化dp》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/PQ8MNU.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《凸四边形不等式优化dp》 — Believe it&url=http://fightinggg.github.io/indigo/PQ8MNU.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/PQ8MNU.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACG0lEQVR42u3aS5KDMAwFQO5/aeYAUzBPEkkNdntFJRDcWaj08XHE6wzW7zvz36w+21wYGBivZVQ3d/Vt9S3Jt8neMDAw9mFcvfjqnoR09VT+ruR+DAwMjISRbCUP0xgYGBjPMuZh+r6IxcDAwKgWsZNW3eT64VocAwPjhYzvbKV3/ZH5BgYGxqsYZ3HlwbH3SW9hYGCszZgPIO+fzQvUyUAUAwNjbcY8jFY/T0YL+bPlvBUDA+O1jOTW3sGL0UgyH05gYGAszcgDYl585s39XpiuJL0YGBjrMHLSpD+fFLePjRAwMDAWZcxb8/fpXY9UPvaBgYGxHCMJjr3jF3k6mBSof1xjYGBswBg1ueIxZ3XYWRiIYmBgLM2Y9K/yUUG+icn4AQMDY2fGvASt/jVJiMfAwNiNkb++2oCbhOzRYQsMDIyFGHmwqxaovZFnYdaKgYGxDaNXyuatt0nxmfytR29hYGC8kNFL5vKAmA8v82sMDIydGdXytRrL55u+3C0GBsZmjGQYUC1Tk2erI9JCNoqBgbEE46mXffzcx3f+MwwMjH/DOIur15ibFLqFpBADA2NRxiQo5wG0F5SbCSIGBsaijCTI5iPJZ4eXhfEABgbGBox5eldt2PXOgESDAQwMjO0Z1VQv324vZcTAwMDoMcqJ3e1+otEFBgbGBozqwa8eoDoeKLT/MDAwlmZUS8eckTfserMLDAyMDRg/B9CTYSL9XNEAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

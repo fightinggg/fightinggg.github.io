@@ -1,0 +1,862 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/hdu6161.html">
+
+
+
+  <title>
+hdu6161 - dp - problem - 老Blog迁移 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">hdu6161
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2019-08-05 23:23:08">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2019-08-05T23:23:08+08:00">2019-08-05</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicli3sbvtj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitht3xtj20zk0m8k5v.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitf0kl1j20zk0m87fe.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipey84bjtj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipevo9j1jj20zk0m8e81.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" itemprop="item" rel="index" title="分类于 老Blog迁移"><span itemprop="name">老Blog迁移</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" itemprop="item" rel="index" title="分类于 problem"><span itemprop="name">problem</span></a>
+<meta itemprop="position" content="3" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/" itemprop="item" rel="index" title="分类于 dp"><span itemprop="name">dp</span></a>
+<meta itemprop="position" content="4" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/hdu6161.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/hdu6161.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+转移自<a href='/ACM/problem/dp/hdu6161.html'>老blog</a>
+
+<div type="text/javadiv" src="/ACM/js/web_begin.js"></div>
+<div>
+        <h1>
+                <center><span class="exturl" data-url="aHR0cDovL2FjbS5oZHUuZWR1LmNuL3Nob3dwcm9ibGVtLnBocD9waWQ9NjE2MQ==">hdu6161</span></center>
+        </h1>
+
+        <div id="text">
+                题目大意 :<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                给你一颗很大的完全二叉树，节点编号从1到n，对于除了1号节点以外的其他节点x，他的父亲是x>>1,1号节点为根，节点x的初始权值为x<br>
+                给出两种操作：<br>
+                1.update u x 意味着更新节点u的权值为x<br>
+                2.query u 询问经过节点u的路径中，权值最大的条路径的权，（定义路径的权为路径上节点的权的和）<br>
+                操作一共有m次<br>
+                数据范围：n<1e8,m<1e5，x<1e10 时间：2s<br>
+
+        </div>
+
+        <div type="text/javadiv" src="/ACM/js/solve_begin.js"></div>
+        <div>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最开始考虑到这是一棵很大的树，我们不可能把这棵树建出来，太大了，空间肯定不够，注意到操作次数只有1e5，然后研究什么是最大路径的权？我们考虑任意一个节点u，他有三条边分别连向父亲fa，左儿子lson，右儿子rson，如果我们处理了以这三个点为起点且不经过u的路径的最值，那么我们就可以通过这三个数据转移过来。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再考虑到这棵树是有规律的，节点数远大于操作数，那么我们依据各种高级数据结构中常用的懒惰标记（懒修改）来优化空间复杂度,来假装建立了这棵树，我们访问哪个节点，我们就为哪个节点开辟空间，其他的我们设置懒惰标记，表示此节点，以及他的整颗子树都被放置懒标记。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;处理完了空间以及询问操作，下一步是修改，当我们发现，我们修改了某个节点的值后，他以及他的祖先的向下的路径值都可能发生变化，这些节点的数量级是lg的，能够忍受，但是，这个节点的所有子孙向上的路径最值也有可能发生变化，这写节点的数量级是非常大的，远超线性。此时不能忽视，到此已经无解。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;看过题解以后，发现自己的解法离正解已经很接近了，首先第一点，正解说用map来储存树结构，这样子就不必去储存边，且大大优化了编码难度，然而却牺牲了时间，因为我们如果通过指针建树的话，从一个节点走向另一个节点可以O(1)办到，但是用map不行，map在这个基本操作上是O(lg)级别的，这就导致用map的话最终时间复杂度多一个lg。但是可以证明，多此lg，依旧可以过题，时间不会超。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二点，状态的选取：dp[x]代表以x为根的子树中以x为起点的路径的权的最大值。这个状态要好很多，相比我设的三个状态，第一他状态简单，第二单次修改的转移时间复杂度O(lgn)，因为他少一个向上的路径的状态，根本就不需要这个状态。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改权值的转移方程：
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从下至上，若修改节点x，且father为x的父亲，brother为x的兄弟，lson为x的左儿子，rson为x的右儿子，w代表点权，dp代表状态值，则dp[x]=max(dp[lson],dp[rson])+w[x]，
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp[father]=max(dp[x],dp[brother])+w[father]。。。按此方法一直更新到根即可。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询问路径的转移方程:
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;依旧从下至上。肯定要去三个值的，x往左儿子的dp[x
+                <<1]，x往右儿子的dp[x<<1|1]，然而，取不到父亲的值了，因为我们就没有维护这个状态值，不过还是有办法来得到它，我们考虑x往父亲的方向的最大路径值，这其实也可以递归下去，我们设这种值叫做up,利用动态规划，自顶向下搜索：x往父亲的权，在父亲那里只有两个方向可以走，因为是从x过来的，肯定不能回去的，那就少了一个方向，如果父亲继续向上走，我们可以递归下去，如果父亲向下走，那就只能走兄弟方向的路径，决策出现了：up[x]=w[x]+max(up[father],dp[brother])
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至此，更新和询问都已经解决，一个自底向上递归转移，一个自顶向下搜索转移。
+        </div>
+        <div type="text/javadiv" src="/ACM/js/solve_end.js"></div>
+
+        <div type="text/javadiv" src="/ACM/js/code_begin.js"></div>
+        <pre><span class="cp">#include&lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">ll</span><span
+                class="p">;</span>
+
+<span class="k">struct</span> <span class="n">mydata</span><span class="p">{</span>
+    <span class="k">struct</span> <span class="n">node</span><span class="p">{</span>
+        <span class="n">ll</span> <span class="n">w</span><span class="p">,</span><span class="n">dp</span><span
+                class="p">;</span>
+        <span class="n">node</span><span class="p">()</span><span class="o">:</span><span class="n">w</span><span
+                class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">dp</span><span
+                class="p">(</span><span class="mi">0</span><span class="p">){}</span>
+        <span class="n">node</span><span class="p">(</span><span class="n">ll</span> <span class="n">w</span><span
+                class="p">,</span><span class="n">ll</span> <span class="n">dp</span><span class="p">)</span><span
+                class="o">:</span><span class="n">w</span><span class="p">(</span><span class="n">w</span><span
+                class="p">),</span><span class="n">dp</span><span class="p">(</span><span class="n">dp</span><span
+                class="p">){}</span>
+    <span class="p">};</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="n">ll</span><span class="p">,</span><span
+                class="n">node</span><span class="o">&gt;</span><span class="n">tree</span><span class="p">;</span>
+    <span class="n">ll</span> <span class="n">n</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">ini</span><span class="p">(</span><span class="n">ll</span> <span
+                class="n">n</span><span class="p">){</span>
+        <span class="k">this</span><span class="o">-&gt;</span><span class="n">n</span><span class="o">=</span><span
+                class="n">n</span><span class="p">;</span>
+        <span class="n">tree</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">node</span> <span class="n">get</span><span class="p">(</span><span
+                class="n">ll</span> <span class="n">x</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span
+                class="n">n</span><span class="p">)</span><span class="k">return</span> <span class="n">node</span><span
+                class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span
+                class="p">);</span>
+
+        <span class="n">node</span> <span class="n">ret</span><span class="o">=</span><span class="n">tree</span><span
+                class="p">[</span><span class="n">x</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">.</span><span
+                class="n">w</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span><span
+                class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+
+        <span class="n">ll</span> <span class="n">l</span><span class="o">=</span><span class="n">x</span><span
+                class="p">,</span><span class="n">r</span><span class="o">=</span><span class="n">x</span><span
+                class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;=</span><span
+                class="n">n</span><span class="p">)</span><span class="n">l</span><span class="o">=</span><span
+                class="n">l</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">r</span><span class="o">&lt;=</span><span
+                class="n">n</span><span class="p">)</span><span class="n">r</span><span class="o">=</span><span
+                class="n">r</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">|</span><span
+                class="mi">1</span><span class="p">;</span>
+        <span class="n">l</span><span class="o">&gt;&gt;=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">r</span><span class="o">&gt;&gt;=</span><span class="mi">1</span><span class="p">;</span>
+
+        <span class="n">ll</span> <span class="n">big</span><span class="o">=</span><span class="n">l</span><span
+                class="o">&lt;=</span><span class="n">r</span><span class="o">?</span><span class="nl">r:</span><span
+                class="n">n</span><span class="p">;</span>
+        <span class="n">ll</span> <span class="n">dp</span><span class="o">=</span><span class="mi">0</span><span
+                class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">big</span><span class="o">&gt;=</span><span
+                class="n">x</span><span class="p">){</span>
+            <span class="n">dp</span><span class="o">+=</span><span class="n">big</span><span class="p">;</span>
+            <span class="n">big</span><span class="o">&gt;&gt;=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">tree</span><span class="p">[</span><span class="n">x</span><span
+                class="p">]</span><span class="o">=</span><span class="n">node</span><span class="p">(</span><span
+                class="n">x</span><span class="p">,</span><span class="n">dp</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="n">ll</span> <span
+                class="n">x</span><span class="p">,</span><span class="n">ll</span> <span class="n">w</span><span
+                class="p">){</span>
+        <span class="n">node</span> <span class="n">l</span><span class="o">=</span><span class="n">get</span><span
+                class="p">(</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span
+                class="p">);</span><span class="c1">//lg</span>
+        <span class="n">node</span> <span class="n">r</span><span class="o">=</span><span class="n">get</span><span
+                class="p">(</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span
+                class="o">|</span><span class="mi">1</span><span class="p">);</span><span class="c1">//lg</span>
+        <span class="n">tree</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span
+                class="o">=</span><span class="n">node</span><span class="p">(</span><span class="n">w</span><span
+                class="p">,</span><span class="n">max</span><span class="p">(</span><span class="n">l</span><span
+                class="p">.</span><span class="n">dp</span><span class="p">,</span><span class="n">r</span><span
+                class="p">.</span><span class="n">dp</span><span class="p">)</span><span class="o">+</span><span
+                class="n">w</span><span class="p">);</span><span class="c1">//lg</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span
+                class="mi">1</span><span class="p">)</span><span class="k">return</span><span class="p">;</span>
+        <span class="k">else</span> <span class="n">update</span><span class="p">(</span><span class="n">x</span><span
+                class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">,</span><span
+                class="n">get</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;&gt;</span><span
+                class="mi">1</span><span class="p">).</span><span class="n">w</span><span class="p">);</span>
+    <span class="p">}</span><span class="c1">//lglg</span>
+
+    <span class="n">ll</span> <span class="n">query</span><span class="p">(</span><span class="n">ll</span> <span
+                class="n">x</span><span class="p">){</span>
+        <span class="n">ll</span> <span class="n">fa</span><span class="o">=</span><span
+                class="n">max_sum_up</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">ll</span> <span class="n">l</span><span class="o">=</span><span class="n">get</span><span
+                class="p">(</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span
+                class="p">).</span><span class="n">dp</span><span class="p">;</span>
+        <span class="n">ll</span> <span class="n">r</span><span class="o">=</span><span class="n">get</span><span
+                class="p">(</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span
+                class="o">|</span><span class="mi">1</span><span class="p">).</span><span class="n">dp</span><span
+                class="p">;</span>
+        <span class="k">return</span> <span class="n">fa</span><span class="o">+</span><span class="n">l</span><span
+                class="o">+</span><span class="n">r</span><span class="o">-</span><span class="n">min</span><span
+                class="p">(</span><span class="n">min</span><span class="p">(</span><span class="n">l</span><span
+                class="p">,</span><span class="n">r</span><span class="p">),</span><span class="n">fa</span><span
+                class="p">)</span><span class="o">+</span><span class="n">get</span><span class="p">(</span><span
+                class="n">x</span><span class="p">).</span><span class="n">w</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">ll</span> <span class="n">max_sum_up</span><span class="p">(</span><span class="n">ll</span> <span
+                class="n">x</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span
+                class="mi">1</span><span class="p">)</span><span class="k">return</span> <span class="mi">0</span><span
+                class="p">;</span>
+        <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">x</span><span
+                class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">).</span><span class="n">w</span><span
+                class="o">+</span><span class="n">max</span><span class="p">(</span><span
+                class="n">max_sum_up</span><span class="p">(</span><span class="n">x</span><span
+                class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">),</span><span
+                class="n">get</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span
+                class="mi">1</span><span class="p">).</span><span class="n">dp</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span><span class="n">tree</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+
+    <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">10</span><span
+                class="p">];</span>
+    <span class="n">ll</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span
+                class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">x</span><span
+                class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="o">~</span><span class="n">scanf</span><span
+                class="p">(</span><span class="s">&quot;%lld%lld&quot;</span><span class="p">,</span><span class="o">&amp;</span><span
+                class="n">n</span><span class="p">,</span><span class="o">&amp;</span><span class="n">m</span><span
+                class="p">)){</span>
+        <span class="n">tree</span><span class="p">.</span><span class="n">ini</span><span class="p">(</span><span
+                class="n">n</span><span class="p">);</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="n">ll</span> <span class="n">i</span><span
+                class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span
+                class="o">&lt;</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span
+                class="o">++</span><span class="p">){</span>
+            <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span
+                class="p">,</span><span class="n">str</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span
+                class="mi">0</span><span class="p">]</span><span class="o">==</span><span
+                class="sc">&#39;q&#39;</span><span class="p">){</span>
+                <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%lld&quot;</span><span
+                class="p">,</span><span class="o">&amp;</span><span class="n">u</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%lld</span><span class="se">\n</span><span
+                class="s">&quot;</span><span class="p">,</span><span class="n">tree</span><span class="p">.</span><span
+                class="n">query</span><span class="p">(</span><span class="n">u</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span>
+                <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%lld%lld&quot;</span><span
+                class="p">,</span><span class="o">&amp;</span><span class="n">u</span><span class="p">,</span><span
+                class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+                <span class="n">tree</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span
+                class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+        <div type="text/javadiv" src="/ACM/js/code_end.js"></div>
+
+
+</div>
+<div type="text/javadiv" src="/ACM/js/web_end.js"></div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/hdu6161.html" title="hdu6161">http://fightinggg.github.io/shoka/hdu6161.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/hdu6170.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclxxcb6rj20zk0m8b29.jpg" title="hdu6170">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> dp</span>
+  <h3>hdu6170</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/hdu5745.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicitht3xtj20zk0m8k5v.jpg" title="hdu5745">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> dp</span>
+  <h3>hdu5745</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">
+                hdu6161
+        </span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/hdu5745.html" rel="bookmark" title="hdu5745">hdu5745</a></li><li class="active"><a href="/shoka/hdu6161.html" rel="bookmark" title="hdu6161">hdu6161</a></li><li><a href="/shoka/hdu6170.html" rel="bookmark" title="hdu6170">hdu6170</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/hdu6170.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/hdu5745.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Math/" title="分类于 Math">Math</a>
+</div>
+
+    <span><a href="/shoka/Q70NUN.html" title="math">math</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/%E8%AE%A1%E8%92%9C%E5%AE%A2A2000.html" title="计蒜客A2000">计蒜客A2000</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E7%BC%96%E7%A0%81/" title="分类于 编码">编码</a>
+</div>
+
+    <span><a href="/shoka/QQRP8M.html" title="变长整型">变长整型</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/hdu6445.html" title="hdu6445">hdu6445</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8OMTK.html" title="java并发编程8-自定义线程池">java并发编程8-自定义线程池</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/hdu6183.html" title="hdu6183">hdu6183</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PZLR1D.html" title="hdu6703">hdu6703</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/" title="分类于 math">math</a>
+</div>
+
+    <span><a href="/shoka/bzoj-2655.html" title="bzoj-2655">bzoj-2655</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Docker/K8s/" title="分类于 K8s">K8s</a>
+</div>
+
+    <span><a href="/shoka/QPZURC.html" title="k8s故障">k8s故障</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" title="分类于 数学">数学</a>
+</div>
+
+    <span><a href="/shoka/PGU74V.html" title="合数分解">合数分解</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'hdu6161.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

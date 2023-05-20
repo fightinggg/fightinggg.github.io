@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial      由于这是第三篇Kafka方面的学习资源，参见 深入理解Kafka-核心设计与实践原理和Kafka，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka权威指南">
+<meta property="og:url" content="https://fightinggg.github.io/QR6OSO.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial      由于这是第三篇Kafka方面的学习资源，参见 深入理解Kafka-核心设计与实践原理和Kafka，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-07-16.25.47.090.png">
+<meta property="article:published_time" content="2021-04-07T07:58:00.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:58:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="lis">
+<meta property="article:tag" content="trie">
+<meta property="article:tag" content="Zookeeper">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="集群">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightinggg.github.io/image-2021-04-07-16.25.47.090.png">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/QR6OSO.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/QR6OSO.html","path":"QR6OSO.html","title":"Kafka权威指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kafka权威指南 | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-kafka%E7%94%9F%E4%BA%A7%E8%80%85-%E5%90%91kafka%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-text">第三章 Kafka生产者-向kafka写入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E9%85%8D%E7%BD%AE"><span class="nav-text">生产者配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#acks%E5%86%8D%E9%87%8D%E5%A4%8D%E4%B8%80%E9%81%8D%E8%BF%99%E4%B8%AA%E9%85%8D%E7%BD%AE"><span class="nav-text">acks(再重复一遍这个配置)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#max.in.flight.requests.per.connection"><span class="nav-text">max.in.flight.requests.per.connection</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-kafka%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BB%8Ekafka%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-text">第四章 Kafka消费者-从Kafka读取数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E9%85%8D%E7%BD%AE"><span class="nav-text">消费者配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="nav-text">自动提交偏移量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="nav-text">手动提交偏移量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%8F%90%E4%BA%A4"><span class="nav-text">组合同步与异步提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E7%89%B9%E5%AE%9A%E7%9A%84%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="nav-text">提交特定的偏移量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E7%9A%84%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">独立的消费者</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC-5-%E7%AB%A0-%E6%B7%B1%E5%85%A5kafka"><span class="nav-text">第 5 章 深入Kafka</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/QR6OSO.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kafka权威指南 | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka权威指南<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/%E9%98%9F%E5%88%97/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-07 15:58:00" itemprop="dateCreated datePublished" datetime="2021-04-07T15:58:00+08:00">2021-04-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">队列</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QR6OSO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<p><img data-src='/image-2021-04-07-16.25.47.090.png'></img></p>
+<p>由于这是第三篇Kafka方面的学习资源，参见 <a href="/QQRN80.html">深入理解Kafka-核心设计与实践原理</a>和<a href="/Q90SQR.html">Kafka</a>，所以笔者对一些重复的部分进行了跳过，这里只写一些很重要的内容以及有趣的知识。</p>
+<span id="more"></span>
+<h1 id="第三章-kafka生产者-向kafka写入数据">第三章 Kafka生产者-向kafka写入数据</h1>
+<h2 id="生产者配置">生产者配置</h2>
+<h3 id="acks再重复一遍这个配置">acks(再重复一遍这个配置)</h3>
+<blockquote>
+<p>acks参数指定了必须要有多少个分区副本收到消息,生产者才会认为消息写入是成功的。这个参数对消息丢失的可能性有重要影响。该参数有如下选项</p>
+<p>如果acks=0,生产者在成功写入消息之前不会等待任何来自服务器的响应。也就是说如果当中出现了问题,导致服务器没有收到消息,那么生产者就无从得知,消息也就丢失了。不过,因为生产者不需要等待服务器的响应,所以它可以以网络能够支持的最大速度发送消息,从而达到很高的吞吐量</p>
+<p>如果acks=1,只要集群的首领节点收到消息,生产者就会收到一个来自服务器的成功响应。如果消息无法到达首领节点(比如首领节点崩溃,新的首领还没有被选举出来)生产者会收到一个错误响应,为了避免数据丢失,生产者会重发消息。不过,如果一个没有收到消息的节点成为新首领,消息还是会丢失。这个时候的吞吐量取决于使用的是同步发送还是异步发送。如果让发送客户端等待服务器的响应(通过调用 Future对象的get()方法),显然会增加延迟(在网络上传输一个来回的延退)。如果客户端使用回调,延迟问题就可以得到缓解,不过吞吐量还是会受发送中消息数量的限制(比如,生产者在收到服务器响应之前可以发送多少个消息)。</p>
+<p>如果acks=all,只有当所有参与复制的节点全部收到消息时,生产者オ会收到一个来自服务器的成功响应。这种模式是最安全的,它可以保证不止一个服务器收到消息,就算有服务器发生崩溃,整个集群仍然可以运行(第5章将讨论更多的细节)。不过,它的延迟比acks=1时更高,因为我们要等待不只一个服务器节点接收消息</p>
+<p>Page: 36</p>
+</blockquote>
+<h3 id="max.in.flight.requests.per.connection">max.in.flight.requests.per.connection</h3>
+<p>这个参数影响了消息能否乱序</p>
+<blockquote>
+<p>该参数指定了生产者在收到服务器响应之前可以发送多少个消息。它的值越高,就会占用越多的内存,不过也会提升吞吐量。把它设为1可以保证消息是按照发送的顺序写入服务器的,即使发生了重试</p>
+<p>Kafka 可以保证同一个分区里的消息是有序的。也就是说，如果生产者按照 一定的顺序发送消息，broker 就会按照这个顺序把它们写入分区，消费者也 会按照同样的顺序读取它们。在某些情况下，顺序是非常重要的。例如，往 一个账户存入 100 元再取出来，这个与先取钱再存钱是截然不同的！不过， 有些场景对顺序不是很敏感。 如果把 retries 设为非零整数，同时把 max.in.flight.requests.per.connection 设为比 1 大的数，那么，如果第一个批次消息写入失败，而第二个批次写入 成功，broker 会重试写入第一个批次。如果此时第一个批次也写入成功，那 么两个批次的顺序就反过来了。 一般来说，如果某些场景要求消息是有序的，那么消息是否写入成功也是 很关键的，所以不建议把 retries 设为 0。可以把 max.in.flight.requests. per.connection 设为 1，这样在生产者尝试发送第一批消息时，就不会有其 他的消息发送给 broker。不过这样会严重影响生产者的吞吐量，所以只有在 对消息的顺序有严格要求的情况下才能这么做。</p>
+</blockquote>
+<h1 id="第四章-kafka消费者-从kafka读取数据">第四章 Kafka消费者-从Kafka读取数据</h1>
+<p>如果一个消费者组中的消费者数量发生了变化，则会引发Kafka分区的重分配，这被称为<strong>再均衡</strong></p>
+<blockquote>
+<p>再均衡非常 重要，它为消费者群组带来了高可用性和伸缩性（我们可以放心地添加或移除消费者）， 不过在正常情况下，我们并不希望发生这样的行为。在再均衡期间，消费者无法读取消 息，造成整个群组一小段时间的不可用。另外，当分区被重新分配给另一个消费者时，消 费者当前的读取状态会丢失，它有可能还需要去刷新缓存，在它重新恢复状态之前会拖慢 应用程序。</p>
+</blockquote>
+<p>消费者需要向broker的协调器发送心跳，如果消费者长时间不发，则被视为不活跃，会触发分区的重分配。</p>
+<blockquote>
+<p><strong>4.4 谁来执行rebalance和consumer group管理？</strong></p>
+<p>Kafka提供了一个角色：coordinator来执行对于consumer group的管理。坦率说kafka对于coordinator的设计与修改是一个很长的故事。最新版本的coordinator也与最初的设计有了很大的不同。这里我只想提及两次比较大的改变。</p>
+<p>首先是0.8版本的coordinator，那时候的coordinator是依赖zookeeper来实现对于consumer group的管理的。Coordinator监听zookeeper的/consumers/<group>/ids的子节点变化以及/brokers/topics/<topic>数据变化来判断是否需要进行rebalance。group下的每个consumer都自己决定要消费哪些分区，并把自己的决定抢先在zookeeper中的/consumers/<group>/owners/<topic>/<partition>下注册。很明显，这种方案要依赖于zookeeper的帮助，而且每个consumer是单独做决定的，没有那种“大家属于一个组，要协商做事情”的精神。</p>
+<p>基于这些潜在的弊端，0.9版本的kafka改进了coordinator的设计，提出了group coordinator——每个consumer group都会被分配一个这样的coordinator用于组管理和位移管理。这个group coordinator比原来承担了更多的责任，比如组成员管理、位移提交保护机制等。当新版本consumer group的第一个consumer启动的时候，它会去和kafka server确定谁是它们组的coordinator。之后该group内的所有成员都会和该coordinator进行协调通信。显而易见，这种coordinator设计不再需要zookeeper了，性能上可以得到很大的提升。后面的所有部分我们都将讨论最新版本的coordinator设计。</p>
+<p>原文链接： https://www.cnblogs.com/huxi2b/p/6223228.html</p>
+</blockquote>
+<h2 id="消费者配置">消费者配置</h2>
+<blockquote>
+<ul>
+<li>auto.offset.reset</li>
+</ul>
+<p>该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下（因消费者长 时间失效，包含偏移量的记录已经过时并被删除）该作何处理。它的默认值是 latest，意 思是说，在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之 后生成的记录）。另一个值是 earliest，意思是说，在偏移量无效的情况下，消费者将从 起始位置读取分区的记录。</p>
+<ul>
+<li>enable.auto.commit</li>
+</ul>
+<p>我们稍后将介绍几种不同的提交偏移量的方式。该属性指定了消费者是否自动提交偏移 量，默认值是 true。为了尽量避免出现重复数据和数据丢失，可以把它设为 false，由自 己控制何时提交偏移量。如果把它设为 true，还可以通过配置 auto.commit.interval.ms 属性来控制提交的频率。</p>
+<p>Range: 该策略会把主题的若干个连续的分区分配给消费者。假设消费者 C1 和消费者 C2 同时 订阅了主题 T1 和主题 T2，并且每个主题有 3 个分区。那么消费者 C1 有可能分配到这 两个主题的分区 0 和分区 1，而消费者 C2 分配到这两个主题的分区 2。因为每个主题 拥有奇数个分区，而分配是在主题内独立完成的，第一个消费者最后分配到比第二个消 费者更多的分区。只要使用了 Range 策略，而且分区数量无法被消费者数量整除，就会 出现这种情况。</p>
+<p>RoundRobin: 该策略把主题的所有分区逐个分配给消费者。如果使用 RoundRobin 策略来给消费者 C1 和消费者 C2 分配分区，那么消费者 C1 将分到主题 T1 的分区 0 和分区 2 以及主题 T2 的分区 1，消费者 C2 将分配到主题 T1 的分区 1 以及主题 T2 的分区 0 和分区 2。一般 来说，如果所有消费者都订阅相同的主题（这种情况很常见），RoundRobin 策略会给所 有消费者分配相同数量的分区（或最多就差一个分区）。</p>
+</blockquote>
+<h2 id="自动提交偏移量">自动提交偏移量</h2>
+<p>简单，但是后果是无法避免重复消息</p>
+<h2 id="手动提交偏移量">手动提交偏移量</h2>
+<p>同步提交commitSync： 影响吞吐，只要没有发生不可恢复的错误，一直尝试直至提交成功</p>
+<p>异步提交commitASync： 异步提交又会引发一个新的问题，异步提交失败了怎么办？</p>
+<blockquote>
+<p>在成功提交或碰到无法恢复的错误之前，commitSync() 会一直重试，但是 commitAsync() 不会，这也是 commitAsync() 不好的一个地方。它之所以不进行重试，是因为在它收到 服务器响应的时候，可能有一个更大的偏移量已经提交成功。</p>
+<p>解决办法：</p>
+<p>我们可以使用一个单调递增的序列号来维护异步提交的顺序。在每次提交偏 移量之后或在回调里提交偏移量时递增序列号。在进行重试前，先检查回调 的序列号和即将提交的偏移量是否相等，如果相等，说明没有新的提交，那么可以安全地进行重试。如果序列号比较大，说明有一个新的提交已经发送 出去了，应该停止重试。</p>
+<p>Page: 60</p>
+</blockquote>
+<p>笔者对这个解决办法有一个问题，异步提交请求发送了乱序怎么办？</p>
+<p>考虑一次异步提交请求A，然后由于网络阻塞，导致这个提交超时了，然后去检查发现序列号没变，重试提交请求A，由于第一次提交请求A和第二次提交请求A直接经过了一段时间，提交请求B出现了，紧跟着提交请求A发送了出去，结果提交B先到达。</p>
+<p>考虑到Kafka使用的是TCP协议，先发的消息一定先到，这个问题就解决了。</p>
+<p>但是，发请求和增加偏移量是两个步骤，这里涉及到并发问题，如果请求B先发了请求，后增加偏移量，此时发生线程调度，请求A发了出去，那还是会导致一样的问题，</p>
+<p>所以笔者认为这里需要加锁。</p>
+<h2 id="组合同步与异步提交">组合同步与异步提交</h2>
+<p>消费者在下线的时候，也是需要提交偏移量的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">            System.out.println(</span><br><span class="line">                <span class="string">&quot;topic = %s, partition = %s, offset = %d,&quot;</span></span><br><span class="line">                + <span class="string">&quot;customer = %s, country = %s\n&quot;</span>,</span><br><span class="line">                record.topic(), record.partition(),</span><br><span class="line">                record.offset(), record.key(), record.value());</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitAsync(); <span class="comment">//➊</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;Unexpected error&quot;</span>, e);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        consumer.commitSync(); <span class="comment">//➋</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        consumer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>➊ 如果一切正常，我们使用 commitAsync() 方法来提交。这样速度更快，而且即使这次提交失败，下一次提交很可能会成功。</p>
+<p>➋ 如果直接关闭消费者，就没有所谓的“下一次提交”了。使用 commitSync() 方法会一直重试，直到提交成功或发生无法恢复的错误。</p>
+<h2 id="提交特定的偏移量">提交特定的偏移量</h2>
+<blockquote>
+<p>消费者 API 允许在调用 commitSync() 和 commitAsync() 方法时传进去希望提交 的分区和偏移量的 map。假设你处理了半个批次的消息，最后一个来自主题“customers” 分区 3 的消息的偏移量是 5000，你可以调用 commitSync() 方法来提交它。不过，因为消 费者可能不只读取一个分区，你需要跟踪所有分区的偏移量，所以在这个层面上控制偏移 量的提交会让代码变复杂。</p>
+</blockquote>
+<h2 id="独立的消费者">独立的消费者</h2>
+<p>有时候我们不需要消费者组，我们只有一个消费者。</p>
+<blockquote>
+<p>如果是这样的话，就不需要订阅主题，取而代之的是为自己分配分区。一个消费者可以订 阅主题（并加入消费者群组），或者为自己分配分区，但不能同时做这两件事情。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">List&lt;PartitionInfo&gt; partitionInfos = <span class="literal">null</span>;</span><br><span class="line">partitionInfos = consumer.partitionsFor(<span class="string">&quot;topic&quot;</span>); <span class="comment">//➊</span></span><br><span class="line"><span class="keyword">if</span> (partitionInfos != <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (PartitionInfo partition : partitionInfos)&#123;</span><br><span class="line">        partitions.add(<span class="keyword">new</span> <span class="title class_">TopicPartition</span>(</span><br><span class="line">            partition.topic(), partition.partition()));</span><br><span class="line">    &#125;</span><br><span class="line">    consumer.assign(partitions); <span class="comment">//➋</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        ConsumerRecords&lt;String, String&gt; records =</span><br><span class="line">            consumer.poll(<span class="number">1000</span>);</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record: records) &#123;</span><br><span class="line">            System.out.println(</span><br><span class="line">                <span class="string">&quot;topic = %s, partition = %s, &quot;</span></span><br><span class="line">                + <span class="string">&quot;offset = %d,customer = %s, country = %s\n&quot;</span>, </span><br><span class="line">                record.topic(), record.partition(), record.offset(),</span><br><span class="line">                record.key(), record.value());</span><br><span class="line">        &#125;</span><br><span class="line">        consumer.commitSync();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>➊ 向集群请求主题可用的分区。如果只打算读取特定分区，可以跳过这一步。 ➋ 知道需要哪些分区之后，调用 assign() 方法。</p>
+<blockquote>
+<p>除了不会发生再均衡，也不需要手动查找分区，其他的看起来一切正常。不过要记住，如 果主题增加了新的分区，消费者并不会收到通知。所以，要么周期性地调用 consumer. partitionsFor() 方法来检查是否有新分区加入，要么在添加新分区后重启应用程序。</p>
+</blockquote>
+<h1 id="第-5-章-深入kafka">第 5 章 深入Kafka</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/QR6OSO.html" title="Kafka权威指南">https://fightinggg.github.io/QR6OSO.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/lis/" rel="tag"><i class="fa fa-tag"></i> lis</a>
+              <a href="/tags/trie/" rel="tag"><i class="fa fa-tag"></i> trie</a>
+              <a href="/tags/Zookeeper/" rel="tag"><i class="fa fa-tag"></i> Zookeeper</a>
+              <a href="/tags/Kafka/" rel="tag"><i class="fa fa-tag"></i> Kafka</a>
+              <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"><i class="fa fa-tag"></i> 集群</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/QR4S3C.html" rel="prev" title="Kafka时间轮">
+                  <i class="fa fa-chevron-left"></i> Kafka时间轮
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/QR767C.html" rel="next" title="八股文">
+                  八股文 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/QR6OSO.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"034f6debd231d69d0e11325d22820640"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

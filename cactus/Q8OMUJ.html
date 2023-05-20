@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程11-JUC">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q8OMUJ.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:modified_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>java并发编程11-JUC</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q8OMUY.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q8OMU7.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8OMUJ.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&text=java并发编程11-JUC"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&is_video=false&description=java并发编程11-JUC"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java并发编程11-JUC&body=Check out this article: http://fightinggg.github.io/cactus/Q8OMUJ.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&name=java并发编程11-JUC&description=&lt;div&gt;&lt;a href=&#34;/next/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;JUC&#34;&gt;&lt;a href=&#34;#JUC&#34; class=&#34;headerlink&#34; title=&#34;JUC&#34;&gt;&lt;/a&gt;JUC&lt;/h1&gt;&lt;h2 id=&#34;AQS&#34;&gt;&lt;a href=&#34;#AQS&#34; class=&#34;headerlink&#34; title=&#34;AQS&#34;&gt;&lt;/a&gt;AQS&lt;/h2&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架&lt;/p&gt;
+&lt;h2 id=&#34;ReentrantLock&#34;&gt;&lt;a href=&#34;#ReentrantLock&#34; class=&#34;headerlink&#34; title=&#34;ReentrantLock&#34;&gt;&lt;/a&gt;ReentrantLock&lt;/h2&gt;&lt;h3 id=&#34;如何重入&#34;&gt;&lt;a href=&#34;#如何重入&#34; class=&#34;headerlink&#34; title=&#34;如何重入&#34;&gt;&lt;/a&gt;如何重入&lt;/h3&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; 用一个变量记录重入了多少次&lt;/p&gt;
+&lt;h3 id=&#34;NonfairSync&#34;&gt;&lt;a href=&#34;#NonfairSync&#34; class=&#34;headerlink&#34; title=&#34;NonfairSync&#34;&gt;&lt;/a&gt;NonfairSync&lt;/h3&gt;&lt;h4 id=&#34;lock&#34;&gt;&lt;a href=&#34;#lock&#34; class=&#34;headerlink&#34; title=&#34;lock&#34;&gt;&lt;/a&gt;lock&lt;/h4&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中&lt;/p&gt;
+&lt;h4 id=&#34;acquire&#34;&gt;&lt;a href=&#34;#acquire&#34; class=&#34;headerlink&#34; title=&#34;acquire&#34;&gt;&lt;/a&gt;acquire&lt;/h4&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8OMUJ.html&t=java并发编程11-JUC"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JUC"><span class="toc-number">1.</span> <span class="toc-text">JUC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AQS"><span class="toc-number">1.1.</span> <span class="toc-text">AQS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantLock"><span class="toc-number">1.2.</span> <span class="toc-text">ReentrantLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%87%8D%E5%85%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">如何重入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NonfairSync"><span class="toc-number">1.2.2.</span> <span class="toc-text">NonfairSync</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lock"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">lock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquire"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">acquire</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlock"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">unlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#release"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">release</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquireInterruptibly"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">acquireInterruptibly</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FairSync"><span class="toc-number">1.2.3.</span> <span class="toc-text">FairSync</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Condition"><span class="toc-number">1.2.4.</span> <span class="toc-text">Condition</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fullrelease"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">fullrelease</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#signal"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">signal</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantReadWriteLock"><span class="toc-number">1.3.</span> <span class="toc-text">ReentrantReadWriteLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">锁升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E9%99%8D%E7%BA%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">锁降级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">缓存问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#query"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#update"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">缓存更新策略</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E5%88%A0%E7%BC%93%E5%AD%98%EF%BC%8C%E5%90%8E%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.3.3.1.</span> <span class="toc-text">先删缓存，后更新数据库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%90%8E%E5%88%A0%E7%BC%93%E5%AD%98"><span class="toc-number">1.3.3.3.2.</span> <span class="toc-text">先更新数据库，后删缓存</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E8%AF%81%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">保证强一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E8%80%83%E8%99%91%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.5.</span> <span class="toc-text">没有考虑到的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.4.</span> <span class="toc-text">读写锁原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StampedLock"><span class="toc-number">1.4.</span> <span class="toc-text">StampedLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Semaphore"><span class="toc-number">1.5.</span> <span class="toc-text">Semaphore</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountdownLatch"><span class="toc-number">1.6.</span> <span class="toc-text">CountdownLatch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.6.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8join%EF%BC%9F"><span class="toc-number">1.6.2.</span> <span class="toc-text">为什么不用join？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A81"><span class="toc-number">1.6.3.</span> <span class="toc-text">应用1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A82"><span class="toc-number">1.6.4.</span> <span class="toc-text">应用2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%EF%BC%9F"><span class="toc-number">1.6.5.</span> <span class="toc-text">返回结果？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cyclicbarrier"><span class="toc-number">1.7.</span> <span class="toc-text">cyclicbarrier</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        java并发编程11-JUC
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-12T15:54:19.000Z" class="dt-published" itemprop="datePublished">2020-04-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/Java/">Java</a> › <a class="category-link" href="/cactus/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p>&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架</p>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><h3 id="如何重入"><a href="#如何重入" class="headerlink" title="如何重入"></a>如何重入</h3><p>&amp;emsp;&amp;emsp; 用一个变量记录重入了多少次</p>
+<h3 id="NonfairSync"><a href="#NonfairSync" class="headerlink" title="NonfairSync"></a>NonfairSync</h3><h4 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h4><p>&amp;emsp;&amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中</p>
+<h4 id="acquire"><a href="#acquire" class="headerlink" title="acquire"></a>acquire</h4><p>&amp;emsp;&amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断</p>
+<span id="more"></span>
+<h4 id="unlock"><a href="#unlock" class="headerlink" title="unlock"></a>unlock</h4><p>&amp;emsp;&amp;emsp; 调用release</p>
+<h4 id="release"><a href="#release" class="headerlink" title="release"></a>release</h4><p>&amp;emsp;&amp;emsp; 如果成功，unpark唤醒后继，为什么是非公平呢？因为被唤醒以后，可能会有不在链表中线程来跟自己竞争，所以这不公平</p>
+<h4 id="acquireInterruptibly"><a href="#acquireInterruptibly" class="headerlink" title="acquireInterruptibly"></a>acquireInterruptibly</h4><p>&amp;emsp;&amp;emsp; 不忽略打断，抛出异常即可</p>
+<h3 id="FairSync"><a href="#FairSync" class="headerlink" title="FairSync"></a>FairSync</h3><p>&amp;emsp;&amp;emsp; 区别再也tryAccquire，如果c&#x3D;0,即没人占用锁，他还会去检测AQS队列是否为空，其实就是看一下链表队列首部是否为自己，或者链表队列是否为空</p>
+<h3 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h3><p>&amp;emsp;&amp;emsp; 条件变量又是一个链表，当我们调用await的时候，当前线程的节点会被放进其中，然后把节点状态设为CONDITION,</p>
+<h4 id="fullrelease"><a href="#fullrelease" class="headerlink" title="fullrelease"></a>fullrelease</h4><p>&amp;emsp;&amp;emsp; 拿到锁的重数，然后一次性释放，在唤醒后面的节点，然后park自己</p>
+<h4 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h4><p>&amp;emsp;&amp;emsp; 当调用的时候讲条件变量的链表中第一个元素取出并加入到锁的等待链表中。</p>
+<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><ul>
+<li>ReentrantReadWriteLock rw &#x3D; new ReentrantReadWriteLock()</li>
+<li>rw.readLock();</li>
+<li>rw.writeLock();</li>
+</ul>
+<h3 id="锁升级"><a href="#锁升级" class="headerlink" title="锁升级"></a>锁升级</h3><p>&amp;emsp;&amp;emsp; 下面的代码会写锁永久等待</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().lock();</span><br></pre></td></tr></table></figure>
+<h3 id="锁降级"><a href="#锁降级" class="headerlink" title="锁降级"></a>锁降级</h3><p>&amp;emsp;&amp;emsp; 你可以把写锁转化为读锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获得写锁</span></span><br><span class="line">rw.writeLock().lock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁降级</span></span><br><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().unlock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获得读锁</span></span><br><span class="line">rw.readLock().unlock();</span><br></pre></td></tr></table></figure>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>&amp;emsp;&amp;emsp; 我们可以把对数据库的某些操作缓存到内存中，来降低数据库的压力</p>
+<h4 id="query"><a href="#query" class="headerlink" title="query"></a>query</h4><p>&amp;emsp;&amp;emsp; 先在缓存中找，找不到就加锁进数据库找，然后更新缓存,可以考虑双重检查锁</p>
+<h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>&amp;emsp;&amp;emsp; 先更新数据库,后清除缓存</p>
+<h4 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h4><h5 id="先删缓存，后更新数据库"><a href="#先删缓存，后更新数据库" class="headerlink" title="先删缓存，后更新数据库"></a>先删缓存，后更新数据库</h5><p>&amp;emsp;&amp;emsp; A删了缓存，准备更新，结果B来了，B一查缓存没用，去数据找数据，就找到了旧值。</p>
+<h5 id="先更新数据库，后删缓存"><a href="#先更新数据库，后删缓存" class="headerlink" title="先更新数据库，后删缓存"></a>先更新数据库，后删缓存</h5><p>&amp;emsp;&amp;emsp; A更新数据库的时候，B去查了缓存的旧</p>
+<h4 id="保证强一致性"><a href="#保证强一致性" class="headerlink" title="保证强一致性"></a>保证强一致性</h4><p>&amp;emsp;&amp;emsp; query查缓存套读锁，查数据库更新缓存加写锁<br>&amp;emsp;&amp;emsp; update直接加写锁</p>
+<h4 id="没有考虑到的问题"><a href="#没有考虑到的问题" class="headerlink" title="没有考虑到的问题"></a>没有考虑到的问题</h4><ul>
+<li>上面的操作时候读多写少</li>
+<li>没有考虑缓存容量</li>
+<li>没有考虑缓存过期</li>
+<li>只适合单机</li>
+<li>并发度还是太低， 可以降低锁粒度</li>
+</ul>
+<h3 id="读写锁原理"><a href="#读写锁原理" class="headerlink" title="读写锁原理"></a>读写锁原理</h3><p>&amp;emsp;&amp;emsp; 写锁就是简单加锁，注意照顾读锁的情况就可以了<br>&amp;emsp;&amp;emsp; 源码太复杂了，我说不清了，留个坑吧</p>
+<h2 id="StampedLock"><a href="#StampedLock" class="headerlink" title="StampedLock"></a>StampedLock</h2><p>&amp;emsp;&amp;emsp; 乐观读，每个操作都可以返回一个戳，解锁的时候可以吧戳还回去，如果这中间有人进行了修改，会返回失败，否则成功</p>
+<ul>
+<li>stamp &#x3D; tryOptimisticRead() 乐观读</li>
+<li>validate(stamp)  校验是否被修改</li>
+<li>stamp &#x3D; readLock() 读锁</li>
+<li>stamp &#x3D; writeLock() 写锁</li>
+<li>unlockRead(stamp) 释放</li>
+<li>unlockWriteLock() 释放<br>&amp;emsp;&amp;emsp; 不支持条件变量，不支持重入</li>
+</ul>
+<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><p>&amp;emsp;&amp;emsp; acquire、release，和PV有点像</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&amp;emsp;&amp;emsp; 可以限流，在高峰区让线程阻塞，比如数据库连接池，</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; state存信号量的值<br>&amp;emsp;&amp;emsp; acquire 用cas，如果不成功但是位置还够就一直尝试，如果位置不够的话就吧当前线程节点加入AQS队列<br>&amp;emsp;&amp;emsp; release依然是先cas，失败就一直尝试，绝对会成功，成功以后，依然是改状态，然后唤醒后面的线程，</p>
+<h2 id="CountdownLatch"><a href="#CountdownLatch" class="headerlink" title="CountdownLatch"></a>CountdownLatch</h2><p>&amp;emsp;&amp;emsp; 可以用来同步，等待n个线程countDown以后，await的线程才会开始运行</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; 维护一个值，每当一个线程执行完成，就让他减少1，当减少为0的时候唤醒await的线程</p>
+<h3 id="为什么不用join？"><a href="#为什么不用join？" class="headerlink" title="为什么不用join？"></a>为什么不用join？</h3><p>&amp;emsp;&amp;emsp; 在线程池中，线程都不带停下来的，join没用</p>
+<h3 id="应用1"><a href="#应用1" class="headerlink" title="应用1"></a>应用1</h3><p>&amp;emsp;&amp;emsp; 在游戏中，每个玩家都自己加载自己的数据，当他们都加载完成的时候，游戏才能开始，<br>&amp;emsp;&amp;emsp; 我们设置10的倒计时，当10个玩家执行完的时候，让他们各自调用countdount，然后就能唤醒游戏开始线程</p>
+<h3 id="应用2"><a href="#应用2" class="headerlink" title="应用2"></a>应用2</h3><p>&amp;emsp;&amp;emsp; 在微服务中，我们可能需要请求多个信息，当信息都请求完成才能返回，如果串行，效率太低了，我们考虑并发，这里也是个倒计时</p>
+<h3 id="返回结果？"><a href="#返回结果？" class="headerlink" title="返回结果？"></a>返回结果？</h3><p>&amp;emsp;&amp;emsp; 如果线程需要返回结果，还是用fature更为合适，CountdownLatch不太适合</p>
+<h2 id="cyclicbarrier"><a href="#cyclicbarrier" class="headerlink" title="cyclicbarrier"></a>cyclicbarrier</h2><p>&amp;emsp;&amp;emsp; CountdownLatch 不能用多次，要多次用的话，只能反复创建才行。<br>&amp;emsp;&amp;emsp; await()即为CountdownLatch的countDown<br>&amp;emsp;&amp;emsp; cyclicbarrier 构造的时候可以传进一个Runnable，当信号值降低为0的时候，运行Runnable，然后信号量再次赋值为n达到重用的效果<br>&amp;emsp;&amp;emsp; 千万要注意nthreads和线程数要相等，不要搞骚操作,不是说不行，是不太好。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JUC"><span class="toc-number">1.</span> <span class="toc-text">JUC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AQS"><span class="toc-number">1.1.</span> <span class="toc-text">AQS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantLock"><span class="toc-number">1.2.</span> <span class="toc-text">ReentrantLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%87%8D%E5%85%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">如何重入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NonfairSync"><span class="toc-number">1.2.2.</span> <span class="toc-text">NonfairSync</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lock"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">lock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquire"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">acquire</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlock"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">unlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#release"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">release</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#acquireInterruptibly"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">acquireInterruptibly</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FairSync"><span class="toc-number">1.2.3.</span> <span class="toc-text">FairSync</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Condition"><span class="toc-number">1.2.4.</span> <span class="toc-text">Condition</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fullrelease"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">fullrelease</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#signal"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">signal</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantReadWriteLock"><span class="toc-number">1.3.</span> <span class="toc-text">ReentrantReadWriteLock</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">锁升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E9%99%8D%E7%BA%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">锁降级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">缓存问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#query"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#update"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">缓存更新策略</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E5%88%A0%E7%BC%93%E5%AD%98%EF%BC%8C%E5%90%8E%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.3.3.1.</span> <span class="toc-text">先删缓存，后更新数据库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%90%8E%E5%88%A0%E7%BC%93%E5%AD%98"><span class="toc-number">1.3.3.3.2.</span> <span class="toc-text">先更新数据库，后删缓存</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E8%AF%81%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">保证强一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89%E8%80%83%E8%99%91%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.3.5.</span> <span class="toc-text">没有考虑到的问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.4.</span> <span class="toc-text">读写锁原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StampedLock"><span class="toc-number">1.4.</span> <span class="toc-text">StampedLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Semaphore"><span class="toc-number">1.5.</span> <span class="toc-text">Semaphore</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CountdownLatch"><span class="toc-number">1.6.</span> <span class="toc-text">CountdownLatch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">1.6.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8join%EF%BC%9F"><span class="toc-number">1.6.2.</span> <span class="toc-text">为什么不用join？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A81"><span class="toc-number">1.6.3.</span> <span class="toc-text">应用1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A82"><span class="toc-number">1.6.4.</span> <span class="toc-text">应用2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%EF%BC%9F"><span class="toc-number">1.6.5.</span> <span class="toc-text">返回结果？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cyclicbarrier"><span class="toc-number">1.7.</span> <span class="toc-text">cyclicbarrier</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8OMUJ.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&text=java并发编程11-JUC"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&is_video=false&description=java并发编程11-JUC"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=java并发编程11-JUC&body=Check out this article: http://fightinggg.github.io/cactus/Q8OMUJ.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&title=java并发编程11-JUC"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8OMUJ.html&name=java并发编程11-JUC&description=&lt;div&gt;&lt;a href=&#34;/next/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8OMUJ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;JUC&#34;&gt;&lt;a href=&#34;#JUC&#34; class=&#34;headerlink&#34; title=&#34;JUC&#34;&gt;&lt;/a&gt;JUC&lt;/h1&gt;&lt;h2 id=&#34;AQS&#34;&gt;&lt;a href=&#34;#AQS&#34; class=&#34;headerlink&#34; title=&#34;AQS&#34;&gt;&lt;/a&gt;AQS&lt;/h2&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架&lt;/p&gt;
+&lt;h2 id=&#34;ReentrantLock&#34;&gt;&lt;a href=&#34;#ReentrantLock&#34; class=&#34;headerlink&#34; title=&#34;ReentrantLock&#34;&gt;&lt;/a&gt;ReentrantLock&lt;/h2&gt;&lt;h3 id=&#34;如何重入&#34;&gt;&lt;a href=&#34;#如何重入&#34; class=&#34;headerlink&#34; title=&#34;如何重入&#34;&gt;&lt;/a&gt;如何重入&lt;/h3&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; 用一个变量记录重入了多少次&lt;/p&gt;
+&lt;h3 id=&#34;NonfairSync&#34;&gt;&lt;a href=&#34;#NonfairSync&#34; class=&#34;headerlink&#34; title=&#34;NonfairSync&#34;&gt;&lt;/a&gt;NonfairSync&lt;/h3&gt;&lt;h4 id=&#34;lock&#34;&gt;&lt;a href=&#34;#lock&#34; class=&#34;headerlink&#34; title=&#34;lock&#34;&gt;&lt;/a&gt;lock&lt;/h4&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中&lt;/p&gt;
+&lt;h4 id=&#34;acquire&#34;&gt;&lt;a href=&#34;#acquire&#34; class=&#34;headerlink&#34; title=&#34;acquire&#34;&gt;&lt;/a&gt;acquire&lt;/h4&gt;&lt;p&gt;&amp;amp;emsp;&amp;amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8OMUJ.html&t=java并发编程11-JUC"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>heap | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   总览这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆 注意 全部代码单对象测试通过，部分代码未实现拷贝构造函数达到深拷贝。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="heap">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/Q6M13Q.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   总览这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆 注意 全部代码单对象测试通过，部分代码未实现拷贝构造函数达到深拷贝。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2020-03-03-17.02.14.000.png">
+<meta property="article:published_time" content="2020-03-03T09:02:14.000Z">
+<meta property="article:modified_time" content="2020-03-03T09:02:14.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2020-03-03-17.02.14.000.png">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-数据结构/heap/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/Q6M13Q.html" class="article-date">
+  <time class="dt-published" datetime="2020-03-03T09:02:14.000Z" itemprop="datePublished">2020-03-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      heap
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p>这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆</p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p> 全部代码单对象测试通过，部分代码未实现拷贝构造函数达到深拷贝。</p>
+<h1 id="heap"><a href="#heap" class="headerlink" title="heap"></a>heap</h1><p>堆是一种非常重要的数据结构，在计算机科学中，堆一般指堆是根节点比子孙后代都要大(小)的一种数据结构。</p>
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a target="_blank" rel="noopener" href="https://github.com/fightinggg/fightinggg.github.io/tree/master/cpp/perfect">链接</a></p>
+<h1 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h1><p>基本数据结构：变长数组、栈、队列、字符串的实现(此时暂未实现，使用STL代替，后面有时间会自己实现)<br>内存池机制<br> { post_link  势能分析}</p>
+<!---more-->
+
+<h1 id="基类设计"><a href="#基类设计" class="headerlink" title="基类设计"></a>基类设计</h1><p>在这里我们暂且只设置三个接口，如果不够，我们再补充。</p>
+<details>
+<summary> heap代码 </summary>
+
+</details>
+
+<h1 id="binary-heap"><a href="#binary-heap" class="headerlink" title="binary heap"></a>binary heap</h1><p>二叉堆，就是我们常见的堆，也是大多数人常用的堆，二叉堆是一个完全二叉树，满足根节点的值大于（小于）子孙的值。我们设计他的时候，采取下标从1开始的数组来直接模拟，使用i,2i,2i+1之间的关系来完成边的构建。</p>
+<h2 id="push"><a href="#push" class="headerlink" title="push"></a>push</h2><p>我们将数放入数组尾部，并不断上浮即可。细节稍微推一下就出来了。每个元素最多上浮堆的高度次，复杂度$O(lgn)$</p>
+<h2 id="pop"><a href="#pop" class="headerlink" title="pop"></a>pop</h2><p>我们直接删掉第一个元素，并让最后一个元素顶替他，然后下沉即可。这里个细节也是稍微推一下就出来了。每个元素最多下沉堆的高度次,复杂度$O(lgn)$</p>
+<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p>就是第一个元素,复杂度$O(1)$</p>
+<h2 id="代码如下"><a href="#代码如下" class="headerlink" title="代码如下:"></a>代码如下:</h2><details>
+<summary> binary heap代码 </summary>
+
+</details>
+
+<h1 id="binomial-heap"><a href="#binomial-heap" class="headerlink" title="binomial heap"></a>binomial heap</h1><p>二项堆，是一个堆森林，其中每个堆以及各自的子堆的元素个数都是2的幂，并且森林中没有两个堆元素个数相同的堆。举个简单的例子，一个包含了6个元素的二项堆，这个堆森林中一定是两个堆组成，因为6&#x3D;2+4，他不能是6&#x3D;2+2+2由三个堆组成，因为森林中不允许出现元素相同的堆。</p>
+<h2 id="堆的具体形状"><a href="#堆的具体形状" class="headerlink" title="堆的具体形状"></a>堆的具体形状</h2><p>***        图片源于wiki***<br><img src='/image-2020-03-03-17.02.14.000.png'></img></p>
+<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><p> 二项堆天然支持合并，即可并堆，当合并的时候，我们很容易发现，只要将森林合并即可,而对于哪些出现的元素个数相同的堆，我们可以两两合并，让其中一个作为另一个的根的直接儿子即可。每次合并的时候，两两合并的复杂度是$O(1)$,最多合并的次数等于森林中元素的个数减1，而森林中堆的个数等于二进制中1的个数，这个是O(lgn)级别的，所以总体复杂度O(lgn)</p>
+<h2 id="push-1"><a href="#push-1" class="headerlink" title="push"></a>push</h2><p> 可以看作与一个只包含了一个元素的堆合并,每次push，最坏的情况下时间复杂度为$O(lgn)$,但是多次连续的push，均摊时间复杂度就不一样了，我们来分析一下n次连续push的情况，森林中的堆两两合并的次数等于时间复杂度，定义函数$f(x)$,表示在森林中所有堆中的元素个数的总和为$x$的情况下，push一个值以后，堆中合并发生的次数，显然$f(x)&#x3D;$x的二进制表示中末尾连续的1的个数，不难发现<br>$f(x)&gt;&#x3D;1$的时候$x%2&#x3D;1$,<br>$f(x)&gt;&#x3D;2$的时候$x%4&#x3D;3$,<br>$f(x)&gt;&#x3D;3$的时候$x%8&#x3D;7$<br>这里我们通过计数原理推算出<br>$$<br>\begin{aligned}<br>\sum_{i&#x3D;1}^n{f(i)}&#x3D;\lfloor\frac{x+1}{2}\rfloor+\lfloor\frac{x+1}{4}\rfloor+\lfloor\frac{x+1}{8}\rfloor+…+\lt x+1<br>\end{aligned}<br>$$<br>所以在大量连续的push过程中，均摊时间复杂度为O(1)</p>
+<h2 id="pop-1"><a href="#pop-1" class="headerlink" title="pop"></a>pop</h2><p> 先遍历各个根，找出最值，不难发现，森林中，任意一个堆去掉根以后，恰好也是一个满足条件森林，这里也可以用合并处理,时间复杂度$O(lgn)$</p>
+<h2 id="top-1"><a href="#top-1" class="headerlink" title="top"></a>top</h2><p> 遍历所有堆即可，时间复杂度O(lgn)</p>
+<h2 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h2><p>很多人说用链表实现链接，这确实是一个好方法，但是如果用单链表或循环链表或双向链表实现，则有很多局限性，下面代码中也提及了。我这里采取的是使用数组存森林，使用左儿子右兄弟的手段，将多叉树用二叉树来表示。这个方法非常棒。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><details>
+<summary> binary heap代码 </summary>
+
+</details>
+
+
+<h1 id="fibonacci-heap"><a href="#fibonacci-heap" class="headerlink" title="fibonacci heap"></a>fibonacci heap</h1><p> 斐波拉契堆，是目前理论上最强大的堆，他和二项堆很长得很相似。和二项堆一样，斐波拉契堆也是一个堆森林，斐波拉契堆简化了几乎所有的堆操作为懒惰性操作，这极大的提升了很多操作的时间复杂度。</p>
+<h2 id="potential-method"><a href="#potential-method" class="headerlink" title="potential method"></a>potential method</h2><p> 对于一个斐波拉契堆$H$,我们定义势能函数为$\Phi(H) &#x3D; t(H) + 2m(H)$, 其中$t(H)$是斐波拉契堆$H$的森林中堆的个数,$m(H)$是斐波拉契堆中被标记的点的数量。</p>
+<h2 id="push-2"><a href="#push-2" class="headerlink" title="push"></a>push</h2><p> 当我们向一个斐波拉契堆中添加元素的时候，我们会选择将这个元素做成一个堆，然后链入森林的根集和，常常选择链表维护根集合，同时更新斐波拉契堆中最小值的指针，实际时间复杂度显然是$O(1)$，势能变化为1，因为堆的个数变大了1，均摊复杂度为$O(1)+1&#x3D;O(1)$</p>
+<h2 id="merge-1"><a href="#merge-1" class="headerlink" title="merge"></a>merge</h2><p> 当我们合并两个斐波拉契堆的时候，我们是懒惰操作，直接将这两个堆森林的根集合并为一个根集，常常选择链表来维护根集合,同时更新新的最小值指针，实际实际复杂度为$O(1)$,势能无变化，均摊复杂度为$O(1)$</p>
+<h2 id="top-2"><a href="#top-2" class="headerlink" title="top"></a>top</h2><p> $O(1)$</p>
+<h2 id="decrease"><a href="#decrease" class="headerlink" title="decrease"></a>decrease</h2><p> 当我们想要减小一个节点的值堆时候，我们直接将他和父亲断开，然后将他链入森林并减小值，然后标记父亲，如果父亲被标记过一次，则将父亲和爷爷也断开并链入森林，并清除标记，一直递归下去，这里我们不要太认真，加上这条路上一个有$c$个，则我们一共断开了c次，实际复杂度为$O(c)$,势能的第一项变为了$t(H)+c$，第二项变为了$2(m(H)-c)$,于是势能的变化为$c-2c&#x3D;-c$,于是均摊复杂度为$O(c)-c$,这里本来并不等于$O(1)$,但是我们可以增大势的单位到和这里的$O(c)$同级，这样就得到了$O(1)$</p>
+<h2 id="erase"><a href="#erase" class="headerlink" title="erase"></a>erase</h2><p> 当我们想要删除一个节点的时候,先将其设为无穷小，然后在调用pop</p>
+<h2 id="pop-2"><a href="#pop-2" class="headerlink" title="pop"></a>pop</h2><p> 前面偷了很多懒，导致除了erase以外，其他操作的均摊复杂度均为$O(1)$,这里就要好好地操作了，我们是这样来操作的，删掉最小值以后，将他的儿子都链入森林，这里花费了$O(D(H))$的实际代价，这里的$D(H)$指的是斐波拉契堆$H$中堆的最大度数。然后我们更新top的时候，不得不遍历所有的根，这时候我们就顺便调整一下堆。我们遍历所有的根，依次对森林中所有的堆进行合并，直到没有任意两个堆的度数相同，假设最后我们得到了数据结构$H’$，那么这个过程是$O(t(H)-t(H’))$的，于是时间复杂度为$O(t(H)-t(H’))+O(D(H))$,然后我们观察堆的势能变化，显然第一项的变化量为$t(H’)-t(H)$,第二项无变化，即势能总变化为$t(H’)-t(H)$,则均摊复杂度为$O(t(H)-t(H’))+O(D(H))+(t(H’)-t(H))$,这里依然不一定等于$O(D(H))$,但是我们依然可以增大势的单位到能够和$O(t(H)-t(H’))$抵消，最终，均摊复杂度成了$O(D(H))$</p>
+<h2 id="D-H"><a href="#D-H" class="headerlink" title="D(H)"></a>D(H)</h2><p> 现在我们进入最高潮的地方。我们考虑斐波拉契堆中一个度数为k的堆，若不考虑丢失儿子这种情况发生，我们对他的儿子按照儿子的度数进行排序，显然第i个儿子的度数为i-1,$i&#x3D;1,2,3…k$,此时考虑儿子们会丢掉自己的儿子，则有第i个儿子的度数$\ge i-2$,在考虑他自己也会丢失儿子，但这不会影响到第i个儿子的度数$\ge i-2$这个结论。</p>
+<h3 id="斐波拉契数列"><a href="#斐波拉契数列" class="headerlink" title="斐波拉契数列"></a>斐波拉契数列</h3><p>$$<br>\begin{aligned}<br>F_i &#x3D;<br>\left{<br>\begin{aligned}<br>&amp;0&amp;i&#x3D;0\<br>&amp;1&amp;i&#x3D;1\<br>&amp;F_{i-2}+F_{i-1]}&amp;i\ge 2\<br>\end{aligned}<br>\right.<br>\end{aligned}<br>$$</p>
+<h3 id="斐波拉契数列的两个结论"><a href="#斐波拉契数列的两个结论" class="headerlink" title="斐波拉契数列的两个结论"></a>斐波拉契数列的两个结论</h3><p>$F_{n+2}&#x3D;1+\sum_{i&#x3D;1}^nF_i$<br>$F_{n+2}\ge \phi^n,\phi^2&#x3D;\phi+1,\phi大约取1.618$</p>
+<h3 id="比斐波拉契数更大"><a href="#比斐波拉契数更大" class="headerlink" title="比斐波拉契数更大"></a>比斐波拉契数更大</h3><p> 容易用数学归纳法证明对于一个度数为k的堆，他里面的节点的个数$\ge F_{k+2}$,这里$F_{i}$是斐波拉契数列的第i项。<br> 当k&#x3D;0的时候，节点数数目为1，大于等于1<br> 当k&#x3D;1的时候，节点数数目至少为2，大于等于2<br> 若$k\le k_0$的时候成立， 则当$k&#x3D;k_0+1$的时候，节点数目至少为$1+F_1+F_2+…+F_{k_0+1}&#x3D;F_{k_0+3}&#x3D;F_{k+2}$</p>
+<h3 id="比黄金分割值的幂更大"><a href="#比黄金分割值的幂更大" class="headerlink" title="比黄金分割值的幂更大"></a>比黄金分割值的幂更大</h3><p> 现在我们就能够得到一个结果了，一个度数为k的堆，他的节点个数至少为$\Phi^k$,这里我们很容易就能得到这样一个结果，$D(H)\le \log_\Phi 最大的堆内元素的个数$</p>
+<h3 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h3><p> 至此我们已经全部证明完成，读者也应该知道为什么斐波拉契堆要叫这个名字。</p>
+<h2 id="fibonacci-heap-代码"><a href="#fibonacci-heap-代码" class="headerlink" title="fibonacci heap 代码"></a>fibonacci heap 代码</h2><details>
+<summary> fibonacci heap代码 </summary>
+
+</details>
+
+
+
+
+
+
+
+<h1 id="pairing-heap"><a href="#pairing-heap" class="headerlink" title="pairing heap"></a>pairing heap</h1><p>配对堆，名字来源于其中的一个匹配操作。很有趣，他的定义就是一个普通多叉堆，但使用特殊的删除方式来避免复杂度退化。是继Michael L. Fredman和Robert E.Tarjan发明斐波拉契堆以后，由于该数据结构实现难度高以及不如理论上那么有效率，Fredma、Sedgewick、Sleator和Tarjan一起发明的。</p>
+<h2 id="potential-method-1"><a href="#potential-method-1" class="headerlink" title="potential method"></a>potential method</h2><p> 我们有一个配对堆$H$,其中有n节点$node$,$node_i$有$d_i$个儿子,<br> 则有<br> $F(H) &#x3D; \sum F(node)$,<br> $F(node_i)&#x3D;1-min(d_i,\sqrt{n})$<br> 复杂度证明方面，等我把论文看完再来整这个，感觉证明比斐波拉契堆更复杂。</p>
+<h2 id="merge-2"><a href="#merge-2" class="headerlink" title="merge"></a>merge</h2><p>合并的时候，让次大堆做最大堆的儿子,显然时间复杂度$O(1)$</p>
+<h2 id="push-3"><a href="#push-3" class="headerlink" title="push"></a>push</h2><p>插入的时候，看作与只包含了一个元素的堆合并,所以$O(1)$</p>
+<h2 id="top-3"><a href="#top-3" class="headerlink" title="top"></a>top</h2><p>就是根 $O(1)$</p>
+<h2 id="pop-3"><a href="#pop-3" class="headerlink" title="pop"></a>pop</h2><p>当我们删除根以后，会形成一个堆森林，这时我们从左到右，每两个连续的堆配对合并一次，然后从右到左依次合并。比方说有这样一个情况AABBCCDDEEFFGGH,我们先将其从左到右合并AA-&gt;A,BB-&gt;B…得到ABCDEFG，-&gt;ABCDEH -&gt; ABCDI -&gt; ABCJ -&gt; ABK -&gt; AL -&gt; M</p>
+<h2 id="程序设计-1"><a href="#程序设计-1" class="headerlink" title="程序设计"></a>程序设计</h2><p> 同样的左儿子右兄弟</p>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><details>
+<summary> pairing heap代码 </summary>
+
+</details>
+
+
+<h1 id="leftist-heap"><a href="#leftist-heap" class="headerlink" title="leftist heap"></a>leftist heap</h1><p> 左偏树、左式堆、左翼堆是一个堆，除此以外，他定义了距离，没有右子节点的节点的距离为0，其他节点的距离为右子节点的距离加1，在这个定义下，左偏树的左偏体现着每个节点的左子节点的距离不小于右子节点的距离。</p>
+<h2 id="push-4"><a href="#push-4" class="headerlink" title="push"></a>push</h2><p> 为新节点建立堆，然后与堆合并 $O(lgn)$</p>
+<h2 id="pop-4"><a href="#pop-4" class="headerlink" title="pop"></a>pop</h2><p> 删除根节点，合并左右子树 $O(lgn)$</p>
+<h2 id="top-4"><a href="#top-4" class="headerlink" title="top"></a>top</h2><p> 根节点 $O(1)$</p>
+<h2 id="merge-3"><a href="#merge-3" class="headerlink" title="merge"></a>merge</h2><p> $O(lgn)$, 当我们合并两个堆$H1,H2$的时候，我们只需要比较这两个堆顶的大小，不妨设H1小，并设H3、H4为H1的左右儿子，则我们可以这样来看待，我们将H3,H4从H1中断开，递归合并H4和H2位H5，这时候我们还剩下H3、H5以及H1的堆顶，我们根据左偏树的定义，选择H3、H5分别作为左右或右左儿子即可，</p>
+<h3 id="复杂度证明"><a href="#复杂度证明" class="headerlink" title="复杂度证明"></a>复杂度证明</h3><p> 算法中每次均选择右儿子递归向下，这导致时间复杂度与右儿子的右儿子的右儿子的…有关，这里不难发现递归的次数就是节点的距离。根据左距离不小于右距离，我们很容易就能得到这个距离是$O(lgn)$级别的。</p>
+<h2 id="leftist-heap-代码"><a href="#leftist-heap-代码" class="headerlink" title="leftist heap 代码"></a>leftist heap 代码</h2><details>
+<summary> leftist heap代码 </summary>
+
+</details>
+
+
+
+<h1 id="skew-heap"><a href="#skew-heap" class="headerlink" title="skew heap"></a>skew heap</h1><p> 我们的左偏树不记录距离，并且每次递归的时候无条件交换左右儿子，则成了斜堆。</p>
+<h2 id="复杂度证明-1"><a href="#复杂度证明-1" class="headerlink" title="复杂度证明"></a>复杂度证明</h2><h3 id="potential-method-2"><a href="#potential-method-2" class="headerlink" title="potential method"></a>potential method</h3><p> 定义斜堆中的右子树距离比左子树大的节点为重节点，否则为轻节点。<br> 定义势能函数为重节点的个数。</p>
+<h3 id="merge-4"><a href="#merge-4" class="headerlink" title="merge"></a>merge</h3><p> 当我们合并两个斜堆$H_1,H_2$的时候，不妨设他们的右子节点链中的轻重儿子为$l_1,h_1,l_2,h_2$,则时间时间复杂度为$O(l_1+h_1+l_2+h_2)$,经过交换以后，链上的重节点一定会变成轻节点,轻节点可能会变为重节点，我们取最坏的情况，即轻节点全部变为重节点，这时势能的变化量为$l_1+l_2-h_1-h_2$,最后我们的均摊复杂度为$O(l_1+h_1+l_2+h_2)+l_1+l_2-h_1-h_2$，我们依然可以增大势的单位，直到足以抵消所有的h，最终均摊复杂度为$O(l_1+l_2)$,这里不难证明，一条右儿子构成的链上，轻节点的个数是对数级别。</p>
+<h2 id="skew-heap代码"><a href="#skew-heap代码" class="headerlink" title="skew heap代码"></a>skew heap代码</h2><details>
+<summary> skew heap代码 </summary>
+
+</details>
+
+
+
+<h1 id="bordal-heap"><a href="#bordal-heap" class="headerlink" title="bordal heap"></a>bordal heap</h1><p> 这里已经涉及到一些冷门的东西了。暂时先放一下</p>
+<h1 id="B-heap"><a href="#B-heap" class="headerlink" title="B heap"></a>B heap</h1><p> 是一种和B树一样利用内存页的东西。冷门，先放一下</p>
+<h1 id="wiki上还有数不清的堆，学到这里暂停一下"><a href="#wiki上还有数不清的堆，学到这里暂停一下" class="headerlink" title="wiki上还有数不清的堆，学到这里暂停一下"></a>wiki上还有数不清的堆，学到这里暂停一下</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/Q6M13Q.html" data-id="clhvp2d13002dzimc6hewc9cb" data-title="heap" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/Q6T33K.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          vim入门教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/Q6GPQN.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">势能分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

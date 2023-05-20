@@ -1,0 +1,652 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PREMDT.html">
+
+
+
+  <title>
+Tarjan联通算法 - 图论 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Tarjan联通算法
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2019-05-13 02:37:05">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2019-05-13T02:37:05+08:00">2019-05-13</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipew28b65j20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclfdu6exj20zk0m87hw.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicmnywqgpj20zk0m8dwx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclfb3vzhj20zk0m8wny.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclxp31goj20zk0m8qv5.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipewf5l51j20zk0m8b29.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" itemprop="item" rel="index" title="分类于 图论"><span itemprop="name">图论</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PREMDT.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PREMDT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="强联通"><a href="#强联通" class="headerlink" title="强联通"></a>强联通</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Tarjan</span>:Graph&#123;<span class="comment">//强连通分量缩点</span></span><br><span class="line">    <span class="type">int</span> low[maxn],dfn[maxn],belong[maxn],stk[maxn],instk[maxn],block[maxn];</span><br><span class="line">    <span class="type">int</span> step,color;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">()</span></span>&#123;</span><br><span class="line">        step=color=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++) dfn[i]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="keyword">if</span>(dfn[i]==<span class="number">0</span>) <span class="built_in">tarjan</span>(i,<span class="number">0</span>);<span class="comment">//多个联通快</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> father=<span class="number">0</span>)</span></span>&#123;<span class="comment">//此函数不开放</span></span><br><span class="line">        low[u]=dfn[u]=++step; stk[++stk[<span class="number">0</span>]]=u;instk[u]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[u];~i;i=edge[i].nex)&#123;</span><br><span class="line">            <span class="type">int</span> v=edge[i].v;</span><br><span class="line">            <span class="keyword">if</span>(dfn[v]) &#123;</span><br><span class="line">                <span class="keyword">if</span>(instk[v]) low[u]=<span class="built_in">min</span>(low[u],dfn[v]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="built_in">tarjan</span>(v,u);</span><br><span class="line">                low[u]=<span class="built_in">min</span>(low[u],low[v]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(low[u]==dfn[u])&#123;</span><br><span class="line">            block[color+<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span>(stk[stk[<span class="number">0</span>]]!=u) &#123;</span><br><span class="line">                belong[stk[stk[<span class="number">0</span>]]]=color+<span class="number">1</span>;</span><br><span class="line">                instk[stk[stk[<span class="number">0</span>]--]]=<span class="number">0</span>;</span><br><span class="line">                block[color+<span class="number">1</span>]++;</span><br><span class="line">            &#125;</span><br><span class="line">            belong[stk[stk[<span class="number">0</span>]]]=++color;</span><br><span class="line">            instk[stk[stk[<span class="number">0</span>]--]]=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">rebuild</span><span class="params">(Dag&amp;dag)</span></span>&#123;</span><br><span class="line">        set&lt;<span class="type">long</span> <span class="type">long</span>&gt;se;</span><br><span class="line">        dag.<span class="built_in">ini</span>(color);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> u=<span class="number">1</span>;u&lt;=n;u++)&#123;</span><br><span class="line">            <span class="type">int</span> uu=belong[u];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=head[u];~i;i=edge[i].nex)&#123;</span><br><span class="line">                <span class="type">int</span> v=edge[i].v;</span><br><span class="line">                <span class="type">int</span> vv=belong[v];</span><br><span class="line">                <span class="keyword">if</span>(uu==vv||se.<span class="built_in">find</span>(uu*<span class="number">1e6</span>+vv)!=se.<span class="built_in">end</span>())<span class="keyword">continue</span>;</span><br><span class="line">                se.<span class="built_in">insert</span>(uu*<span class="number">1e6</span>+vv);</span><br><span class="line">                dag.<span class="built_in">add_edge</span>(uu,vv);</span><br><span class="line">            &#125;</span><br><span class="line">            dag.dp[uu][u]=<span class="number">1</span>;</span><br><span class="line">            dag.w[uu]=block[uu];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;graph;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="点双联通"><a href="#点双联通" class="headerlink" title="点双联通"></a>点双联通</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Graph</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e5</span>+<span class="number">5</span>, maxm=<span class="number">3e5</span>+<span class="number">5</span>;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">star</span>&#123;<span class="type">int</span> v,nex;&#125;edge[maxm&lt;&lt;<span class="number">1</span>];</span><br><span class="line">    <span class="type">int</span> head[maxn],cnt,n;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;n=n; cnt=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++) head[i]=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add_edge</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">        edge[++cnt]=star&#123;v,head[u]&#125;; head[u]=cnt;</span><br><span class="line">        edge[++cnt]=star&#123;u,head[v]&#125;; head[v]=cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;tree;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Tarjan</span>:Graph&#123;<span class="comment">//割点</span></span><br><span class="line">    <span class="type">int</span> low[maxn],dfn[maxn],cut[maxn];</span><br><span class="line">    <span class="type">int</span> step;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">()</span></span>&#123;</span><br><span class="line">        step=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++) dfn[i]=cut[i]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="keyword">if</span>(dfn[i]==<span class="number">0</span>) <span class="built_in">tarjan</span>(i,<span class="number">0</span>);<span class="comment">//多个联通快</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> father=<span class="number">0</span>)</span></span>&#123;<span class="comment">//此函数不开放</span></span><br><span class="line">        low[u]=dfn[u]=++step;</span><br><span class="line">        <span class="type">int</span> first=<span class="number">1</span>, son=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[u];~i;i=edge[i].nex)&#123;</span><br><span class="line">            <span class="type">int</span> v=edge[i].v;</span><br><span class="line">            <span class="keyword">if</span>(v==father&amp;&amp;!first) first=<span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(dfn[v]) low[u]=<span class="built_in">min</span>(low[u],dfn[v]);</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                son++;</span><br><span class="line">                <span class="built_in">tarjan</span>(v,u);</span><br><span class="line">                low[u]=<span class="built_in">min</span>(low[u],low[v]);</span><br><span class="line">                <span class="comment">//一个顶点u是割点,当且仅当1或2</span></span><br><span class="line">                <span class="comment">//1.u为树根且u有多与一个子树</span></span><br><span class="line">                <span class="comment">//2.u不为树根且存在边(u,v)为树边，使得dfn[u]&lt;=low[v]</span></span><br><span class="line">                <span class="keyword">if</span>(father!=<span class="number">0</span>&amp;&amp;dfn[u]&lt;=low[v]) cut[u]=<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(father==<span class="number">0</span>&amp;&amp;son&gt;<span class="number">1</span>) cut[u]=<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;graph;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>边双联通</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Graph</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e5</span>+<span class="number">5</span>, maxm=<span class="number">3e5</span>+<span class="number">5</span>;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">star</span>&#123;<span class="type">int</span> v,nex;&#125;edge[maxm&lt;&lt;<span class="number">1</span>];</span><br><span class="line">    <span class="type">int</span> head[maxn],cnt;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++) head[i]=<span class="number">-1</span>;</span><br><span class="line">        cnt=<span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add_edge</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">        edge[++cnt]=star&#123;v,head[u]&#125;;</span><br><span class="line">        head[u]=cnt;</span><br><span class="line">        edge[++cnt]=star&#123;u,head[v]&#125;;</span><br><span class="line">        head[v]=cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Tarjan</span>:Graph&#123;<span class="comment">//双联通分量, 割边, 桥, 边双联通缩点</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Bridge</span>&#123;<span class="type">int</span> u,v;&#125;bridge[maxn];</span><br><span class="line">    <span class="type">int</span> dfn[maxn],low[maxn],belong[maxn],vis[maxn],sta[maxn],sta_,nums,bridge_;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++) vis[i]=<span class="number">0</span>;</span><br><span class="line">        bridge_=<span class="number">0</span>;</span><br><span class="line">        nums=<span class="number">0</span>;</span><br><span class="line">        Graph::<span class="built_in">ini</span>(n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">tarjan</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> father,<span class="type">int</span>&amp;step)</span></span>&#123;</span><br><span class="line">        low[u]=dfn[u]=++step;</span><br><span class="line">        sta[++sta_]=u;</span><br><span class="line">        vis[u]=<span class="number">1</span>;</span><br><span class="line">        <span class="type">bool</span> firsttimes=<span class="literal">true</span>;<span class="comment">//用于判重边</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[u];~i;i=edge[i].nex)&#123;</span><br><span class="line">            <span class="type">int</span> v=edge[i].v;</span><br><span class="line">            <span class="keyword">if</span>(v==father&amp;&amp;firsttimes) &#123;</span><br><span class="line">                firsttimes=<span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;<span class="comment">//父边</span></span><br><span class="line">            <span class="keyword">if</span>(vis[v]==<span class="number">1</span>) low[u]=<span class="built_in">min</span>(low[u],dfn[v]);<span class="comment">//回边,终点在栈中</span></span><br><span class="line">            <span class="keyword">else</span> &#123;<span class="comment">//树边</span></span><br><span class="line">                <span class="built_in">tarjan</span>(v,u,step);</span><br><span class="line">                low[u]=<span class="built_in">min</span>(low[u],low[v]);</span><br><span class="line">                <span class="keyword">if</span>(low[v]&gt;dfn[u]) bridge[++bridge_]=Bridge&#123;u,v&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(low[u]==dfn[u])&#123;</span><br><span class="line">            <span class="keyword">while</span>(sta[sta_]!=u) belong[sta[sta_--]]=nums+<span class="number">1</span>;</span><br><span class="line">            belong[sta[sta_--]]=++nums;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;graph;</span><br></pre></td></tr></table></figure>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PREMDT.html" title="Tarjan联通算法">http://fightinggg.github.io/shoka/PREMDT.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PRCNKV.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclhfehz7j20zk0m8u0x.jpg" title="LCA">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 图论</span>
+  <h3>LCA</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PRYSG0.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgi503lj20zk0m8hdt.jpg" title="递归大数">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 算法</span>
+  <h3>递归大数</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%BA%E8%81%94%E9%80%9A"><span class="toc-number">1.</span> <span class="toc-text">强联通</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%82%B9%E5%8F%8C%E8%81%94%E9%80%9A"><span class="toc-number">2.</span> <span class="toc-text">点双联通</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/PGMDBM.html" rel="bookmark" title="最小费用最大流">最小费用最大流</a></li><li><a href="/shoka/PGMUCH.html" rel="bookmark" title="最大流最小割算法">最大流最小割算法</a></li><li><a href="/shoka/PGYGU3.html" rel="bookmark" title="网络流24题">网络流24题</a></li><li><a href="/shoka/PH2UB0.html" rel="bookmark" title="最小顶点覆盖二分图">最小顶点覆盖二分图</a></li><li><a href="/shoka/PH5S7Y.html" rel="bookmark" title="二分图最小费用固定流">二分图最小费用固定流</a></li><li><a href="/shoka/PPJIW2.html" rel="bookmark" title="最大团">最大团</a></li><li><a href="/shoka/PQWPYU.html" rel="bookmark" title="最短路和第k短路">最短路和第k短路</a></li><li><a href="/shoka/PRCNKV.html" rel="bookmark" title="LCA">LCA</a></li><li class="active"><a href="/shoka/PREMDT.html" rel="bookmark" title="Tarjan联通算法">Tarjan联通算法</a></li><li><a href="/shoka/PUKAKX.html" rel="bookmark" title="树的最小路径覆盖">树的最小路径覆盖</a></li><li><a href="/shoka/PUPS7Y.html" rel="bookmark" title="斯坦纳树">斯坦纳树</a></li><li><a href="/shoka/PW86WJ.html" rel="bookmark" title="霍尔定理">霍尔定理</a></li><li><a href="/shoka/PX3YQ4.html" rel="bookmark" title="支配树">支配树</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PRCNKV.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PRYSG0.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/%E8%AE%A1%E8%92%9C%E5%AE%A2A2012.html" title="计蒜客A2012">计蒜客A2012</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/" title="分类于 笔试">笔试</a>
+</div>
+
+    <span><a href="/shoka/QRCS8O.html" title="滴滴笔试题">滴滴笔试题</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8K2TR.html" title="java并发编程2-创建和运行线程">java并发编程2-创建和运行线程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R7T.html" title="23Tree">23Tree</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html" title="区间加+区间乘+区间求和的双标记线段树">区间加+区间乘+区间求和的双标记线段树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cf521F2.html" title="cf521F2">cf521F2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Go/" title="分类于 Go">Go</a>
+</div>
+
+    <span><a href="/shoka/R0X17C.html" title="Go进阶-协程的本质与CPU的争夺">Go进阶-协程的本质与CPU的争夺</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Go/" title="分类于 Go">Go</a>
+</div>
+
+    <span><a href="/shoka/R1Z340.html" title="Go入门-常见陷阱">Go入门-常见陷阱</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+</div>
+
+    <span><a href="/shoka/QWKWF0.html" title="Java异常原因及处理">Java异常原因及处理</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Math/" title="分类于 Math">Math</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Math/Matrix/" title="分类于 Matrix">Matrix</a>
+</div>
+
+    <span><a href="/shoka/Q6AVP7.html" title="矩阵的特征值与特征向量">矩阵的特征值与特征向量</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PREMDT.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

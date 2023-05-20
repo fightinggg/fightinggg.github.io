@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> java并发编程7-不可变设计 · Believe it</title><meta name="description" content="java并发编程7-不可变设计 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">java并发编程7-不可变设计</h1><div class="post-info">2020年4月11日</div><div class="post-content"><div><a href="/next/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8MD9G.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="不可变就是线程安全"><a href="#不可变就是线程安全" class="headerlink" title="不可变就是线程安全"></a>不可变就是线程安全</h1><p> 如String</p>
+<h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p> 之间赋值</p>
+<h2 id="char-构造"><a href="#char-构造" class="headerlink" title="char[]构造"></a>char[]构造</h2><p> 拷贝一份(保护性拷贝)</p>
+<h2 id="子串"><a href="#子串" class="headerlink" title="子串"></a>子串</h2><p> 如果下标起点和母串起点相同，则之间引用过去，否则保护性拷贝(不明白为啥不共用)</p>
+<h1 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h1><p> 最小化内存的使用，共用内存</p>
+<h2 id="包装类"><a href="#包装类" class="headerlink" title="包装类"></a>包装类</h2><p> valueOf, 比如Long如果在-128到127之间，就使用一个cache数组，又如String串池，BigDecimal和BigInteger的某些数组</p>
+<h2 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h2><p> 千万要注意这些类的函数组合起来操作就不一定安全了，需要用原子引用类来保护</p>
+<span id="more"></span>
+
+<h2 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wsx;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicIntegerArray;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConcurrentPool</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> (Logger) LoggerFactory.getLogger(Connection.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> poolSize;</span><br><span class="line">    <span class="keyword">private</span> Connection[] connections;</span><br><span class="line">    <span class="keyword">private</span> AtomicIntegerArray states;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ConcurrentPool</span><span class="params">(<span class="type">int</span> poolSize)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.poolSize = poolSize;</span><br><span class="line">        <span class="built_in">this</span>.connections = <span class="keyword">new</span> <span class="title class_">Connection</span>[poolSize];</span><br><span class="line">        <span class="built_in">this</span>.states = <span class="keyword">new</span> <span class="title class_">AtomicIntegerArray</span>(<span class="keyword">new</span> <span class="title class_">int</span>[poolSize]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">            connections[i] = <span class="keyword">new</span> <span class="title class_">Connection</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Connection <span class="title function_">borrow</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (states.get(i) == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (states.compareAndSet(i, <span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">                        logger.debug(<span class="string">&quot;return &#123;&#125;&quot;</span>,i);</span><br><span class="line">                        <span class="keyword">return</span> connections[i];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    logger.debug(<span class="string">&quot;wait...&quot;</span>);</span><br><span class="line">                    <span class="built_in">this</span>.wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">free</span><span class="params">(Connection conn)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (conn == connections[i]) &#123;</span><br><span class="line">                states.set(i, <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">                    logger.debug(<span class="string">&quot;notifyAll...&quot;</span>);</span><br><span class="line">                    <span class="built_in">this</span>.notifyAll();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h1><p> 动态扩容，可用性检测，等待超时处理，分布式hash</p>
+<h1 id="final原理"><a href="#final原理" class="headerlink" title="final原理"></a>final原理</h1><p> final会给变量后面加入写屏障，注意第一步是分配空间值默认为0，然后才赋予初值，写屏障保证其他对象看到他的值是赋值以后的而不是默认值<br> 在读的时候，如果不用final用的是getstatic，否则的话如果小就复制到栈中，大就放到常量池中。</p>
+<h1 id="无状态"><a href="#无状态" class="headerlink" title="无状态"></a>无状态</h1><p> 例如不要为servlet设置成员变量，这时候他就成了无状态对象，这就是线程安全的</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8MP8T.html" class="prev">PREV</a><a href="/apollo/Q8M6IO.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

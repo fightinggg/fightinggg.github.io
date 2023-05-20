@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>SpringBoot6-启动的源码分析</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    SpringBoot6-启动的源码分析
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-04-28T13:38:55.000Z" itemprop="datePublished">2020-04-28</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-04-28T13:38:55.000Z" itemprop="dateUpdated">2020-04-28</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="启动配置原理"><a href="#启动配置原理" class="headerlink" title="启动配置原理"></a>启动配置原理</h1><p>几个重要的事件回调机制</p>
+<ul>
+<li>ApplicationContextInitializer</li>
+<li>SpringApplicationRunListener</li>
+<li>ApplicationRunner</li>
+<li>CommandLineRunner</li>
+</ul>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建SpringApplication对象</li>
+<li>运行run方法</li>
+</ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>现在左边的参数是null</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">       Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">       <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">       <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">       setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">       setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">       <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="第8行"><a href="#第8行" class="headerlink" title="第8行"></a>第8行</h3><p>判断这是哪一类web应用,web分三类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">WebApplicationType</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should not run as a web application and should not start an</span></span><br><span class="line"><span class="comment">     * embedded web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    NONE,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a servlet-based web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded servlet web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SERVLET,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a reactive web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded reactive web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    REACTIVE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> WebApplicationType <span class="title function_">deduceFromClasspath</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, <span class="literal">null</span>) &amp;&amp; !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, <span class="literal">null</span>)</span><br><span class="line">            &amp;&amp; !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, <span class="literal">null</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> WebApplicationType.REACTIVE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String className : SERVLET_INDICATOR_CLASSES) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!ClassUtils.isPresent(className, <span class="literal">null</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> WebApplicationType.NONE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> WebApplicationType.SERVLET;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第9行"><a href="#第9行" class="headerlink" title="第9行"></a>第9行</h3><p>从类路径下找到所有的spring.factories配置的所有ApplicationConterxtInitializeer，然后保存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, List&lt;String&gt;&gt; <span class="title function_">loadSpringFactories</span><span class="params">(<span class="meta">@Nullable</span> ClassLoader classLoader)</span> &#123;</span><br><span class="line">    MultiValueMap&lt;String, String&gt; result = cache.get(classLoader);</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Enumeration&lt;URL&gt; urls = (classLoader != <span class="literal">null</span> ?</span><br><span class="line">                classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :</span><br><span class="line">                ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));</span><br><span class="line">        result = <span class="keyword">new</span> <span class="title class_">LinkedMultiValueMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (urls.hasMoreElements()) &#123;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">FACTORIES_RESOURCE_LOCATION</span> <span class="operator">=</span> <span class="string">&quot;META-INF/spring.factories&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="第10行"><a href="#第10行" class="headerlink" title="第10行"></a>第10行</h3><p>找listener</p>
+<h3 id="第11行"><a href="#第11行" class="headerlink" title="第11行"></a>第11行</h3><p>找到主配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Class&lt;?&gt; deduceMainApplicationClass() &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        StackTraceElement[] stackTrace = <span class="keyword">new</span> <span class="title class_">RuntimeException</span>().getStackTrace();</span><br><span class="line">        <span class="keyword">for</span> (StackTraceElement stackTraceElement : stackTrace) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;main&quot;</span>.equals(stackTraceElement.getMethodName())) &#123;</span><br><span class="line">                <span class="keyword">return</span> Class.forName(stackTraceElement.getClassName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">        <span class="comment">// Swallow and continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Run the Spring application, creating and refreshing a new</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> ApplicationContext&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> args the application arguments (usually passed from a Java main method)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a running &#123;<span class="doctag">@link</span> ApplicationContext&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">    <span class="type">StopWatch</span> <span class="variable">stopWatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line">    stopWatch.start();</span><br><span class="line">    <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    Collection&lt;SpringBootExceptionReporter&gt; exceptionReporters = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    configureHeadlessProperty();</span><br><span class="line">    <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">    listeners.starting();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">        <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, applicationArguments);</span><br><span class="line">        configureIgnoreBeanInfo(environment);</span><br><span class="line">        <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">        context = createApplicationContext();</span><br><span class="line">        exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">Class</span>[] &#123; ConfigurableApplicationContext.class &#125;, context);</span><br><span class="line">        prepareContext(context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">        refreshContext(context);</span><br><span class="line">        afterRefresh(context, applicationArguments);</span><br><span class="line">        stopWatch.stop();</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);</span><br><span class="line">        &#125;</span><br><span class="line">        listeners.started(context);</span><br><span class="line">        callRunners(context, applicationArguments);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, listeners);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        listeners.running(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第12行"><a href="#第12行" class="headerlink" title="第12行"></a>第12行</h3><p>配置awt</p>
+<h3 id="第13-14行"><a href="#第13-14行" class="headerlink" title="第13-14行"></a>第13-14行</h3><p>获取listener， 然后回调所有的listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">starting</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (SpringApplicationRunListener listener : <span class="built_in">this</span>.listeners) &#123;</span><br><span class="line">        listener.starting();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第17行"><a href="#第17行" class="headerlink" title="第17行"></a>第17行</h3><p>准备环境, 获取环境，这里的getOrCreateEnvironment分三种，点进去就知道了, 获取后配置环境,之后回调listeners的环境准备完成函数<code>listeners.environmentPrepared(environment);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ConfigurableEnvironment <span class="title function_">prepareEnvironment</span><span class="params">(SpringApplicationRunListeners listeners,</span></span><br><span class="line"><span class="params">        ApplicationArguments applicationArguments)</span> &#123;</span><br><span class="line">    <span class="comment">// Create and configure the environment</span></span><br><span class="line">    <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> getOrCreateEnvironment();</span><br><span class="line">    configureEnvironment(environment, applicationArguments.getSourceArgs());</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    listeners.environmentPrepared(environment);</span><br><span class="line">    bindToSpringApplication(environment);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">this</span>.isCustomEnvironment) &#123;</span><br><span class="line">        environment = <span class="keyword">new</span> <span class="title class_">EnvironmentConverter</span>(getClassLoader()).convertEnvironmentIfNecessary(environment,</span><br><span class="line">                deduceEnvironmentClass());</span><br><span class="line">    &#125;</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    <span class="keyword">return</span> environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第19行"><a href="#第19行" class="headerlink" title="第19行"></a>第19行</h3><p>打印图标</p>
+<h3 id="第20行"><a href="#第20行" class="headerlink" title="第20行"></a>第20行</h3><p>利用反射,根据当前的web环境创建IOC容器,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Strategy method used to create the &#123;<span class="doctag">@link</span> ApplicationContext&#125;. By default this</span></span><br><span class="line"><span class="comment"> * method will respect any explicitly set application context or application context</span></span><br><span class="line"><span class="comment"> * class before falling back to a suitable default.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the application context (not yet refreshed)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setApplicationContextClass(Class)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> ConfigurableApplicationContext <span class="title function_">createApplicationContext</span><span class="params">()</span> &#123;</span><br><span class="line">    Class&lt;?&gt; contextClass = <span class="built_in">this</span>.applicationContextClass;</span><br><span class="line">    <span class="keyword">if</span> (contextClass == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (<span class="built_in">this</span>.webApplicationType) &#123;</span><br><span class="line">            <span class="keyword">case</span> SERVLET:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_SERVLET_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> REACTIVE:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_REACTIVE_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_CONTEXT_CLASS);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(</span><br><span class="line">                    <span class="string">&quot;Unable create a default ApplicationContext, please specify an ApplicationContextClass&quot;</span>, ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ConfigurableApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第23行"><a href="#第23行" class="headerlink" title="第23行"></a>第23行</h3><p>准备上下文环境, 在环境保存到ioc中，而且applyInitializers, 即回调之前保存的所有的initializer, 然后监听器调用环境准备完毕，之后就是打印日志、在IOC中注册Banner、命令行参数。最后回调监听器的环境加载完成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">prepareContext</span><span class="params">(ConfigurableApplicationContext context, ConfigurableEnvironment environment,</span></span><br><span class="line"><span class="params">        SpringApplicationRunListeners listeners, ApplicationArguments applicationArguments, Banner printedBanner)</span> &#123;</span><br><span class="line">    context.setEnvironment(environment);</span><br><span class="line">    postProcessApplicationContext(context);</span><br><span class="line">    applyInitializers(context);</span><br><span class="line">    listeners.contextPrepared(context);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">        logStartupInfo(context.getParent() == <span class="literal">null</span>);</span><br><span class="line">        logStartupProfileInfo(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Add boot specific singleton beans</span></span><br><span class="line">    <span class="type">ConfigurableListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> context.getBeanFactory();</span><br><span class="line">    beanFactory.registerSingleton(<span class="string">&quot;springApplicationArguments&quot;</span>, applicationArguments);</span><br><span class="line">    <span class="keyword">if</span> (printedBanner != <span class="literal">null</span>) &#123;</span><br><span class="line">        beanFactory.registerSingleton(<span class="string">&quot;springBootBanner&quot;</span>, printedBanner);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (beanFactory <span class="keyword">instanceof</span> DefaultListableBeanFactory) &#123;</span><br><span class="line">        ((DefaultListableBeanFactory) beanFactory)</span><br><span class="line">                .setAllowBeanDefinitionOverriding(<span class="built_in">this</span>.allowBeanDefinitionOverriding);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.lazyInitialization) &#123;</span><br><span class="line">        context.addBeanFactoryPostProcessor(<span class="keyword">new</span> <span class="title class_">LazyInitializationBeanFactoryPostProcessor</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Load the sources</span></span><br><span class="line">    Set&lt;Object&gt; sources = getAllSources();</span><br><span class="line">    Assert.notEmpty(sources, <span class="string">&quot;Sources must not be empty&quot;</span>);</span><br><span class="line">    load(context, sources.toArray(<span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]));</span><br><span class="line">    listeners.contextLoaded(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第24行"><a href="#第24行" class="headerlink" title="第24行"></a>第24行</h3><p>这里之前讲过，是加载IOC容器中的所有组件的,如果是web应用，还会创建嵌入式的tomcat</p>
+<h3 id="第31行"><a href="#第31行" class="headerlink" title="第31行"></a>第31行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">回调所有的runner，里面包含了APplicationRunner和CommandLineRunner， 优先调用前者</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">callRunners</span><span class="params">(ApplicationContext context, ApplicationArguments args)</span> &#123;</span><br><span class="line">        List&lt;Object&gt; runners = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        runners.addAll(context.getBeansOfType(ApplicationRunner.class).values());</span><br><span class="line">        runners.addAll(context.getBeansOfType(CommandLineRunner.class).values());</span><br><span class="line">        AnnotationAwareOrderComparator.sort(runners);</span><br><span class="line">        <span class="keyword">for</span> (Object runner : <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(runners)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> ApplicationRunner) &#123;</span><br><span class="line">                callRunner((ApplicationRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> CommandLineRunner) &#123;</span><br><span class="line">                callRunner((CommandLineRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="run结束了"><a href="#run结束了" class="headerlink" title="run结束了"></a>run结束了</h3><p>返回IOC容器</p>
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

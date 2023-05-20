@@ -1,0 +1,658 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/Q79R91.html">
+
+
+
+  <title>
+Treap - 数据结构 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Treap
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-03-16 12:31:49">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-03-16T12:31:49+08:00">2020-03-16</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipevo9j1jj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyonbf9j20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicli3sbvtj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicli9lfebj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeu7txpzj20zk0m81kx.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="item" rel="index" title="分类于 数据结构"><span itemprop="name">数据结构</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/Q79R91.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q79R91.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="Treap"><a href="#Treap" class="headerlink" title="Treap"></a>Treap</h1><p> 树堆Treap来源于Tree+Heap的组合, 其实就是一棵树，他的节点储存了两个键，一个是我们维护的信息，另外一个是随机数，我们不妨设前者叫key，后者叫rand_key，Treap的key满足搜索树的性质，Treap的rand_key满足堆的性质。(从某种意义上而言，笛卡尔树是key&#x3D;rand_key的Treap)<br> 特点: 若key与rand_key确定后，Treap的形态唯一，<br> Treap在大多数情况下显然是平衡的，但我不会证明，也没找到证明，暂时先放一下。</p>
+<h2 id="Treap-insert"><a href="#Treap-insert" class="headerlink" title="Treap insert"></a>Treap insert</h2><p> 我们向一棵Treap中按照搜索树的性质插入值以后，不会破坏搜索树的特点，但是大概率导致Heap的性质被违反。考虑到单旋不会导致搜索树的性质被破坏，我们通过单旋来从新让Treap满足Heap的性质。考虑回溯，假设我们对某个子树插入了一个值，若最终插入到左子树，则可能导致左子树树根的rand_key比当前节点的rand_key大，同时因为我们只插入了一个节点，所以最多也只有一个节点的rand_key比当前节点的rand_key大，这时候如果使用zig，则树恢复平衡。</p>
+<h2 id="Treap-erase"><a href="#Treap-erase" class="headerlink" title="Treap erase"></a>Treap erase</h2><p> 还是使用平衡树的操作来对Treap进行删除。如果过程中用到了前驱后继替换的技巧，这将导致替换节点的rand_key和他所处在为位置不匹配，我们就只考虑这颗子树，因为只有这颗子树的树根出现了问题，我们尝试递归向下，将位置不匹配这个现象下移，因为不匹配，必然是这个节点的rand_key比儿子们小，这时候如果左儿子的rand_key大就zig，否则zag,最后能发现这问题在向叶子结点转移，我们能够递归向下，直到最后转移到叶子上，树就恢复平衡了。</p>
+<h2 id="Treap-代码"><a href="#Treap-代码" class="headerlink" title="Treap 代码"></a>Treap 代码</h2><details>
+<summary>Treap代码</summary>
+
+</details>
+
+<h1 id="无旋Treap"><a href="#无旋Treap" class="headerlink" title="无旋Treap"></a>无旋Treap</h1><p> 无旋treap，指的是不使用zig和zag来重新恢复平衡的Treap<br> 我们使用merge和split</p>
+<h2 id="无旋Treap-merge"><a href="#无旋Treap-merge" class="headerlink" title="无旋Treap merge"></a>无旋Treap merge</h2><p> merge的参数是两个treap，他返回treap合并后的结果,不妨设其中一个为T1，另一个为T2，这里还要求T1的最大key小于等于T2的最小key。merge其实很简单，如果你学过左偏树的话，会很容易理解。我们不妨设T1的根的rand_key比T2的小。那么很显然，最终结果的根为T2的根，这里我们就可以递归了，我们将T2的左子树与T1合并出T3，最后让T3最为T2新的左子树，我们得到的T2就是merge的结果。</p>
+<h2 id="无旋Treap-split"><a href="#无旋Treap-split" class="headerlink" title="无旋Treap split"></a>无旋Treap split</h2><p> split的参数是一个Treap和一个值W，他返回两颗Treap,其中一个的最大key小于W，另一个大于W(不需要考虑等于的情况)，这个过程依然很简单，我们考虑根就可以了，如果根的key大于w，则根和右子树分到一遍，然后递归左儿子，将得到的两个Treap中key大的那个作为之前分到一边的根的左儿子即可。</p>
+<h2 id="无旋Treap-insert"><a href="#无旋Treap-insert" class="headerlink" title="无旋Treap insert"></a>无旋Treap insert</h2><p> 先split，然后merge两次</p>
+<h2 id="无旋Treap-erase"><a href="#无旋Treap-erase" class="headerlink" title="无旋Treap erase"></a>无旋Treap erase</h2><p> 很多人这里使用了split两次然后merge三次，我认为这个不太好，常数过大，我们可以这样做，先search找到要删的点，然后merge其左右子树顶替自己即可。</p>
+<h2 id="无旋Treap代码"><a href="#无旋Treap代码" class="headerlink" title="无旋Treap代码"></a>无旋Treap代码</h2><details>
+<summary>无旋Treap代码</summary>
+
+</details>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/Q79R91.html" title="Treap">http://fightinggg.github.io/shoka/Q79R91.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/Q79R8R.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giciub8ja1j20zk0m81ky.jpg" title="SplayTree">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 数据结构</span>
+  <h3>SplayTree</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/Q79R98.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclimtf7dj20zk0m8qav.jpg" title="无旋Treap">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 数据结构</span>
+  <h3>无旋Treap</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Treap"><span class="toc-number">1.</span> <span class="toc-text">Treap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Treap-insert"><span class="toc-number">1.1.</span> <span class="toc-text">Treap insert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Treap-erase"><span class="toc-number">1.2.</span> <span class="toc-text">Treap erase</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Treap-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.</span> <span class="toc-text">Treap 代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap"><span class="toc-number">2.</span> <span class="toc-text">无旋Treap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap-merge"><span class="toc-number">2.1.</span> <span class="toc-text">无旋Treap merge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap-split"><span class="toc-number">2.2.</span> <span class="toc-text">无旋Treap split</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap-insert"><span class="toc-number">2.3.</span> <span class="toc-text">无旋Treap insert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap-erase"><span class="toc-number">2.4.</span> <span class="toc-text">无旋Treap erase</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E6%97%8BTreap%E4%BB%A3%E7%A0%81"><span class="toc-number">2.5.</span> <span class="toc-text">无旋Treap代码</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q6M13Q.html" rel="bookmark" title="heap">heap</a></li><li><a href="/shoka/Q72280.html" rel="bookmark" title="search_tree">search_tree</a></li><li><a href="/shoka/Q79R6U.html" rel="bookmark" title="BST">BST</a></li><li><a href="/shoka/Q79R72.html" rel="bookmark" title="AVL">AVL</a></li><li><a href="/shoka/Q79R78.html" rel="bookmark" title="BTree">BTree</a></li><li><a href="/shoka/Q79R7E.html" rel="bookmark" title="B+Tree">B+Tree</a></li><li><a href="/shoka/Q79R7O.html" rel="bookmark" title="BstartTree">BstartTree</a></li><li><a href="/shoka/Q79R7T.html" rel="bookmark" title="23Tree">23Tree</a></li><li><a href="/shoka/Q79R7Y.html" rel="bookmark" title="234Tree">234Tree</a></li><li><a href="/shoka/Q79R83.html" rel="bookmark" title="TTree">TTree</a></li><li><a href="/shoka/Q79R89.html" rel="bookmark" title="RBTree">RBTree</a></li><li><a href="/shoka/Q79R8E.html" rel="bookmark" title="LLRBTree">LLRBTree</a></li><li><a href="/shoka/Q79R8K.html" rel="bookmark" title="AATree">AATree</a></li><li><a href="/shoka/Q79R8R.html" rel="bookmark" title="SplayTree">SplayTree</a></li><li class="active"><a href="/shoka/Q79R91.html" rel="bookmark" title="Treap">Treap</a></li><li><a href="/shoka/Q79R98.html" rel="bookmark" title="无旋Treap">无旋Treap</a></li><li><a href="/shoka/Q79R9I.html" rel="bookmark" title="scapegoateTree">scapegoateTree</a></li><li><a href="/shoka/Q79R9P.html" rel="bookmark" title="VPTree">VPTree</a></li><li><a href="/shoka/Q79R9W.html" rel="bookmark" title="cartesianTree">cartesianTree</a></li><li><a href="/shoka/Q7A2SC.html" rel="bookmark" title="三叉搜索树">三叉搜索树</a></li><li><a href="/shoka/Q7A61B.html" rel="bookmark" title="X快速前缀树">X快速前缀树</a></li><li><a href="/shoka/Q7A9H5.html" rel="bookmark" title="Y快速前缀树">Y快速前缀树</a></li><li><a href="/shoka/Q80DTB.html" rel="bookmark" title="笛卡尔树">笛卡尔树</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/Q79R8R.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/Q79R98.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/QQZ90O.html" title="HTTP权威指南">HTTP权威指南</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/rmq.html" title="rmq">rmq</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/uoj111.html" title="uoj111">uoj111</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/" title="分类于 思维">思维</a>
+</div>
+
+    <span><a href="/shoka/PGMLHU.html" title="尺取法">尺取法</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/bzoj4827.html" title="bzoj4827">bzoj4827</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/PHCM3Z.html" title="错位比较">错位比较</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R8E.html" title="LLRBTree">LLRBTree</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QSHL9D.html" title="2020牛客暑期多校训练营第六场">2020牛客暑期多校训练营第六场</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/poj3177.html" title="poj3177">poj3177</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+</div>
+
+    <span><a href="/shoka/QQPQAR.html" title="计算几何">计算几何</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'Q79R91.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

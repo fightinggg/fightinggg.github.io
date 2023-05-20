@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Go进阶-协程的本质与CPU的争夺 · Believe it</title><meta name="description" content="Go进阶-协程的本质与CPU的争夺 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Go进阶-协程的本质与CPU的争夺</h1><div class="post-info">2021年10月13日</div><div class="post-content"><div><a href="/next/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R0X17C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="1-从协程谈起"><a href="#1-从协程谈起" class="headerlink" title="1. 从协程谈起"></a>1. 从协程谈起</h1><p>很多语言都支持协程，那什么是协程，和线程进程有什么区别呢？这里推荐一篇<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liang1101/p/7285955.html">Blog</a>，笔者直接提取其中最重要的部分</p>
+<blockquote>
+<p><strong>进程、线程 和 协程 之间概念的区别</strong></p>
+<p>　　对于 <strong>进程、线程</strong>，都是有内核进行调度，有 CPU 时间片的概念，进行 <strong>抢占式调度</strong>（有多种调度算法）</p>
+<p>　　对于 <strong>协程</strong>(用户级线程)，这是对内核透明的，也就是系统并不知道有协程的存在，是完全由用户自己的程序进行调度的，因为是由用户程序自己控制，那么就很难像抢占式调度那样做到强制的 CPU 控制权切换到其他进程&#x2F;线程，通常只能进行 <strong>协作式调度</strong>，需要协程自己主动把控制权转让出去之后，其他协程才能被执行到。</p>
+<p>　<strong>goroutine 和协程区别</strong></p>
+<p>　　<strong>本质上，goroutine 就是协程。</strong> 不同的是，Golang 在 runtime、系统调用等多方面对 goroutine 调度进行了封装和处理，当遇到长时间执行或者进行系统调用时，会主动把当前 goroutine 的CPU (P) 转让出去，让其他 goroutine 能被调度并执行，也就是 Golang 从语言层面支持了协程。Golang 的一大特色就是从语言层面原生支持协程，在函数或者方法前面加 go关键字就可创建一个协程。</p>
+</blockquote>
+<p>操作系统是不知道协程的，那么应用层如何实现协程呢？下面给一些伪代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">不断循环：</span><br><span class="line">    从任务队列获取任务</span><br><span class="line">    执行任务，如果任务运行结束:</span><br><span class="line">        进行下一轮循环(<span class="keyword">continue</span>)</span><br><span class="line">    如果任务运行时进入阻塞状态:</span><br><span class="line">        把当前任务放入队列尾部(挂起)</span><br><span class="line">    如果任务主动释放CPU:</span><br><span class="line">        把当前任务放入队列尾部(挂起)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到，其实这里正在执行的任务就是协程，这样的线程模型，他的CPU利用率非常高，他的协程切换代价非常低，几乎只需要入队出队而已。</p>
+<p>但是这样的模型有一个很大的缺点，那就是CPU的公平性，如果一个协程迟迟不退出，且不进行系统调用，也不主动释放CPU，那么，这个协程将造成队头阻塞现象。</p>
+<span id="more"></span>
+
+<h1 id="2-Goroutine"><a href="#2-Goroutine" class="headerlink" title="2. Goroutine"></a>2. Goroutine</h1><p>想必很多人都知道这个名词，这其实就是Go的协程(coroutine), 相比于普通的协程，Go做了特殊的处理，能够在一些适当的时候，交出CPU控制权，所以Go的调度是公平的。</p>
+<p>当然Go关于协程，也有一个<a target="_blank" rel="noopener" href="https://fengyoulin.com/for-block-all.html">Bug</a>，这个Bug在<a target="_blank" rel="noopener" href="https://golang.org/doc/go1.14#runtime">Go1.14</a>的时候被修复了，有兴趣的读者可以自己查看，当然笔者在下文也会通过一个更加简单的例子来复现这个Bug。</p>
+<h1 id="3-Bug复现"><a href="#3-Bug复现" class="headerlink" title="3. Bug复现"></a>3. Bug复现</h1><p>Bug的复现需要两个版本的Go进行对比才能看出来，笔者建议使用Docker。首先就是给出代码了,下面的代码启用了两个协程，第一个做CPU空轮询，第二个做不间断输出。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;runtime&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    runtime.GOMAXPROCS(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;begin1&quot;</span>)</span><br><span class="line">        s := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t := <span class="number">0</span>; t &lt; <span class="number">10000</span>; t++ &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++ &#123;</span><br><span class="line">                s += i</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//fmt.Println(1, &quot;-&gt;&quot;, s)</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">&quot;end1&quot;</span>, s)</span><br><span class="line"></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;begin2&quot;</span>)</span><br><span class="line">        s := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t := <span class="number">0</span>; t &lt; <span class="number">10</span>; t++ &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++ &#123;</span><br><span class="line">                s += i</span><br><span class="line">            &#125;</span><br><span class="line">            fmt.Println(<span class="number">2</span>, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(<span class="string">&quot;end2&quot;</span>, s)</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    time.Sleep(time.Second * <span class="number">10</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-1-在Go1-13-中的表现"><a href="#3-1-在Go1-13-中的表现" class="headerlink" title="3.1. 在Go1.13 中的表现"></a>3.1. 在Go1.13 中的表现</h2><p>用docker启动容器，用cat写入代码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --<span class="built_in">rm</span> golang:1.13 bash</span><br><span class="line">root@c6921e499184:/go<span class="comment"># cat&lt;&lt;EOF&gt;a.go</span></span><br><span class="line">&gt; package main</span><br><span class="line">&gt;</span><br><span class="line">&gt; import (</span><br><span class="line">&gt;     <span class="string">&quot;fmt&quot;</span></span><br><span class="line">&gt;     <span class="string">&quot;runtime&quot;</span></span><br><span class="line">&gt;     <span class="string">&quot;time&quot;</span></span><br><span class="line">&gt; )</span><br><span class="line">&gt;</span><br><span class="line">&gt; func <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;     runtime.GOMAXPROCS(1)</span><br><span class="line">&gt;</span><br><span class="line">&gt;     go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;begin1&quot;</span>)</span><br><span class="line">&gt;         s := 0</span><br><span class="line">&gt;         <span class="keyword">for</span> t := 0; t &lt; 10000; t++ &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;             <span class="keyword">for</span> i := 0; i &lt; 1000000000; i++ &#123;</span><br><span class="line">&gt;                 s += i</span><br><span class="line">&gt;             &#125;</span><br><span class="line">&gt;             //fmt.Println(1, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;end1&quot;</span>, s)</span><br><span class="line">&gt;</span><br><span class="line">&gt;     &#125;()</span><br><span class="line">&gt;</span><br><span class="line">&gt;     go <span class="function"><span class="title">func</span></span>() &#123;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;begin2&quot;</span>)</span><br><span class="line">&gt;         s := 0</span><br><span class="line">&gt;         <span class="keyword">for</span> t := 0; t &lt; 10; t++ &#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;             <span class="keyword">for</span> i := 0; i &lt; 1000000000; i++ &#123;</span><br><span class="line">&gt;                 s += i</span><br><span class="line">&gt;             &#125;</span><br><span class="line">&gt;             fmt.Println(2, <span class="string">&quot;-&gt;&quot;</span>, s)</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         fmt.Println(<span class="string">&quot;end2&quot;</span>, s)</span><br><span class="line">&gt;     &#125;()</span><br><span class="line">&gt;</span><br><span class="line">&gt;     time.Sleep(time.Second * 10)</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; EOF</span><br></pre></td></tr></table></figure>
+
+<p>然后运行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run a.go</span><br></pre></td></tr></table></figure>
+
+<p>读者可以很容易地发现，这份代码只会输出一个<code>begin1</code></p>
+<h1 id="3-2-在Go1-14-中的表现"><a href="#3-2-在Go1-14-中的表现" class="headerlink" title="3.2. 在Go1.14 中的表现"></a>3.2. 在Go1.14 中的表现</h1><p>这次，进入docker的指令换成下面这条就行了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm golang:1.14 bash</span><br></pre></td></tr></table></figure>
+
+<p>在1.14中，会输出如下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">begin2</span><br><span class="line">begin1</span><br><span class="line">2 -&gt; 499999999500000000</span><br><span class="line">2 -&gt; 999999999000000000</span><br><span class="line">2 -&gt; 1499999998500000000</span><br><span class="line">2 -&gt; 1999999998000000000</span><br><span class="line">2 -&gt; 2499999997500000000</span><br><span class="line">2 -&gt; 2999999997000000000</span><br><span class="line">2 -&gt; 3499999996500000000</span><br><span class="line">2 -&gt; 3999999996000000000</span><br><span class="line">2 -&gt; 4499999995500000000</span><br><span class="line">2 -&gt; 4999999995000000000</span><br><span class="line">end2 4999999995000000000</span><br></pre></td></tr></table></figure>
+
+<p>由此可见，Go1.14解决了for循环长时间占用CPU的问题。</p>
+<h1 id="4-如何主动释放CPU"><a href="#4-如何主动释放CPU" class="headerlink" title="4. 如何主动释放CPU"></a>4. 如何主动释放CPU</h1><p>要注意释放的时机，函数调用、for循环中都可以，但是要注意控制释放的频率，不能太频繁，也不能太不频繁。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/R162KO.html" class="prev">PREV</a><a href="/apollo/R0T00O.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

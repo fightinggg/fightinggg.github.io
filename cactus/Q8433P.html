@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   CPU内存 CPU-L1cache-L2cache-memery-disk 逻辑地址空间 抽象、隔离、保护、共享、虚拟化(临时放入disk) 内存管理 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统3-连续内存分配">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q8433P.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   CPU内存 CPU-L1cache-L2cache-memery-disk 逻辑地址空间 抽象、隔离、保护、共享、虚拟化(临时放入disk) 内存管理 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-01T13:35:49.000Z">
+<meta property="article:modified_time" content="2020-04-01T13:35:49.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>操作系统3-连续内存分配</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q8433Z.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q84331.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8433P.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8433P.html&text=操作系统3-连续内存分配"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8433P.html&is_video=false&description=操作系统3-连续内存分配"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=操作系统3-连续内存分配&body=Check out this article: http://fightinggg.github.io/cactus/Q8433P.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8433P.html&name=操作系统3-连续内存分配&description=&lt;div&gt;&lt;a href=&#34;/next/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;CPU内存&#34;&gt;&lt;a href=&#34;#CPU内存&#34; class=&#34;headerlink&#34; title=&#34;CPU内存&#34;&gt;&lt;/a&gt;CPU内存&lt;/h1&gt;&lt;p&gt; CPU-L1cache-L2cache-memery-disk&lt;/p&gt;
+&lt;h1 id=&#34;逻辑地址空间&#34;&gt;&lt;a href=&#34;#逻辑地址空间&#34; class=&#34;headerlink&#34; title=&#34;逻辑地址空间&#34;&gt;&lt;/a&gt;逻辑地址空间&lt;/h1&gt;&lt;p&gt; 抽象、隔离、保护、共享、虚拟化(临时放入disk)&lt;/p&gt;
+&lt;h1 id=&#34;内存管理&#34;&gt;&lt;a href=&#34;#内存管理&#34; class=&#34;headerlink&#34; title=&#34;内存管理&#34;&gt;&lt;/a&gt;内存管理&lt;/h1&gt;&lt;p&gt; 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存&lt;/p&gt;
+&lt;h1 id=&#34;地址空间和地址生成&#34;&gt;&lt;a href=&#34;#地址空间和地址生成&#34; class=&#34;headerlink&#34; title=&#34;地址空间和地址生成&#34;&gt;&lt;/a&gt;地址空间和地址生成&lt;/h1&gt;&lt;p&gt; C程序用变量表示地址，汇编还是用符号，机器码就开始使用逻辑地址了，CPU的MMU中有一段区域来映射逻辑地址到物理地址&lt;/p&gt;
+&lt;h1 id=&#34;约束程序的内存&#34;&gt;&lt;a href=&#34;#约束程序的内存&#34; class=&#34;headerlink&#34; title=&#34;约束程序的内存&#34;&gt;&lt;/a&gt;约束程序的内存&lt;/h1&gt;&lt;p&gt; 程序只可以访问他自己的内存，当他访问其他地方的时候，操作系统应该使用安全检测&lt;/p&gt;
+&lt;h1 id=&#34;内存碎片&#34;&gt;&lt;a href=&#34;#内存碎片&#34; class=&#34;headerlink&#34; title=&#34;内存碎片&#34;&gt;&lt;/a&gt;内存碎片&lt;/h1&gt;&lt;p&gt; 外部碎片，是分配单元之间的内存碎片&lt;br&gt; 内部碎片，已经分配给了应用程序，但是应用程序没法使用它&lt;/p&gt;
+&lt;h1 id=&#34;连续内存分配&#34;&gt;&lt;a href=&#34;#连续内存分配&#34; class=&#34;headerlink&#34; title=&#34;连续内存分配&#34;&gt;&lt;/a&gt;连续内存分配&lt;/h1&gt;&lt;p&gt; 程序启动的时候要分配，运行的时候要分配&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8433P.html&t=操作系统3-连续内存分配"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CPU%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">CPU内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.</span> <span class="toc-text">逻辑地址空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">内存管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E5%92%8C%E5%9C%B0%E5%9D%80%E7%94%9F%E6%88%90"><span class="toc-number">4.</span> <span class="toc-text">地址空间和地址生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%86%85%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">约束程序的内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="toc-number">6.</span> <span class="toc-text">内存碎片</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">7.</span> <span class="toc-text">连续内存分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%8C%B9%E9%85%8D%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">第一匹配分配算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E4%BC%98%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">9.</span> <span class="toc-text">最优分配算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B7%AE%E5%8C%B9%E9%85%8D%E5%88%86%E9%85%8D"><span class="toc-number">10.</span> <span class="toc-text">最差匹配分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%BC%8F%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="toc-number">11.</span> <span class="toc-text">压缩式碎片整理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%BC%8F%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="toc-number">12.</span> <span class="toc-text">交换式碎片整理</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        操作系统3-连续内存分配
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-01T13:35:49.000Z" class="dt-published" itemprop="datePublished">2020-04-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a> › <a class="category-link" href="/cactus/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8433P.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="CPU内存"><a href="#CPU内存" class="headerlink" title="CPU内存"></a>CPU内存</h1><p> CPU-L1cache-L2cache-memery-disk</p>
+<h1 id="逻辑地址空间"><a href="#逻辑地址空间" class="headerlink" title="逻辑地址空间"></a>逻辑地址空间</h1><p> 抽象、隔离、保护、共享、虚拟化(临时放入disk)</p>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><p> 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存</p>
+<h1 id="地址空间和地址生成"><a href="#地址空间和地址生成" class="headerlink" title="地址空间和地址生成"></a>地址空间和地址生成</h1><p> C程序用变量表示地址，汇编还是用符号，机器码就开始使用逻辑地址了，CPU的MMU中有一段区域来映射逻辑地址到物理地址</p>
+<h1 id="约束程序的内存"><a href="#约束程序的内存" class="headerlink" title="约束程序的内存"></a>约束程序的内存</h1><p> 程序只可以访问他自己的内存，当他访问其他地方的时候，操作系统应该使用安全检测</p>
+<h1 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h1><p> 外部碎片，是分配单元之间的内存碎片<br> 内部碎片，已经分配给了应用程序，但是应用程序没法使用它</p>
+<h1 id="连续内存分配"><a href="#连续内存分配" class="headerlink" title="连续内存分配"></a>连续内存分配</h1><p> 程序启动的时候要分配，运行的时候要分配</p>
+<span id="more"></span>
+<h1 id="第一匹配分配算法"><a href="#第一匹配分配算法" class="headerlink" title="第一匹配分配算法"></a>第一匹配分配算法</h1><p> 一个一个找，第一个碰到的合法的就分出去，<br> 需要按地址排序，分配的时候需要寻找合适的分区，还有看自由分区能否与相邻空闲分区合并<br> 简单，容易产生更大的空闲块，<br>容易产生外碎片</p>
+<h1 id="最优分配算法"><a href="#最优分配算法" class="headerlink" title="最优分配算法"></a>最优分配算法</h1><p> 找差值最小的分区，分过去<br> 按尺寸排序，分配需要查找，也要合并相邻空闲分区<br> 避免分割大空间块，当大部分分配的是小尺寸的时候非常有效，<br> 容易产生外部碎片，合并空闲分区慢，容易产生大量微小碎片</p>
+<h1 id="最差匹配分配"><a href="#最差匹配分配" class="headerlink" title="最差匹配分配"></a>最差匹配分配</h1><p> 找最大的分区分过去<br> 按尺寸排序，分配快，也要合并<br> 分配中等尺寸有效<br> 合并慢，外部碎片，破碎空间没有大空间了</p>
+<h1 id="压缩式碎片整理"><a href="#压缩式碎片整理" class="headerlink" title="压缩式碎片整理"></a>压缩式碎片整理</h1><p> 挪动已经分配过的空间，<br> 什么时候挪动？销量？</p>
+<h1 id="交换式碎片整理"><a href="#交换式碎片整理" class="headerlink" title="交换式碎片整理"></a>交换式碎片整理</h1><p> 和硬盘交换，使用虚拟内存的方法。<br> 把哪个换出去？什么时候换？</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CPU%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">CPU内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.</span> <span class="toc-text">逻辑地址空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">内存管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E5%92%8C%E5%9C%B0%E5%9D%80%E7%94%9F%E6%88%90"><span class="toc-number">4.</span> <span class="toc-text">地址空间和地址生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%86%85%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">约束程序的内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="toc-number">6.</span> <span class="toc-text">内存碎片</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">7.</span> <span class="toc-text">连续内存分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%8C%B9%E9%85%8D%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">第一匹配分配算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E4%BC%98%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">9.</span> <span class="toc-text">最优分配算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B7%AE%E5%8C%B9%E9%85%8D%E5%88%86%E9%85%8D"><span class="toc-number">10.</span> <span class="toc-text">最差匹配分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%BC%8F%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="toc-number">11.</span> <span class="toc-text">压缩式碎片整理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%BC%8F%E7%A2%8E%E7%89%87%E6%95%B4%E7%90%86"><span class="toc-number">12.</span> <span class="toc-text">交换式碎片整理</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8433P.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8433P.html&text=操作系统3-连续内存分配"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8433P.html&is_video=false&description=操作系统3-连续内存分配"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=操作系统3-连续内存分配&body=Check out this article: http://fightinggg.github.io/cactus/Q8433P.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8433P.html&title=操作系统3-连续内存分配"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8433P.html&name=操作系统3-连续内存分配&description=&lt;div&gt;&lt;a href=&#34;/next/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8433P.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;CPU内存&#34;&gt;&lt;a href=&#34;#CPU内存&#34; class=&#34;headerlink&#34; title=&#34;CPU内存&#34;&gt;&lt;/a&gt;CPU内存&lt;/h1&gt;&lt;p&gt; CPU-L1cache-L2cache-memery-disk&lt;/p&gt;
+&lt;h1 id=&#34;逻辑地址空间&#34;&gt;&lt;a href=&#34;#逻辑地址空间&#34; class=&#34;headerlink&#34; title=&#34;逻辑地址空间&#34;&gt;&lt;/a&gt;逻辑地址空间&lt;/h1&gt;&lt;p&gt; 抽象、隔离、保护、共享、虚拟化(临时放入disk)&lt;/p&gt;
+&lt;h1 id=&#34;内存管理&#34;&gt;&lt;a href=&#34;#内存管理&#34; class=&#34;headerlink&#34; title=&#34;内存管理&#34;&gt;&lt;/a&gt;内存管理&lt;/h1&gt;&lt;p&gt; 程序重定向，分段，分页，虚拟内存，按需分叶虚拟内存&lt;/p&gt;
+&lt;h1 id=&#34;地址空间和地址生成&#34;&gt;&lt;a href=&#34;#地址空间和地址生成&#34; class=&#34;headerlink&#34; title=&#34;地址空间和地址生成&#34;&gt;&lt;/a&gt;地址空间和地址生成&lt;/h1&gt;&lt;p&gt; C程序用变量表示地址，汇编还是用符号，机器码就开始使用逻辑地址了，CPU的MMU中有一段区域来映射逻辑地址到物理地址&lt;/p&gt;
+&lt;h1 id=&#34;约束程序的内存&#34;&gt;&lt;a href=&#34;#约束程序的内存&#34; class=&#34;headerlink&#34; title=&#34;约束程序的内存&#34;&gt;&lt;/a&gt;约束程序的内存&lt;/h1&gt;&lt;p&gt; 程序只可以访问他自己的内存，当他访问其他地方的时候，操作系统应该使用安全检测&lt;/p&gt;
+&lt;h1 id=&#34;内存碎片&#34;&gt;&lt;a href=&#34;#内存碎片&#34; class=&#34;headerlink&#34; title=&#34;内存碎片&#34;&gt;&lt;/a&gt;内存碎片&lt;/h1&gt;&lt;p&gt; 外部碎片，是分配单元之间的内存碎片&lt;br&gt; 内部碎片，已经分配给了应用程序，但是应用程序没法使用它&lt;/p&gt;
+&lt;h1 id=&#34;连续内存分配&#34;&gt;&lt;a href=&#34;#连续内存分配&#34; class=&#34;headerlink&#34; title=&#34;连续内存分配&#34;&gt;&lt;/a&gt;连续内存分配&lt;/h1&gt;&lt;p&gt; 程序启动的时候要分配，运行的时候要分配&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8433P.html&t=操作系统3-连续内存分配"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

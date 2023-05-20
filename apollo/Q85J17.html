@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 操作系统12-死锁 · Believe it</title><meta name="description" content="操作系统12-死锁 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">操作系统12-死锁</h1><div class="post-info">2020年4月2日</div><div class="post-content"><div><a href="/next/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q85J17.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h1><p> 有两个集合，一个是进程集合，另一个是资源集合，如果进程i需要某资源j的一部分，则连边$i\to j$, 如果一个资源j的一部分被分配给了进程i，则连边$j\to i$,<br> 资源分配图出现了有向环是发生了死锁的必要不充分条件。因为边只表示一部分资源的分配，而不是全部资源</p>
+<h1 id="死锁的必要条件"><a href="#死锁的必要条件" class="headerlink" title="死锁的必要条件"></a>死锁的必要条件</h1><p> 互斥、持有并等待、无抢占、循环等待</p>
+<span id="more"></span>
+
+<h1 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h1><p> 破坏互斥不现实，破快占用并等待不实现，因为资源无法动态预判，可能发生饥饿，破坏抢占也不现实，破坏循环等待有效，将资源排序并让进程按顺序申请。</p>
+<h1 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h1><p> 判断某个资源的分配是否导致了死锁，需要系统具有额外的先验信息提供，<br> 安全状态: 存在序列$P_1$，$P_2$…，针对每个$P_i$,$P_i$要求的资源能够由当前可用资源+所有的$P_j$持有的资源来满足$j\lt i$</p>
+<h1 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h1><p> 寻找安全序列是否存在的算法。</p>
+<h1 id="死锁的检测"><a href="#死锁的检测" class="headerlink" title="死锁的检测"></a>死锁的检测</h1><p> 1简化资源分配图为线程等待图，如果线程等待图出现了环则发生了死锁。<br> 2找到能结束的程序，假设他结束，然后拿走资源，循环。<br> 杀，按照优先级杀掉死锁，剩余运行时间，占用自用资源、完成所需要的资源、需要终止的进程数量等<br> 回滚，重启进程，这有可能导致某个进程一直被重启</p>
+<h1 id="IPC-进程间的通信"><a href="#IPC-进程间的通信" class="headerlink" title="IPC 进程间的通信"></a>IPC 进程间的通信</h1><p> 通信有两种模型，第一是直接通信，第二是通过内核间接通信<br> 通信可以是阻塞或者非阻塞的<br> 通信缓存区的大小可以是有限的或者无限的</p>
+<h1 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h1><p> 发出通知信息，软件中断和事件处理，收到信号的时候可以指定信号处理函数被调用或者依靠操作系统的默认操作，<br> 应用程序要先注册信号处理函数，当收到信号的时候，在内核态修改应用程序的堆栈，然后跳回用户态执行，即操作系统来帮助跳转到信号处理函数执行，然后返回之前的现场</p>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls | more</span><br></pre></td></tr></table></figure>
+<p> 发送数据 shell -&gt; ls -&gt; 管道 -&gt; more, 注意管道是有限的，可能会阻塞。</p>
+<h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><p> 管道是字节流，不是结构化数据。<br> Message是一个字节序列储存，Message Queues是消息数组，然后FIFO或者FILO实现。</p>
+<h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p> 方便、快速、高效、但是需要同步, 将同一块物理内存映射到不同的逻辑页面.</p>
+<h1 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h1><p> 套接字</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q85LY4.html" class="prev">PREV</a><a href="/apollo/Q846CC.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

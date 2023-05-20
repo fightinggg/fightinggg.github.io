@@ -1,0 +1,688 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/Q9I38V.html">
+
+
+
+  <title>
+SpringBoot6-启动的源码分析 - SpringBoot - Java - Language |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">SpringBoot6-启动的源码分析
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-04-28 21:38:55">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-04-28T21:38:55+08:00">2020-04-28</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0n457cj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4wqtg4j20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclffsa1cj20zk0m811l.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexw3o58j20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclip4jbpj20zk0m87cv.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0fdw5cj20zk0m8hdt.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/" itemprop="item" rel="index" title="分类于 Language"><span itemprop="name">Language</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/" itemprop="item" rel="index" title="分类于 Java"><span itemprop="name">Java</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/SpringBoot/" itemprop="item" rel="index" title="分类于 SpringBoot"><span itemprop="name">SpringBoot</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/Q9I38V.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="启动配置原理"><a href="#启动配置原理" class="headerlink" title="启动配置原理"></a>启动配置原理</h1><p>几个重要的事件回调机制</p>
+<ul>
+<li>ApplicationContextInitializer</li>
+<li>SpringApplicationRunListener</li>
+<li>ApplicationRunner</li>
+<li>CommandLineRunner</li>
+</ul>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建SpringApplication对象</li>
+<li>运行run方法</li>
+</ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>现在左边的参数是null</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">       Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">       <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">       <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">       setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">       setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">       <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="第8行"><a href="#第8行" class="headerlink" title="第8行"></a>第8行</h3><p>判断这是哪一类web应用,web分三类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">WebApplicationType</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should not run as a web application and should not start an</span></span><br><span class="line"><span class="comment">     * embedded web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    NONE,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a servlet-based web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded servlet web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SERVLET,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a reactive web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded reactive web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    REACTIVE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> WebApplicationType <span class="title function_">deduceFromClasspath</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, <span class="literal">null</span>) &amp;&amp; !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, <span class="literal">null</span>)</span><br><span class="line">            &amp;&amp; !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, <span class="literal">null</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> WebApplicationType.REACTIVE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String className : SERVLET_INDICATOR_CLASSES) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!ClassUtils.isPresent(className, <span class="literal">null</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> WebApplicationType.NONE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> WebApplicationType.SERVLET;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第9行"><a href="#第9行" class="headerlink" title="第9行"></a>第9行</h3><p>从类路径下找到所有的spring.factories配置的所有ApplicationConterxtInitializeer，然后保存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, List&lt;String&gt;&gt; <span class="title function_">loadSpringFactories</span><span class="params">(<span class="meta">@Nullable</span> ClassLoader classLoader)</span> &#123;</span><br><span class="line">    MultiValueMap&lt;String, String&gt; result = cache.get(classLoader);</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Enumeration&lt;URL&gt; urls = (classLoader != <span class="literal">null</span> ?</span><br><span class="line">                classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :</span><br><span class="line">                ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));</span><br><span class="line">        result = <span class="keyword">new</span> <span class="title class_">LinkedMultiValueMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (urls.hasMoreElements()) &#123;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">FACTORIES_RESOURCE_LOCATION</span> <span class="operator">=</span> <span class="string">&quot;META-INF/spring.factories&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="第10行"><a href="#第10行" class="headerlink" title="第10行"></a>第10行</h3><p>找listener</p>
+<h3 id="第11行"><a href="#第11行" class="headerlink" title="第11行"></a>第11行</h3><p>找到主配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Class&lt;?&gt; deduceMainApplicationClass() &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        StackTraceElement[] stackTrace = <span class="keyword">new</span> <span class="title class_">RuntimeException</span>().getStackTrace();</span><br><span class="line">        <span class="keyword">for</span> (StackTraceElement stackTraceElement : stackTrace) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;main&quot;</span>.equals(stackTraceElement.getMethodName())) &#123;</span><br><span class="line">                <span class="keyword">return</span> Class.forName(stackTraceElement.getClassName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">        <span class="comment">// Swallow and continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Run the Spring application, creating and refreshing a new</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> ApplicationContext&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> args the application arguments (usually passed from a Java main method)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a running &#123;<span class="doctag">@link</span> ApplicationContext&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">    <span class="type">StopWatch</span> <span class="variable">stopWatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line">    stopWatch.start();</span><br><span class="line">    <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    Collection&lt;SpringBootExceptionReporter&gt; exceptionReporters = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    configureHeadlessProperty();</span><br><span class="line">    <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">    listeners.starting();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">        <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, applicationArguments);</span><br><span class="line">        configureIgnoreBeanInfo(environment);</span><br><span class="line">        <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">        context = createApplicationContext();</span><br><span class="line">        exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">Class</span>[] &#123; ConfigurableApplicationContext.class &#125;, context);</span><br><span class="line">        prepareContext(context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">        refreshContext(context);</span><br><span class="line">        afterRefresh(context, applicationArguments);</span><br><span class="line">        stopWatch.stop();</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);</span><br><span class="line">        &#125;</span><br><span class="line">        listeners.started(context);</span><br><span class="line">        callRunners(context, applicationArguments);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, listeners);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        listeners.running(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第12行"><a href="#第12行" class="headerlink" title="第12行"></a>第12行</h3><p>配置awt</p>
+<h3 id="第13-14行"><a href="#第13-14行" class="headerlink" title="第13-14行"></a>第13-14行</h3><p>获取listener， 然后回调所有的listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">starting</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (SpringApplicationRunListener listener : <span class="built_in">this</span>.listeners) &#123;</span><br><span class="line">        listener.starting();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第17行"><a href="#第17行" class="headerlink" title="第17行"></a>第17行</h3><p>准备环境, 获取环境，这里的getOrCreateEnvironment分三种，点进去就知道了, 获取后配置环境,之后回调listeners的环境准备完成函数<code>listeners.environmentPrepared(environment);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ConfigurableEnvironment <span class="title function_">prepareEnvironment</span><span class="params">(SpringApplicationRunListeners listeners,</span></span><br><span class="line"><span class="params">        ApplicationArguments applicationArguments)</span> &#123;</span><br><span class="line">    <span class="comment">// Create and configure the environment</span></span><br><span class="line">    <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> getOrCreateEnvironment();</span><br><span class="line">    configureEnvironment(environment, applicationArguments.getSourceArgs());</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    listeners.environmentPrepared(environment);</span><br><span class="line">    bindToSpringApplication(environment);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">this</span>.isCustomEnvironment) &#123;</span><br><span class="line">        environment = <span class="keyword">new</span> <span class="title class_">EnvironmentConverter</span>(getClassLoader()).convertEnvironmentIfNecessary(environment,</span><br><span class="line">                deduceEnvironmentClass());</span><br><span class="line">    &#125;</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    <span class="keyword">return</span> environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第19行"><a href="#第19行" class="headerlink" title="第19行"></a>第19行</h3><p>打印图标</p>
+<h3 id="第20行"><a href="#第20行" class="headerlink" title="第20行"></a>第20行</h3><p>利用反射,根据当前的web环境创建IOC容器,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Strategy method used to create the &#123;<span class="doctag">@link</span> ApplicationContext&#125;. By default this</span></span><br><span class="line"><span class="comment"> * method will respect any explicitly set application context or application context</span></span><br><span class="line"><span class="comment"> * class before falling back to a suitable default.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the application context (not yet refreshed)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setApplicationContextClass(Class)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> ConfigurableApplicationContext <span class="title function_">createApplicationContext</span><span class="params">()</span> &#123;</span><br><span class="line">    Class&lt;?&gt; contextClass = <span class="built_in">this</span>.applicationContextClass;</span><br><span class="line">    <span class="keyword">if</span> (contextClass == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (<span class="built_in">this</span>.webApplicationType) &#123;</span><br><span class="line">            <span class="keyword">case</span> SERVLET:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_SERVLET_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> REACTIVE:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_REACTIVE_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_CONTEXT_CLASS);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(</span><br><span class="line">                    <span class="string">&quot;Unable create a default ApplicationContext, please specify an ApplicationContextClass&quot;</span>, ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ConfigurableApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第23行"><a href="#第23行" class="headerlink" title="第23行"></a>第23行</h3><p>准备上下文环境, 在环境保存到ioc中，而且applyInitializers, 即回调之前保存的所有的initializer, 然后监听器调用环境准备完毕，之后就是打印日志、在IOC中注册Banner、命令行参数。最后回调监听器的环境加载完成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">prepareContext</span><span class="params">(ConfigurableApplicationContext context, ConfigurableEnvironment environment,</span></span><br><span class="line"><span class="params">        SpringApplicationRunListeners listeners, ApplicationArguments applicationArguments, Banner printedBanner)</span> &#123;</span><br><span class="line">    context.setEnvironment(environment);</span><br><span class="line">    postProcessApplicationContext(context);</span><br><span class="line">    applyInitializers(context);</span><br><span class="line">    listeners.contextPrepared(context);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">        logStartupInfo(context.getParent() == <span class="literal">null</span>);</span><br><span class="line">        logStartupProfileInfo(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Add boot specific singleton beans</span></span><br><span class="line">    <span class="type">ConfigurableListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> context.getBeanFactory();</span><br><span class="line">    beanFactory.registerSingleton(<span class="string">&quot;springApplicationArguments&quot;</span>, applicationArguments);</span><br><span class="line">    <span class="keyword">if</span> (printedBanner != <span class="literal">null</span>) &#123;</span><br><span class="line">        beanFactory.registerSingleton(<span class="string">&quot;springBootBanner&quot;</span>, printedBanner);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (beanFactory <span class="keyword">instanceof</span> DefaultListableBeanFactory) &#123;</span><br><span class="line">        ((DefaultListableBeanFactory) beanFactory)</span><br><span class="line">                .setAllowBeanDefinitionOverriding(<span class="built_in">this</span>.allowBeanDefinitionOverriding);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.lazyInitialization) &#123;</span><br><span class="line">        context.addBeanFactoryPostProcessor(<span class="keyword">new</span> <span class="title class_">LazyInitializationBeanFactoryPostProcessor</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Load the sources</span></span><br><span class="line">    Set&lt;Object&gt; sources = getAllSources();</span><br><span class="line">    Assert.notEmpty(sources, <span class="string">&quot;Sources must not be empty&quot;</span>);</span><br><span class="line">    load(context, sources.toArray(<span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]));</span><br><span class="line">    listeners.contextLoaded(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第24行"><a href="#第24行" class="headerlink" title="第24行"></a>第24行</h3><p>这里之前讲过，是加载IOC容器中的所有组件的,如果是web应用，还会创建嵌入式的tomcat</p>
+<h3 id="第31行"><a href="#第31行" class="headerlink" title="第31行"></a>第31行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">回调所有的runner，里面包含了APplicationRunner和CommandLineRunner， 优先调用前者</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">callRunners</span><span class="params">(ApplicationContext context, ApplicationArguments args)</span> &#123;</span><br><span class="line">        List&lt;Object&gt; runners = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        runners.addAll(context.getBeansOfType(ApplicationRunner.class).values());</span><br><span class="line">        runners.addAll(context.getBeansOfType(CommandLineRunner.class).values());</span><br><span class="line">        AnnotationAwareOrderComparator.sort(runners);</span><br><span class="line">        <span class="keyword">for</span> (Object runner : <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(runners)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> ApplicationRunner) &#123;</span><br><span class="line">                callRunner((ApplicationRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> CommandLineRunner) &#123;</span><br><span class="line">                callRunner((CommandLineRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="run结束了"><a href="#run结束了" class="headerlink" title="run结束了"></a>run结束了</h3><p>返回IOC容器</p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/Q9I38V.html" title="SpringBoot6-启动的源码分析">http://fightinggg.github.io/shoka/Q9I38V.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/Q9I31Z.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicis3attqj20zk0m8k7l.jpg" title="SpringBoot5-数据访问">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> SpringBoot</span>
+  <h3>SpringBoot5-数据访问</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/Q9I7BR.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclil3m4ej20zk0m8tn8.jpg" title="SpringBoot7-自定义starter">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> SpringBoot</span>
+  <h3>SpringBoot7-自定义starter</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">启动配置原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">启动流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.</span> <span class="toc-text">创建对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC8%E8%A1%8C"><span class="toc-number">2.1.1.</span> <span class="toc-text">第8行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC9%E8%A1%8C"><span class="toc-number">2.1.2.</span> <span class="toc-text">第9行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC10%E8%A1%8C"><span class="toc-number">2.1.3.</span> <span class="toc-text">第10行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC11%E8%A1%8C"><span class="toc-number">2.1.4.</span> <span class="toc-text">第11行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">2.2.</span> <span class="toc-text">run</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC12%E8%A1%8C"><span class="toc-number">2.2.1.</span> <span class="toc-text">第12行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC13-14%E8%A1%8C"><span class="toc-number">2.2.2.</span> <span class="toc-text">第13-14行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC17%E8%A1%8C"><span class="toc-number">2.2.3.</span> <span class="toc-text">第17行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC19%E8%A1%8C"><span class="toc-number">2.2.4.</span> <span class="toc-text">第19行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC20%E8%A1%8C"><span class="toc-number">2.2.5.</span> <span class="toc-text">第20行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC23%E8%A1%8C"><span class="toc-number">2.2.6.</span> <span class="toc-text">第23行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC24%E8%A1%8C"><span class="toc-number">2.2.7.</span> <span class="toc-text">第24行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC31%E8%A1%8C"><span class="toc-number">2.2.8.</span> <span class="toc-text">第31行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#run%E7%BB%93%E6%9D%9F%E4%BA%86"><span class="toc-number">2.2.9.</span> <span class="toc-text">run结束了</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q8S6PM.html" rel="bookmark" title="springboot">springboot</a></li><li><a href="/shoka/Q8TZMC.html" rel="bookmark" title="SpringBoot1-介绍">SpringBoot1-介绍</a></li><li><a href="/shoka/Q8TZMI.html" rel="bookmark" title="SpringBoot2-配置">SpringBoot2-配置</a></li><li><a href="/shoka/Q8TZMM.html" rel="bookmark" title="SpringBoot3-日志">SpringBoot3-日志</a></li><li><a href="/shoka/Q8V5AK.html" rel="bookmark" title="SpringBoot4-Web1-静态资源">SpringBoot4-Web1-静态资源</a></li><li><a href="/shoka/Q8V5C8.html" rel="bookmark" title="SpringBoot4-Web2-模版引擎">SpringBoot4-Web2-模版引擎</a></li><li><a href="/shoka/Q8YUMK.html" rel="bookmark" title="SpringBoot4-Web3-SpringMVC">SpringBoot4-Web3-SpringMVC</a></li><li><a href="/shoka/Q94EMK.html" rel="bookmark" title="SpringBoot4-Web4-国际化">SpringBoot4-Web4-国际化</a></li><li><a href="/shoka/Q973UK.html" rel="bookmark" title="SpringBoot4-Web5-烂尾">SpringBoot4-Web5-烂尾</a></li><li><a href="/shoka/Q9I31Z.html" rel="bookmark" title="SpringBoot5-数据访问">SpringBoot5-数据访问</a></li><li class="active"><a href="/shoka/Q9I38V.html" rel="bookmark" title="SpringBoot6-启动的源码分析">SpringBoot6-启动的源码分析</a></li><li><a href="/shoka/Q9I7BR.html" rel="bookmark" title="SpringBoot7-自定义starter">SpringBoot7-自定义starter</a></li><li><a href="/shoka/QIZ0G0.html" rel="bookmark" title="webFlux">webFlux</a></li><li><a href="/shoka/QJ6F40.html" rel="bookmark" title="aware">aware</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/Q9I31Z.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/Q9I7BR.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/C/" title="分类于 C++">C++</a>
+</div>
+
+    <span><a href="/shoka/Q74F7T.html" title="C++入门">C++入门</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/" title="分类于 DP">DP</a>
+</div>
+
+    <span><a href="/shoka/PQ8MNU.html" title="凸四边形不等式优化dp">凸四边形不等式优化dp</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringCloud/" title="分类于 SpringCloud">SpringCloud</a>
+</div>
+
+    <span><a href="/shoka/Q9N07S.html" title="SpringCloud4">SpringCloud4</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cf924B.html" title="cf924B">cf924B</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8OMU7.html" title="java并发编程10-异步模式">java并发编程10-异步模式</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/" title="分类于 算法">算法</a>
+</div>
+
+    <span><a href="/shoka/PRYSG0.html" title="递归大数">递归大数</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/51NOD1055.html" title="51NOD1055">51NOD1055</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Database/" title="分类于 Database">Database</a>
+</div>
+
+    <span><a href="/shoka/Q8PP3V.html" title="mysql-入门">mysql-入门</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/" title="分类于 CodeForces">CodeForces</a>
+</div>
+
+    <span><a href="/shoka/QWQBDC.html" title="Codeforces Round #734 (Div. 3)">Codeforces Round #734 (Div. 3)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/JVM/" title="分类于 JVM">JVM</a>
+</div>
+
+    <span><a href="/shoka/Q5W8L1.html" title="晚期(运行期)优化">晚期(运行期)优化</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'Q9I38V.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

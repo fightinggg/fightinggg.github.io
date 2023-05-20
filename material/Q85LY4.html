@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            操作系统13-文件系统 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+文件系统和文件 一种持久性存储的系统抽象。
+文件头 储存文件信息，保存文件属性，跟踪那一块储存块属于逻辑上文件结构的哪一个偏移。
+需要哪些元数据来管理打开的文件 文件指针，文件打开计数，文件储存位置，访问权限
+访问2-12字节的空间 读一个或者多个扇区，然后返回
+访问方式 基于顺序一次读取，随机访问，基于内容查找的访问">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/Q85LY4.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/Q85LY4.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="操作系统13-文件系统 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+文件系统和文件 一种持久性存储的系统抽象。
+文件头 储存文件信息，保存文件属性，跟踪那一块储存块属于逻辑上文件结构的哪一个偏移。
+需要哪些元数据来管理打开的文件 文件指针，文件打开计数，文件储存位置，访问权限
+访问2-12字节的空间 读一个或者多个扇区，然后返回
+访问方式 基于顺序一次读取，随机访问，基于内容查找的访问">
+    
+
+    
+        <meta property="article:published_time" content="Thu Apr 02 2020 17:20:28 GMT+0800">
+        <meta property="article:modified_time" content="Thu Apr 02 2020 09:20:28 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/Q85LY4.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/Q85LY4.html",
+    "headline": "操作系统13-文件系统",
+    "datePublished": "Thu Apr 02 2020 17:20:28 GMT+0800",
+    "dateModified": "Thu Apr 02 2020 09:20:28 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+文件系统和文件 一种持久性存储的系统抽象。
+文件头 储存文件信息，保存文件属性，跟踪那一块储存块属于逻辑上文件结构的哪一个偏移。
+需要哪些元数据来管理打开的文件 文件指针，文件打开计数，文件储存位置，访问权限
+访问2-12字节的空间 读一个或者多个扇区，然后返回
+访问方式 基于顺序一次读取，随机访问，基于内容查找的访问",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%96%87%E4%BB%B6"><span class="post-toc-number">1.</span> <span class="post-toc-text">文件系统和文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="post-toc-number">2.</span> <span class="post-toc-text">文件头</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%9C%80%E8%A6%81%E5%93%AA%E4%BA%9B%E5%85%83%E6%95%B0%E6%8D%AE%E6%9D%A5%E7%AE%A1%E7%90%86%E6%89%93%E5%BC%80%E7%9A%84%E6%96%87%E4%BB%B6"><span class="post-toc-number">3.</span> <span class="post-toc-text">需要哪些元数据来管理打开的文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%BF%E9%97%AE2-12%E5%AD%97%E8%8A%82%E7%9A%84%E7%A9%BA%E9%97%B4"><span class="post-toc-number">4.</span> <span class="post-toc-text">访问2-12字节的空间</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F"><span class="post-toc-number">5.</span> <span class="post-toc-text">访问方式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="post-toc-number">6.</span> <span class="post-toc-text">文件类型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E9%94%81"><span class="post-toc-number">7.</span> <span class="post-toc-text">文件的锁</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="post-toc-number">8.</span> <span class="post-toc-text">目录</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%9B%AE%E5%BD%95%E5%A6%82%E4%BD%95%E5%AD%98"><span class="post-toc-number">9.</span> <span class="post-toc-text">目录如何存</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%90%8D%E5%AD%97%E8%A7%A3%E6%9E%90"><span class="post-toc-number">10.</span> <span class="post-toc-text">名字解析</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD"><span class="post-toc-number">11.</span> <span class="post-toc-text">文件系统挂载</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%AB%E5%90%8D"><span class="post-toc-number">12.</span> <span class="post-toc-text">文件别名</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="post-toc-number">13.</span> <span class="post-toc-text">删除文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%9B%AE%E5%BD%95%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="post-toc-number">14.</span> <span class="post-toc-text">如何避免目录死循环</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%B1%BB%E5%88%AB"><span class="post-toc-number">15.</span> <span class="post-toc-text">文件系统的类别</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">16.</span> <span class="post-toc-text">分布式文件系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">17.</span> <span class="post-toc-text">虚拟文件系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E5%9D%97%E7%BC%93%E5%AD%98"><span class="post-toc-number">18.</span> <span class="post-toc-text">数据块缓存</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="post-toc-number">19.</span> <span class="post-toc-text">打开文件的数据结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F"><span class="post-toc-number">20.</span> <span class="post-toc-text">文件大小</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D"><span class="post-toc-number">21.</span> <span class="post-toc-text">文件的连续分配</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E9%93%BE%E5%BC%8F%E5%88%86%E9%85%8D"><span class="post-toc-number">21.1.</span> <span class="post-toc-text">文件链式分配</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%B4%A2%E5%BC%95%E5%88%86%E9%85%8D"><span class="post-toc-number">21.2.</span> <span class="post-toc-text">文件索引分配</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%9D%97"><span class="post-toc-number">21.3.</span> <span class="post-toc-text">多级索引块</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4"><span class="post-toc-number">22.</span> <span class="post-toc-text">空闲空间</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%A4%9A%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86"><span class="post-toc-number">23.</span> <span class="post-toc-text">多磁盘管理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A3%81%E7%9B%98"><span class="post-toc-number">24.</span> <span class="post-toc-text">奇偶校验磁盘</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6"><span class="post-toc-number">25.</span> <span class="post-toc-text">磁盘调度</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                操作系统13-文件系统
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>4月 02, 2020</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=操作系统13-文件系统&url=http://fightinggg.github.io/material/material/Q85LY4.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=操作系统13-文件系统&url=http://fightinggg.github.io/material/material/Q85LY4.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/Q85LY4.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/Q85LY4.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="文件系统和文件"><a href="#文件系统和文件" class="headerlink" title="文件系统和文件"></a>文件系统和文件</h1><p> 一种持久性存储的系统抽象。</p>
+<h1 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h1><p> 储存文件信息，保存文件属性，跟踪那一块储存块属于逻辑上文件结构的哪一个偏移。</p>
+<h1 id="需要哪些元数据来管理打开的文件"><a href="#需要哪些元数据来管理打开的文件" class="headerlink" title="需要哪些元数据来管理打开的文件"></a>需要哪些元数据来管理打开的文件</h1><p> 文件指针，文件打开计数，文件储存位置，访问权限</p>
+<h1 id="访问2-12字节的空间"><a href="#访问2-12字节的空间" class="headerlink" title="访问2-12字节的空间"></a>访问2-12字节的空间</h1><p> 读一个或者多个扇区，然后返回</p>
+<h1 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a>访问方式</h1><p> 基于顺序一次读取，随机访问，基于内容查找的访问</p>
+<span id="more"></span>
+<h1 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h1><p> 操作系统不关心</p>
+<h1 id="文件的锁"><a href="#文件的锁" class="headerlink" title="文件的锁"></a>文件的锁</h1><p> 锁粒度？操作系统提供了不同的锁</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p> 目录是特殊的文件，每个目录都有一张表</p>
+<h1 id="目录如何存"><a href="#目录如何存" class="headerlink" title="目录如何存"></a>目录如何存</h1><p> 数组、链表、hash、其他数据结构都可以</p>
+<h1 id="名字解析"><a href="#名字解析" class="headerlink" title="名字解析"></a>名字解析</h1><p> 一层一层解析，为了提高效率，可以使用当前工作目录(缓冲)</p>
+<h1 id="文件系统挂载"><a href="#文件系统挂载" class="headerlink" title="文件系统挂载"></a>文件系统挂载</h1><p> mount和unmount</p>
+<h1 id="文件别名"><a href="#文件别名" class="headerlink" title="文件别名"></a>文件别名</h1><p> 硬链接: 多个文件项指向一个文件<br> 软链接: 存路径，</p>
+<h1 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h1><p> 引用计数 stat指令<br> 间接层，目录项数据结构存指针，根据指针来定位</p>
+<h1 id="如何避免目录死循环"><a href="#如何避免目录死循环" class="headerlink" title="如何避免目录死循环"></a>如何避免目录死循环</h1><p> 通过检测来避免死循环</p>
+<h1 id="文件系统的类别"><a href="#文件系统的类别" class="headerlink" title="文件系统的类别"></a>文件系统的类别</h1><p> 磁盘文件系统 FAT,NTFS,ext2&#x2F;3&#x2F;4,ISO9660等<br> 数据库文件系统 WinFs<br> 日志文件系统 journaling file system<br> 网络文件系统 NFS，SMB(局域网方便)，<br> 分布式文件系统 GFS(google的集群，高吞吐，容错，高可靠，大量数据，server，网络中心，数据中心，计算中心)，AFS<br> 虚拟文件系统 proc(内核信息通过文件的方式来展现)</p>
+<h1 id="分布式文件系统"><a href="#分布式文件系统" class="headerlink" title="分布式文件系统"></a>分布式文件系统</h1><p> 读写一致性，可靠性，安全性，访问延迟都要考虑，是当前研究的热点</p>
+<h1 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h1><p> 通过虚拟文件系统层屏蔽了底层不同的物理文件系统，<br> 卷 - 目录节点 - 文件节点</p>
+<h1 id="数据块缓存"><a href="#数据块缓存" class="headerlink" title="数据块缓存"></a>数据块缓存</h1><p> 将磁盘缓存到内存，可以按需读取，推迟写入，</p>
+<h1 id="打开文件的数据结构"><a href="#打开文件的数据结构" class="headerlink" title="打开文件的数据结构"></a>打开文件的数据结构</h1><p> 找到文件，放入文件表，通过index找到文件头，通过offset找到扇区，</p>
+<h1 id="文件大小"><a href="#文件大小" class="headerlink" title="文件大小"></a>文件大小</h1><p> 大部分文件小，少部分文件大，</p>
+<h1 id="文件的连续分配"><a href="#文件的连续分配" class="headerlink" title="文件的连续分配"></a>文件的连续分配</h1><p> 文件头指定起始块和长度，高效的顺序和随机访问，当文件增长的时候不好分配，可能需要预分配，<br> 分配策略有最先、最佳、最大分配方法</p>
+<h2 id="文件链式分配"><a href="#文件链式分配" class="headerlink" title="文件链式分配"></a>文件链式分配</h2><p> 用链表组织，创建增大缩小很容易，没有碎片，不可能实现高效的随机访问，不可靠，链断了以后很严重</p>
+<h2 id="文件索引分配"><a href="#文件索引分配" class="headerlink" title="文件索引分配"></a>文件索引分配</h2><p> 将索引放入文件头，创建增大缩小容易，没有碎片，可以直接访问，但是小文件的话索引开销太大。</p>
+<h2 id="多级索引块"><a href="#多级索引块" class="headerlink" title="多级索引块"></a>多级索引块</h2><p> 对索引分层，但是会引入更多的时间开销</p>
+<h1 id="空闲空间"><a href="#空闲空间" class="headerlink" title="空闲空间"></a>空闲空间</h1><p> 位图，如何解决一致性问题，先将bit设为1，然后分配，最后在内存中将bit设为1 ， 如果这里断电以后会导致那一部分磁盘空间无法使用</p>
+<h1 id="多磁盘管理"><a href="#多磁盘管理" class="headerlink" title="多磁盘管理"></a>多磁盘管理</h1><p> 用多个便宜的磁盘，通过并行来增加吞吐量和可靠性可用性，即冗余磁盘阵列，可以让硬件实现，也可以让软件实现。</p>
+<h1 id="奇偶校验磁盘"><a href="#奇偶校验磁盘" class="headerlink" title="奇偶校验磁盘"></a>奇偶校验磁盘</h1><p> 我们使用纠错码，将纠错码存到另一个磁盘里面，用于纠错，但是这就导致了奇偶校验磁盘的压力太大了，大家都要来访问他，我们其实可以让奇偶校验的块均匀分布到所有的阵列当中，就提高了效率</p>
+<h1 id="磁盘调度"><a href="#磁盘调度" class="headerlink" title="磁盘调度"></a>磁盘调度</h1><p> 先进先出，最少移动优先(导致饥饿)，磁壁仅向一个方向移动(到达最边缘的之后立刻反转)，磁盘分区(区内部使用单向移动，区之间使用先进先出)</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/Q85LY4.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/Q85LY4.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/Q85ZID.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/Q85J17.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

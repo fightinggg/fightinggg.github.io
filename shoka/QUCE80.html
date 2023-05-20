@@ -1,0 +1,739 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QUCE80.html">
+
+
+
+  <title>
+Flink学习 - 大数据 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Flink学习
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-06-08 01:36:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-06-08T01:36:00+08:00">2021-06-08</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0fdw5cj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljgocqbj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipetv6p75j20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicis081o9j20zk0m8dmr.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipew8gmvyj20zk0m87wh.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="item" rel="index" title="分类于 大数据"><span itemprop="name">大数据</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QUCE80.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QUCE80.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="运行源码"><a href="#运行源码" class="headerlink" title="运行源码"></a>运行源码</h1><p>我们将运行1.13.0版本的Flink，其scala环境为2.12</p>
+<h2 id="Step1-获取学习项目"><a href="#Step1-获取学习项目" class="headerlink" title="Step1. 获取学习项目"></a>Step1. 获取学习项目</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/fightinggg/flink-src-study.git --recursive</span><br></pre></td></tr></table></figure>
+
+<p>在这个项目中，笔者把flink源码作为了一个git submodule放置于文件夹flink中，用来临时查看，当然我个人不建议看这些代码，因为这个文件夹太大了，IDE都不能很好的处理他。</p>
+<p>然后就可以直接运行了</p>
+<p><img data-src='/image-2021-06-08-01.35.17.569.png'></img></p>
+<span id="more"></span>
+
+<h2 id="Step2-Enjoy-It"><a href="#Step2-Enjoy-It" class="headerlink" title="Step2. Enjoy It"></a>Step2. Enjoy It</h2><p>现在你可以直接从这里进入flink的控制台<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgxLw==">http://localhost:8081</span>， 你也可以直接在ideal中调试flink。</p>
+<p><img data-src='/image-2021-06-08-01.37.00.834.png'></img></p>
+<h2 id="Step3-Debug"><a href="#Step3-Debug" class="headerlink" title="Step3. Debug"></a>Step3. Debug</h2><p>自己设断点就好了。</p>
+<h1 id="使用Flink"><a href="#使用Flink" class="headerlink" title="使用Flink"></a>使用Flink</h1><p>下面使用flink-examples-streaming_2.12-1.13.0来演示</p>
+<h2 id="执行环境"><a href="#执行环境" class="headerlink" title="执行环境"></a>执行环境</h2><p>这个包下的所有的example在main函数的第一行全部首先选择获取环境，代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h2><p>当我们获取运行环境以后，紧接着就需要拿到数据源，examples中的各个例子获取数据源的方案如下。</p>
+<table>
+<thead>
+<tr>
+<th align="center">方案</th>
+<th align="center">example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">从数组获取</td>
+<td align="center">1. WordCount<br />2. WindowWordCount<br />…</td>
+</tr>
+<tr>
+<td align="center">从文件按行获取</td>
+<td align="center">1. WordCount<br />2. WindowWordCount<br />…</td>
+</tr>
+<tr>
+<td align="center">从自定义Source获取</td>
+<td align="center">1. TopSpeedWindowing<br />2. KafkaEventsGeneratorJob<br />…</td>
+</tr>
+<tr>
+<td align="center">从Kafka获取</td>
+<td align="center">1. StateMachineExample<br />…</td>
+</tr>
+<tr>
+<td align="center">从Socket获取</td>
+<td align="center">1. SocketWindowWordCount<br />…</td>
+</tr>
+<tr>
+<td align="center">从集合获取</td>
+<td align="center">1. WindowJoin<br />…</td>
+</tr>
+</tbody></table>
+<h2 id="算子"><a href="#算子" class="headerlink" title="算子"></a>算子</h2><p>第一个问题就是：什么是算子？</p>
+<p>算子描述了一系列的计算操作，他告诉计算机一个数据应该如何处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">graph LR  </span><br><span class="line">  %% style</span><br><span class="line">  classDef green fill:#a3e4d7,stroke:#333,stroke-width:1px</span><br><span class="line">  classDef blue fill:#d6eaf8,stroke:#333,stroke-width:1px</span><br><span class="line">  classDef brown fill:#edbb99,stroke:#333,stroke-width:1px</span><br><span class="line">  classDef grey fill:#f2f3f4,stroke:#333,stroke-width:1px</span><br><span class="line">  </span><br><span class="line">  %% point</span><br><span class="line">  start((数据源)):::green</span><br><span class="line">  op1(算子1):::blue</span><br><span class="line">  op2(算子1):::blue</span><br><span class="line">  op3(算子1):::blue</span><br><span class="line">  op4(算子2):::blue</span><br><span class="line">  op5(算子2):::blue</span><br><span class="line">  op6(算子2):::blue</span><br><span class="line">  output((输出)):::brown</span><br><span class="line">  shuffle((shuffle)):::grey</span><br><span class="line">  </span><br><span class="line">  %% edge</span><br><span class="line">  start --&gt; op1 &amp; op2 &amp; op3 --- shuffle --&gt; op4 &amp; op5 &amp; op6 --&gt; output</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>一旦我们有了数据源以后，数据源源源不断的产生数据，我们可以把它当作一个流，可以进行计算了，<code>DataStream</code>被flatMap以后是<code>SingleOutputStreamOperator</code>,实际上这个类和DataSream区别并不是特别大，<code>SingleOutputStreamOperator</code>继承自<code>DataStream</code>且没有重写任何函数。</p>
+<p><code>KeyedStream</code>则提供了一些聚合函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  %% style</span><br><span class="line">  classDef green fill:#a3e4d7,stroke:#333,stroke-width:1px</span><br><span class="line">  </span><br><span class="line">  %% point</span><br><span class="line">  DataStream(DataStream&lt;br/&gt;数据源):::green</span><br><span class="line">  SingleOutputStreamOperator(SingleOutputStreamOperator&lt;br/&gt;简单的输出流):::green</span><br><span class="line">  KeyedStream(KeyedStream&lt;br/&gt;被Key分组的流):::green</span><br><span class="line">  </span><br><span class="line">  %% edge</span><br><span class="line">  DataStream --&gt;|flatMap| SingleOutputStreamOperator</span><br><span class="line">  DataStream --&gt;|keyBy| KeyedStream</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>更具体一点，如wordCount，他经过flatMap分词，然后使用词进行Key，最后聚合，代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; counts =</span><br><span class="line">    <span class="comment">// split up the lines in pairs (2-tuples) containing: (word,1)</span></span><br><span class="line">    text.flatMap(<span class="keyword">new</span> <span class="title class_">Tokenizer</span>())</span><br><span class="line">    <span class="comment">// group by the tuple field &quot;0&quot; and sum up tuple field &quot;1&quot;</span></span><br><span class="line">    .keyBy(value -&gt; value.f0)</span><br><span class="line">    .sum(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="窗口"><a href="#窗口" class="headerlink" title="窗口"></a>窗口</h2><p>当然复杂一点点的如WindowWordCount，中间穿插了一个计数窗口，代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; counts =</span><br><span class="line">    <span class="comment">// split up the lines in pairs (2-tuples) containing: (word,1)</span></span><br><span class="line">    text.flatMap(<span class="keyword">new</span> <span class="title class_">WordCount</span>.Tokenizer())</span><br><span class="line">    <span class="comment">// create windows of windowSize records slided every slideSize records</span></span><br><span class="line">    .keyBy(value -&gt; value.f0)</span><br><span class="line">    .countWindow(windowSize, slideSize)</span><br><span class="line">    <span class="comment">// group by the tuple field &quot;0&quot; and sum up tuple field &quot;1&quot;</span></span><br><span class="line">    .sum(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Socket数据源"><a href="#Socket数据源" class="headerlink" title="Socket数据源"></a>Socket数据源</h2><p>最复杂的SocketWindowWordCount，首先执行<code>nc -l 12345</code>，然后启动此类的main函数，nc可以直接输入，我们能发每5秒输出了一次实时计算结果，代码如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;WordWithCount&gt; windowCounts =</span><br><span class="line">    text.flatMap(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">FlatMapFunction</span>&lt;String, WordWithCount&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">flatMap</span><span class="params">(</span></span><br><span class="line"><span class="params">            String value, Collector&lt;WordWithCount&gt; out)</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (String word : value.split(<span class="string">&quot;\\s&quot;</span>)) &#123;</span><br><span class="line">                out.collect(<span class="keyword">new</span> <span class="title class_">WordWithCount</span>(word, <span class="number">1L</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    .keyBy(value -&gt; value.word)</span><br><span class="line">    .window(TumblingProcessingTimeWindows.of(Time.seconds(<span class="number">5</span>)))</span><br><span class="line">    .reduce(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">ReduceFunction</span>&lt;WordWithCount&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> WordWithCount <span class="title function_">reduce</span><span class="params">(WordWithCount a, WordWithCount b)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WordWithCount</span>(a.word, a.count + b.count);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="异步数据源"><a href="#异步数据源" class="headerlink" title="异步数据源"></a>异步数据源</h2><p>首先提出一个背景，有一条来自Kafka的数据，由于某些原因，该数据中暂时不包含完整的字段，当我们使用Flink从Kafka读取数据以后，还需要查询Mysql补全其字段，此后才能使用Flink做接下来的操作。</p>
+<p>如果自定义数据源，从Kafka消费数据，然后查询Mysql，最后输出，这其中其实涉及到很多问题，一个最简单的想法是从Kafka单线程消费数据，然后阻塞住，去查询Mysql。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">  rect rgb(0, 0, 255, .1)</span><br><span class="line">      loop </span><br><span class="line">          DataStream -&gt;&gt; + Kafka : 拉取数据</span><br><span class="line">          Kafka --) - DataStream : 返回数据</span><br><span class="line">          DataStream -&gt;&gt; + Mysql : 查询未知字段</span><br><span class="line">          Mysql --) - DataStream : 返回未知字段</span><br><span class="line">          DataStream -&gt;&gt; + out : 产生一条数据</span><br><span class="line">          out --) - DataStream : 数据生产成功</span><br><span class="line">      end</span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+
+<p>这样做无可厚非，但是效率堪忧，Kafka拉取数据要快于Mysql，所以补全字段以及输出结果可以异步完成，基于第二个点，引入了<code>RichAsyncFunction</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">  rect rgb(0, 0, 255, .1)</span><br><span class="line">      loop </span><br><span class="line">          DataStream -&gt;&gt; + Kafka : 拉取数据</span><br><span class="line">          Kafka --) - DataStream : 返回数据</span><br><span class="line">          DataStream -) + 线程池 : 后续工作委托给线程池 </span><br><span class="line">      end</span><br><span class="line">  end</span><br><span class="line">  线程池 -&gt;&gt; - 线程池 : 完成剩下的工作</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>当然<code>RichAsyncFunction</code>做的工作不仅仅是这些，实际上处理流程也比这个复杂很多，这里从中挑几个出来聊一聊。</p>
+<p>首先是顺序问题，由于后续工作委托给了线程池，线程池内部当然可以并发执行，那么我们就没办法保证有哪些数据先处理完毕，<code>Async I/O </code>给出的第一个解决方案是通过队列保证顺序，哪个任务先执行完我不管，最终按入队顺序取结果；第二个解决方案是完全不理会顺序，谁先执行完就取出谁的结果；第三个解决方案是关注watermark，对于当前watermark下的数据，执行完就直接取出结果，对于下一个watermark的数据，将其缓存，直到他的watermark抵达。读者可以在这里看到更加详细的过程<span class="exturl" data-url="aHR0cDovL3d1Y2hvbmcubWUvYmxvZy8yMDE3LzA1LzE3L2ZsaW5rLWludGVybmFscy1hc3luYy1pby8=">http://wuchong.me/blog/2017/05/17/flink-internals-async-io/</span></p>
+<h2 id="GPU计算"><a href="#GPU计算" class="headerlink" title="GPU计算"></a>GPU计算</h2><p><code>MatrixVectorMul</code>是一个GPU计算例子，其中主要的内容在<code>Multiplier</code>中。这里 不做过多介绍。</p>
+<h2 id="Iterator模型"><a href="#Iterator模型" class="headerlink" title="Iterator模型"></a>Iterator模型</h2><p>试想，如果有一些元素需要进行迭代计算，比如说我们计算两个元素进行斐波拉契数列的第n项，是不是可以写一个递归？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> n&lt;=<span class="number">0</span> ? b : <span class="built_in">fib</span>(b,a+b,n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果某些算子也需要进行这些操作，我们可以使用<code>ProcessFunction</code>, 下面这个代码和上面的代码的思想异曲同工。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processElement</span><span class="params">(</span></span><br><span class="line"><span class="params">    Tuple5&lt;Integer, Integer, Integer, Integer, Integer&gt; value,</span></span><br><span class="line"><span class="params">    Context ctx,</span></span><br><span class="line"><span class="params">    Collector&lt;Tuple5&lt;Integer, Integer, Integer, Integer, Integer&gt;&gt; out)</span></span><br><span class="line">    <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    Tuple5&lt;Integer, Integer, Integer, Integer, Integer&gt; element =</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Tuple5</span>&lt;&gt;(value.f0, value.f1, value.f3, value.f2 + value.f3, ++value.f4);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (value.f2 &lt; BOUND &amp;&amp; value.f3 &lt; BOUND) &#123;</span><br><span class="line">        ctx.output(ITERATE_TAG, element);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        out.collect(element);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="WindowJoin模型"><a href="#WindowJoin模型" class="headerlink" title="WindowJoin模型"></a>WindowJoin模型</h2><p>参考SQL语法中的Join操作，两个stream将按照指定的key进行聚合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> DataStream&lt;Tuple3&lt;String, Integer, Integer&gt;&gt; <span class="title function_">runWindowJoin</span><span class="params">(</span></span><br><span class="line"><span class="params">    DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; grades,</span></span><br><span class="line"><span class="params">    DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; salaries,</span></span><br><span class="line"><span class="params">    <span class="type">long</span> windowSize)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> grades.join(salaries)</span><br><span class="line">        .where(<span class="keyword">new</span> <span class="title class_">NameKeySelector</span>())</span><br><span class="line">        .equalTo(<span class="keyword">new</span> <span class="title class_">NameKeySelector</span>())</span><br><span class="line">        .window(TumblingEventTimeWindows.of(Time.milliseconds(windowSize)))</span><br><span class="line">        .apply(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">JoinFunction</span>&lt;</span><br><span class="line">        Tuple2&lt;String, Integer&gt;,</span><br><span class="line">        Tuple2&lt;String, Integer&gt;,</span><br><span class="line">        Tuple3&lt;String, Integer, Integer&gt;&gt;() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> Tuple3&lt;String, Integer, Integer&gt; <span class="title function_">join</span><span class="params">(</span></span><br><span class="line"><span class="params">                Tuple2&lt;String, Integer&gt; first, Tuple2&lt;String, Integer&gt; second)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Tuple3</span>&lt;String, Integer, Integer&gt;(</span><br><span class="line">                    first.f0, first.f1, second.f1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><img data-src='/image-2021-06-08-22.32.44.436.png'></img></p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QUCE80.html" title="Flink学习">http://fightinggg.github.io/shoka/QUCE80.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QTT5OC.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeubcbajj20zk0m8h1h.jpg" title="Kafka-Docker">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Kafka</span>
+  <h3>Kafka-Docker</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QV7MPO.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipevarprfj20zk0m8npd.jpg" title="跟我一起自己写编译器-123.引言">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-123.引言</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%BA%90%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">运行源码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Step1-%E8%8E%B7%E5%8F%96%E5%AD%A6%E4%B9%A0%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.</span> <span class="toc-text">Step1. 获取学习项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Step2-Enjoy-It"><span class="toc-number">1.2.</span> <span class="toc-text">Step2. Enjoy It</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Step3-Debug"><span class="toc-number">1.3.</span> <span class="toc-text">Step3. Debug</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Flink"><span class="toc-number">2.</span> <span class="toc-text">使用Flink</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.</span> <span class="toc-text">执行环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.2.</span> <span class="toc-text">数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E5%AD%90"><span class="toc-number">2.3.</span> <span class="toc-text">算子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3"><span class="toc-number">2.4.</span> <span class="toc-text">窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Socket%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.5.</span> <span class="toc-text">Socket数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.6.</span> <span class="toc-text">异步数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GPU%E8%AE%A1%E7%AE%97"><span class="toc-number">2.7.</span> <span class="toc-text">GPU计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Iterator%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.8.</span> <span class="toc-text">Iterator模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WindowJoin%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.9.</span> <span class="toc-text">WindowJoin模型</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q7OQEI.html" rel="bookmark" title="hadoop">hadoop</a></li><li><a href="/shoka/Q9528D.html" rel="bookmark" title="分布式系统">分布式系统</a></li><li><a href="/shoka/QFH340.html" rel="bookmark" title="Hadoop学习">Hadoop学习</a></li><li><a href="/shoka/QFU1S0.html" rel="bookmark" title="Impala">Impala</a></li><li><a href="/shoka/QG1GG0.html" rel="bookmark" title="elasticSearch">elasticSearch</a></li><li><a href="/shoka/QQ01M0.html" rel="bookmark" title="filebeat">filebeat</a></li><li><a href="/shoka/QQ1NO0.html" rel="bookmark" title="logstash">logstash</a></li><li class="active"><a href="/shoka/QUCE80.html" rel="bookmark" title="Flink学习">Flink学习</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QTT5OC.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QV7MPO.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/" title="分类于 牛客">牛客</a>
+</div>
+
+    <span><a href="/shoka/PWBLXQ.html" title="2019牛客多校9A">2019牛客多校9A</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QS21N0.html" title="第45届ICPC亚洲赛区南京站">第45届ICPC亚洲赛区南京站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringCloud/" title="分类于 SpringCloud">SpringCloud</a>
+</div>
+
+    <span><a href="/shoka/Q9JK3W.html" title="SpringCloud3">SpringCloud3</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Docker/K8s/" title="分类于 K8s">K8s</a>
+</div>
+
+    <span><a href="/shoka/QQHDS0.html" title="k8s学习">k8s学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q6M13Q.html" title="heap">heap</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/Q7A1SI.html" title="基数树">基数树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/" title="分类于 洛谷">洛谷</a>
+</div>
+
+    <span><a href="/shoka/PVYVMY.html" title="P4121[wc2005]">P4121[wc2005]</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/poj2566.html" title="poj2566">poj2566</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R7T.html" title="23Tree">23Tree</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Database/" title="分类于 Database">Database</a>
+</div>
+
+    <span><a href="/shoka/Q8EN1R.html" title="redis">redis</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QUCE80.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

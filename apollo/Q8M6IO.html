@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> java并发编程6-无锁并发 · Believe it</title><meta name="description" content="java并发编程6-无锁并发 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">java并发编程6-无锁并发</h1><div class="post-info">2020年4月11日</div><div class="post-content"><div><a href="/next/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8M6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><p> compareAndSet(prev,next);无锁，无阻塞</p>
+<h1 id="为什么效率高"><a href="#为什么效率高" class="headerlink" title="为什么效率高"></a>为什么效率高</h1><p> 失败的话会重新尝试，但是锁会进行上下文切换，代价大</p>
+<h1 id="原子整形"><a href="#原子整形" class="headerlink" title="原子整形"></a>原子整形</h1><h2 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">incrementAndGet();</span><br><span class="line">getAndAdd(<span class="number">5</span>);</span><br><span class="line">updateAndGet(value -&gt; value*<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+<h1 id="原子引用"><a href="#原子引用" class="headerlink" title="原子引用"></a>原子引用</h1><p> AtomicReference 不能解决ABA问题<br> AtomicStampedReference 版本号机制<br> AtomicMarkableReference True和false</p>
+<h1 id="原子数组"><a href="#原子数组" class="headerlink" title="原子数组"></a>原子数组</h1><h1 id="字段更新器"><a href="#字段更新器" class="headerlink" title="字段更新器"></a>字段更新器</h1><p> 可以保护类的成员<br> compareAndSet(obj,expect,update);</p>
+<h1 id="原子累加器"><a href="#原子累加器" class="headerlink" title="原子累加器"></a>原子累加器</h1><p> 和原子整形一样，但是只支持累加并且效率更高</p>
+<h2 id="缓存行伪共享"><a href="#缓存行伪共享" class="headerlink" title="缓存行伪共享"></a>缓存行伪共享</h2><p> 缓存中的数据是按照行分的，要失效就一起失效<br> 有数据a和b，他们被分到了一个行中，线程1改变a导致线程2的行失效，线程2改变b导致线程1的行失效，这就是伪共享<br> 注解sum.misc.Contended , 可以在内存中加入空白，不出现伪共享</p>
+<h2 id="longadder"><a href="#longadder" class="headerlink" title="longadder"></a>longadder</h2><p> 累加单元，和concurrentHashMap一样，使用分段的机制，提高并行度，用一个数组来表示累加，数组元素的和才是真正的累加值，orn</p>
+<h1 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h1><p> 获得Unsafe ,他是单例且private</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Field</span> <span class="variable">theUnsafe</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">theUnsafe.setAccessible(<span class="literal">true</span>);</span><br><span class="line"><span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> (Unsafe) theUnsafe.get(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="CAS-1"><a href="#CAS-1" class="headerlink" title="CAS"></a>CAS</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span>&#123;</span><br><span class="line">  <span class="keyword">volatile</span> <span class="type">int</span> id;</span><br><span class="line">  <span class="keyword">volatile</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 获得域的偏移地址</span></span><br><span class="line"><span class="type">long</span> <span class="variable">idOffset</span> <span class="operator">=</span> unsafe.objectFieldOffset(Teacher.class.getDeclaredField(<span class="string">&quot;id&quot;</span>));</span><br><span class="line"><span class="type">Teacher</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>();</span><br><span class="line"><span class="comment">// 执行cas</span></span><br><span class="line">unsafe.compareAndSwapInt(t,idOffset,<span class="number">0</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="自己实现AutomicInteger"><a href="#自己实现AutomicInteger" class="headerlink" title="自己实现AutomicInteger"></a>自己实现AutomicInteger</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyAtomicInteger</span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">int</span> value;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> valueOffset;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">final</span> Unsafe UNSAFE;</span><br><span class="line">  <span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="comment">// 获得UNSAFE</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getValue</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">(amount)</span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="built_in">this</span>.value;</span><br><span class="line">      <span class="type">int</span> <span class="variable">next</span> <span class="operator">=</span> prev+amount;</span><br><span class="line">      UNSAFE.compareAndSwapInt(<span class="built_in">this</span>,valueOffset,prev,next);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8MD9G.html" class="prev">PREV</a><a href="/apollo/Q8LY8O.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

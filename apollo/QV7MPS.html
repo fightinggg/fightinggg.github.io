@@ -1,0 +1,1029 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 跟我一起自己写编译器-5.10.LR语法分析 · Believe it</title><meta name="description" content="跟我一起自己写编译器-5.10.LR语法分析 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">跟我一起自己写编译器-5.10.LR语法分析</h1><div class="post-info">2021年6月24日</div><div class="post-content"><div><a href="/next/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPS.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h2 id="5-10-LR语法分析"><a href="#5-10-LR语法分析" class="headerlink" title="5.10. LR语法分析"></a>5.10. LR语法分析</h2><p>经过了前面的LL语法分析，现在我们进入到了LR语法分析，LR语法分析也是一套算法，这里主要介绍两个，一个是SLR算法，领个是LR1算法。</p>
+<p>LR语法分析本质上为从左到右自底向上算法，从左到右一个一个读入字符，然后按照产生式进行规约，直到规约出文法开始的符号。</p>
+<h2 id="5-10-1-LR算法"><a href="#5-10-1-LR算法" class="headerlink" title="5.10.1. LR算法"></a>5.10.1. LR算法</h2><p>LR语法分析最重要的就是移入和规约。下面举一个例子来理解移入和规约。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：（</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: PRODUCTION</span><br><span class="line">  产生式: PRODUCTION -&gt; number | PRODUCTION + PRODUCTION | PRODUCTION * PRODUCTION | (PRODUCTION)</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>老规矩，直接来输入<code>1+2*3*(4+5)</code></p>
+<p>首先输入1，这时候选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  number(&quot;number(1)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>然后遇到<code>+</code>,选择规约<code>PRODUCTION -&gt; number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>然后输入<code>+</code>,选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br></pre></td></tr></table></figure>
+
+<p>然后输入字符<code>2</code>, 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  number2(&quot;number(2)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>然后遇到字符<code>*</code>,选择规约 <code>PRODUCTION -&gt; number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>输入字符<code>*</code>, 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br></pre></td></tr></table></figure>
+
+<p>输入字符<code>3</code>,选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  number3(&quot;number(3)&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>遇到字符<code>*</code>, 选择规约<code>PRODUCTION -&gt; number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>*</code>,选择规约<code>PRODUCTION -&gt; PRODUCTION * PRODUCTION</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br></pre></td></tr></table></figure>
+
+<p>读取字符<code>*</code>,选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>读取字符<code>(</code> 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>读取字符<code>4</code>, 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  n4(&quot;number(4)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>+</code>，选择规约<code>PODUCTION -&gt; number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>读入字符<code>+</code>, 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br></pre></td></tr></table></figure>
+
+<p>读入字符<code>5</code>, 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  n5(&quot;number(5)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>)</code>选择规约<code>PRODUCTION -&gt; number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>)</code>选择规约<code>PRODUCTION -&gt; PRODUCTION + PRODUCTION</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br><span class="line">  proSum2(PRODUCTION) --&gt; pro4 &amp; add2 &amp; pro5</span><br></pre></td></tr></table></figure>
+
+<p>读入字符<code>)</code> , 选择移入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br><span class="line">  proSum2(PRODUCTION) --&gt; pro4 &amp; add2 &amp; pro5</span><br><span class="line">  right(&quot;)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>$</code>,选择规约<code>PRODUCTION -&gt; ( PRODUCTION )</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br><span class="line">  proSum2(PRODUCTION) --&gt; pro4 &amp; add2 &amp; pro5</span><br><span class="line">  right(&quot;)&quot;)</span><br><span class="line">  proLeftRight(PRODUCTION) --&gt; left &amp; proSum2 &amp; right</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>$</code>,选择规约<code>PRODUCTION -&gt; PRODUCTION*PRODUCTION</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br><span class="line">  proSum2(PRODUCTION) --&gt; pro4 &amp; add2 &amp; pro5</span><br><span class="line">  right(&quot;)&quot;)</span><br><span class="line">  proLeftRight(PRODUCTION) --&gt; left &amp; proSum2 &amp; right</span><br><span class="line">  pro2LeftRight --&gt; proLeftRight &amp; proMum &amp; mul2</span><br></pre></td></tr></table></figure>
+
+<p>遇到字符<code>$</code>,选择规约<code>PRODUCTION -&gt; PRODUCTION+PRODUCTION</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  pro1(&quot;PRODUCTION&quot;) --&gt; number(&quot;number(1)&quot;)</span><br><span class="line">  +</span><br><span class="line">  pro2(&quot;PRODUCTION&quot;) --&gt; number2(&quot;number(2)&quot;)</span><br><span class="line">  *</span><br><span class="line">  pro3(&quot;PRODUCTION&quot;) --&gt; number3(&quot;number(3)&quot;)</span><br><span class="line">  proMum(PRODUCTION) --&gt; pro2 &amp; pro3 &amp; *</span><br><span class="line">  mul2(&quot;*&quot;)</span><br><span class="line">  left(&quot;(&quot;)</span><br><span class="line">  pro4(PRODUCTION) --&gt; n4(&quot;number(4)&quot;)</span><br><span class="line">  add2(+)</span><br><span class="line">  pro5(PRODUCTION) --&gt;n5(&quot;number(5)&quot;)</span><br><span class="line">  proSum2(PRODUCTION) --&gt; pro4 &amp; add2 &amp; pro5</span><br><span class="line">  right(&quot;)&quot;)</span><br><span class="line">  proLeftRight(PRODUCTION) --&gt; left &amp; proSum2 &amp; right</span><br><span class="line">  pro2LeftRight --&gt; proLeftRight &amp; proMum &amp; mul2</span><br><span class="line">  summm(PRODUCTION) --&gt; pro1 &amp; + &amp; pro2LeftRight</span><br></pre></td></tr></table></figure>
+
+<p>至此，结束</p>
+<h2 id="5-10-2-移入还是规约"><a href="#5-10-2-移入还是规约" class="headerlink" title="5.10.2. 移入还是规约"></a>5.10.2. 移入还是规约</h2><p>现在读者应该明白，LR算法是非常强大的，但是当碰到一个字符的时候，要选择移入还是规约呢，当选择规约的时候，要用哪个产生式规约呢？</p>
+<p>当LR分析表表明，可以同时移入和规约时，这被称为移入规约冲突</p>
+<p>当LR分析表表明，可以同时多个产生式规约时，这被称为规约规约冲突</p>
+<h2 id="5-10-3-SLR算法介绍"><a href="#5-10-3-SLR算法介绍" class="headerlink" title="5.10.3. SLR算法介绍"></a>5.10.3. SLR算法介绍</h2><p>SLR算法是最简单的LR算法，首先当然是需要计算FIRST集和FOLLOW集的。然后就是计算增广文法，这里涉及到项集的概念。</p>
+<h2 id="5-10-4-SLR项集"><a href="#5-10-4-SLR项集" class="headerlink" title="5.10.4. SLR项集"></a>5.10.4. SLR项集</h2><p>增广产生式，产生式的形式为<code>A -&gt; B1 B2 B3 B4</code>, 他仅能代表替换规则，无法代表当前匹配到哪个地方了，增广产生式向其中加了一个标记位，用来表示当前匹配到了哪个地方。</p>
+<p>比如<code>A -&gt; · B1 B2 B3 B4</code>代表刚刚开始匹配，<code>A -&gt; B1 · B2 B3 B4</code>代表已经识别了符号<code>B1</code></p>
+<p>借此概念，引入项集，项集就是一个产生式以及他的匹配标记位上经过产生式替换之后得到的闭包。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>开始的产生式为下文， 这里已经构成了闭包。我们定义这个产生式集合为项集1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; · number</span><br><span class="line">SUM -&gt; · SUM + number</span><br></pre></td></tr></table></figure>
+
+<p>项集1在读入number以后，得到了项集2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; number ·</span><br></pre></td></tr></table></figure>
+
+<p>项集1在读入SUM以后，得到了项集3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; SUM · + number</span><br></pre></td></tr></table></figure>
+
+<p>项集3读入<code>+</code>以后，得到了项集4</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; SUM + · number</span><br></pre></td></tr></table></figure>
+
+<p>项集4读入number以后，得到了项集5</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; SUM + number ·</span><br></pre></td></tr></table></figure>
+
+<p>于是我们整理一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  I1(&quot;SUM -&gt; · number&lt;br/&gt;SUM -&gt; · SUM + number&quot;)</span><br><span class="line">  I2(&quot;SUM -&gt; number ·&quot;)</span><br><span class="line">  I3(&quot;SUM -&gt; SUM · + number&quot;)</span><br><span class="line">  I4(&quot;SUM -&gt; SUM + · number&quot;)</span><br><span class="line">  I5(&quot;SUM -&gt; SUM + number ·&quot;)</span><br><span class="line">  I1 --&gt;|number| I2</span><br><span class="line">  I1 --&gt;|SUM| I3</span><br><span class="line">  I3 --&gt;|+| I4</span><br><span class="line">  I4 --&gt;|number| I5</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来我们看一个闭包的问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + MUL</span><br><span class="line">           MUL -&gt; MUL * number | number</span><br><span class="line">           PRODUCTION -&gt; SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>开始的产生式为下文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; · SUM</span><br><span class="line">PRODUCTION -&gt; · MUL</span><br></pre></td></tr></table></figure>
+
+<p>但是他没有构成闭包，需要进行闭包替换，即展开标记位后的非终结符， 下文是项集1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; · SUM</span><br><span class="line">PRODUCTION -&gt; · MUL</span><br><span class="line">SUM -&gt; · PRODUCTION + MUL</span><br><span class="line">MUL -&gt; · MUL * number</span><br><span class="line">MUL -&gt; · number</span><br></pre></td></tr></table></figure>
+
+<p>项集1读入number转为项集2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; number ·</span><br></pre></td></tr></table></figure>
+
+<p>项集1读入SUM转为项集3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; SUM · </span><br></pre></td></tr></table></figure>
+
+<p>项集1读入MUL转为项集4</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; MUL · </span><br><span class="line">MUL -&gt; MUL · * number</span><br></pre></td></tr></table></figure>
+
+<p>项集1读入PRODUCTION 转为项集5</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION · + MUL</span><br></pre></td></tr></table></figure>
+
+<p>项集4读入 <code>*</code>  到项集6</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; MUL * · number</span><br></pre></td></tr></table></figure>
+
+<p>项集6读入number，得到项集7</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; MUL * number · </span><br></pre></td></tr></table></figure>
+
+<p>项集5读入+得到项集8，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION + · MUL</span><br><span class="line">MUL -&gt; · MUL * number</span><br><span class="line">MUL -&gt; · number</span><br></pre></td></tr></table></figure>
+
+<p>项集8读入MUL到项集9</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION + MUL ·</span><br><span class="line">MUL -&gt; MUL · * number</span><br></pre></td></tr></table></figure>
+
+
+
+<p>下图是全流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  I1(&quot;状态1&lt;br/&gt;PRODUCTION -&gt; · SUM&lt;br/&gt;PRODUCTION -&gt; · MUL&lt;br/&gt;SUM -&gt; · PRODUCTION + MUL&lt;br/&gt;MUL -&gt; · MUL * number&lt;br/&gt;MUL -&gt; · number&quot;)</span><br><span class="line">  I2(&quot;状态2&lt;br/&gt;MUL -&gt; number ·&quot;)</span><br><span class="line">  I3(&quot;状态3&lt;br/&gt;PRODUCTION -&gt; SUM · &quot;)</span><br><span class="line">  I4(&quot;状态4&lt;br/&gt;PRODUCTION -&gt; MUL · &lt;br/&gt;MUL -&gt; MUL · * number&quot;)</span><br><span class="line">  I5(&quot;状态5&lt;br/&gt;SUM -&gt; PRODUCTION · + MUL&quot;)</span><br><span class="line">  I6(&quot;状态6&lt;br/&gt;MUL -&gt; MUL * · number&quot;)</span><br><span class="line">  I7(&quot;状态7&lt;br/&gt;MUL -&gt; MUL * number · &quot;)</span><br><span class="line">  I8(&quot;状态8&lt;br/&gt;SUM -&gt; PRODUCTION + · MUL&lt;br/&gt;MUL -&gt; · MUL * number&lt;br/&gt;MUL -&gt; · number&quot;)</span><br><span class="line">  I9(&quot;状态9&lt;br/&gt;SUM -&gt; PRODUCTION + MUL ·&lt;br/&gt;MUL -&gt; MUL · * number&quot;)</span><br><span class="line">  I10(&quot;状态10&lt;br/&gt;MUL -&gt; number ·&quot;)</span><br><span class="line">  I1 --&gt;|number| I2</span><br><span class="line">  I1 --&gt;|SUM| I3</span><br><span class="line">  I1 --&gt;|MUL| I4</span><br><span class="line">  I1 --&gt;|PODUCTION| I5</span><br><span class="line">  I4 --&gt;|*| I6</span><br><span class="line">  I6 --&gt;|number| I7</span><br><span class="line">  I5 --&gt;|+| I8</span><br><span class="line">  I8 --&gt;|MUL| I9</span><br><span class="line">  I8 --&gt;|number| I10</span><br><span class="line">  I9 --&gt;|*| I6</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-10-5-SLR表生成算法"><a href="#5-10-5-SLR表生成算法" class="headerlink" title="5.10.5. SLR表生成算法"></a>5.10.5. SLR表生成算法</h2><p>当我们计算出项集以后，就可以根据项集、FIRST集、FOLLOW集构建SLR表了，具体构造方式如下，对于项集中的每个项，就是SLR表的行，也即状态。这次我们直接看这个复杂的例子(见6.10.4)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + MUL</span><br><span class="line">           MUL -&gt; MUL * number | number</span><br><span class="line">           PRODUCTION -&gt; SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+
+
+<p>状态中的边就对应着移入，下面我们首先按照边填充所有的移入指令,移入指令针对于终结符，状态1下的s2,就对应着移入字符number，然后跳转到状态2</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">number</th>
+<th align="center">+</th>
+<th align="center">*</th>
+<th align="center">SUM</th>
+<th align="center">MUL</th>
+<th align="center">PRODUCTION</th>
+<th align="center">$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">s2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">s8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">s7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">s10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>然后按照边填充goto，对于非终结符，按照边进行填写（和移入一致），goto3意味着状态1下，碰到SUM后，跳转到状态3</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">number</th>
+<th align="center">+</th>
+<th align="center">*</th>
+<th align="center">SUM</th>
+<th align="center">MUL</th>
+<th align="center">PRODUCTION</th>
+<th align="center">$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">s2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto3</td>
+<td align="center">goto4</td>
+<td align="center">goto5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">s8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">s7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">s10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto9</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>第三步注意到状态3和状态4较为特殊，他们包含了终结态，所以在状态3和状态4下输入<code>$</code>则表明识别完成</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">number</th>
+<th align="center">+</th>
+<th align="center">*</th>
+<th align="center">SUM</th>
+<th align="center">MUL</th>
+<th align="center">PRODUCTION</th>
+<th align="center">$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">s2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto3</td>
+<td align="center">goto4</td>
+<td align="center">goto5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">s8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">s7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">s10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto9</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>最后一步，根据FOLLOW集处理规约，先想想规约是什么，就是碰到一个无法识别的字符以后，需要将以前的数据进行规约，状态2，3，4，7，9，10都存在规约的情况，</p>
+<p>先来计算FOLLOW集，能发现MUL的FOLLOW集为<code>*, +,$</code>, SUM的FOLLOW集为<code>+,$</code>，PRODUCTION的FOLLOW集为<code>+,$</code></p>
+<p>先看状态2，明显可以使用产生式<code>MUL -&gt; number</code>规约，但是在状态2碰到哪些字符才能规约呢？其实就是MUL的FOLLOW集,于是有了下表,r代表规约，其右边的括号内写着产生式</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">number</th>
+<th align="center">+</th>
+<th align="center">*</th>
+<th align="center">SUM</th>
+<th align="center">MUL</th>
+<th align="center">PRODUCTION</th>
+<th align="center">$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">s2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto3</td>
+<td align="center">goto4</td>
+<td align="center">goto5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">s8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">s7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">s10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto9</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>后面的状态3，4，7，9，10同理了，剩下的没有填充的地方就是报错了，注意到状态2和3，碰到<code>$</code>时要特殊判断，直接ACC</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">number</th>
+<th align="center">+</th>
+<th align="center">*</th>
+<th align="center">SUM</th>
+<th align="center">MUL</th>
+<th align="center">PRODUCTION</th>
+<th align="center">$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">s2</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto3</td>
+<td align="center">goto4</td>
+<td align="center">goto5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center">r(PRODUCTION -&gt; SUM)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center">r(PRODUCTION -&gt; MUL)</td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">ACC</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center">s8</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">s7</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center">r(MUL -&gt; MUL * number )</td>
+<td align="center">r(MUL -&gt; MUL * number )</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">r(MUL -&gt; MUL * number )</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">s10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">goto9</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center"></td>
+<td align="center">r(SUM -&gt; PRODUCTION + MUL)</td>
+<td align="center">s6</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">r(SUM -&gt; PRODUCTION + MUL)</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center">r(MUL-&gt;number)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">r(MUL-&gt;number)</td>
+</tr>
+</tbody></table>
+<p>接下来我们根据SLR表来跑一下LR算法验证一下输入<code>1+2*3</code></p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>状态</th>
+<th>操作</th>
+<th>状态栈</th>
+<th>符号栈</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td></td>
+<td>最开始有一个状态栈，其中包含状态1<br />一个符号栈，为空</td>
+<td><code>[栈底,1]</code></td>
+<td><code> [栈底]</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>从状态栈顶读取状态<br />现在位于状态1</td>
+<td>读入字符<code>number1</code>, 执行<code>s2</code> <br />则状态2入栈，字符number1入栈</td>
+<td><code>[栈底,1,2]</code></td>
+<td><code>[栈底,number1]</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>从状态栈顶读取状态<br />现在位于状态2</td>
+<td>遇到字符<code>+</code>不读入, 执行<code>r(MUL-&gt;number)</code> <br />状态栈弹出状态2，符号栈弹出<code>number1</code><br />然后<code>MUL</code>符号准备入栈, 入栈时状态栈顶为1<br />于是执行<code>goto4</code></td>
+<td><code>[栈底,1,4]</code></td>
+<td><code>[栈底,MUL]</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>从状态栈顶读取状态<br />现在位于状态4</td>
+<td>遇到字符<code>+</code>不读入, 执行<code>r(PRODUCTION -&gt; MUL)</code><br /> 状态4弹出，符号MUL弹出，<br />然后PRODUCTION符号准备入栈，此时栈顶为1 <br />于是执行<code>goto5</code></td>
+<td><code>[栈底,1,5]</code></td>
+<td><code>[栈底,PRODUCTION]</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>从状态栈顶读取状态<br />现在位于状态4</td>
+<td>读入字符<code>+</code>， 执行<code>s8</code></td>
+<td><code>[栈底,1,5,8]</code></td>
+<td><code> [栈底,PRODUCTION,+]</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>从状态栈顶读取状态<br />现在位于状态8</td>
+<td>读入字符<code>number2</code>,执行<code>s10</code></td>
+<td><code>[栈底,1,5,8,10]</code></td>
+<td><code> [栈底,PRODUCTION,+,number2]</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>从状态栈顶读取状态<br />现在位于状态10</td>
+<td>遇到字符<code>*</code>不读入,于是弹栈、<code>goto9</code></td>
+<td><code>[栈底,1,5,8,9]</code></td>
+<td>,<code>[栈底,PRODUCTION,+,MUL]</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>从状态栈顶读取状态<br />现在位于状态9</td>
+<td>读入字符<code>*</code>，执行<code>s6</code></td>
+<td><code>[栈底,1,5,8,9,6]</code></td>
+<td><code> [栈底,PRODUCTION,+,MUL,*]</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>从状态栈顶读取状态<br />现在位于状态6</td>
+<td>,读入字符<code>number3</code>， 执行<code>s7</code></td>
+<td><code>[栈底,1,5,8,9,6,7]</code></td>
+<td><code> [栈底,PRODUCTION,+,MUL,*,number3]</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>从状态栈顶读取状态<br />现在位于状态7</td>
+<td>遇到字符<code>$</code>不读入,执行<code>r(MUL -&gt; MUL * number )</code><br />符号栈弹出三个，状态栈弹出三个<br />然后处于状态8，按照发现遇到MUL<br />执行<code>goto9</code></td>
+<td><code>[栈底,1,5,8,9] </code></td>
+<td><code>[栈底,PRODUCTION,+,MUL]</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>从状态栈顶读取状态<br />现在位于状态9</td>
+<td>遇到字符<code>$</code>不读入, 执行<code>r(SUM -&gt; PRODUCTION + MUL)</code><br />两个栈都是弹出三个，处于状态1<br />遇到SUM,执行<code>goto3</code></td>
+<td><code>[栈底,1,3] </code></td>
+<td><code>[栈底,SUM]</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>从状态栈顶读取状态<br />现在位于状态3,</td>
+<td>读入字符<code>$</code>，结束</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="5-10-6-SLR算法伪代码"><a href="#5-10-6-SLR算法伪代码" class="headerlink" title="5.10.6 SLR算法伪代码"></a>5.10.6 SLR算法伪代码</h2><ol>
+<li>构造文法的规范LR(0) 项集簇 C &#x3D; ${I_0, I_1, … I_n}$. </li>
+<li>对于状态i，  <br>① 如果[A-&gt;α·aβ]在状态中，a为终结符且GOTO(i,a)&#x3D;j， 则ACTION[i,a]为: “移入j”  <br>② 如果[A-&gt;α·]在状态中且A不为开始符号，则对于所有的FOLLOW(A)的字符a，将ACTION[i,a]设为: “规约A-&gt;α”  <br>③ 如果[A-&gt;α·]在状态中且A为开始符号，则将ACTION[i,$]设为: “接受” </li>
+<li>对于状态i，如果A为非终结符且 GOTO(i,A)&#x3D;j 则GOTO[i,A]&#x3D;j </li>
+<li>剩下的地方就是报错 5. 起点是[S’-&gt;·S]</li>
+</ol>
+<h2 id="5-10-7-冲突与规约"><a href="#5-10-7-冲突与规约" class="headerlink" title="5.10.7 冲突与规约"></a>5.10.7 冲突与规约</h2><p>由于SLR文法很简单，他能识别的文法其实很少很少，大部分文法在他这里都会冲突，也就是一张SLR表中，一个状态遇到了同一个符号时，表要求进行多种操作。</p>
+<p>但是SLR文法也容易实现，所以在笔者的compiler项目中，很多地方都直接执行了SLR算法</p>
+<p>所以我们还需要对文法进行进一步增广，后面提出LR1算法。</p>
+<h2 id="5-10-8-LR1-增广文法"><a href="#5-10-8-LR1-增广文法" class="headerlink" title="5.10.8 LR1 增广文法"></a>5.10.8 LR1 增广文法</h2><p>LR1在SLR的基础上继续进行增广，继续引入了end集合，下面继续回忆一下文法和项集</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + MUL</span><br><span class="line">           MUL -&gt; MUL * number | number</span><br><span class="line">           PRODUCTION -&gt; SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  I1(&quot;状态1&lt;br/&gt;PRODUCTION -&gt; · SUM&lt;br/&gt;PRODUCTION -&gt; · MUL&lt;br/&gt;SUM -&gt; · PRODUCTION + MUL&lt;br/&gt;MUL -&gt; · MUL * number&lt;br/&gt;MUL -&gt; · number&quot;)</span><br><span class="line">  I2(&quot;状态2&lt;br/&gt;MUL -&gt; number ·&quot;)</span><br><span class="line">  I3(&quot;状态3&lt;br/&gt;PRODUCTION -&gt; SUM · &quot;)</span><br><span class="line">  I4(&quot;状态4&lt;br/&gt;PRODUCTION -&gt; MUL · &lt;br/&gt;MUL -&gt; MUL · * number&quot;)</span><br><span class="line">  I5(&quot;状态5&lt;br/&gt;SUM -&gt; PRODUCTION · + MUL&quot;)</span><br><span class="line">  I6(&quot;状态6&lt;br/&gt;MUL -&gt; MUL * · number&quot;)</span><br><span class="line">  I7(&quot;状态7&lt;br/&gt;MUL -&gt; MUL * number · &quot;)</span><br><span class="line">  I8(&quot;状态8&lt;br/&gt;SUM -&gt; PRODUCTION + · MUL&lt;br/&gt;MUL -&gt; · MUL * number&lt;br/&gt;MUL -&gt; · number&quot;)</span><br><span class="line">  I9(&quot;状态9&lt;br/&gt;SUM -&gt; PRODUCTION + MUL ·&lt;br/&gt;MUL -&gt; MUL · * number&quot;)</span><br><span class="line">  I10(&quot;状态10&lt;br/&gt;MUL -&gt; number ·&quot;)</span><br><span class="line">  I1 --&gt;|number| I2</span><br><span class="line">  I1 --&gt;|SUM| I3</span><br><span class="line">  I1 --&gt;|MUL| I4</span><br><span class="line">  I1 --&gt;|PODUCTION| I5</span><br><span class="line">  I4 --&gt;|*| I6</span><br><span class="line">  I6 --&gt;|number| I7</span><br><span class="line">  I5 --&gt;|+| I8</span><br><span class="line">  I8 --&gt;|MUL| I9</span><br><span class="line">  I8 --&gt;|number| I10</span><br><span class="line">  I9 --&gt;|*| I6</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<p>关注状态1· </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; · SUM</span><br><span class="line">PRODUCTION -&gt; · MUL</span><br><span class="line">SUM -&gt; · PRODUCTION + MUL</span><br><span class="line">MUL -&gt; · MUL * number</span><br><span class="line">MUL -&gt; · number</span><br></pre></td></tr></table></figure>
+
+<p>对于其中的<code>PRODUCTION -&gt; · SUM</code>，我们发现，其后紧跟着的因该是<code>$</code>，  </p>
+<p>由<code>SUM -&gt; · PRODUCTION + MUL</code>得出，<code>PRODUCTION -&gt; · SUM</code>后可为<code>+</code></p>
+<p>注意产生式<code>MUL -&gt; · number</code>，他的后面是<code>*</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; · SUM, $/+</span><br><span class="line">PRODUCTION -&gt; · MUL, $/+</span><br><span class="line">SUM -&gt; · PRODUCTION + MUL, $/+</span><br><span class="line">MUL -&gt; · MUL * number, $/+</span><br><span class="line">MUL -&gt; · number, *</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后是状态2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; number · , *</span><br></pre></td></tr></table></figure>
+
+<p>状态3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; SUM · , $/+</span><br></pre></td></tr></table></figure>
+
+<p>状态4</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION -&gt; MUL · , $/+</span><br><span class="line">MUL -&gt; MUL · * number, $/+</span><br></pre></td></tr></table></figure>
+
+<p>状态5</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION · + MUL, $/+</span><br></pre></td></tr></table></figure>
+
+<p>状态8</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION + · MUL, $/+</span><br><span class="line">MUL -&gt; · MUL * number, $/+</span><br><span class="line">MUL -&gt; · number, *</span><br></pre></td></tr></table></figure>
+
+<p>状态9</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUM -&gt; PRODUCTION + MUL · , $/+</span><br><span class="line">MUL -&gt; MUL · * number, $/+</span><br></pre></td></tr></table></figure>
+
+<p>状态10</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; number · , *</span><br></pre></td></tr></table></figure>
+
+<p>状态6</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; MUL * · number, $/+</span><br></pre></td></tr></table></figure>
+
+<p>状态7</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUL -&gt; MUL * number ·, $/+</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">  I1(&quot;状态1&lt;br/&gt;PRODUCTION -&gt; · SUM, $/+&lt;br/&gt;PRODUCTION -&gt; · MUL, $/+&lt;br/&gt;SUM -&gt; · PRODUCTION + MUL, $/+&lt;br/&gt;MUL -&gt; · MUL * number, $/+&lt;br/&gt;MUL -&gt; · number, *&quot;)</span><br><span class="line">  I2(&quot;状态2&lt;br/&gt;MUL -&gt; number · , *&quot;)</span><br><span class="line">  I3(&quot;状态3&lt;br/&gt;PRODUCTION -&gt; SUM · , $/+&quot;)</span><br><span class="line">  I4(&quot;状态4&lt;br/&gt;PRODUCTION -&gt; MUL · , $/+&lt;br/&gt;MUL -&gt; MUL · * number, $/+&quot;)</span><br><span class="line">  I5(&quot;状态5&lt;br/&gt;SUM -&gt; PRODUCTION · + MUL, $/+&quot;)</span><br><span class="line">  I6(&quot;状态6&lt;br/&gt;MUL -&gt; MUL * · number, $/+&quot;)</span><br><span class="line">  I7(&quot;状态7&lt;br/&gt;MUL -&gt; MUL * number ·, $/+&quot;)</span><br><span class="line">  I8(&quot;状态8&lt;br/&gt;SUM -&gt; PRODUCTION + · MUL, $/+&lt;br/&gt;MUL -&gt; · MUL * number, $/+&lt;br/&gt;MUL -&gt; · number, *&quot;)</span><br><span class="line">  I9(&quot;状态9&lt;br/&gt;SUM -&gt; PRODUCTION + MUL ·, $/+&lt;br/&gt;MUL -&gt; MUL · * number, $/+&quot;)</span><br><span class="line">  I10(&quot;状态10&lt;br/&gt;MUL -&gt; number ·, *&quot;)</span><br><span class="line">  I1 --&gt;|number| I2</span><br><span class="line">  I1 --&gt;|SUM| I3</span><br><span class="line">  I1 --&gt;|MUL| I4</span><br><span class="line">  I1 --&gt;|PODUCTION| I5</span><br><span class="line">  I4 --&gt;|*| I6</span><br><span class="line">  I6 --&gt;|number| I7</span><br><span class="line">  I5 --&gt;|+| I8</span><br><span class="line">  I8 --&gt;|MUL| I9</span><br><span class="line">  I8 --&gt;|number| I10</span><br><span class="line">  I9 --&gt;|*| I6</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-10-9-LR1表生成算法伪代码"><a href="#5-10-9-LR1表生成算法伪代码" class="headerlink" title="5.10.9 LR1表生成算法伪代码"></a>5.10.9 LR1表生成算法伪代码</h2><p>当读者理解了SLR表生成的伪代码后，LR1迎刃而解，只有2.2不一样， 可以发现LR1甚至都不需要使用FOLLOW集。</p>
+<ol>
+<li>构造文法的规范LR(0) 项集簇 C &#x3D; ${I_0, I_1, … I_n}$. </li>
+<li>对于状态i，  <br>① 如果[A-&gt;α·aβ]在状态中，a为终结符且GOTO(i,a)&#x3D;j， 则ACTION[i,a]为: “移入j”  <br>② 如果[A-&gt;α·]在状态中且A不为开始符号，则对于<strong>此时的增广文法中的end集</strong>的字符a，将ACTION[i,a]设为: “规约A-&gt;α”  <br>③ 如果[A-&gt;α·]在状态中且A为开始符号，则将ACTION[i,$]设为: “接受” </li>
+<li>对于状态i，如果A为非终结符且 GOTO(i,A)&#x3D;j 则GOTO[i,A]&#x3D;j </li>
+<li>剩下的地方就是报错 5. 起点是[S’-&gt;·S]</li>
+</ol>
+<h2 id="5-10-10-LR1算法与SLR算法比较"><a href="#5-10-10-LR1算法与SLR算法比较" class="headerlink" title="5.10.10 LR1算法与SLR算法比较"></a>5.10.10 LR1算法与SLR算法比较</h2><p>可以看到LR1算法比SLR算法更加严格，LR1的end集往往会比FOLLOW集中的字符少。</p>
+<h2 id="5-10-11-二义性文法"><a href="#5-10-11-二义性文法" class="headerlink" title="5.10.11 二义性文法"></a>5.10.11 二义性文法</h2><p>回到最初的起点，LR算法使用移入和规约来完成语法树的构建，如果文法二义，则对于所生成的LR分析表，会有冲突的现象，即同时要求移入和规约，或者要求使用多种产生式进行规约，这时候一种解决办法是消除二义性，但是消除二义性的代价太高，往往导致文法难以理解。</p>
+<p>于是可以采取另一种方案，例如指定优先级。</p>
+<p>二义例子1,移入规约冲突</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ifelse:</span><br><span class="line">  终结符: if, else, condition, block</span><br><span class="line">  非终结符: target</span><br><span class="line">  产生式: target -&gt; block | if condition target | if condition target else target</span><br><span class="line">  开始： target</span><br></pre></td></tr></table></figure>
+
+<p>在面对这个文法时，在碰到终结符<code>else</code>时，<code> target -&gt; if condition target</code>要求规约，<code>target -&gt; if condition target else target</code>而要求移入，实际上，正确的做法为要求移入，所以我们只需要给前一个产生式更高的优先级即可解决问题。</p>
+<p>二义例子2,移入规约冲突</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number | SUM + SUM</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>当栈中已有1+2后，如果又碰到了加号，这时候时移入还是规约呢？ 对于左结合性文法，应该选择规约，对于右结合性文法，应该选择移入。</p>
+<p>二义例子3， 移入规约冲突</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法乘法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: E</span><br><span class="line">  产生式: E -&gt; number | E + E | E * E</span><br><span class="line">  开始： E</span><br></pre></td></tr></table></figure>
+
+<p>当栈中已有1+2后，如果又碰到了乘号， 这是要移入还是规约呢，<code>E-&gt;E +E </code>要求规约,<code>E-&gt;E * E </code>要求移入,这时应该选择移入, 即给后者更高的优先级。</p>
+<h2 id="5-10-12-总结"><a href="#5-10-12-总结" class="headerlink" title="5.10.12 总结"></a>5.10.12 总结</h2><p>至此，大部分二义性问题已被解决，编译器的前端流程也以语法树的成功生成而告一段落了。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/QV7MPT.html" class="prev">PREV</a><a href="/apollo/QV7MPR.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

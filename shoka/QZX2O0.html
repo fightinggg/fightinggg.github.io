@@ -1,0 +1,847 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QZX2O0.html">
+
+
+
+  <title>
+Java运行时分析工具 - Java - Language |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Java运行时分析工具
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-09-24 10:24:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-09-24T10:24:00+08:00">2021-09-24</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipetlbztpj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexe4oykj20zk0m87ji.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeu1usa7j20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeuv80yoj20zk0m8kjl.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipet8c1a2j20zk0m8kct.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/" itemprop="item" rel="index" title="分类于 Language"><span itemprop="name">Language</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/" itemprop="item" rel="index" title="分类于 Java"><span itemprop="name">Java</span></a>
+<meta itemprop="position" content="2" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QZX2O0.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="Jps"><a href="#Jps" class="headerlink" title="Jps"></a>Jps</h1><p>jps 可以看到运行中的java进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jps</span><br><span class="line">370 xxx.jar</span><br><span class="line">180682 Jps</span><br></pre></td></tr></table></figure>
+
+<h1 id="Jcmd"><a href="#Jcmd" class="headerlink" title="Jcmd"></a>Jcmd</h1><p>jcmd可以看到运行中的java进程以及参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jcmd</span><br><span class="line">370 /usr/local/xxx.jar config_path=xxx.yaml</span><br><span class="line">180773 sun.tools.jcmd.JCmd</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jmap"><a href="#Jmap" class="headerlink" title="Jmap"></a>Jmap</h1><p>jmap是可以查看整个JVM内存的工具。</p>
+<span id="more"></span>
+
+<p><code>jmap -heap &lt;pid&gt;</code>即可查看JVM堆堆使用情况，主要有两块，一块是Heap配置，另一块是Heap使用情况。</p>
+<p>Heap配置中包含了最小堆空余空间比例、最大比例、最大堆大小、新生代大小、老生代大小、新生代比例、老生代比例、原空间大小等等。这部分是Java进程启动的时候由JVM参数决定的</p>
+<p>Heap Usage是堆的使用情况，包括新生代使用情况、老生代使用情况（容量、使用、未使用）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -heap 364</span><br><span class="line">Attaching to process ID 364, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 48 thread(s)</span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 32210157568 (30718.0MB)</span><br><span class="line">   NewSize                  = 715653120 (682.5MB)</span><br><span class="line">   MaxNewSize               = 10736369664 (10239.0MB)</span><br><span class="line">   OldSize                  = 1431830528 (1365.5MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage:</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space:</span><br><span class="line">   capacity = 88604672 (84.5MB)</span><br><span class="line">   used     = 6212968 (5.925148010253906MB)</span><br><span class="line">   free     = 82391704 (78.5748519897461MB)</span><br><span class="line">   7.0120094795904215% used</span><br><span class="line">From Space:</span><br><span class="line">   capacity = 9961472 (9.5MB)</span><br><span class="line">   used     = 1900544 (1.8125MB)</span><br><span class="line">   free     = 8060928 (7.6875MB)</span><br><span class="line">   19.07894736842105% used</span><br><span class="line">To Space:</span><br><span class="line">   capacity = 9961472 (9.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 9961472 (9.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">PS Old Generation</span><br><span class="line">   capacity = 1482162176 (1413.5MB)</span><br><span class="line">   used     = 230906152 (220.20926666259766MB)</span><br><span class="line">   free     = 1251256024 (1193.2907333374023MB)</span><br><span class="line">   15.57900719226018% used</span><br><span class="line"></span><br><span class="line">20563 interned Strings occupying 1939392 bytes.</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>jmap -histo &lt;pid&gt;</code>可以查看JVM内存中每个类的内存使用情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -histo 370 | less</span><br><span class="line">num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:       1887996      284532232  [C</span><br><span class="line">   2:         51934       55537536  [I</span><br><span class="line">   3:       1368797       51696928  [B</span><br><span class="line">   4:       1686385       46376560  [Ljava.lang.Object;</span><br><span class="line">   5:        846166       33846640  java.util.TreeMap$Entry</span><br><span class="line">   6:        494971       23758608  java.util.TreeMap</span><br><span class="line">   7:        984173       23620152  java.lang.String</span><br><span class="line">   8:        349310       19561360  sun.nio.cs.UTF_8$Encoder</span><br><span class="line">   9:        495105       15843360  java.util.Collections$UnmodifiableMap</span><br><span class="line">  10:        494750       15832000  java.util.TreeMap$EntryIterator</span><br><span class="line">  11:        494925       11878200  java.util.Arrays$ArrayList</span><br><span class="line">  12:        473586       11366064  java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>jmap -finalizerinfo &lt;pid&gt;</code>可以看到有多少个对象在等待finalizer</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -finalizerinfo 370</span><br><span class="line">Attaching to process ID 370, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line">Number of objects pending for finalization: 0</span><br></pre></td></tr></table></figure>
+
+<p><code>jmap -dump:format=b,file=dump.bin 370</code> 可以把堆中的数据导出到二进制文件中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -dump:format=b,file=dump.bin 370</span><br><span class="line">Heap dump file created</span><br><span class="line">sh-4.2$ ls</span><br><span class="line">dump.bin</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jstack"><a href="#Jstack" class="headerlink" title="Jstack"></a>Jstack</h1><p><code>jstack &lt;pid&gt;</code>可以看到所有线程目前的栈信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;Finalizer&quot; #3 daemon prio=8 os_prio=0 tid=0x00007fd8506eb000 nid=0x1a7 in Object.wait() [0x00007fd77b826000]</span><br><span class="line">   java.lang.Thread.State: WAITING (on object monitor)</span><br><span class="line">        at java.lang.Object.wait(Native Method)</span><br><span class="line">        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:144)</span><br><span class="line">        - locked &lt;0x000000008023bb50&gt; (a java.lang.ref.ReferenceQueue$Lock)</span><br><span class="line">        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:165)</span><br><span class="line">        at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:216)</span><br><span class="line"></span><br><span class="line">&quot;Reference Handler&quot; #2 daemon prio=10 os_prio=0 tid=0x00007fd8506de800 nid=0x1a6 in Object.wait() [0x00007fd77baf9000]</span><br><span class="line">   java.lang.Thread.State: WAITING (on object monitor)</span><br><span class="line">        at java.lang.Object.wait(Native Method)</span><br><span class="line">        at java.lang.Object.wait(Object.java:502)</span><br><span class="line">        at java.lang.ref.Reference.tryHandlePending(Reference.java:191)</span><br><span class="line">        - locked &lt;0x00000000802478a8&gt; (a java.lang.ref.Reference$Lock)</span><br><span class="line">        at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)</span><br><span class="line"></span><br><span class="line">&quot;VM Thread&quot; os_prio=0 tid=0x00007fd8506db000 nid=0x1a5 runnable</span><br><span class="line"></span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; os_prio=0 tid=0x00007fd85001f000 nid=0x175 runnable</span><br><span class="line"></span><br><span class="line">&quot;GC task thread#1 (ParallelGC)&quot; os_prio=0 tid=0x00007fd850021000 nid=0x176 runnable</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="Jstat"><a href="#Jstat" class="headerlink" title="Jstat"></a>Jstat</h1><h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><p>查看options</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -options</span><br><span class="line">-class</span><br><span class="line">-compiler</span><br><span class="line">-gc</span><br><span class="line">-gccapacity</span><br><span class="line">-gccause</span><br><span class="line">-gcmetacapacity</span><br><span class="line">-gcnew</span><br><span class="line">-gcnewcapacity</span><br><span class="line">-gcold</span><br><span class="line">-gcoldcapacity</span><br><span class="line">-gcutil</span><br><span class="line">-printcompilation</span><br></pre></td></tr></table></figure>
+
+<h2 id="类加载情况"><a href="#类加载情况" class="headerlink" title="类加载情况"></a>类加载情况</h2><p>查看类的个数, 每1000毫秒打印一次，一共打印10次</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -class 370 1000 10</span><br><span class="line">Loaded  Bytes  Unloaded  Bytes     Time</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="JIT情况"><a href="#JIT情况" class="headerlink" title="JIT情况"></a>JIT情况</h2><p>查看JIT实时编译器编译的情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -compiler 370 1000 3</span><br><span class="line">Compiled Failed Invalid   Time   FailedType FailedMethod</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br></pre></td></tr></table></figure>
+
+<h2 id="GC情况"><a href="#GC情况" class="headerlink" title="GC情况"></a>GC情况</h2><p>查看GC情况，每一列分别对应</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S0C</td>
+<td>第一个survivor的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>S1C</td>
+<td>第二个survivor的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>S0U</td>
+<td>第一个survivor的使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>S1U</td>
+<td>第二个survivor的使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>EC</td>
+<td>eden容量</td>
+<td>eden和survivor的比例是8:1:1</td>
+</tr>
+<tr>
+<td>EU</td>
+<td>eden使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>OC</td>
+<td>老年代容量</td>
+<td></td>
+</tr>
+<tr>
+<td>OU</td>
+<td>老年代使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>MC</td>
+<td>方法区的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>MU</td>
+<td>方法区使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>CCSC</td>
+<td>压缩类容量</td>
+<td>注意被压缩的不是类，而是对象头中指向类的指针被压缩成32位了</td>
+</tr>
+<tr>
+<td>CCSU</td>
+<td>压缩类使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>YGC</td>
+<td>YGC的次数</td>
+<td></td>
+</tr>
+<tr>
+<td>YGCT</td>
+<td>YGC的时间</td>
+<td></td>
+</tr>
+<tr>
+<td>FGC</td>
+<td>FULL GC的次数</td>
+<td></td>
+</tr>
+<tr>
+<td>FGCT</td>
+<td>FULL GC的时间</td>
+<td></td>
+</tr>
+<tr>
+<td>GCT</td>
+<td>GC总时间</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gc 370 1000 3</span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 256731.1 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 299599.8 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 340310.0 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="GC-capacity情况"><a href="#GC-capacity情况" class="headerlink" title="GC capacity情况"></a>GC capacity情况</h2><p>主要关注各区域最大最小空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gccapacity 370 1000 3</span><br><span class="line"> NGCMN    NGCMX     NGC     S0C   S1C       EC      OGCMN      OGCMX       OGC         OC       MCMN     MCMX      MC     CCSMN    CCSMX     CCSC    YGC    FGC</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GC-cause-情况"><a href="#GC-cause-情况" class="headerlink" title="GC cause 情况"></a>GC cause 情况</h2><p>主要关注导致GC的原因</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gccause 370 1000 3</span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT    LGCC                 GCC</span><br><span class="line"> 93.81   0.00  73.52   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br><span class="line"> 93.81   0.00  73.52   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br><span class="line"> 93.81   0.00  73.53   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GC-utils情况"><a href="#GC-utils情况" class="headerlink" title="GC utils情况"></a>GC utils情况</h2><p>主要关注内存占比</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gcutil 370 1000 3</span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT</span><br><span class="line">  0.00  96.98  13.54   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br><span class="line">  0.00  96.98  13.54   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br><span class="line">  0.00  96.98  13.56   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="printcompilation情况"><a href="#printcompilation情况" class="headerlink" title="printcompilation情况"></a>printcompilation情况</h2><p>JIT的方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -printcompilation 370 1000 3</span><br><span class="line">Compiled  Size  Type Method</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jinfo"><a href="#Jinfo" class="headerlink" title="Jinfo"></a>Jinfo</h1><p>jinfo能输出一个进程的基本信息，包括他的配置、用户、路径、命令行等等</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jinfo 370</span><br><span class="line">Attaching to process ID 370, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line">Java System Properties:</span><br><span class="line"></span><br><span class="line">java.runtime.name = OpenJDK Runtime Environment</span><br><span class="line">java.vm.version = 25.252-b4</span><br><span class="line">java.protocol.handler.pkgs = org.springframework.boot.loader</span><br><span class="line">path.separator = :</span><br><span class="line">file.encoding.pkg = sun.io</span><br><span class="line">java.vm.name = OpenJDK 64-Bit Server VM</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jhat"><a href="#Jhat" class="headerlink" title="Jhat"></a>Jhat</h1><p>jhat是堆快照分析工具，用于分析堆的情况，首先要用jmap导出堆到文件dump.bin中，然后使用jhat分析,再访问7000端口即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jhat  dump.bin</span><br><span class="line">Reading from dump.bin...</span><br><span class="line">Dump file created Fri Sep 24 19:38:36 CST 2021</span><br><span class="line">Snapshot read, resolving...</span><br><span class="line">Resolving 4748880 objects...</span><br><span class="line">Chasing references, expect 949 dots.............</span><br><span class="line">Eliminating duplicate references..............</span><br><span class="line">Snapshot resolved.</span><br><span class="line">Started HTTP server on port 7000</span><br><span class="line">Server is ready.</span><br></pre></td></tr></table></figure>
+
+<p><img data-src='/image-2021-09-24-19.42.00.000.png'></img></p>
+<h1 id="Javah"><a href="#Javah" class="headerlink" title="Javah"></a>Javah</h1><p>用于编写JNI方法</p>
+<h1 id="JavaP"><a href="#JavaP" class="headerlink" title="JavaP"></a>JavaP</h1><p>字节码分析工具</p>
+<h1 id="Jshell"><a href="#Jshell" class="headerlink" title="Jshell"></a>Jshell</h1><p>Java交互式工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jshell</span><br><span class="line">|  欢迎使用 JShell -- 版本 16.0.2</span><br><span class="line">|  要大致了解该版本, 请键入: /help intro</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">int a = 1</span></span><br><span class="line">a ==&gt; 1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">int b = 1</span></span><br><span class="line">b ==&gt; 1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">System.out.print(a+b)</span></span><br><span class="line">2</span><br><span class="line"><span class="meta prompt_">jshell&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-09-24 19:27:00" itemprop="dateModified" datetime="2021-09-24T19:27:00+08:00">2021-09-24</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QZX2O0.html" title="Java运行时分析工具">http://fightinggg.github.io/shoka/QZX2O0.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QZIIYO.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclga70tsj20zk0m84mr.jpg" title="计算机病毒揭秘与对抗">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 计算机网络</span>
+  <h3>计算机病毒揭秘与对抗</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QZX4AC.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclhpw3lwj20zk0m8gvw.jpg" title="linux指令-systemctl">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux</span>
+  <h3>linux指令-systemctl</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Jps"><span class="toc-number">1.</span> <span class="toc-text">Jps</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jcmd"><span class="toc-number">2.</span> <span class="toc-text">Jcmd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jmap"><span class="toc-number">3.</span> <span class="toc-text">Jmap</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jstack"><span class="toc-number">4.</span> <span class="toc-text">Jstack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jstat"><span class="toc-number">5.</span> <span class="toc-text">Jstat</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#options"><span class="toc-number">5.1.</span> <span class="toc-text">options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%83%85%E5%86%B5"><span class="toc-number">5.2.</span> <span class="toc-text">类加载情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT%E6%83%85%E5%86%B5"><span class="toc-number">5.3.</span> <span class="toc-text">JIT情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC%E6%83%85%E5%86%B5"><span class="toc-number">5.4.</span> <span class="toc-text">GC情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC-capacity%E6%83%85%E5%86%B5"><span class="toc-number">5.5.</span> <span class="toc-text">GC capacity情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC-cause-%E6%83%85%E5%86%B5"><span class="toc-number">5.6.</span> <span class="toc-text">GC cause 情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GC-utils%E6%83%85%E5%86%B5"><span class="toc-number">5.7.</span> <span class="toc-text">GC utils情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#printcompilation%E6%83%85%E5%86%B5"><span class="toc-number">5.8.</span> <span class="toc-text">printcompilation情况</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jinfo"><span class="toc-number">6.</span> <span class="toc-text">Jinfo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jhat"><span class="toc-number">7.</span> <span class="toc-text">Jhat</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Javah"><span class="toc-number">8.</span> <span class="toc-text">Javah</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JavaP"><span class="toc-number">9.</span> <span class="toc-text">JavaP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Jshell"><span class="toc-number">10.</span> <span class="toc-text">Jshell</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q5KF8D.html" rel="bookmark" title="走进Java">走进Java</a></li><li><a href="/shoka/Q5KMBU.html" rel="bookmark" title="Java内存区域于内存溢出异常">Java内存区域于内存溢出异常</a></li><li><a href="/shoka/Q5KTS0.html" rel="bookmark" title="垃圾收集器与内存分配策略">垃圾收集器与内存分配策略</a></li><li><a href="/shoka/Q5QPOK.html" rel="bookmark" title="Java内存模型与线程">Java内存模型与线程</a></li><li><a href="/shoka/Q5SN0R.html" rel="bookmark" title="Java线程安全与锁优化">Java线程安全与锁优化</a></li><li><a href="/shoka/Q5TYBT.html" rel="bookmark" title="早期(编译期)优化">早期(编译期)优化</a></li><li><a href="/shoka/Q5W8L1.html" rel="bookmark" title="晚期(运行期)优化">晚期(运行期)优化</a></li><li><a href="/shoka/Q7PE5O.html" rel="bookmark" title="spring学习1-spring入门">spring学习1-spring入门</a></li><li><a href="/shoka/Q7STKS.html" rel="bookmark" title="spring学习2-spring介绍2">spring学习2-spring介绍2</a></li><li><a href="/shoka/Q82D98.html" rel="bookmark" title="Java基础">Java基础</a></li><li><a href="/shoka/Q85ZID.html" rel="bookmark" title="Maven">Maven</a></li><li><a href="/shoka/Q860KN.html" rel="bookmark" title="spring3-耦合">spring3-耦合</a></li><li><a href="/shoka/Q8BONM.html" rel="bookmark" title="spring4-创建IOC容器">spring4-创建IOC容器</a></li><li><a href="/shoka/Q8BOOH.html" rel="bookmark" title="spring5-XML配置IOC">spring5-XML配置IOC</a></li><li><a href="/shoka/Q8BOOS.html" rel="bookmark" title="spring6-依赖注入">spring6-依赖注入</a></li><li><a href="/shoka/Q8BOP2.html" rel="bookmark" title="spring7-注解配置IOC">spring7-注解配置IOC</a></li><li><a href="/shoka/Q8BOPJ.html" rel="bookmark" title="spring8-spring整合junit">spring8-spring整合junit</a></li><li><a href="/shoka/Q8BOQ3.html" rel="bookmark" title="spring9-动态代理">spring9-动态代理</a></li><li><a href="/shoka/Q8BOQD.html" rel="bookmark" title="spring10-配置AOP">spring10-配置AOP</a></li><li><a href="/shoka/Q8H56B.html" rel="bookmark" title="spring11-Jdbctemplate">spring11-Jdbctemplate</a></li><li><a href="/shoka/Q8INDH.html" rel="bookmark" title="spring12-事务">spring12-事务</a></li><li><a href="/shoka/Q8IRJ2.html" rel="bookmark" title="java并发编程1-进程与线程">java并发编程1-进程与线程</a></li><li><a href="/shoka/Q8K2TR.html" rel="bookmark" title="java并发编程2-创建和运行线程">java并发编程2-创建和运行线程</a></li><li><a href="/shoka/Q8K6JX.html" rel="bookmark" title="java并发编程3-线程运行原理">java并发编程3-线程运行原理</a></li><li><a href="/shoka/Q8KXQL.html" rel="bookmark" title="java并发编程4-同步与互斥">java并发编程4-同步与互斥</a></li><li><a href="/shoka/Q8LY8O.html" rel="bookmark" title="java并发编程5-Java内存">java并发编程5-Java内存</a></li><li><a href="/shoka/Q8M6IO.html" rel="bookmark" title="java并发编程6-无锁并发">java并发编程6-无锁并发</a></li><li><a href="/shoka/Q8MD9G.html" rel="bookmark" title="java并发编程7-不可变设计">java并发编程7-不可变设计</a></li><li><a href="/shoka/Q8OMTK.html" rel="bookmark" title="java并发编程8-自定义线程池">java并发编程8-自定义线程池</a></li><li><a href="/shoka/Q8OMTV.html" rel="bookmark" title="java并发编程9-JDK线程池">java并发编程9-JDK线程池</a></li><li><a href="/shoka/Q8OMU7.html" rel="bookmark" title="java并发编程10-异步模式">java并发编程10-异步模式</a></li><li><a href="/shoka/Q8OMUJ.html" rel="bookmark" title="java并发编程11-JUC">java并发编程11-JUC</a></li><li><a href="/shoka/Q8OMUY.html" rel="bookmark" title="java并发编程12-集合的线程安全类">java并发编程12-集合的线程安全类</a></li><li><a href="/shoka/Q8PM7R.html" rel="bookmark" title="Java并发编程13-并发总结">Java并发编程13-并发总结</a></li><li><a href="/shoka/Q8S6PM.html" rel="bookmark" title="springboot">springboot</a></li><li><a href="/shoka/Q8TZMC.html" rel="bookmark" title="SpringBoot1-介绍">SpringBoot1-介绍</a></li><li><a href="/shoka/Q8TZMI.html" rel="bookmark" title="SpringBoot2-配置">SpringBoot2-配置</a></li><li><a href="/shoka/Q8TZMM.html" rel="bookmark" title="SpringBoot3-日志">SpringBoot3-日志</a></li><li><a href="/shoka/Q8V5AK.html" rel="bookmark" title="SpringBoot4-Web1-静态资源">SpringBoot4-Web1-静态资源</a></li><li><a href="/shoka/Q8V5C8.html" rel="bookmark" title="SpringBoot4-Web2-模版引擎">SpringBoot4-Web2-模版引擎</a></li><li><a href="/shoka/Q8YUMK.html" rel="bookmark" title="SpringBoot4-Web3-SpringMVC">SpringBoot4-Web3-SpringMVC</a></li><li><a href="/shoka/Q94EMK.html" rel="bookmark" title="SpringBoot4-Web4-国际化">SpringBoot4-Web4-国际化</a></li><li><a href="/shoka/Q973UK.html" rel="bookmark" title="SpringBoot4-Web5-烂尾">SpringBoot4-Web5-烂尾</a></li><li><a href="/shoka/Q988YW.html" rel="bookmark" title="SpringMVC1-开头">SpringMVC1-开头</a></li><li><a href="/shoka/Q9A8X6.html" rel="bookmark" title="SpringCloud1-入门">SpringCloud1-入门</a></li><li><a href="/shoka/Q9ARQ4.html" rel="bookmark" title="SpringMVC2-注解">SpringMVC2-注解</a></li><li><a href="/shoka/Q9ATMZ.html" rel="bookmark" title="SpringMVC3-JSON">SpringMVC3-JSON</a></li><li><a href="/shoka/Q9EFRT.html" rel="bookmark" title="SpringMVC4-JSON2">SpringMVC4-JSON2</a></li><li><a href="/shoka/Q9FQAC.html" rel="bookmark" title="MyBatis1-入门">MyBatis1-入门</a></li><li><a href="/shoka/Q9FYT4.html" rel="bookmark" title="MyBatis2-原理">MyBatis2-原理</a></li><li><a href="/shoka/Q9GEX3.html" rel="bookmark" title="SpringMVC5-SSM">SpringMVC5-SSM</a></li><li><a href="/shoka/Q9HN1S.html" rel="bookmark" title="SpringMVC6-Ajax">SpringMVC6-Ajax</a></li><li><a href="/shoka/Q9I31Z.html" rel="bookmark" title="SpringBoot5-数据访问">SpringBoot5-数据访问</a></li><li><a href="/shoka/Q9I38V.html" rel="bookmark" title="SpringBoot6-启动的源码分析">SpringBoot6-启动的源码分析</a></li><li><a href="/shoka/Q9I7BR.html" rel="bookmark" title="SpringBoot7-自定义starter">SpringBoot7-自定义starter</a></li><li><a href="/shoka/Q9JFNP.html" rel="bookmark" title="SpringCloud2-微服务">SpringCloud2-微服务</a></li><li><a href="/shoka/Q9JK3W.html" rel="bookmark" title="SpringCloud3">SpringCloud3</a></li><li><a href="/shoka/Q9N07S.html" rel="bookmark" title="SpringCloud4">SpringCloud4</a></li><li><a href="/shoka/Q9N2JF.html" rel="bookmark" title="SpringCloud5">SpringCloud5</a></li><li><a href="/shoka/QACTF3.html" rel="bookmark" title="reactive">reactive</a></li><li><a href="/shoka/QIPR40.html" rel="bookmark" title="ratelimiter">ratelimiter</a></li><li><a href="/shoka/QIZ0G0.html" rel="bookmark" title="webFlux">webFlux</a></li><li><a href="/shoka/QJ2PS0.html" rel="bookmark" title="feign">feign</a></li><li><a href="/shoka/QJ6F40.html" rel="bookmark" title="aware">aware</a></li><li><a href="/shoka/QJJDS0.html" rel="bookmark" title="springcloud-gateway">springcloud-gateway</a></li><li><a href="/shoka/QKVJ40.html" rel="bookmark" title="Java杂谈">Java杂谈</a></li><li><a href="/shoka/QLE1S0.html" rel="bookmark" title="springcloud-cluster">springcloud-cluster</a></li><li><a href="/shoka/QTI5FC.html" rel="bookmark" title="发布Maven二方包到Github仓库">发布Maven二方包到Github仓库</a></li><li><a href="/shoka/QWKWF0.html" rel="bookmark" title="Java异常原因及处理">Java异常原因及处理</a></li><li class="active"><a href="/shoka/QZX2O0.html" rel="bookmark" title="Java运行时分析工具">Java运行时分析工具</a></li><li><a href="/shoka/R5MNS0.html" rel="bookmark" title="Springfox使用">Springfox使用</a></li><li><a href="/shoka/R9L6IO.html" rel="bookmark" title="spring13-AspectJ">spring13-AspectJ</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QZIIYO.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QZX4AC.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/JVM/" title="分类于 JVM">JVM</a>
+</div>
+
+    <span><a href="/shoka/Q5KF8D.html" title="走进Java">走进Java</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/" title="分类于 bzoj">bzoj</a>
+</div>
+
+    <span><a href="/shoka/PP4WNZ.html" title="bzoj2121">bzoj2121</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Docker/K8s/" title="分类于 K8s">K8s</a>
+</div>
+
+    <span><a href="/shoka/QHHB40.html" title="k8s">k8s</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/" title="分类于 笔试">笔试</a>
+</div>
+
+    <span><a href="/shoka/Q8F7Q5.html" title="网易笔试">网易笔试</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cfedu63D.html" title="cfedu63D">cfedu63D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/" title="分类于 DP">DP</a>
+</div>
+
+    <span><a href="/shoka/PQEPJ5.html" title="数位dp">数位dp</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8S6PM.html" title="springboot">springboot</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/UML/" title="分类于 UML">UML</a>
+</div>
+
+    <span><a href="/shoka/QWKWK0.html" title="UML图表指引">UML图表指引</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Zookeeper/" title="分类于 Zookeeper">Zookeeper</a>
+</div>
+
+    <span><a href="/shoka/Q8ZBH7.html" title="Docker-Zookeeper集群部署">Docker-Zookeeper集群部署</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/QQZ90O.html" title="HTTP权威指南">HTTP权威指南</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QZX2O0.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

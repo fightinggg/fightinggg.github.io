@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java内存模型与线程 · Believe it</title><meta name="description" content="Java内存模型与线程 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java内存模型与线程</h1><div class="post-info">2020年2月15日</div><div class="post-content"><div><a href="/next/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q5QPOK.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h3 id="硬件间速度的差距"><a href="#硬件间速度的差距" class="headerlink" title="硬件间速度的差距"></a>硬件间速度的差距</h3><p>因为计算机各种硬件之间速度的差距实在是太大了，这严重地影响了计算机的整体效率，很多时候软件并不能够充分地利用计算机的资源，让处理器去等待内存，一种解决方案就是在内存和处理器之间引入一个缓存，来尽量减轻这个速度的差距。在多处理器系统中，往往对应着多个缓存。</p>
+<h3 id="缓存一致性"><a href="#缓存一致性" class="headerlink" title="缓存一致性"></a>缓存一致性</h3><p>往往这些缓存都储存着和内存一样的数据，他们互为拷贝，我们必须保证他们的数据是同步修改的。这有很多种协议来维护。</p>
+<h3 id="乱序执行"><a href="#乱序执行" class="headerlink" title="乱序执行"></a>乱序执行</h3><p>为了更好的利用处理器的运算单元，处理器可能会对输入的代码片段进行乱序执行优化，Java虚拟机也是如此。</p>
+<!---more-->
+<h3 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h3><p>Java内存模型中有两种内存，第一种是一个主内存，第二种是多个线程工作内存，线程私有。</p>
+<h3 id="内存间的互相操作"><a href="#内存间的互相操作" class="headerlink" title="内存间的互相操作"></a>内存间的互相操作</h3><p>Java内存模型有8种原子操作<br>lock:作用与主内存中的变量，让其变为线程独占<br>unlock:和lock相反<br>read:把主内存中的变量传输到工作内存，准备load<br>load:把read的值放入线程工作内存的变量副本中<br>use:把线程工作内存中的值拿到执行引擎中<br>assign:从执行引擎中获得值写入工作内存<br>store:把工作内存中的变量传输到主内存，准备write<br>write:把store得到的值写入主内存。<br>这些操作的相互执行关系很复杂，但都能推导出，这里不赘述<br>long和double是64位数据，Java内存模型不强制但推荐把他们也实现为原子操作</p>
+<h3 id="volatile型变量"><a href="#volatile型变量" class="headerlink" title="volatile型变量"></a>volatile型变量</h3><p>volatile类型有两种特点，第一是保证对所有线程的可见行，即所有线程使用其前都要在工作内存中刷新他的值，但是这些操作并非原子性，所以不能保证并发安全。第二是禁止语义重排。他前面的代码不能排到他后面去，他后面的代码不能重排到他前面。</p>
+<h3 id="Java线程调度"><a href="#Java线程调度" class="headerlink" title="Java线程调度"></a>Java线程调度</h3><p>Java有10种优先级，但是操作系统却不一定是10种，若&lt;10则导致Java线程某些级别无差距，若&gt;10则导致有些系统线程优先级无法使用。</p>
+<h3 id="Java线程状态"><a href="#Java线程状态" class="headerlink" title="Java线程状态"></a>Java线程状态</h3><p>新建、运行、无限期等待(不能主动苏醒，能被唤醒)、期限等待、阻塞、结束</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q5SN0R.html" class="prev">PREV</a><a href="/apollo/Q5KTS0.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            spring13-AspectJ | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+1. AspectJ1.1. AspectJ介绍AspectJ官网^4
+AspectJ文档^1
+1.1.1. pointcutspointcuts指的是程序中的某些链接点（某些时机），例如call(void Point.setX(int))表示：调用类Point的setX(int)方法时
+pointcuts可以使用与或非表达式（||,&amp;amp;&amp;amp;,!）连接，比如 call(void Point.setX(int)) || call(void Point.setY(int))
+pointcuts可以被定义为变量，如下面代码中的move()
+123456pointcut move():    call(void FigureElement.setXY(int,int)) ||    call(void Point.setX(int))              ||    call(void Point.setY(int))              ||    call(void Line.setP1(Point))            ||    call(void Line.setP2(Point));
+
+当然pointcuts定义的时候还可以使用通配符，比如call(void Figure.make*(..))代表Figure的以make开头且返回值为void的方法（不关心参数）调用的时候。比如call(public * Figure.* (..))代表Figure的任何方法（不关心方法名，参数，返回值）调用的时候。">
+    <meta name="keywords" content=",读书,AspectJ">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/R9L6IO.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/R9L6IO.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="spring13-AspectJ | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+1. AspectJ1.1. AspectJ介绍AspectJ官网^4
+AspectJ文档^1
+1.1.1. pointcutspointcuts指的是程序中的某些链接点（某些时机），例如call(void Point.setX(int))表示：调用类Point的setX(int)方法时
+pointcuts可以使用与或非表达式（||,&amp;amp;&amp;amp;,!）连接，比如 call(void Point.setX(int)) || call(void Point.setY(int))
+pointcuts可以被定义为变量，如下面代码中的move()
+123456pointcut move():    call(void FigureElement.setXY(int,int)) ||    call(void Point.setX(int))              ||    call(void Point.setY(int))              ||    call(void Line.setP1(Point))            ||    call(void Line.setP2(Point));
+
+当然pointcuts定义的时候还可以使用通配符，比如call(void Figure.make*(..))代表Figure的以make开头且返回值为void的方法（不关心参数）调用的时候。比如call(public * Figure.* (..))代表Figure的任何方法（不关心方法名，参数，返回值）调用的时候。">
+    <meta property="og:article:tag" content="读书"> <meta property="og:article:tag" content="AspectJ"> 
+
+    
+        <meta property="article:published_time" content="Thu Mar 31 2022 09:52:00 GMT+0800">
+        <meta property="article:modified_time" content="Thu Mar 31 2022 01:52:00 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/R9L6IO.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/R9L6IO.html",
+    "headline": "spring13-AspectJ",
+    "datePublished": "Thu Mar 31 2022 09:52:00 GMT+0800",
+    "dateModified": "Thu Mar 31 2022 01:52:00 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": ",读书,AspectJ",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+1. AspectJ1.1. AspectJ介绍AspectJ官网^4
+AspectJ文档^1
+1.1.1. pointcutspointcuts指的是程序中的某些链接点（某些时机），例如call(void Point.setX(int))表示：调用类Point的setX(int)方法时
+pointcuts可以使用与或非表达式（||,&amp;amp;&amp;amp;,!）连接，比如 call(void Point.setX(int)) || call(void Point.setY(int))
+pointcuts可以被定义为变量，如下面代码中的move()
+123456pointcut move():    call(void FigureElement.setXY(int,int)) ||    call(void Point.setX(int))              ||    call(void Point.setY(int))              ||    call(void Line.setP1(Point))            ||    call(void Line.setP2(Point));
+
+当然pointcuts定义的时候还可以使用通配符，比如call(void Figure.make*(..))代表Figure的以make开头且返回值为void的方法（不关心参数）调用的时候。比如call(public * Figure.* (..))代表Figure的任何方法（不关心方法名，参数，返回值）调用的时候。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#1-AspectJ"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. AspectJ</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-1-AspectJ%E4%BB%8B%E7%BB%8D"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1.1. AspectJ介绍</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-1-1-pointcuts"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">1.1.1. pointcuts</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-1-2-advice"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">1.1.2. advice</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-1-3-aspect"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">1.1.3. aspect</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-2-%E5%9C%A8IntelliJ-IDEA%E4%B8%8A%E5%AE%89%E8%A3%85AspectJ"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">1.2. 在IntelliJ IDEA上安装AspectJ</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-1-%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85AspectJ"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">1.2.1. 下载并安装AspectJ</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-2-%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">1.2.2. 安装插件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-3-%E5%90%AF%E7%94%A8AJC%E7%BC%96%E8%AF%91%E5%99%A8"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">1.2.3. 启用AJC编译器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-4-%E7%BB%99%E9%A1%B9%E7%9B%AE%E6%B7%BB%E5%8A%A0AJC%E4%BE%9D%E8%B5%96"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">1.2.4. 给项目添加AJC依赖</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-3-Hello-World"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">1.3. Hello World</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-4-Pointcuts%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">1.4. Pointcuts表达式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-5-%E6%80%BB%E7%BB%93"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">1.5. 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2-Spring-%E5%AF%B9-AspectJ%E7%9A%84%E6%94%AF%E6%8C%81"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. Spring 对 AspectJ的支持</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3-%E5%BC%95%E7%94%A8"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 引用</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                spring13-AspectJ
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>3月 31, 2022</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/material/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/material/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=spring13-AspectJ&url=http://fightinggg.github.io/material/material/R9L6IO.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=spring13-AspectJ&url=http://fightinggg.github.io/material/material/R9L6IO.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/R9L6IO.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/R9L6IO.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R9L6IO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="1-AspectJ"><a href="#1-AspectJ" class="headerlink" title="1. AspectJ"></a>1. AspectJ</h1><h2 id="1-1-AspectJ介绍"><a href="#1-1-AspectJ介绍" class="headerlink" title="1.1. AspectJ介绍"></a>1.1. AspectJ介绍</h2><p>AspectJ官网<a href="%5BAspectJ%E5%AE%98%E7%BD%91%5D(https://www.eclipse.org/aspectj/downloads.php)">^4</a></p>
+<p>AspectJ文档<a href="%5BAspectJ%E6%96%87%E6%A1%A3%5D(https://www.eclipse.org/aspectj/doc/released/progguide/index.html)">^1</a></p>
+<h3 id="1-1-1-pointcuts"><a href="#1-1-1-pointcuts" class="headerlink" title="1.1.1. pointcuts"></a>1.1.1. pointcuts</h3><p>pointcuts指的是程序中的某些链接点（某些时机），例如<code>call(void Point.setX(int))</code>表示：调用类<code>Point</code>的<code>setX(int)</code>方法时</p>
+<p>pointcuts可以使用与或非表达式（<code>||,&amp;&amp;,!</code>）连接，比如 <code>call(void Point.setX(int)) || call(void Point.setY(int))</code></p>
+<p>pointcuts可以被定义为变量，如下面代码中的<code>move()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pointcut move():</span><br><span class="line">    call(void FigureElement.setXY(int,int)) ||</span><br><span class="line">    call(void Point.setX(int))              ||</span><br><span class="line">    call(void Point.setY(int))              ||</span><br><span class="line">    call(void Line.setP1(Point))            ||</span><br><span class="line">    call(void Line.setP2(Point));</span><br></pre></td></tr></table></figure>
+
+<p>当然pointcuts定义的时候还可以使用通配符，比如<code>call(void Figure.make*(..))</code>代表<code>Figure</code>的以make开头且返回值为void的方法（不关心参数）调用的时候。比如<code>call(public * Figure.* (..))</code>代表<code>Figure</code>的任何方法（不关心方法名，参数，返回值）调用的时候。</p>
+<span id="more"></span>
+
+<p>cflow是什么？</p>
+<h3 id="1-1-2-advice"><a href="#1-1-2-advice" class="headerlink" title="1.1.2. advice"></a>1.1.2. advice</h3><p>pointcuts 指出了一些事件发生的时机，当这些事件真正发生的时候，我们需要advice表示该做些什么。advice如下，advice可以使用before代表在pointcuts发生以前做一些事情,如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">before(): move() &#123;</span><br><span class="line">    System.out.println(&quot;before move&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用after代表在pointcuts发生以后做一些事情，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">after(): move()&#123;</span><br><span class="line">    System.out.println(&quot;after move&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>after还可以加上修饰符returning和throwing，分别表示在正常返回和在异常返回的情况，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">after() returning: move()&#123;</span><br><span class="line">    System.out.println(&quot;after move&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">after() throwing: move()&#123;</span><br><span class="line">    System.out.println(&quot;after move&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>around表示环绕一个方法</p>
+<h3 id="1-1-3-aspect"><a href="#1-1-3-aspect" class="headerlink" title="1.1.3. aspect"></a>1.1.3. aspect</h3><p>aspect是一个特别的类型，在其中可以定义pointcut和advice，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">aspect MyAspect&#123;</span><br><span class="line"></span><br><span class="line">    pointcut move():</span><br><span class="line">        call(void FigureElement.setXY(int,int)) ||</span><br><span class="line">        call(void Point.setX(int))              ||</span><br><span class="line">        call(void Point.setY(int))              ||</span><br><span class="line">        call(void Line.setP1(Point))            ||</span><br><span class="line">        call(void Line.setP2(Point));</span><br><span class="line">    </span><br><span class="line">    after(): move()&#123;</span><br><span class="line">        System.out.println(&quot;after move&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然aspect兼容java，你也可以定义各种方法，变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">aspect MyAspect&#123;</span><br><span class="line"></span><br><span class="line">    private Integer intValue;</span><br><span class="line">    </span><br><span class="line">    public Integer getInt()&#123;</span><br><span class="line">        return intValue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pointcut move():</span><br><span class="line">        call(void FigureElement.setXY(int,int)) ||</span><br><span class="line">        call(void Point.setX(int))              ||</span><br><span class="line">        call(void Point.setY(int))              ||</span><br><span class="line">        call(void Line.setP1(Point))            ||</span><br><span class="line">        call(void Line.setP2(Point));</span><br><span class="line">    </span><br><span class="line">    after(): move()&#123;</span><br><span class="line">        System.out.println(&quot;after move&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="1-2-在IntelliJ-IDEA上安装AspectJ"><a href="#1-2-在IntelliJ-IDEA上安装AspectJ" class="headerlink" title="1.2. 在IntelliJ IDEA上安装AspectJ"></a>1.2. 在IntelliJ IDEA上安装AspectJ</h2><h3 id="1-2-1-下载并安装AspectJ"><a href="#1-2-1-下载并安装AspectJ" class="headerlink" title="1.2.1. 下载并安装AspectJ"></a>1.2.1. 下载并安装AspectJ</h3><p>在官网<a href="%5BAspectJ%E5%AE%98%E7%BD%91%5D(https://www.eclipse.org/aspectj/downloads.php)">^4</a>下载最新版本的jar包，笔者这里的最新版本是<a target="_blank" rel="noopener" href="http://www.eclipse.org/downloads/download.php?file=/tools/aspectj/aspectj-1.9.6.jar">aspectj-1.9.6.jar</a> ，下载以后双击运行进行安装。</p>
+<p><img src='/AspectJ_Install.png'>AspectJ安装</img></p>
+<h3 id="1-2-2-安装插件"><a href="#1-2-2-安装插件" class="headerlink" title="1.2.2. 安装插件"></a>1.2.2. 安装插件</h3><p>安装AspectJ插件<a href="%5BAspectJ%E6%8F%92%E4%BB%B6%5D(https://plugins.jetbrains.com/plugin/4679-aspectj)">^2</a>即可</p>
+<h3 id="1-2-3-启用AJC编译器"><a href="#1-2-3-启用AJC编译器" class="headerlink" title="1.2.3. 启用AJC编译器"></a>1.2.3. 启用AJC编译器</h3><p>在IDEA的设置中选择AJC编译器，并指定1.2.1中安装的ajctool的位置。</p>
+<p><img src='/IDEA_Enable_AJC.png'>IDEA_Enable_AJC</img></p>
+<h3 id="1-2-4-给项目添加AJC依赖"><a href="#1-2-4-给项目添加AJC依赖" class="headerlink" title="1.2.4. 给项目添加AJC依赖"></a>1.2.4. 给项目添加AJC依赖</h3><p>把1.2.1中安装的lib包放到项目的依赖中。</p>
+<p><img src='/Add_AJC_Lib.png'>Add_AJC_Lib.png</img></p>
+<h2 id="1-3-Hello-World"><a href="#1-3-Hello-World" class="headerlink" title="1.3. Hello World"></a>1.3. Hello World</h2><p>下面是一份Helloworld的代码,源程序只输出+号，但是被aspect所拦截，最终输出了<code>Hello + World!</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HelloWorld</span>().hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aspect HelloWorldAspect &#123;</span><br><span class="line">    before(): call(<span class="keyword">public</span> * HelloWorld.*(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; Hello &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    after(): call(<span class="keyword">public</span> * HelloWorld.*(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; World! &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="1-4-Pointcuts表达式"><a href="#1-4-Pointcuts表达式" class="headerlink" title="1.4. Pointcuts表达式"></a>1.4. Pointcuts表达式</h2><ul>
+<li><p>执行一个特定的方法的时候</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execution(<span class="keyword">void</span> Point.setX(<span class="type">int</span>))</span><br></pre></td></tr></table></figure>
+
+<p>例如下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HelloWorld</span>().hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aspect HelloWorldAspect &#123;</span><br><span class="line">    before(): execution(<span class="keyword">public</span> * HelloWorld.hello(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; Hello &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    after(): execution(<span class="keyword">public</span> * HelloWorld.hello(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; World! &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>被编译为了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by FernFlower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    HelloWorld() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HelloWorldAspect.aspectOf().ajc$before$HelloWorldAspect$<span class="number">1</span>$<span class="number">75869607</span>();</span><br><span class="line">            System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var2) &#123;</span><br><span class="line">            HelloWorldAspect.aspectOf().ajc$after$HelloWorldAspect$<span class="number">2</span>$<span class="number">75869607</span>();</span><br><span class="line">            <span class="keyword">throw</span> var2;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        HelloWorldAspect.aspectOf().ajc$after$HelloWorldAspect$<span class="number">2</span>$<span class="number">75869607</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">HelloWorld</span>()).hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>代码被直接写入到了hello方法执行的地方。</p>
+</li>
+<li><p>调用一个特定方法的时候</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call(<span class="keyword">void</span> Point.setX(<span class="type">int</span>))</span><br></pre></td></tr></table></figure>
+
+<p>例如下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HelloWorld</span>().hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aspect HelloWorldAspect &#123;</span><br><span class="line">    before(): call(<span class="keyword">public</span> * HelloWorld.*(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; Hello &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    after(): call(<span class="keyword">public</span> * HelloWorld.*(..))&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; World! &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>被编译为了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by FernFlower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    HelloWorld() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">HelloWorld</span> <span class="variable">var10000</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HelloWorld</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HelloWorldAspect.aspectOf().ajc$before$HelloWorldAspect$<span class="number">1</span>$cdc2ab29();</span><br><span class="line">            var10000.hello();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var2) &#123;</span><br><span class="line">            HelloWorldAspect.aspectOf().ajc$after$HelloWorldAspect$<span class="number">2</span>$cdc2ab29();</span><br><span class="line">            <span class="keyword">throw</span> var2;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        HelloWorldAspect.aspectOf().ajc$after$HelloWorldAspect$<span class="number">2</span>$cdc2ab29();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，是在调用hello方法的前后增加了一些内容。</p>
+</li>
+<li><p>处理异常的时候</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler(ArrayOutOfBoundsException)</span><br></pre></td></tr></table></figure>
+
+<p>如下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            System.out.print(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HelloWorld</span>().hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aspect HelloWorldAspect &#123;</span><br><span class="line">    before(): handler(Exception)&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot; Hello &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>被编译为了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by FernFlower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    HelloWorld() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.print(<span class="string">&quot;+&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var3) &#123;</span><br><span class="line">            HelloWorldAspect.aspectOf().ajc$before$HelloWorldAspect$<span class="number">1</span>$ae9a1a78();</span><br><span class="line">            System.out.print(var3.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">HelloWorld</span>()).hello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以发现就是在catch该exception后的第一步操作</p>
+<p>当然AspectJ还有很多很多可以定义point cut的关键词，笔者这里就不一一列举了，相见文档[^5]即可</p>
+</li>
+</ul>
+<h2 id="1-5-总结"><a href="#1-5-总结" class="headerlink" title="1.5. 总结"></a>1.5. 总结</h2><p>所以AspectJ其实是对Java语法的拓展，通过特定的编译器，给Java带来了更强大的能力。</p>
+<h1 id="2-Spring-对-AspectJ的支持"><a href="#2-Spring-对-AspectJ的支持" class="headerlink" title="2. Spring 对 AspectJ的支持"></a>2. Spring 对 AspectJ的支持</h1><p>官方文档<a href="%5BSpring%E5%AF%B9AspectJ%E7%9A%84%E6%94%AF%E6%8C%81%5D(https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-ataspectj)">^3</a></p>
+<p>Spring支持AspectJ的一个子集,所支持的pointcut如下</p>
+<blockquote>
+<p>Spring AOP supports the following AspectJ pointcut designators (PCD) for use in pointcut expressions:</p>
+<ul>
+<li><code>execution</code>: For matching method execution join points. This is the primary pointcut designator to use when working with Spring AOP.</li>
+<li><code>within</code>: Limits matching to join points within certain types (the execution of a method declared within a matching type when using Spring AOP).</li>
+<li><code>this</code>: Limits matching to join points (the execution of methods when using Spring AOP) where the bean reference (Spring AOP proxy) is an instance of the given type.</li>
+<li><code>target</code>: Limits matching to join points (the execution of methods when using Spring AOP) where the target object (application object being proxied) is an instance of the given type.</li>
+<li><code>args</code>: Limits matching to join points (the execution of methods when using Spring AOP) where the arguments are instances of the given types.</li>
+<li><code>@target</code>: Limits matching to join points (the execution of methods when using Spring AOP) where the class of the executing object has an annotation of the given type.</li>
+<li><code>@args</code>: Limits matching to join points (the execution of methods when using Spring AOP) where the runtime type of the actual arguments passed have annotations of the given types.</li>
+<li><code>@within</code>: Limits matching to join points within types that have the given annotation (the execution of methods declared in types with the given annotation when using Spring AOP).</li>
+<li><code>@annotation</code>: Limits matching to join points where the subject of the join point (the method being run in Spring AOP) has the given annotation.</li>
+</ul>
+</blockquote>
+<p>spring中的aspectJ，并非使用拓展java语法，而是使用注解来拓展，spring中的aspectj也不是使用的aspectj编译器，而是使用的spring aop来完成代理。但spring也支持通过开关使用原生aspectj[^6]。</p>
+<p>aspect的类型用注解@Aspect表示</p>
+<p>pointcut字段用@Pointcut表示</p>
+<p>advice分别用@Before、@After、@Around来表示</p>
+<h1 id="3-引用"><a href="#3-引用" class="headerlink" title="3. 引用"></a>3. 引用</h1><p>[^5]: <a target="_blank" rel="noopener" href="https://www.eclipse.org/aspectj/doc/released/progguide/quick.html#quick-pointcuts">Aspect pointcut 文档</a><br>[^6]: <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop-using-aspectj">Spring中使用AspectJ编译器</a></p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/R9L6IO.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/R9L6IO.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/RCFBSC.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/R7DSQO.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>STL源码分析</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    STL源码分析
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-03-24T11:36:05.000Z" itemprop="datePublished">2020-03-24</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-03-25T14:23:39.000Z" itemprop="dateUpdated">2020-03-25</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="从这开始我们进入《STL源码分析》的学习"><a href="#从这开始我们进入《STL源码分析》的学习" class="headerlink" title="从这开始我们进入《STL源码分析》的学习"></a>从这开始我们进入《STL源码分析》的学习</h1><p> STL分为6大组件: 空间配置器、容器、迭代器、算法、仿函数、配接器</p>
+<h1 id="空间配置器"><a href="#空间配置器" class="headerlink" title="空间配置器"></a>空间配置器</h1><p> STL的空间适配器事STL的基础，我们不能靠操作系统来为我们管理内存，那样的代价太大了，这不划算，作为一个c&#x2F;c++开发人员，我们要完全控制我们程序的一切。</p>
+<h2 id="allocator"><a href="#allocator" class="headerlink" title="allocator"></a>allocator</h2><p> 这是他的英文名字，我们的allocator定义了四个操作</p>
+<ul>
+<li>alloc::allocate() 内存配置</li>
+<li>alloc::dellocate() 内存释放</li>
+<li>alloc::construct() 构造对象</li>
+<li>alloc::destroy() 析构对象</li>
+</ul>
+<!---more-->
+
+<h2 id="type-traits-lt-T-gt"><a href="#type-traits-lt-T-gt" class="headerlink" title="type_traits&lt;T&gt;"></a>type_traits&lt;T&gt;</h2><p> 一个模版元技术，他是一个类,能够萃取类型的相关信息，模版元详见C++笔记中的Boost源码分析</p>
+<h2 id="destroy"><a href="#destroy" class="headerlink" title="destroy"></a>destroy</h2><p> 对于基本数据类型，我们啥都不用干，对于用户定义的数据类型，我们显示调用析构函数即可，这个使用模版特化即可。</p>
+<h2 id="construct"><a href="#construct" class="headerlink" title="construct"></a>construct</h2><p> 就是new，但是不用申请空间了，因为allocate已经干了</p>
+<h2 id="一级配置器、二级配置器"><a href="#一级配置器、二级配置器" class="headerlink" title="一级配置器、二级配置器"></a>一级配置器、二级配置器</h2><p> 一级配置大空间(&gt;128bytes)就是malloc和free，二级配置小空间，利用内存池。</p>
+<h3 id="一级配置器"><a href="#一级配置器" class="headerlink" title="一级配置器"></a>一级配置器</h3><p> 直接new的，new失败以后调用out of memery的处理方式调用处理例程，让其释放内存，不断尝试,释放的时候直接free</p>
+<h3 id="二级配置器"><a href="#二级配置器" class="headerlink" title="二级配置器"></a>二级配置器</h3><p>维护16个链表，每个链表维护一种类型的内存，分别为8bytes、16bytes、24bytes、一直到128bytes。更加巧妙的地方是将维护的内存和链表的指针使用联合体组装。这就不浪费空间了。当需要配置内存的时候，向8字节对齐，然后再分配，当释放内存的时候，丢到链表里面就行了<br> 当链表空了的时候，从内存池中取出20个新的内存块填充链表。<br> 内存池是一个大块大内存，当内存池空了以后，申请更多的内存，保证每次都比上一次申请的多就行了，要是让我实现，我才不这样做，我要用计算机网络中的自适应rtt原理来做。</p>
+<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p> 说白了就是个指针，但是他比指针更强大，更灵活。</p>
+<h2 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h2><ul>
+<li>input iterator 只读</li>
+<li>output iterator 只写</li>
+<li>forward iterator 单向迭代器</li>
+<li>bidirectional iterator 双向移动一个单位</li>
+<li>random access iterator 双向移动多个单位</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">1((input)) --&gt; 3((forward))</span><br><span class="line">2((output)) --&gt; 3((forward))</span><br><span class="line">3((forward)) --&gt; 4((bi))</span><br><span class="line">4((bi)) --&gt; 5((random))</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p> 首先为了实现的容易，得设计iterator_category为迭代器自己的类型，value_type为迭代器维护的具体数据的类型，diference_type为两个迭代器之间的距离的类型，pointer为原生指针，reference为原生引用。</p>
+<h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><p> 不讲了，太简单了</p>
+<h2 id="vector-的迭代器"><a href="#vector-的迭代器" class="headerlink" title="vector 的迭代器"></a>vector 的迭代器</h2><p> 服了，居然就是指针，我一直以为他封装了一下，这也太懒了。</p>
+<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>算了这都跳过算了，没啥意思，</p>
+<h2 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h2><p> 用分段连续来制造整体连续的假象。<br> 两个迭代器维护首尾，一个二维指针维护一个二维数组，感觉很low，每一行被称为一个缓冲区,但是列的话，他前后都预留了一些指针位置。<br> 当我们随机访问的时候，就可以根据每一行的长度来选择正确的缓冲区了。</p>
+<h2 id="deque的迭代器"><a href="#deque的迭代器" class="headerlink" title="deque的迭代器"></a>deque的迭代器</h2><p> 这个就厉害一些了，他包含了4个地方，当前指针、当前缓冲区首尾指针，中控器上面当前缓冲区的指针。</p>
+<p>代码我感觉也一般般，我写也这样</p>
+<h2 id="queue和stack"><a href="#queue和stack" class="headerlink" title="queue和stack"></a>queue和stack</h2><p> 居然是deque实现的，明明有更好的实现方法，再见，看都不想看</p>
+<h2 id="heap"><a href="#heap" class="headerlink" title="heap"></a>heap</h2><p> 算法都是这样写的</p>
+<h2 id="priority-heap"><a href="#priority-heap" class="headerlink" title="priority heap"></a>priority heap</h2><p> vector实现的，</p>
+<h2 id="slist"><a href="#slist" class="headerlink" title="slist"></a>slist</h2><p>我还是不适合这个东西</p>
+<h1 id="关联式容器"><a href="#关联式容器" class="headerlink" title="关联式容器"></a>关联式容器</h1><p> 这玩意就是红黑树啦，上一章的序列容器看的我难受死了，希望这个能爽一些</p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p> 翻了好几页，都是红黑树，并没有让我感到很吃惊的代码</p>
+<h2 id="set和map"><a href="#set和map" class="headerlink" title="set和map"></a>set和map</h2><p> set就是直接红黑树，map就把用pair分别存kv，然后自己定一个仿函数，难怪map找到的都是pair</p>
+<h2 id="multi"><a href="#multi" class="headerlink" title="multi"></a>multi</h2><p> 算了自己写过平衡树的都知道，和非multi没几行代码不一样。</p>
+<h2 id="hashtable"><a href="#hashtable" class="headerlink" title="hashtable"></a>hashtable</h2><p> 下一章下一章。。。</p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><p> 分为质变算法和非质变算法，一个会改变操作对象，另一个不会。</p>
+<h2 id="accumulate"><a href="#accumulate" class="headerlink" title="accumulate"></a>accumulate</h2><p> 这个强，accmulate(first,last,init),将[first,last)的值累加到init上</p>
+<p>accmulate(first,last,init,binary op),将[first,last)从左到右二元操作(init,*)到init上</p>
+<h2 id="adjacent-difference"><a href="#adjacent-difference" class="headerlink" title="adjacent_difference"></a>adjacent_difference</h2><p> 666666666，adjacent_difference(first,last,result)差分都来了[first,last)差分到[result,*)</p>
+<p>6666666,自己定义的差分adjacent_difference(first,last,result,binary_op); 这个能自定定义减法，</p>
+<p> 注意可以result设为first</p>
+<h2 id="inner-product"><a href="#inner-product" class="headerlink" title="inner_product"></a>inner_product</h2><p> 内积，inner_product(first1,last1,first2,init),加到init上然后返回。</p>
+<p>参数在加上一个binary_op1和binary_op2,init&#x3D;binary_op1(init,binary_op2(eme1,eme2))</p>
+<p>太强了，佩服的五体投地，明天继续学,看java去</p>
+<h2 id="partial-sum"><a href="#partial-sum" class="headerlink" title="partial_sum"></a>partial_sum</h2><p> 和前面的差分一样,partial_sum 为前缀和，partial_sum(first,last,result)为前缀和输出到result中</p>
+<p> 当然你也可以定义binary_op操作，加在最后面</p>
+<h2 id="power"><a href="#power" class="headerlink" title="power"></a>power</h2><p> 快速幂算法了解一下，power(x,n)x的n次方，n为整数，要求满足乘法结合律。</p>
+<p>power(x,n,op),这个同理</p>
+<h2 id="itoa"><a href="#itoa" class="headerlink" title="itoa"></a>itoa</h2><p> <code>itoa(first,last,value);</code></p>
+<p><code>while(first!=last) *first++=value++;</code></p>
+<!---more-->
+
+<h2 id="equal"><a href="#equal" class="headerlink" title="equal"></a>equal</h2><p><code> equal(first1,last1,first2)</code></p>
+<p> 判断[first1,last1) 和[first2,…)是否相同</p>
+<p> 同样支持二元仿函数。</p>
+<h2 id="fill"><a href="#fill" class="headerlink" title="fill"></a>fill</h2><p> <code>fill(first,last,value)</code></p>
+<p> 把区间的值设为value</p>
+<h2 id="fill-n"><a href="#fill-n" class="headerlink" title="fill_n"></a>fill_n</h2><p> <code>fill(first,n,value)</code></p>
+<p> 把first开始的n个元素设为value</p>
+<h2 id="iter-swap"><a href="#iter-swap" class="headerlink" title="iter_swap"></a>iter_swap</h2><p> <code>iter_swap(a,b) </code></p>
+<p> 交换迭代器的内容，这里就有意思了，如何获取迭代器内容的类型呢？还记得之前讲迭代器的时候，在迭代器内部定义的</p>
+<p>value_type吗？对！就是那个。</p>
+<h2 id="lexicographical-compare"><a href="#lexicographical-compare" class="headerlink" title="lexicographical_compare"></a>lexicographical_compare</h2><p> <code>lexicographical_compare(first1,last1,first2,last2)</code></p>
+<p>字典序比大小，需要支持小于号</p>
+<h2 id="max-min"><a href="#max-min" class="headerlink" title="max min"></a>max min</h2><p> 这俩也支持仿函数</p>
+<h2 id="mismatch"><a href="#mismatch" class="headerlink" title="mismatch"></a>mismatch</h2><p> <code>mismatch(first1,last1,first2)</code></p>
+<p>用第一个去匹配第二个，你需要保证第二个不必第一个短，返回匹配尾部</p>
+<p> 支持仿函数&#x3D;&#x3D;</p>
+<h2 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h2><p> 就是很普通的交换，</p>
+<h2 id="copy-first-last-result"><a href="#copy-first-last-result" class="headerlink" title="copy(first,last,result)"></a>copy(first,last,result)</h2><p> 特化了char*和wchar_t*为memmove，特化了T*和const T*，通过萃取，若指向的数据为基本数据类型则调用memmove，</p>
+<p>否则再分为随机迭代器和非随机迭代器，随机迭代器使用last-first这个值来控制，非随机迭代器用if(last&#x3D;&#x3D;frist)来控制。</p>
+<h2 id="copy-backward"><a href="#copy-backward" class="headerlink" title="copy_backward"></a>copy_backward</h2><p> 和上面一样，但是为逆序拷贝</p>
+<h2 id="set-union"><a href="#set-union" class="headerlink" title="set_union"></a>set_union</h2><p>set_union(first1,last1,first2,last2,result)</p>
+<p>就是遍历两个有序容器，然后赋值到result中，注意到它在碰到相同元素的时候两个迭代器都自增了，导致若第一个中有3个1，第二个中有5个1，则输出的时候只有5个1</p>
+<h2 id="set-intersection"><a href="#set-intersection" class="headerlink" title="set_intersection"></a>set_intersection</h2><p> 同上</p>
+<p> 交集，得到3个1</p>
+<h2 id="set-difference"><a href="#set-difference" class="headerlink" title="set_difference"></a>set_difference</h2><p> 代码越来越平庸了，这个是S1-S2，出现在S1中不出现在S2中</p>
+<h2 id="set-symmetric-difference"><a href="#set-symmetric-difference" class="headerlink" title="set_symmetric_difference"></a>set_symmetric_difference</h2><p> 对称差，平庸的代码</p>
+<h2 id="adjacent-find-first-last"><a href="#adjacent-find-first-last" class="headerlink" title="adjacent_find(first,last)"></a>adjacent_find(first,last)</h2><p> 找到第一个相等的相邻元素，允许自定义仿函数</p>
+<h2 id="count-first-last-value"><a href="#count-first-last-value" class="headerlink" title="count(first,last,value)"></a>count(first,last,value)</h2><p> 对value出现对次数计数</p>
+<p> count_if(first,last,op) 对op(*it)为真计数</p>
+<p>越看越无聊了</p>
+<h2 id="find-first-last-value"><a href="#find-first-last-value" class="headerlink" title="find(first,last,value)"></a>find(first,last,value)</h2><p> 找value出现的位置，这个函数应该挺有用的</p>
+<p> find_if(first,last,op) 同上啦</p>
+<h2 id="find-end-和find-first-of"><a href="#find-end-和find-first-of" class="headerlink" title="find_end 和find_first_of"></a>find_end 和find_first_of</h2><p> 这个函数没用，我为啥不用kmp算法</p>
+<h2 id="for-each-first-last-op"><a href="#for-each-first-last-op" class="headerlink" title="for_each(first,last,op)"></a>for_each(first,last,op)</h2><p> op(*i)</p>
+<h2 id="geterate-first-last-op"><a href="#geterate-first-last-op" class="headerlink" title="geterate(first,last,op)"></a>geterate(first,last,op)</h2><p> *i&#x3D;op()</p>
+<p> generate_n 同上</p>
+<h2 id="transform-first-last-result-op"><a href="#transform-first-last-result-op" class="headerlink" title="transform(first,last,result,op)"></a>transform(first,last,result,op)</h2><p> *result&#x3D;op(*first)</p>
+<h2 id="transform-first1-last1-first2-last2-result-op"><a href="#transform-first1-last1-first2-last2-result-op" class="headerlink" title="transform(first1,last1,first2,last2,result,op)"></a>transform(first1,last1,first2,last2,result,op)</h2><p> *result&#x3D;op(*first1,*first2)</p>
+<h2 id="includes-first1-last1-first2-last2"><a href="#includes-first1-last1-first2-last2" class="headerlink" title="includes(first1,last1,first2,last2)"></a>includes(first1,last1,first2,last2)</h2><p> 保证有序，然后判断2是不是1的子序列，显然On</p>
+<h2 id="max-element-first-last"><a href="#max-element-first-last" class="headerlink" title="max_element(first,last)"></a>max_element(first,last)</h2><p> 区间最大值</p>
+<h2 id="min-element-first-last"><a href="#min-element-first-last" class="headerlink" title="min_element(first,last)"></a>min_element(first,last)</h2><p> 同上</p>
+<h2 id="merge-first1-last1-first2-last2-result"><a href="#merge-first1-last1-first2-last2-result" class="headerlink" title="merge(first1,last1,first2,last2,result)"></a>merge(first1,last1,first2,last2,result)</h2><p> 归并排序的时候应该用得到吧</p>
+<h2 id="partition-first-last-pred"><a href="#partition-first-last-pred" class="headerlink" title="partition(first,last,pred)"></a>partition(first,last,pred)</h2><p> pred(*)为真在前，为假在后On</p>
+<h2 id="remove-first-last-value"><a href="#remove-first-last-value" class="headerlink" title="remove(first,last,value)"></a>remove(first,last,value)</h2><p> 把value移到尾部<br> remove_copu(first,last,result,value),非质变算法</p>
+<h2 id="remove-if-remove-copy-if"><a href="#remove-if-remove-copy-if" class="headerlink" title="remove_if remove_copy_if"></a>remove_if remove_copy_if</h2><p>同上</p>
+<h2 id="replace-first-last-old-value-new-value"><a href="#replace-first-last-old-value-new-value" class="headerlink" title="replace(first,last,old_value,new_value)"></a>replace(first,last,old_value,new_value)</h2><p> 看名字就知道怎么实现的</p>
+<p> replace_copy,replace_if,replace_copy_if</p>
+<h2 id="revese"><a href="#revese" class="headerlink" title="revese"></a>revese</h2><p> 秀得我头皮发麻，这个。。。。。。。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">if</span>(first==last||first==--last) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="built_in">iter_swap</span>(first++,last);</span><br></pre></td></tr></table></figure>
+
+<p>随机迭代器的版本还好</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(first&lt;last) <span class="built_in">iter_swap</span>(first++,--last);</span><br></pre></td></tr></table></figure>
+
+<p> reverse_copy ，常见的代码</p>
+<h2 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h2><p> 这个代码有点数学，大概率用不到，一般情况下我们写splay都用3次reverse来实现的，复杂度也不过On,他这个代码就一步到位了，使用了gcd，没啥意思，STL果然效率第一</p>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p> 子序列首次出现的位置，</p>
+<h2 id="search-n"><a href="#search-n" class="headerlink" title="search_n"></a>search_n</h2><p> 好偏，算了，没啥用的代码</p>
+<h2 id="swap-ranges-first1-last1-first2"><a href="#swap-ranges-first1-last1-first2" class="headerlink" title="swap_ranges(first1,last1,first2)"></a>swap_ranges(first1,last1,first2)</h2><p> 区间交换，swap的增强版</p>
+<h2 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h2><p> 移除重复元素</p>
+<p> unique_copy</p>
+<h2 id="lower-bound-upper-bound-binary-search"><a href="#lower-bound-upper-bound-binary-search" class="headerlink" title="lower_bound upper_bound binary_search"></a>lower_bound upper_bound binary_search</h2><p> 不多说了，就是二分，</p>
+<h2 id="next-permutation"><a href="#next-permutation" class="headerlink" title="next_permutation"></a>next_permutation</h2><p> 一直想不明白这个函数怎么实现的，今天来看看，既然是下一个排列，显然是需要找到一个刚好比现在这个大大排列，简单分析……6532,如果一个后缀都是递减的，显然这个后缀不能更大了，如果一个后缀都不能变得更大，就必须调整更前的，所以我们要找到这样的非降序….16532,把最后一个放到1的位置，其他的从小到大排列好就行了。也即swap(1,2),reverse(6531)</p>
+<!---more-->
+
+<h2 id="prev-permutation"><a href="#prev-permutation" class="headerlink" title="prev_permutation"></a>prev_permutation</h2><p> 同理</p>
+<h2 id="random-shuffle"><a href="#random-shuffle" class="headerlink" title="random_shuffle"></a>random_shuffle</h2><p> 洗牌算法，从first往last遍历，每次从最后面随机选一个放到当前位置即可。</p>
+<h2 id="partial-sort"><a href="#partial-sort" class="headerlink" title="partial_sort"></a>partial_sort</h2><p> partial_sort(first,middle,last)<br> 保证[first,middle)有序且均小于[middle,last)直接对后面元素使用堆上浮，这样保证了小的元素均在[first,middle)中，然后使用sort_heap?????<br>&amp;ems; 为啥第一步不用线性时间选择，第二步不用快排？</p>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><p> 大一就听说了这个的大名，现在来学习学习</p>
+<h2 id="Median-of-three"><a href="#Median-of-three" class="headerlink" title="Median_of_three"></a>Median_of_three</h2><p>__median(a,b,c) 返回中间那个值</p>
+<h2 id="Partitionining"><a href="#Partitionining" class="headerlink" title="Partitionining"></a>Partitionining</h2><p> 这个大家都会写，就是按照枢轴，把小的放左边，大的放到右边</p>
+<h2 id="threshold"><a href="#threshold" class="headerlink" title="threshold"></a>threshold</h2><p> 当只有很少很少的几个元素的时候，插入排序更快。</p>
+<h2 id="final-insertion-sort"><a href="#final-insertion-sort" class="headerlink" title="final insertion sort"></a>final insertion sort</h2><p> 我们不必在快速排序中进行插入排序，但是可以提前推出，保证序列基本有序，然后再对整体使用插入排序</p>
+<h2 id="SGI-sort"><a href="#SGI-sort" class="headerlink" title="SGI sort"></a>SGI sort</h2><p> 先快速排序到基本有序，然后插入排序</p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p> 先排序右边，后左边，且将左边当作下一层，当迭代深度恶化的时候，即超过了lg(n)*2的时候，采取堆排序<br> 枢轴的选择，首、尾、中间的中位数</p>
+<h2 id="RW-sort"><a href="#RW-sort" class="headerlink" title="RW sort"></a>RW sort</h2><p> 这个就少了堆排序了，其他的和SGI一样</p>
+<h2 id="equal-range"><a href="#equal-range" class="headerlink" title="equal_range"></a>equal_range</h2><p> lower_bound和upper_bound的合体<br> 比直接lower_bound+upper_bound应该快一些，大概这样，二分中值偏小，做缩左断点，偏大则缩右端点，若二分中值等于value，则对左边lower_bound,对右边upper_bound,然后就能直接返回了</p>
+<h2 id="inplace-merge"><a href="#inplace-merge" class="headerlink" title="inplace_merge"></a>inplace_merge</h2><p> 将两个相邻的有序序列合并为有序序列，他在分析卡空间的做法，再见。。。不缺空间，</p>
+<h2 id="nth-element"><a href="#nth-element" class="headerlink" title="nth_element"></a>nth_element</h2><p> 线性时间选择，三点中值，递归变迭代，长度很小以后直接插入排序，666666</p>
+<h2 id="mergesort"><a href="#mergesort" class="headerlink" title="mergesort"></a>mergesort</h2><p> 借助inplace_merge直接完成了，</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> STL的算法还是很厉害的。</p>
+<h1 id="仿函数"><a href="#仿函数" class="headerlink" title="仿函数"></a>仿函数</h1><p> c++的一大特色，通过重载()来实现像函数一样的功能</p>
+<h2 id="一元仿函数"><a href="#一元仿函数" class="headerlink" title="一元仿函数"></a>一元仿函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Arg</span>,<span class="keyword">class</span> <span class="title class_">Result</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">unary_function</span>&#123;</span><br><span class="line">  <span class="keyword">typedef</span> Arg argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p> 看到上面那玩意没，你得继承它。</p>
+<!---more-->
+
+<ul>
+<li>negeta 取反，返回-x</li>
+<li>logical_not  !x</li>
+<li>identity x</li>
+<li>select1st a.first</li>
+<li>select2nd a.second</li>
+</ul>
+<h2 id="二元仿函数"><a href="#二元仿函数" class="headerlink" title="二元仿函数"></a>二元仿函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Arg1</span>,<span class="keyword">class</span> <span class="title class_">Arg2</span>,<span class="keyword">class</span> <span class="title class_">Result</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">unary_function</span>&#123;</span><br><span class="line">  <span class="keyword">typedef</span> Arg1 first_argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Arg2 second_argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>plus a+b</li>
+<li>minus a-b</li>
+<li>multiplies a*b</li>
+<li>divides a&#x2F;b</li>
+<li>modulus a%b</li>
+<li>equal_to a&#x3D;&#x3D;b</li>
+<li>not_equal_to a!&#x3D;b</li>
+<li>greater a&gt;b</li>
+<li>greater_equal a&gt;&#x3D;b</li>
+<li>less a&lt;b</li>
+<li>less_equal a&lt;&#x3D;b</li>
+<li>logical_and a&amp;&amp;b</li>
+<li>logical_or a||b</li>
+<li>project1st a</li>
+<li>project2nd b</li>
+</ul>
+<h2 id="仿函数单位元"><a href="#仿函数单位元" class="headerlink" title="仿函数单位元"></a>仿函数单位元</h2><p> 你要为你的仿函数设置一个identity_element单位元，用于快速幂</p>
+<h1 id="配接器"><a href="#配接器" class="headerlink" title="配接器"></a>配接器</h1><p> 本质上，配接器是一种设计模式，改变仿函数的接口，成为仿函数配接器，改变容器接口，称为容器配接器，改变迭代器接口，称为迭代器配接器</p>
+<h2 id="容器配接器"><a href="#容器配接器" class="headerlink" title="容器配接器"></a>容器配接器</h2><p> queue和stack就是修饰了deque的配接器</p>
+<h2 id="迭代器配接器"><a href="#迭代器配接器" class="headerlink" title="迭代器配接器"></a>迭代器配接器</h2><p> 迭代器的配接器有3个，insert itertors,reverse iterators,iostream iterators.</p>
+<p>哇塞这东西有点深，明天再看。</p>
+<!---more-->
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

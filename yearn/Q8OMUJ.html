@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>java并发编程11-JUC</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    java并发编程11-JUC
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-04-12T15:54:19.000Z" itemprop="datePublished">2020-04-12</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-04-12T15:54:19.000Z" itemprop="dateUpdated">2020-04-12</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p>&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架</p>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><h3 id="如何重入"><a href="#如何重入" class="headerlink" title="如何重入"></a>如何重入</h3><p>&amp;emsp;&amp;emsp; 用一个变量记录重入了多少次</p>
+<h3 id="NonfairSync"><a href="#NonfairSync" class="headerlink" title="NonfairSync"></a>NonfairSync</h3><h4 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h4><p>&amp;emsp;&amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中</p>
+<h4 id="acquire"><a href="#acquire" class="headerlink" title="acquire"></a>acquire</h4><p>&amp;emsp;&amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断</p>
+<span id="more"></span>
+<h4 id="unlock"><a href="#unlock" class="headerlink" title="unlock"></a>unlock</h4><p>&amp;emsp;&amp;emsp; 调用release</p>
+<h4 id="release"><a href="#release" class="headerlink" title="release"></a>release</h4><p>&amp;emsp;&amp;emsp; 如果成功，unpark唤醒后继，为什么是非公平呢？因为被唤醒以后，可能会有不在链表中线程来跟自己竞争，所以这不公平</p>
+<h4 id="acquireInterruptibly"><a href="#acquireInterruptibly" class="headerlink" title="acquireInterruptibly"></a>acquireInterruptibly</h4><p>&amp;emsp;&amp;emsp; 不忽略打断，抛出异常即可</p>
+<h3 id="FairSync"><a href="#FairSync" class="headerlink" title="FairSync"></a>FairSync</h3><p>&amp;emsp;&amp;emsp; 区别再也tryAccquire，如果c&#x3D;0,即没人占用锁，他还会去检测AQS队列是否为空，其实就是看一下链表队列首部是否为自己，或者链表队列是否为空</p>
+<h3 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h3><p>&amp;emsp;&amp;emsp; 条件变量又是一个链表，当我们调用await的时候，当前线程的节点会被放进其中，然后把节点状态设为CONDITION,</p>
+<h4 id="fullrelease"><a href="#fullrelease" class="headerlink" title="fullrelease"></a>fullrelease</h4><p>&amp;emsp;&amp;emsp; 拿到锁的重数，然后一次性释放，在唤醒后面的节点，然后park自己</p>
+<h4 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h4><p>&amp;emsp;&amp;emsp; 当调用的时候讲条件变量的链表中第一个元素取出并加入到锁的等待链表中。</p>
+<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><ul>
+<li>ReentrantReadWriteLock rw &#x3D; new ReentrantReadWriteLock()</li>
+<li>rw.readLock();</li>
+<li>rw.writeLock();</li>
+</ul>
+<h3 id="锁升级"><a href="#锁升级" class="headerlink" title="锁升级"></a>锁升级</h3><p>&amp;emsp;&amp;emsp; 下面的代码会写锁永久等待</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().lock();</span><br></pre></td></tr></table></figure>
+<h3 id="锁降级"><a href="#锁降级" class="headerlink" title="锁降级"></a>锁降级</h3><p>&amp;emsp;&amp;emsp; 你可以把写锁转化为读锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获得写锁</span></span><br><span class="line">rw.writeLock().lock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁降级</span></span><br><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().unlock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获得读锁</span></span><br><span class="line">rw.readLock().unlock();</span><br></pre></td></tr></table></figure>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>&amp;emsp;&amp;emsp; 我们可以把对数据库的某些操作缓存到内存中，来降低数据库的压力</p>
+<h4 id="query"><a href="#query" class="headerlink" title="query"></a>query</h4><p>&amp;emsp;&amp;emsp; 先在缓存中找，找不到就加锁进数据库找，然后更新缓存,可以考虑双重检查锁</p>
+<h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>&amp;emsp;&amp;emsp; 先更新数据库,后清除缓存</p>
+<h4 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h4><h5 id="先删缓存，后更新数据库"><a href="#先删缓存，后更新数据库" class="headerlink" title="先删缓存，后更新数据库"></a>先删缓存，后更新数据库</h5><p>&amp;emsp;&amp;emsp; A删了缓存，准备更新，结果B来了，B一查缓存没用，去数据找数据，就找到了旧值。</p>
+<h5 id="先更新数据库，后删缓存"><a href="#先更新数据库，后删缓存" class="headerlink" title="先更新数据库，后删缓存"></a>先更新数据库，后删缓存</h5><p>&amp;emsp;&amp;emsp; A更新数据库的时候，B去查了缓存的旧</p>
+<h4 id="保证强一致性"><a href="#保证强一致性" class="headerlink" title="保证强一致性"></a>保证强一致性</h4><p>&amp;emsp;&amp;emsp; query查缓存套读锁，查数据库更新缓存加写锁<br>&amp;emsp;&amp;emsp; update直接加写锁</p>
+<h4 id="没有考虑到的问题"><a href="#没有考虑到的问题" class="headerlink" title="没有考虑到的问题"></a>没有考虑到的问题</h4><ul>
+<li>上面的操作时候读多写少</li>
+<li>没有考虑缓存容量</li>
+<li>没有考虑缓存过期</li>
+<li>只适合单机</li>
+<li>并发度还是太低， 可以降低锁粒度</li>
+</ul>
+<h3 id="读写锁原理"><a href="#读写锁原理" class="headerlink" title="读写锁原理"></a>读写锁原理</h3><p>&amp;emsp;&amp;emsp; 写锁就是简单加锁，注意照顾读锁的情况就可以了<br>&amp;emsp;&amp;emsp; 源码太复杂了，我说不清了，留个坑吧</p>
+<h2 id="StampedLock"><a href="#StampedLock" class="headerlink" title="StampedLock"></a>StampedLock</h2><p>&amp;emsp;&amp;emsp; 乐观读，每个操作都可以返回一个戳，解锁的时候可以吧戳还回去，如果这中间有人进行了修改，会返回失败，否则成功</p>
+<ul>
+<li>stamp &#x3D; tryOptimisticRead() 乐观读</li>
+<li>validate(stamp)  校验是否被修改</li>
+<li>stamp &#x3D; readLock() 读锁</li>
+<li>stamp &#x3D; writeLock() 写锁</li>
+<li>unlockRead(stamp) 释放</li>
+<li>unlockWriteLock() 释放<br>&amp;emsp;&amp;emsp; 不支持条件变量，不支持重入</li>
+</ul>
+<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><p>&amp;emsp;&amp;emsp; acquire、release，和PV有点像</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&amp;emsp;&amp;emsp; 可以限流，在高峰区让线程阻塞，比如数据库连接池，</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; state存信号量的值<br>&amp;emsp;&amp;emsp; acquire 用cas，如果不成功但是位置还够就一直尝试，如果位置不够的话就吧当前线程节点加入AQS队列<br>&amp;emsp;&amp;emsp; release依然是先cas，失败就一直尝试，绝对会成功，成功以后，依然是改状态，然后唤醒后面的线程，</p>
+<h2 id="CountdownLatch"><a href="#CountdownLatch" class="headerlink" title="CountdownLatch"></a>CountdownLatch</h2><p>&amp;emsp;&amp;emsp; 可以用来同步，等待n个线程countDown以后，await的线程才会开始运行</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; 维护一个值，每当一个线程执行完成，就让他减少1，当减少为0的时候唤醒await的线程</p>
+<h3 id="为什么不用join？"><a href="#为什么不用join？" class="headerlink" title="为什么不用join？"></a>为什么不用join？</h3><p>&amp;emsp;&amp;emsp; 在线程池中，线程都不带停下来的，join没用</p>
+<h3 id="应用1"><a href="#应用1" class="headerlink" title="应用1"></a>应用1</h3><p>&amp;emsp;&amp;emsp; 在游戏中，每个玩家都自己加载自己的数据，当他们都加载完成的时候，游戏才能开始，<br>&amp;emsp;&amp;emsp; 我们设置10的倒计时，当10个玩家执行完的时候，让他们各自调用countdount，然后就能唤醒游戏开始线程</p>
+<h3 id="应用2"><a href="#应用2" class="headerlink" title="应用2"></a>应用2</h3><p>&amp;emsp;&amp;emsp; 在微服务中，我们可能需要请求多个信息，当信息都请求完成才能返回，如果串行，效率太低了，我们考虑并发，这里也是个倒计时</p>
+<h3 id="返回结果？"><a href="#返回结果？" class="headerlink" title="返回结果？"></a>返回结果？</h3><p>&amp;emsp;&amp;emsp; 如果线程需要返回结果，还是用fature更为合适，CountdownLatch不太适合</p>
+<h2 id="cyclicbarrier"><a href="#cyclicbarrier" class="headerlink" title="cyclicbarrier"></a>cyclicbarrier</h2><p>&amp;emsp;&amp;emsp; CountdownLatch 不能用多次，要多次用的话，只能反复创建才行。<br>&amp;emsp;&amp;emsp; await()即为CountdownLatch的countDown<br>&amp;emsp;&amp;emsp; cyclicbarrier 构造的时候可以传进一个Runnable，当信号值降低为0的时候，运行Runnable，然后信号量再次赋值为n达到重用的效果<br>&amp;emsp;&amp;emsp; 千万要注意nthreads和线程数要相等，不要搞骚操作,不是说不行，是不太好。</p>
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

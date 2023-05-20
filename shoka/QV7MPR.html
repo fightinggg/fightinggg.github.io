@@ -1,0 +1,783 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="读书,跟我一起写编译器" />
+
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QV7MPR.html">
+
+
+
+  <title>
+跟我一起自己写编译器-5.语法分析 - 编译器 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">跟我一起自己写编译器-5.语法分析
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-06-24 22:25:03">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-06-24T22:25:03+08:00">2021-06-24</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4baakhj20zk0m8h5q.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicliierfjj20zk0m8npd.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipex2cdtbj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhtuo6nj20zk0m8ttm.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipewf5l51j20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyvx1d4j20zk0m8hdt.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" itemprop="item" rel="index" title="分类于 编译器"><span itemprop="name">编译器</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QV7MPR.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="5-语法分析"><a href="#5-语法分析" class="headerlink" title="5. 语法分析"></a>5. 语法分析</h1><h1 id="5-1-文法"><a href="#5-1-文法" class="headerlink" title="5.1. 文法"></a>5.1. 文法</h1><p>文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。</p>
+<h2 id="5-1-1-正则文法"><a href="#5-1-1-正则文法" class="headerlink" title="5.1.1. 正则文法"></a>5.1.1. 正则文法</h2><p>这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。</p>
+<h2 id="5-1-2-上下文无关文法"><a href="#5-1-2-上下文无关文法" class="headerlink" title="5.1.2. 上下文无关文法"></a>5.1.2. 上下文无关文法</h2><p>上下文无关文法涉及到4个定义</p>
+<ul>
+<li>终结符： 文法的基本单元，词</li>
+<li>非终结符： 文法的中间变量，一些词按顺序排列构成的符号</li>
+<li>产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符</li>
+<li>开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法</li>
+</ul>
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式： SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+</p>
+<p>由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。</p>
+<span id="more"></span>
+
+<h2 id="5-1-3-上下文有关文法"><a href="#5-1-3-上下文有关文法" class="headerlink" title="5.1.3. 上下文有关文法"></a>5.1.3. 上下文有关文法</h2><p>在上下文无关文法中，产生式左部都是单个非终结符，如果放开这个限制，那么就成了上下文有关文法。这里不是重点，直接跳过，有兴趣的读者可以自行<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU0JUI4JThBJUU0JUI4JThCJUU2JTk2JTg3JUU2JTlDJTg5JUU1JTg1JUIzJUU2JTk2JTg3JUU2JUIzJTk1">学习</span>。</p>
+<h1 id="5-2-最左递归下降"><a href="#5-2-最左递归下降" class="headerlink" title="5.2. 最左递归下降"></a>5.2. 最左递归下降</h1><p>递归下降算法可以解析一部分上下文无关文法，递归下降其实就是枚举，他是一种自顶向下的算法，从文法的<code>开始</code>开始， 逐渐替换最左侧的非终结符为新的符号列表，直到匹配成功,其代码为:</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">匹配(参数1： deque, 参数2： 当前匹配的下标i)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是终结符</span><br><span class="line">        从双端队列deque[terminalSymbol,e2,e3,e4...]取出并删除最左侧的终结符terminalSymbol</span><br><span class="line">           如果 terminalSymbol和当前第i个token不相等， 返回失败</span><br><span class="line">           否则 返回 继续匹配(deque,i+1)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是非终结符</span><br><span class="line">           从双端队列deque[noTerminalSymbol,e2,e3,e4...]取出并删除最左侧的非终结符noTerminalSymbol</span><br><span class="line">           枚举以非终结符noTerminalSymbol为左部的产生式production</span><br><span class="line">           将production右部的所有符号[s1,s2,s3...]顺序不变放在deque[e1,e2,e3...]左侧得到[s1,s2,s3...e1,e2,e3...]</span><br><span class="line">           如果 继续匹配(deque,i) 成功 返回成功</span><br><span class="line">        返回失败</span><br></pre></td></tr></table></figure>
+
+<p>这样的一个算法，</p>
+<p>第一，他的时间复杂度是指数的，非常慢</p>
+<p>第二，如果文法存在左递归，则算法死循环</p>
+<p>第三，如果文法二义，则算法输出的语法树不确定</p>
+<h1 id="5-3-左递归文法"><a href="#5-3-左递归文法" class="headerlink" title="5.3. 左递归文法"></a>5.3. 左递归文法</h1><p>如果一个文法中存在产生式<code>A -&gt; A * * *</code>则这个文法为直接左递归文法，比如下面这个文法为左递归文法, 因为<code>SUM -&gt; SUM + number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>如果一个文法在经过有限次产生式替换以后，出现了<code>A -&gt; A * * *</code>则这个文法为间接左递归文法。如下面的文法, 因为<code>SUM -&gt; S + S -&gt; SUM + S</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, S</span><br><span class="line">  产生式:  SUM -&gt; S + S</span><br><span class="line">            S -&gt; SUM | number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>当文法中存在左递归时，将最左侧的非终结符替换为符号数组将导致无穷无尽的循环、</p>
+<h1 id="5-4-二义性文法"><a href="#5-4-二义性文法" class="headerlink" title="5.4. 二义性文法"></a>5.4. 二义性文法</h1><p>如果一个token流，对应于一个文法存在不止一棵语法树，则该文法为二义性文法，下面的文法为二义性文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ifelse:</span><br><span class="line">  终结符: if, else, condition, block</span><br><span class="line">  非终结符: target</span><br><span class="line">  产生式: target -&gt; block | if condition target | if condition target else target</span><br><span class="line">  开始： target</span><br></pre></td></tr></table></figure>
+
+<p>考虑<code>if condition if condition block else block</code>他有两颗语法树</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target&quot;]  &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] </span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="5-5-乔姆斯基范式"><a href="#5-5-乔姆斯基范式" class="headerlink" title="5.5. 乔姆斯基范式"></a>5.5. 乔姆斯基范式</h1><blockquote>
+<p>在<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU4JUFFJUExJUU3JUFFJTk3JUU2JTlDJUJBJUU3JUE3JTkxJUU1JUFEJUE2">计算机科学</span>中，一个<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUJEJUEyJUU1JUJDJThGJUU2JTk2JTg3JUU2JUIzJTk1">形式文法</span>是 <strong>Chomsky 范式</strong>的，<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU1JUJEJTkzJUU0JUI4JTk0JUU0JUJCJTg1JUU1JUJEJTkz">当且仅当</span>所有产生规则都有如下形式：</p>
+<p><em>A</em> → <em>BC</em> 或</p>
+<p><em>A</em> → α 或</p>
+<p><em>S</em> → ε</p>
+<p>这里的 <em>A</em>, <em>B</em> 和 <em>C</em> 是非终结符，α 是<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU3JUJCJTg4JUU3JUJCJTkzJUU3JUFDJUE2">终结符</span>（表示常量值的符号），<em>S</em> 是开始符号，而 ε 是<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU3JUE5JUJBJUU1JUFEJTk3JUU1JTg1JTgzJUU0JUI4JUIy">空串</span>。还有，<em>B</em> 和 <em>C</em> 都不可以是开始符号。</p>
+<p>所有的 Chomsky 范式的文法都是<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU0JUI4JThBJUU0JUI4JThCJUU2JTk2JTg3JUU2JTk3JUEwJUU1JTg1JUIzJUU2JTk2JTg3JUU2JUIzJTk1">上下文无关</span>，反过来，所有上下文无关文法都可以有效的变换成等价的 Chomsky 范式的文法。</p>
+<p>引用： <span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU0JUI5JTk0JUU1JUE3JTg2JUU2JTk2JUFGJUU1JTlGJUJBJUU4JThDJTgzJUU1JUJDJThG">乔姆斯基范式</span></p>
+</blockquote>
+<p>将一个上下文无关文法转化为乔姆斯基范式也非常简单，这不做赘述。</p>
+<h1 id="5-6-CYK算法"><a href="#5-6-CYK算法" class="headerlink" title="5.6. CYK算法"></a>5.6. CYK算法</h1><blockquote>
+<p><strong>CYK算法</strong>（<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTglOEIlQjElRTglQUYlQUQvMTA5OTk3">英语</span>：Cocke–Younger–Kasami algorithm，缩写为CYK algorithm）是由<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTclQkElQTYlRTclQkYlQjAlQzIlQjclRTclQTclOTElRTUlODUlOEIvNzg2ODI3NA==">约翰·科克</span>，Younger和嵩忠雄共同研究出来大约发表于1965年的一个算法，它是一个用来判定任意给定的字符串 是否属于一个<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS8lRTQlQjglOEElRTQlQjglOEIlRTYlOTYlODclRTYlOTclQTAlRTUlODUlQjMlRTYlOTYlODclRTYlQjMlOTUvMjAwMTkwOA==">上下文无关文法</span>的算法。</p>
+<p>引用： <span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9DWUslRTclQUUlOTclRTYlQjMlOTUvMTU4MTc1Mzk=">CYK算法</span></p>
+</blockquote>
+<p>这是一种<code>dp</code>算法，基于乔姆斯基范式，<code>dp[i,j]</code>代表<code>子串(i:j)</code>能被识别为哪些非终结符，这是只需要在<code>i</code>和<code>j</code>中间枚举<code>k</code>, 由<code>dp[i,k]</code> 和<code>dp[k+1,j]</code>转移即可。</p>
+<h1 id="5-7-FIRST集"><a href="#5-7-FIRST集" class="headerlink" title="5.7. FIRST集"></a>5.7. FIRST集</h1><p>每个非终结符都能够识别一些文本，这些文本的第一个字符就是这个非终结符的FIRST集的一员。</p>
+<p>换句话说，非终结符的FIRST集就是该非终结符经过产生式转换以后形成的序列的第一个元素（该元素必须为终结符）</p>
+<h2 id="5-7-1-例子1"><a href="#5-7-1-例子1" class="headerlink" title="5.7.1. 例子1"></a>5.7.1. 例子1</h2><p>先给出文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>该文法有非终结符SUM，根据产生式<code>SUM-&gt;number+number</code>，得出<code>number</code>在SUM的FIRST集中，根据产生式<code>SUM-&gt;SUM+number</code>我们无法得出任何信息。</p>
+<p>综上，SUM的FIRST集为<code>&#123;number&#125;</code></p>
+<h2 id="5-7-2-例子2"><a href="#5-7-2-例子2" class="headerlink" title="5.7.2. 例子2"></a>5.7.2. 例子2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>根据产生式<code>SUM -&gt; PRODUCTION + PRODUCTION</code>推断出PRODUCTION的FIRST集都在SUM的FIRST集中</p>
+<p>根据产生式<code>MUL -&gt; PRODUCTION * PRODUCTION</code>推断出PRODUCTION的FIRST集都在MUL的FIRST集中</p>
+<p>根据产生式<code>PRODUCTION -&gt; number | SUM | MUL</code>推断出number在PRODUCTION的FIRST集中，SUM的FIRST集和MUL的FIRST集在PRODUCTION的FIRST集中。</p>
+<p>根据上面三个结论，我们可以构造一个图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    PRODUCTION --&gt;|包含| number &amp; SUM &amp; MUL</span><br><span class="line">    SUM --&gt;|包含| PRODUCTION</span><br><span class="line">    MUL --&gt;|包含| PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>聪明的读者可以直接看出，其实他们三个非终结符的FIRST集都是<code>&#123;number&#125;</code>.</p>
+<h2 id="5-7-3-FIRST集计算算法（简单版）"><a href="#5-7-3-FIRST集计算算法（简单版）" class="headerlink" title="5.7.3. FIRST集计算算法（简单版）"></a>5.7.3. FIRST集计算算法（简单版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;B...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-4-复杂一点的FIRST集例子"><a href="#5-7-4-复杂一点的FIRST集例子" class="headerlink" title="5.7.4. 复杂一点的FIRST集例子"></a>5.7.4. 复杂一点的FIRST集例子</h2><p><code>ε</code>代表可以为空，即什么也没有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">变量声明：</span><br><span class="line">  终结符: type, symbol, visibility, staticable</span><br><span class="line">  非终结符: staticableOPT, visibilityOPT, TARGET</span><br><span class="line">  产生式: TARGET -&gt; visibilityOPT staticableOPT type symbol</span><br><span class="line">           visibilityOPT -&gt; visibility | ε</span><br><span class="line">           staticableOPT -&gt; staticable | ε</span><br><span class="line">  开始： TARGET</span><br></pre></td></tr></table></figure>
+
+<p>根据<code>TARGET -&gt; visibilityOPT staticableOPT type symbol</code>得出visibilityOPT的FIRST集在TARGET的FIRST集中，考虑到visibilityOPT可以为空，所以当visibilityOPT为空时，staticableOPT的FIRST集在TARGET的FIRST集中，同理，type也在TARGET的FIRST集中。</p>
+<p>visibilityOPT的first集为<code>&#123;visibility&#125;</code></p>
+<p>staticableOPT的first集为<code>&#123;staticable&#125;</code></p>
+<p>最终<code>TARGET</code>的first集为<code>&#123;visibility,staticable,type&#125;</code></p>
+<h2 id="5-7-5-FIRST计算方法（最终版）"><a href="#5-7-5-FIRST计算方法（最终版）" class="headerlink" title="5.7.5. FIRST计算方法（最终版）"></a>5.7.5. FIRST计算方法（最终版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;BCDE...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，然后根据B能否为空判断C</p>
+<p>若B可为空，则C的first集都在A的first集中，然后根据C能否为空判断D，依次递推</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-6-可达闭包之SPFA算法"><a href="#5-7-6-可达闭包之SPFA算法" class="headerlink" title="5.7.6.  可达闭包之SPFA算法"></a>5.7.6.  可达闭包之SPFA算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将所有的有向边(from,to)入队queue，</span><br><span class="line">只要queue非空:</span><br><span class="line">    取出并删除queue队首top</span><br><span class="line">    用top.to的可达集合合并到top.from的可达集合中，如果此过程对top.from的可达集合造成了修改:</span><br><span class="line">        将所有以top.from为有向边终点的边edge入队queue</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(VE)</code>, (V为顶点数，E为边数)</p>
+<h2 id="5-7-7-可达闭包之Tarjan算法"><a href="#5-7-7-可达闭包之Tarjan算法" class="headerlink" title="5.7.7. 可达闭包之Tarjan算法"></a>5.7.7. 可达闭包之Tarjan算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">首先使用Tarjan三大算法中的有向图强连通缩图，在同一个强连通分量的点，他们的可达集合相同</span><br><span class="line">缩图以后得到的是DAG有向无环图，在有向无环图上按照拓扑序进行DP，计算所有结果</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(V+V)</code> (V为顶点数，E为边数)</p>
+<h2 id="5-7-8-总结"><a href="#5-7-8-总结" class="headerlink" title="5.7.8. 总结"></a>5.7.8. 总结</h2><p>实际上，一般的文法都不会很复杂，其依赖图的顶点数不会超过200，边数不会超过1000，所以SPFA算法足以解决问题。 </p>
+<h1 id="5-8-FOLLOW集计算"><a href="#5-8-FOLLOW集计算" class="headerlink" title="5.8. FOLLOW集计算"></a>5.8. FOLLOW集计算</h1><p>在产生式中，经过一定次数的替换以后，如果某个终结符出现在了某个非终结符的后面，则这个终结符被计入这个非终结符的FOLLOW集。</p>
+<h2 id="5-8-1-例子"><a href="#5-8-1-例子" class="headerlink" title="5.8.1. 例子"></a>5.8.1. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>我们发现SUM的后面可以跟上<code>+</code>，所以SUM的FOLLOW集就是<code>+</code></p>
+<h2 id="5-8-2-例子"><a href="#5-8-2-例子" class="headerlink" title="5.8.2. 例子"></a>5.8.2. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p><code>SUM -&gt; PRODUCTION + PRODUCTION</code>可以得到<code>PRODUCTION </code>的FOLLOW集中有<code>+</code>,同理<code>MUL -&gt; PRODUCTION * PRODUCTION</code>得出有<code>*</code></p>
+<p><code>SUM</code>的FOLLOW集中有<code>*</code>和<code>+</code>,因为<code>SUM -&gt; PRODUCTION + PRODUCTION</code>，即PRODUCTION的FOLLOW集都在SUM中。</p>
+<p>同理<code>MUL</code>的FOLLOW集中有<code>*</code>和<code>+</code></p>
+<h2 id="5-8-3-算法"><a href="#5-8-3-算法" class="headerlink" title="5.8.3 算法"></a>5.8.3 算法</h2><p>考虑非终极符<code>A</code>, 如果存在产生式<code>S-&gt;*AB**</code>,则<code>B</code>的FIRST集在<code>A</code>的FOLLOW集中</p>
+<p>若B可为空，则看B后的下一个符号，其FIRST集在A的FOLLOW集中</p>
+<p>如果存在产生式<code>S-&gt;**A</code>，则S的FOLLOW集都在A的FOLLOW集中。</p>
+<p>如此构成了依赖图，又是可达闭包计算。计算步骤参见<code>FIRST</code>集算法。</p>
+<h1 id="5-9-LL语法分析"><a href="#5-9-LL语法分析" class="headerlink" title="5.9. LL语法分析"></a>5.9. LL语法分析</h1><p>LL语法分析指的是从左向右最左推导，是一种自顶向下的算法，实际上，所有的自顶向下算法都无法解决左递归文法。进行LL分析，需要提前计算FIRST集和FOLLOW集。</p>
+<p>LL算法进行自顶向下分析，自顶向下分析的核心步骤有两个，一个是匹配，另一个是展开。</p>
+<p>当从左到右自顶向下分析时，如果当前的符号为终结符，此时只能走匹配，而且当前符号必须和输入的符号匹配。</p>
+<p>如果当前符号为非终结符，此时只能 展开，但是用哪个产生式展开，往往不好选择，LL算法则根据FIRST集和FOLLOW集来进行选择。</p>
+<h2 id="5-9-1-例子"><a href="#5-9-1-例子" class="headerlink" title="5.9.1 例子"></a>5.9.1 例子</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>待识别字符串1+2+3+4</p>
+<p>第一步计算FIRST集，SUM的FIRST集为： <code>number</code></p>
+<p>ADD的FIRST集为<code>+</code></p>
+<p>第二步计算FOLLOW集，SUM的FOLLOW集为： <code>$,+</code></p>
+<p>ADD的FOLLOW集为    <code>$</code></p>
+<p>最开始的时候，有一个队列，其中包含一个开始的符号<code>SUM</code></p>
+<p>然后我们进行输入，输入字符<code>1</code>,这是一个number，number和SUM无法匹配，所以必须把SUM用产生式替换，SUM只有一个产生式，于是SUM被换成了<code>number ADD</code>,此时的队列的操作就是从左边 弹出SUM，再放入<code>number ADD</code></p>
+<p>替换以后，字符1就可以和number匹配了，于是输入字符成功，队列弹出<code>number</code></p>
+<p>紧接着，输入字符<code>+</code>, 这时候队列中只有一个<code>ADD</code>,<code>ADD</code>和<code>+</code>无法匹配，于是需要用产生式替换，用哪个换呢？显然用<code>+ SUM</code>换，因为<code>ε</code>的FIRST集为空，所以此时替换以后，队列变为<code>+ SUM</code></p>
+<p>替换以后，字符<code>+</code>就可以和队列的队首匹配，输入成功….</p>
+<p>然后算法不断迭代，直到完成输入。</p>
+<h2 id="5-9-2-总结"><a href="#5-9-2-总结" class="headerlink" title="5.9.2 总结"></a>5.9.2 总结</h2><p>其实LL语法分析就是前面介绍的最左递归下降算法的特殊情况，当文法没有二义性，文法不能在进行合并公因式，文法没有左递归时，文法就不需要递归分解了。</p>
+<p>LL语法分析有很多局限性，他能解决的文法少的可怜，虽然后面有办法通过文法的等价转化，把一个左递归文法转化为非左递归，提取公因式，消除二义性，但是这样做的代价非常大，这样的工作往往会导致文法变得特别复杂，特别不好理解，就问下吗这两个文法你喜欢哪一个？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number | SUM + SUM</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+      <div class="tags">
+          <a href="/shoka/tags/%E8%AF%BB%E4%B9%A6/" rel="tag"><i class="ic i-tag"></i> 读书</a>
+          <a href="/shoka/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag"><i class="ic i-tag"></i> 跟我一起写编译器</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-08-29 17:41:03" itemprop="dateModified" datetime="2021-08-29T17:41:03+08:00">2021-08-29</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QV7MPR.html" title="跟我一起自己写编译器-5.语法分析">http://fightinggg.github.io/shoka/QV7MPR.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QV7MPQ.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giph4fomxoj20zk0m8axp.jpg" title="跟我一起自己写编译器-4.词法分析">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-4.词法分析</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QV7MPS.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclx6phq6j20zk0m8e36.jpg" title="跟我一起自己写编译器-5.10.LR语法分析">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-5.10.LR语法分析</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">5. 语法分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-%E6%96%87%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">5.1. 文法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-1-%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">5.1.1. 正则文法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">5.1.2. 上下文无关文法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-3-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%9C%89%E5%85%B3%E6%96%87%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">5.1.3. 上下文有关文法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-%E6%9C%80%E5%B7%A6%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D"><span class="toc-number">3.</span> <span class="toc-text">5.2. 最左递归下降</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3-%E5%B7%A6%E9%80%92%E5%BD%92%E6%96%87%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">5.3. 左递归文法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-%E4%BA%8C%E4%B9%89%E6%80%A7%E6%96%87%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">5.4. 二义性文法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-5-%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E8%8C%83%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">5.5. 乔姆斯基范式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-6-CYK%E7%AE%97%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">5.6. CYK算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-7-FIRST%E9%9B%86"><span class="toc-number">8.</span> <span class="toc-text">5.7. FIRST集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-1-%E4%BE%8B%E5%AD%901"><span class="toc-number">8.1.</span> <span class="toc-text">5.7.1. 例子1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-2-%E4%BE%8B%E5%AD%902"><span class="toc-number">8.2.</span> <span class="toc-text">5.7.2. 例子2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-3-FIRST%E9%9B%86%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95%EF%BC%88%E7%AE%80%E5%8D%95%E7%89%88%EF%BC%89"><span class="toc-number">8.3.</span> <span class="toc-text">5.7.3. FIRST集计算算法（简单版）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-4-%E5%A4%8D%E6%9D%82%E4%B8%80%E7%82%B9%E7%9A%84FIRST%E9%9B%86%E4%BE%8B%E5%AD%90"><span class="toc-number">8.4.</span> <span class="toc-text">5.7.4. 复杂一点的FIRST集例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-5-FIRST%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%EF%BC%88%E6%9C%80%E7%BB%88%E7%89%88%EF%BC%89"><span class="toc-number">8.5.</span> <span class="toc-text">5.7.5. FIRST计算方法（最终版）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-6-%E5%8F%AF%E8%BE%BE%E9%97%AD%E5%8C%85%E4%B9%8BSPFA%E7%AE%97%E6%B3%95"><span class="toc-number">8.6.</span> <span class="toc-text">5.7.6.  可达闭包之SPFA算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-7-%E5%8F%AF%E8%BE%BE%E9%97%AD%E5%8C%85%E4%B9%8BTarjan%E7%AE%97%E6%B3%95"><span class="toc-number">8.7.</span> <span class="toc-text">5.7.7. 可达闭包之Tarjan算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-7-8-%E6%80%BB%E7%BB%93"><span class="toc-number">8.8.</span> <span class="toc-text">5.7.8. 总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-8-FOLLOW%E9%9B%86%E8%AE%A1%E7%AE%97"><span class="toc-number">9.</span> <span class="toc-text">5.8. FOLLOW集计算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-8-1-%E4%BE%8B%E5%AD%90"><span class="toc-number">9.1.</span> <span class="toc-text">5.8.1. 例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-8-2-%E4%BE%8B%E5%AD%90"><span class="toc-number">9.2.</span> <span class="toc-text">5.8.2. 例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-8-3-%E7%AE%97%E6%B3%95"><span class="toc-number">9.3.</span> <span class="toc-text">5.8.3 算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-9-LL%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">10.</span> <span class="toc-text">5.9. LL语法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-9-1-%E4%BE%8B%E5%AD%90"><span class="toc-number">10.1.</span> <span class="toc-text">5.9.1 例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-9-2-%E6%80%BB%E7%BB%93"><span class="toc-number">10.2.</span> <span class="toc-text">5.9.2 总结</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/QV7MPO.html" rel="bookmark" title="跟我一起自己写编译器-123.引言">跟我一起自己写编译器-123.引言</a></li><li><a href="/shoka/QV7MPQ.html" rel="bookmark" title="跟我一起自己写编译器-4.词法分析">跟我一起自己写编译器-4.词法分析</a></li><li class="active"><a href="/shoka/QV7MPR.html" rel="bookmark" title="跟我一起自己写编译器-5.语法分析">跟我一起自己写编译器-5.语法分析</a></li><li><a href="/shoka/QV7MPS.html" rel="bookmark" title="跟我一起自己写编译器-5.10.LR语法分析">跟我一起自己写编译器-5.10.LR语法分析</a></li><li><a href="/shoka/QV7MPT.html" rel="bookmark" title="跟我一起自己写编译器-6.语义分析">跟我一起自己写编译器-6.语义分析</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QV7MPQ.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QV7MPS.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PX8T10.html" title="hdu6582">hdu6582</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q7A9H5.html" title="Y快速前缀树">Y快速前缀树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/" title="分类于 CodeForces">CodeForces</a>
+</div>
+
+    <span><a href="/shoka/PNHISH.html" title="Educational Codeforces Round 60 (Rated for Div. 2) - D">Educational Codeforces Round 60 (Rated for Div. 2) - D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cfedu60D.html" title="cfedu60D">cfedu60D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PX8ZSK.html" title="hdu6584">hdu6584</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Docker/K8s/" title="分类于 K8s">K8s</a>
+</div>
+
+    <span><a href="/shoka/QPZURC.html" title="k8s故障">k8s故障</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Math/" title="分类于 Math">Math</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Math/Matrix/" title="分类于 Matrix">Matrix</a>
+</div>
+
+    <span><a href="/shoka/Q6AVP7.html" title="矩阵的特征值与特征向量">矩阵的特征值与特征向量</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/C/" title="分类于 C++">C++</a>
+</div>
+
+    <span><a href="/shoka/Q7BSO7.html" title="Boost源码">Boost源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8LY8O.html" title="java并发编程5-Java内存">java并发编程5-Java内存</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/RCFBSC.html" title="白帽子讲Web安全">白帽子讲Web安全</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QV7MPR.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

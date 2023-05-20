@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java内存区域于内存溢出异常 · Believe it</title><meta name="description" content="Java内存区域于内存溢出异常 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java内存区域于内存溢出异常</h1><div class="post-info">2020年2月12日</div><div class="post-content"><div><a href="/next/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q5KMBU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h3 id="Java运行时的数据区域"><a href="#Java运行时的数据区域" class="headerlink" title="Java运行时的数据区域"></a>Java运行时的数据区域</h3><p>方法区、虚拟机栈、本地方法栈、堆、程序计数器</p>
+<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>线程私有<br>为了支持多线程，Java虚拟机为每个线程设置独立的程序计数器，各条线程之间计数器互不影响，独立储存。<br>如果线程执行的是Java方法，计数器指向正在执行的字节码指令地址，如果线程执行的是Native方法，这个计数器则为空<br>程序计数器区域是唯一一个没有任何OutOfMemoryError情况的区域。</p>
+<!---more-->
+<h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><p>线程私有<br>每个方法在执行的同时都会向虚拟机栈申请一个栈帧用于储存局部变量表、操作数栈、动态链接、方法出口等信息，每个方法的调用直到执行完成，对应一个栈帧在虚拟机栈中入栈到出栈的过程，局部变量表存放了方法执行过程中的所有局部变量，编译期间就确定了。所以，这个栈帧的大小是完全固定的。<br>虚拟机栈会有StackOverflowError和OutOfMemoryError，前者在固定长度的虚拟机栈中出现，后者在变长虚拟机栈中出现。这要看虚拟机是哪一种虚拟机。</p>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>类似于Java方法使用Java虚拟机的栈,这一区域是本地方法使用的栈。<br>有StackOverflowError和OutOfMemoryError。</p>
+<h4 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h4><p>线程共享<br>此内存唯一目的是存放对象实例，Java虚拟机规范中描述到:所有对象实例以及数组都要在堆上分配。但是随着JIT编译器等技术等发展，所有对象都分配在堆上也渐渐不那么绝对了。<br>Java堆允许不连续<br>Java堆有OutOfMemoryError</p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>线程共享<br>储存虚拟机加载的类信息，常量，静态变量，即时编译后的代码等数据<br>可以选择不进行垃圾回收，但这不明智<br>有OutOfMemoryError</p>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>是方法区的一部分<br>允许在程序运行时创建常量<br>有OutOfMemoryError</p>
+<h4 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h4><p>不是虚拟机的一部分，在NIO类中，允许Native函数库向操作系统申请内存，提供一些方式访问，使得在一些场景提高性能，<br>有OutOfMemoryError</p>
+<h3 id="HotSpot-VM"><a href="#HotSpot-VM" class="headerlink" title="HotSpot VM"></a>HotSpot VM</h3><h4 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h4><p>当虚拟机碰到new的时候，会先检查类是否被加载、解析、初始化，如果没有，则先执行相应的加载过程，当类检查通过以后，会为对象分配内存，这个内存大小是完全确定的，虚拟机会从虚拟机堆中分配这块内存并将这块内存初始化为0,然后执行init方法。<br>因为Java需要支持多线程，所以这里实际需要同步处理，还有一种解决方案叫做TLAB（Thread Local Allocation Buffer）预先为每个线程分配一小块内存，就不会受到多线程影响，当TLAB用完以后，需要分配新的TLAB，这时才需要同步锁定，在TLAB分配时即可提前初始化这块内存为0,当然也可以不提前。</p>
+<h4 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h4><p>内存中储存的布局可以分为3块区域: 对象头、实例数据和对齐填充。<br>对象头分为两部分，第一部分储存了哈希码、GC分代年龄、锁状态、线程持有锁、偏向线程ID等等这部分在32位机器上为32bit，在64位机器上为64bit，第二部分可有可无，储存类型指针，指向类元数据。另外对于Java数组，就还有第三部分用于记录数组长度。<br>对齐填充就是为了让对象大小变成8字节的整数倍</p>
+<h4 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h4><p>Java程序通过栈上的reference数据来操作堆上的具体对象，主流的对象访问方式有两种，第一种是句柄访问，Java堆会划分出一块内存用作句柄池，reference储存句柄地址，句柄储存对象实例和类型各自的具体地址；第二种是直接访问，这种情况Java对象的布局中就要考虑储存类型数据，reference就储存对象的直接地址。前者在垃圾收集时移动时快，后者访问速度快。</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q5KTS0.html" class="prev">PREV</a><a href="/apollo/Q5KF8D.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

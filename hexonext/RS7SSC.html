@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     Transformer背景介绍 Transformer指的是一种架构，未来的NLP(自然语言处理)都可以使用此架构。Transformer由编码器、解码器(后面会介绍)等组成，他的输入是向量数组，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transformer">
+<meta property="og:url" content="https://fightinggg.github.io/RS7SSC.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     Transformer背景介绍 Transformer指的是一种架构，未来的NLP(自然语言处理)都可以使用此架构。Transformer由编码器、解码器(后面会介绍)等组成，他的输入是向量数组，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightinggg.github.io/The-Transformer-model-architecture.png">
+<meta property="article:published_time" content="2023-03-28T05:05:00.000Z">
+<meta property="article:modified_time" content="2023-03-28T05:05:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="GPT">
+<meta property="article:tag" content="Transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightinggg.github.io/The-Transformer-model-architecture.png">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/RS7SSC.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/RS7SSC.html","path":"RS7SSC.html","title":"Transformer"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Transformer | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#transformer%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="nav-text">Transformer背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-text">注意力机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-text">自注意力机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-text">多头自注意力机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81"><span class="nav-text">位置编码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#transformer"><span class="nav-text">Transformer</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/RS7SSC.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Transformer | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Transformer<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/AI/GPT/Transformer/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-28 13:05:00" itemprop="dateCreated datePublished" datetime="2023-03-28T13:05:00+08:00">2023-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI/GPT/" itemprop="url" rel="index"><span itemprop="name">GPT</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/RS7SSC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h1 id="transformer背景介绍">Transformer背景介绍</h1>
+<p>Transformer指的是一种架构，未来的<code>NLP(自然语言处理)</code>都可以使用此架构。Transformer由编码器、解码器(后面会介绍)等组成，他的输入是向量数组，输出是也是向量数组。</p>
+<p>注意：Transformer架构的输出是把向量逐个输出的。</p>
+<p>Transformer架构最初只用来做机器翻译，例如将英语翻译成德语。在翻译的过程中<code>待翻译语句</code>作为输入，而<code>翻译结果</code>作为输出。<code>待翻译语句</code>中的每一个<code>Token(词)</code>会被转化为向量作为输入，Transformer的输出向量最终被转化为<code>翻译结果</code>的<code>Token(词)</code>。由于Transformer逐一输出结果的特性，<code>翻译结果</code>是一个<code>Token(词)</code>一个<code>Token(词)</code>逐渐输出的。</p>
+<p>Transformer架构不仅仅只可以用与机器翻译，Transformer现在也用于GPT中，就是GPT的最后一个字母T所代表的含义。由于Transformer逐一输出结果的特性，GPT也是一个<code>Token(词)</code>一个<code>Token(词)</code>逐渐输出的。</p>
+<span id="more"></span>
+<h1 id="注意力机制">注意力机制</h1>
+<p>注意力机制源自做翻译时的技巧，当我们翻译某个词的时候，我们应该注意这个词。例如我们如果要翻译以下句子为中文：</p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello World !</span><br></pre></td></tr></table></figure>
+<p>假设他的标准答案是：<code>你好，世界！</code></p>
+<p>当我们写下中文<code>你好</code>的时候，我们需要注意单词<code>Hello</code>，因为这个单词将被翻译成<code>你好</code>，当我们写下中文<code>世界</code>的时候，我们需要注意单词<code>World</code>。注意力机制就试图让机器明白以上道理。</p>
+<p>更加严谨一点，在训练时，用公式表示即为：假设已知输入为向量数组<span class="math inline">\(K\)</span>包含向量<span class="math inline">\(K_1\)</span>,<span class="math inline">\(K_2\)</span>,<span class="math inline">\(K_3\)</span>等。假设预期输出为向量<span class="math inline">\(V\)</span>包含向量<span class="math inline">\(V_1\)</span>,<span class="math inline">\(V_2\)</span>,<span class="math inline">\(V_3\)</span>等，已知注意力为<span class="math inline">\(A\)</span>，<span class="math inline">\(A_{ij}\)</span>代表<span class="math inline">\(V_i\)</span>的计算中，<span class="math inline">\(K_{j}\)</span>所占的权重。</p>
+<p>那么便有了计算公式<span class="math inline">\(V_i=F(f_{i1},f_{i2},f_{i3}...)\)</span>,<span class="math inline">\(f_{ij}=f(A_{ij},K_{j})\)</span>, 注意其中的<span class="math inline">\(F\)</span>函数和<span class="math inline">\(f\)</span>函数，如何设定都可以。</p>
+<p>在测试时，假设一个测试数据为向量<span class="math inline">\(Q\)</span>包含<span class="math inline">\(Q_1Q_2Q_3\)</span>, 按照<span class="math inline">\(V\)</span>的计算公式，其中只有<span class="math inline">\(A\)</span>需要变更，因为<span class="math inline">\(A_{ij}\)</span>代表<span class="math inline">\(V_i\)</span>(而不是<span class="math inline">\(Q_i\)</span>)的计算中，<span class="math inline">\(K_{j}\)</span>所占的权重。这里只需要想办法换成想要的注意力即可，方法有很多，主要围绕<span class="math inline">\(Q\)</span>和<span class="math inline">\(V\)</span>的相似关系来计算，这里不做展开。下文介绍一种使用自注意力机制的方案来计算相似关系。</p>
+<h1 id="自注意力机制">自注意力机制</h1>
+<p>自注意力机制源于另一个技巧，当我们翻译某个词的时候，我们应该注意另一个词。例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The program has <span class="selector-tag">a</span> bug</span><br></pre></td></tr></table></figure>
+<p>当我们翻译<code>bug</code>的时候，不能把它翻译成<code>虫子</code>。我们需要注意到前面的单词<code>program</code>，因此翻译成<code>问题</code></p>
+<p>因此我们将一份训练数据的输入，即当做<span class="math inline">\(K\)</span>,又当做<span class="math inline">\(V\)</span>,也当做<span class="math inline">\(Q\)</span>。于是就可以训练出前文说的注意力<span class="math inline">\(A\)</span></p>
+<p>// TODO</p>
+<h1 id="多头自注意力机制">多头自注意力机制</h1>
+<p>由于自注意力机制可学习的参数较少，多头自注意力机制用来扩充自注意力机制的可学习参数。</p>
+<p>多头自注意力机制，将输入投影到<span class="math inline">\(N\)</span>个不同的空间，得到<span class="math inline">\(N\)</span>个输入，分别做自注意力机制，得到<span class="math inline">\(N\)</span>个输出，最终通过全连接层投影回来，得到一个输出。</p>
+<p>在这个过程中，产生了投影的参数、全连接的参数，可学习参数就多起来了。</p>
+<h1 id="位置编码">位置编码</h1>
+<p>自注意力模型，不受位置的影响。考虑一个输入是向量数组，若打乱输入顺序，不影响输出结果，这个是不合适的，可以考虑直接把位置也编码进输入中，方案是使用三角函数给输入向量的每一个维度都加上周期的三角函数值。</p>
+<p>为什么是三角函数？这是收到计算机中数字编码的启发。若把计算机中的32位数字的每一个位拿来看，从0到最大值，32位的每一个位都是周期不同的01变换（最低位变换为010101...，次低位是001100110011...，再次为000011110000111100001111...），这其实也是一种三角函数。</p>
+<h1 id="transformer">Transformer</h1>
+<p>// TODO</p>
+<p><img data-src='/The-Transformer-model-architecture.png'>x</img></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/RS7SSC.html" title="Transformer">https://fightinggg.github.io/RS7SSC.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"><i class="fa fa-tag"></i> AI</a>
+              <a href="/tags/GPT/" rel="tag"><i class="fa fa-tag"></i> GPT</a>
+              <a href="/tags/Transformer/" rel="tag"><i class="fa fa-tag"></i> Transformer</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/RPN780.html" rel="prev" title="2023你好">
+                  <i class="fa fa-chevron-left"></i> 2023你好
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/RUSDW0.html" rel="next" title="智慧的疆界：从图灵机到人工智能">
+                  智慧的疆界：从图灵机到人工智能 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/RS7SSC.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"a097db512002f9be3951be1154ec35f1"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

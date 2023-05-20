@@ -1,0 +1,653 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PH7QQ8.html">
+
+
+
+  <title>
+FFT - 数学 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">FFT
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2018-10-26 23:51:44">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2018-10-26T23:51:44+08:00">2018-10-26</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitht3xtj20zk0m8k5v.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljitigmj20zk0m87fp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclize41wj20zk0m87gk.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipetlbztpj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph47e9vtj20zk0m8x6l.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciusoyjnj219g0u0x56.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" itemprop="item" rel="index" title="分类于 数学"><span itemprop="name">数学</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PH7QQ8.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PH7QQ8.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="题目1"><a href="#题目1" class="headerlink" title="题目1"></a>题目1</h1><p><span class="exturl" data-url="aHR0cHM6Ly9uYW50aS5qaXN1YW5rZS5jb20vdC8yNjIxOQ==">2018宁夏网络赛H题</span></p>
+<p>给你类似剪刀石头布游戏的五种手势和十种克制关系。每种手势克制其他两种手势并被另外两种手势克制。给你两个字符串分别表示A，B的 手势顺序，A长B短，你可以随意挪动B相对于A的位置，求B最多能赢多少次？</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">若两个串为abcde和ede</span><br><span class="line">则共有三种方法来决斗，</span><br><span class="line">abcde</span><br><span class="line">eda</span><br><span class="line"></span><br><span class="line">abcde</span><br><span class="line"> eda</span><br><span class="line"></span><br><span class="line">abcde</span><br><span class="line">  eda</span><br><span class="line">为每一个字符标上指数，将一个串逆置后，发现是fft</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="题目2"><a href="#题目2" class="headerlink" title="题目2"></a>题目2</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hY20udGFpZnVhLmNvbS9iem9qL3AvNDI1OS5odG1s"> BZOJ4259</span></p>
+<p>给你两个字符串原串和匹配串，串里只包含小写字母和<code>∗</code>,<code>∗</code>可以表示任意字符，问匹配串在原串不同位置中出现多少次，起始位置不同即不同位置。<br>    我们还是利用上一题逆置短串构造卷积的方法，我们把<code>*</code>的值当作赋为0，<code>pow(str1[i]−str2[i],2)*str1[i]*str2[i] </code>化简消去负数项即可</p>
+<h1 id="FFT"><a href="#FFT" class="headerlink" title="FFT"></a>FFT</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">4e6</span><span class="comment">//开四倍所有数组。准确的数值是乘法结果数组的2进制对齐那么大。这个值小于四倍，</span></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> pi=<span class="built_in">acos</span>(<span class="number">-1.0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cp</span>&#123;</span><br><span class="line">    <span class="type">double</span> x,y;</span><br><span class="line">    <span class="built_in">cp</span>(<span class="type">double</span> X=<span class="number">0</span>,<span class="type">double</span> Y=<span class="number">0</span>)&#123;x=X,y=Y;&#125;</span><br><span class="line">    cp <span class="keyword">operator</span> + (cp b)&#123;<span class="keyword">return</span> <span class="built_in">cp</span>(x+b.x,y+b.y);&#125;</span><br><span class="line">    cp <span class="keyword">operator</span> - (cp b)&#123;<span class="keyword">return</span> <span class="built_in">cp</span>(x-b.x,y-b.y);&#125;</span><br><span class="line">    cp <span class="keyword">operator</span> * (cp b)&#123;<span class="keyword">return</span> <span class="built_in">cp</span>(x*b.x-y*b.y,x*b.y+y*b.x);&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// opt = 1 把系数表达式变为点值表达式</span></span><br><span class="line"><span class="comment">// opt =-1 把点值表达式变成系数表达式</span></span><br><span class="line"><span class="comment">// 传参的时候必须要求n为2的bits次方</span></span><br><span class="line"><span class="type">int</span> r[maxn];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fft</span><span class="params">(cp *a,<span class="type">int</span> n,<span class="type">int</span> bits,<span class="type">int</span> opt)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</span><br><span class="line">        r[i]=(r[i&gt;&gt;<span class="number">1</span>]&gt;&gt;<span class="number">1</span>)|((i&amp;<span class="number">1</span>)&lt;&lt;(bits<span class="number">-1</span>));</span><br><span class="line">        <span class="keyword">if</span> (i&lt;r[i]) <span class="built_in">swap</span>(a[i],a[r[i]]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> k=<span class="number">1</span>; k&lt;n; k&lt;&lt;=<span class="number">1</span>)&#123;</span><br><span class="line">        cp wn=<span class="built_in">cp</span>(<span class="built_in">cos</span>(pi/k),opt*<span class="built_in">sin</span>(pi/k));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; i+=(k&lt;&lt;<span class="number">1</span>))&#123;</span><br><span class="line">            cp w=<span class="built_in">cp</span>(<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">0</span>; j&lt;k; ++j,w=w*wn)&#123;</span><br><span class="line">                cp x=a[i+j],y=w*a[i+j+k];</span><br><span class="line">                a[i+j]=x+y,a[i+j+k]=x-y;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 没有必要分x和y的长度,没有意义，对时间复杂度影响不大</span></span><br><span class="line"><span class="comment">// 传数组使用闭区间[0,n-1],n-1为多项式最高次数</span></span><br><span class="line"><span class="comment">// xy甚至可以传一个x或y一样的参数 例如mul(f,g,f,n,m)等价于f*=g</span></span><br><span class="line">cp cpa[maxn],cpb[maxn];<span class="comment">//经测试, 两个1e6的多项式乘起来大概的时间700ms, </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mul</span><span class="params">(<span class="type">int</span>*x,<span class="type">int</span>*y,<span class="type">int</span>*xy,<span class="type">int</span> xn,<span class="type">int</span> yn)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> exn=<span class="number">1</span>,bits=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(exn<span class="number">-1</span> &lt; xn<span class="number">-1</span>+yn<span class="number">-1</span>)exn&lt;&lt;=<span class="number">1</span>,bits++;<span class="comment">//exn为xy数组拓展的长度，bits为lg(exn)</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span> ;i&lt;xn ;i++)cpa[i]=<span class="built_in">cp</span>(x[i],<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=xn;i&lt;exn;i++)cpa[i]=<span class="built_in">cp</span>(<span class="number">0</span>,<span class="number">0</span>);<span class="comment">//按0补齐</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span> ;i&lt;yn ;i++)cpb[i]=<span class="built_in">cp</span>(y[i],<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=yn;i&lt;exn;i++)cpb[i]=<span class="built_in">cp</span>(<span class="number">0</span>,<span class="number">0</span>);<span class="comment">//按0补齐</span></span><br><span class="line">    <span class="built_in">fft</span>(cpa,exn,bits,<span class="number">1</span>);<span class="built_in">fft</span>(cpb,exn,bits,<span class="number">1</span>);<span class="comment">//化为点值表示法</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;exn;i++)cpa[i]=cpa[i]*cpb[i];<span class="comment">//乘</span></span><br><span class="line">    <span class="built_in">fft</span>(cpa,exn,bits,<span class="number">-1</span>);<span class="comment">//化为系数表示法</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;exn;i++)xy[i]=cpa[i].x/exn+<span class="number">0.5</span>;<span class="comment">//赋值结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="NTT"><a href="#NTT" class="headerlink" title="NTT"></a>NTT</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="comment">// ll mod=1004535809,g=3;// 479*pow(2,21)+1</span></span><br><span class="line"><span class="comment">// ll mod=998244353,g=3;//  119*pow(2,23)+1</span></span><br><span class="line"><span class="comment">// ll mod=2281701377,g=3;//  17*pow(2,27)+1</span></span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">qpow</span><span class="params">(ll a,ll b,ll mod)</span></span>&#123;</span><br><span class="line">    ll ret=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>) ret=ret*a%mod;</span><br><span class="line">        a=a*a%mod;</span><br><span class="line">        b&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> ll maxn=<span class="number">1e6</span>;</span><br><span class="line">ll r[maxn];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ntt</span><span class="params">(ll*a,ll n,ll bits,ll opt,ll g,ll mod)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;n;i++) &#123;</span><br><span class="line">        r[i]=(r[i&gt;&gt;<span class="number">1</span>]&gt;&gt;<span class="number">1</span>)|((i&amp;<span class="number">1</span>)&lt;&lt;(bits<span class="number">-1</span>));</span><br><span class="line">        <span class="keyword">if</span>(i&lt;r[i]) <span class="built_in">swap</span>(a[i],a[r[i]]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(ll k=<span class="number">1</span>;k&lt;n;k&lt;&lt;=<span class="number">1</span>)&#123;</span><br><span class="line">        ll wn=<span class="built_in">qpow</span>(g,(mod<span class="number">-1</span>)/(k&lt;&lt;<span class="number">1</span>),mod);<span class="comment">//用原根代替单位根</span></span><br><span class="line">        <span class="keyword">if</span>(opt==<span class="number">-1</span>) wn=<span class="built_in">qpow</span>(wn,mod<span class="number">-2</span>,mod);<span class="comment">//逆变换则乘上逆元</span></span><br><span class="line">        <span class="keyword">for</span> (ll i=<span class="number">0</span>;i&lt;n;i+=(k&lt;&lt;<span class="number">1</span>))&#123;</span><br><span class="line">            <span class="keyword">for</span> (ll j=<span class="number">0</span>,w=<span class="number">1</span>; j&lt;k; j++,w=w*wn%mod)&#123;</span><br><span class="line">                ll x=a[i+j], y=w*a[i+j+k]%mod;</span><br><span class="line">                a[i+j]=(x+y)%mod, a[i+j+k]=(x-y+mod)%mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(opt==<span class="number">-1</span>) &#123;</span><br><span class="line">        ll inv=<span class="built_in">qpow</span>(n,mod<span class="number">-2</span>,mod);</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;n;i++) a[i]=a[i]*inv%mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ll cpx[maxn],cpy[maxn];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mul</span><span class="params">(ll*x,ll*y,ll*xy,ll xn,ll yn,ll g,ll mod)</span></span>&#123;</span><br><span class="line">    ll exn=<span class="number">1</span>,bits=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(exn<span class="number">-1</span> &lt; xn<span class="number">-1</span>+yn<span class="number">-1</span>)exn&lt;&lt;=<span class="number">1</span>,bits++;<span class="comment">//exn为xy数组拓展的长度，bits为lg(exn)</span></span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span> ;i&lt;xn ;i++)cpx[i]=x[i];</span><br><span class="line">    <span class="keyword">for</span>(ll i=xn;i&lt;exn;i++)cpx[i]=<span class="number">0</span>;<span class="comment">//按0补齐</span></span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span> ;i&lt;yn ;i++)cpy[i]=y[i];</span><br><span class="line">    <span class="keyword">for</span>(ll i=yn;i&lt;exn;i++)cpy[i]=<span class="number">0</span>;<span class="comment">//按0补齐</span></span><br><span class="line">    <span class="built_in">ntt</span>(cpx,exn,bits,<span class="number">1</span>,g,mod); <span class="built_in">ntt</span>(cpy,exn,bits,<span class="number">1</span>,g,mod);<span class="comment">//化为点值表示法</span></span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>; i&lt;exn;i++)cpx[i]=cpx[i]*cpy[i]%mod;<span class="comment">//乘</span></span><br><span class="line">    <span class="built_in">ntt</span>(cpx,exn,bits,<span class="number">-1</span>,g,mod);<span class="comment">//化为系数表示法</span></span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>; i&lt;exn;i++)xy[i]=cpx[i];<span class="comment">//赋值结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PH7QQ8.html" title="FFT">http://fightinggg.github.io/shoka/PH7QQ8.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PH5S7Y.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclffsa1cj20zk0m811l.jpg" title="二分图最小费用固定流">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 图论</span>
+  <h3>二分图最小费用固定流</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PHCJTA.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclffsa1cj20zk0m811l.jpg" title="后缀数组">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 字符串</span>
+  <h3>后缀数组</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE1"><span class="toc-number">1.</span> <span class="toc-text">题目1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE2"><span class="toc-number">2.</span> <span class="toc-text">题目2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FFT"><span class="toc-number">3.</span> <span class="toc-text">FFT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NTT"><span class="toc-number">3.1.</span> <span class="toc-text">NTT</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/P5EQ9Y.html" rel="bookmark" title="常用数论函数变换">常用数论函数变换</a></li><li><a href="/shoka/PGMNAB.html" rel="bookmark" title="球盒模型">球盒模型</a></li><li><a href="/shoka/PGU74V.html" rel="bookmark" title="合数分解">合数分解</a></li><li><a href="/shoka/PGY13F.html" rel="bookmark" title="广义组合数">广义组合数</a></li><li class="active"><a href="/shoka/PH7QQ8.html" rel="bookmark" title="FFT">FFT</a></li><li><a href="/shoka/POEN4U.html" rel="bookmark" title="快速幂">快速幂</a></li><li><a href="/shoka/PS5H5E.html" rel="bookmark" title="积性函数">积性函数</a></li><li><a href="/shoka/PS5HGM.html" rel="bookmark" title="杜教筛">杜教筛</a></li><li><a href="/shoka/PSZ23L.html" rel="bookmark" title="bsgs算法">bsgs算法</a></li><li><a href="/shoka/PT8XEX.html" rel="bookmark" title="多项式">多项式</a></li><li><a href="/shoka/PV8ORI.html" rel="bookmark" title="类欧几里得算法">类欧几里得算法</a></li><li><a href="/shoka/PVX1S3.html" rel="bookmark" title="两分数间分母最小的分数">两分数间分母最小的分数</a></li><li><a href="/shoka/PWA5HS.html" rel="bookmark" title="二次剩余">二次剩余</a></li><li><a href="/shoka/PWBLQZ.html" rel="bookmark" title="中国剩余定理">中国剩余定理</a></li><li><a href="/shoka/PWBTOX.html" rel="bookmark" title="广义斐波那契循环节">广义斐波那契循环节</a></li><li><a href="/shoka/PZNY2U.html" rel="bookmark" title="自变量互质的前缀和函数分析">自变量互质的前缀和函数分析</a></li><li><a href="/shoka/Q03076.html" rel="bookmark" title="min25筛">min25筛</a></li><li><a href="/shoka/QSFAYC.html" rel="bookmark" title="群论">群论</a></li><li><a href="/shoka/QSRVQC.html" rel="bookmark" title="生成函数与形式幂级数">生成函数与形式幂级数</a></li><li><a href="/shoka/QSSECC.html" rel="bookmark" title="反演">反演</a></li><li><a href="/shoka/QSUB3C.html" rel="bookmark" title="数论分块">数论分块</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PH5S7Y.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PHCJTA.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/" title="分类于 牛客">牛客</a>
+</div>
+
+    <span><a href="/shoka/PVX51D.html" title="2019牛客多校7H">2019牛客多校7H</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QSOXOA.html" title="2020CCPC长春站">2020CCPC长春站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Spring/" title="分类于 Spring">Spring</a>
+</div>
+
+    <span><a href="/shoka/Q8H56B.html" title="spring11-Jdbctemplate">spring11-Jdbctemplate</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" title="分类于 计算机组成原理">计算机组成原理</a>
+</div>
+
+    <span><a href="/shoka/PQVWG0.html" title="用数学浅谈浮点数">用数学浅谈浮点数</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PVSXM7.html" title="hdu6625">hdu6625</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" title="分类于 编译器">编译器</a>
+</div>
+
+    <span><a href="/shoka/QV7MPR.html" title="跟我一起自己写编译器-5.语法分析">跟我一起自己写编译器-5.语法分析</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+</div>
+
+    <span><a href="/shoka/QZX2O0.html" title="Java运行时分析工具">Java运行时分析工具</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8IRJ2.html" title="java并发编程1-进程与线程">java并发编程1-进程与线程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/" title="分类于 graph_theory">graph_theory</a>
+</div>
+
+    <span><a href="/shoka/bzoj2118.html" title="bzoj2118">bzoj2118</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QLYF40.html" title="typora">typora</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PH7QQ8.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

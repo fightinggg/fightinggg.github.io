@@ -1,0 +1,801 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/Q5KTS0.html">
+
+
+
+  <title>
+垃圾收集器与内存分配策略 - JVM - Java - Language |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">垃圾收集器与内存分配策略
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-02-12 14:52:48">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-02-12T14:52:48+08:00">2020-02-12</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljitigmj20zk0m87fp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipey0a334j20zk0m8qpt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexe4oykj20zk0m87ji.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipevgoki5j20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeun65urj20zk0m81ii.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipetv6p75j20zk0m8x6p.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/" itemprop="item" rel="index" title="分类于 Language"><span itemprop="name">Language</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/" itemprop="item" rel="index" title="分类于 Java"><span itemprop="name">Java</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/JVM/" itemprop="item" rel="index" title="分类于 JVM"><span itemprop="name">JVM</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/Q5KTS0.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q5KTS0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="如何判断对象已死"><a href="#如何判断对象已死" class="headerlink" title="如何判断对象已死"></a>如何判断对象已死</h1><h2 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h2><p>为对象添加引用计数器，每当有一个地方引用他的时候计数器的值+1，当引用失效的时候计数器的值-1,当任何时刻计数器为0的对象就是不可能再被使用了。此算法效率高，但是无法解决相互引用的问题。</p>
+<h2 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h2><p>利用有向图可达性表示对象生死，作为GC Roots的对象有虚拟机栈（本地变量表）中引用的对象，方法区中类静态属性引用的对象，方法区中常量引用的对象，本地方法栈中JNI引用的对象。若不能从根达到的对象，则对象死亡。</p>
+<!---more-->
+<h2 id="引用分类"><a href="#引用分类" class="headerlink" title="引用分类"></a>引用分类</h2><p>强引用: 类似“Object obj &#x3D; new Object()”的引用</p>
+<p>软引用: 有用但并非必需的对象，在系统将要发生内存溢出异常前，会对这些对象进行第二次回收。</p>
+<p>弱引用: 弱引用只能活到下一次垃圾回收之前。</p>
+<p>虚引用: 完全不会影响该对象是否被回收，用于在该对象被回收时收到一个系统消息。</p>
+<h2 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h2><p>当可达性分析算法中某个对象不可达时，他会进入缓刑阶段，如果他覆盖finalize()方法且finalize()方法没有被调用过，他就会进入F-Queue队列中，虚拟机会在一个很慢的线程Finalizer中执行他。在finalize()中对象可以通过把自己赋给某个活着的类变量或对象的成员变量来拯救自己，拯救了自己的对象不会被回收，其他的对象都会被回收掉。</p>
+<h2 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h2><p>Java虚拟机规范中可以不要求实现该部分。<br>回收内容包括两部分，一是废弃常量，即当前没有被引用的常量，二是无用的类，这需要满足3个条件： 1.该类的实例都被回收，2.加载该类的ClassLoader被回收，3.该类对应的java.lang.Class对象没有被引用，无法在任何地方通过反射访问该类的方法。</p>
+<h1 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h1><h2 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h2><p>从根结点出发遍历对象，对访问过的对象打上标记，表示该对象可达,统一标记然后统一回收，这样效率不高并产生了很多内存碎片。</p>
+<h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>把内存分为相同的两块，使用其中一块，当使用完后，将有用的内存移到另外一块上，然后回收整块内存，这样效率很高，但是内存利用率低，他的一种改进是把内存分三块，一块大，两块小，每次使用一块大+一块小，整理时把有用的部分移动到另一块小的，然后清理之前的两块。这个算法在新生代中表现非常出色。但是我们总会碰到整理的时候放不下的情况，这时我们通过内存担保机制，为多余的对象分配内存，并直接进入老年代。</p>
+<h2 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h2><p>在老生代中一般不能使用复制算法，因为他们存活率太高了。我们可以改进标记-清除算法，回收的时候顺便将有用的对象向内存的一端移动，这样就避免了内存碎片的产生。</p>
+<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><p>把Java堆分为新生代和老生代，根据个个年代的特点选择适当的方法。</p>
+<h1 id="HotSpot的GC"><a href="#HotSpot的GC" class="headerlink" title="HotSpot的GC"></a>HotSpot的GC</h1><h2 id="枚举根节点"><a href="#枚举根节点" class="headerlink" title="枚举根节点"></a>枚举根节点</h2><p>根节点很多，有的应用仅方法区就有数百兆，逐个寻找引用会很花费时间，这里使用OopMap来直接记录下一些引用的位置。就省去了寻找的过程，变成了直接定位。</p>
+<h2 id="安全点"><a href="#安全点" class="headerlink" title="安全点"></a>安全点</h2><p>GC的时候，Java的其他线程必须处于安全的位置，以保证引用链不发生变化。虚拟机会适当标记某些安全点，GC的时候其他线程就在这些安全点上。为了保证这一点，有两种中断方式，抢先式中断和主动式中断，抢先式中断指的是首先中断全部线程，如果发现某些线程不在安全点，则让其恢复，运行到安全点在停下来。主动式中断是当GC需要中断时，设置一个标志，让其他线程主动轮流访问，发现标志为真的时候，就主动中断，这里只需要保证进程在安全点访问标志即可。</p>
+<h2 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h2><p>有些Sleep或者Blocked状态的进程无法主动响应JVM的中断请求，运行到安全的地方。我们引入安全区域，在这个区域内，每个地方都是安全点，当线程执行到安全区域时，标记自己进入了安全区域，这段时间JVM可以GC，不用管这些线程，当这些线程离开安全区域的时候，线程检查JVM是否完成GC即可。</p>
+<h1 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h1><h2 id="serial收集器"><a href="#serial收集器" class="headerlink" title="serial收集器"></a>serial收集器</h2><p>单线程收集，GC时暂停所有用户进程,新生代采取复制算法，老生代采取标记-整理算法</p>
+<h2 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h2><p>GC时暂停所有用户进程,新生代采取多线程复制算法，老生代采取单线程标记-整理算法</p>
+<h2 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h2><p>这个收集器和ParNew收集器很像，但是Parallel Scavenge收集器更加关注两个信息，停顿时间和吞吐量，停顿时间指的是GC造成的停顿时间，吞吐量指的是单位时间内不停顿的比率。Parallel Scavenge还支持自动调参。</p>
+<h2 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h2><p><img data-src='/image-2021-03-30-23.02.08.000.png'></img></p>
+<p>这个收集器强调服务的响应速度，希望停顿时间最短。<br>他的过程分四个步骤: 初始标记、并发标记、重新标记、并发清除。初始标记的时候要暂停所有用户进程，然后标记GC ROOT直接关联的对象，这个步骤很快就能结束，然后就可以启动用户进程和GC ROOT Tracing一起并发执行。在并发期间会导致可达性链发生变化，这需要第三个步骤：重新标记，这也会暂停用户进程。最后并发清除即可。</p>
+<p>CMS收集器清理的时候采用的是标记-清理算法</p>
+<h3 id="卡表（card-table）"><a href="#卡表（card-table）" class="headerlink" title="卡表（card table）"></a>卡表（card table）</h3><p>YGC的时候，老年代会引用新生代，所以我们还需要扫描老年代确保他们没有指向新生代的对象，老年代往往很大，扫描整个老年代不现实，为了加速，我们把老年代分成128个字节的card，每个card会有一个bit来记录改card是否引用了新生代。card储存为一个table，所占老生代空间为$\frac{1}{128\ast 8}$</p>
+<h3 id="CMS缺点："><a href="#CMS缺点：" class="headerlink" title="CMS缺点："></a>CMS缺点：</h3><ol>
+<li>cpu资源的占用，因为并发，CMS至少占用一个处理器的份额。如果是重计算的应用，吞吐量可能会有不少的下降。</li>
+<li>浮动垃圾，并发收集的过程中为了保证GC的正确性(保证存活的对象不被回收)，一些本应该可以回收的对象会被标记成活动对象，逃过GC。</li>
+<li>吞吐量的下降。影响因素主要有两点：1、cpu的占用 2、write barrier的额外操作。s</li>
+</ol>
+<h2 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h2><p><img data-src='/image-2021-03-30-23.03.50.000.png'></img></p>
+<blockquote>
+<p>G1收集器是一款在server端运行的垃圾收集器，专门针对于拥有多核处理器和大内存的机器，在JDK 7u4版本发行时被正式推出，在JDK9中更被指定为官方GC收集器。它满足高吞吐量的同时满足GC停顿的时间尽可能短。</p>
+</blockquote>
+<p>G1收集器要先把Java堆分成多个大小相等的独立区域，新生代和老生代都是一部分独立区域，</p>
+<p><img data-src='/image-2021-03-30-20.49.01.199.png'></img></p>
+<p>G1保留了YGC，并引入了MIXGC收集老年代，G1没有FULL GC，而是引入了一种新的serial old Full GC</p>
+<h3 id="YGC"><a href="#YGC" class="headerlink" title="YGC"></a>YGC</h3><p>Eden被充满就会触发YGC，YGC会触发STW(stop the world),YGC的时候不会收集老年代，所以不会去扫描整个老年代，为了避免全盘扫描，对每一个region都引入Remembered Set来记录引用关系（谁引用了我），我们回收这个region的时候，只需要扫描RSet中的记录代表的region即可。G1步骤和CMS一样，但是Remembered Set的存在，让重新标记可以并行完成。</p>
+<h3 id="MIXGC"><a href="#MIXGC" class="headerlink" title="MIXGC"></a>MIXGC</h3><p>MIXGC选择所有的新生代+全局并发标记统计到的老生代。</p>
+<h3 id="全局并发标记"><a href="#全局并发标记" class="headerlink" title="全局并发标记"></a>全局并发标记</h3><ol>
+<li>初始标记，STW(stop the world),标记GC ROOTS直接可达的对象，并将其压入扫描栈，等待后续扫描。</li>
+<li>根区域扫描，根区域扫描是从Survior区的对象出发，标记被引用到老年代中的对象，并把它们的字段在压入扫描栈（marking stack）中等到后续扫描。与Initial Mark不一样的是，Root Region Scanning不需要STW与应用程序是并发运行。Root Region Scanning必须在YGC开始前完成。</li>
+<li>并发标记，并发标记也不需要STW，从扫描栈中取出对象，对其标记，并将其字段压入栈，只到栈为空，扫描过程中还扫描SATB记录的引用，YGC可以中断他。</li>
+<li>重新标记，在并发标记以后，还剩下一些SATB写屏障记录的引用，这个时候需要STW，这部分很快</li>
+<li>清除，STW，清点有存活对象的region和没有存活对象的region，更新reset， 之后就是并发操作了，直接把没有存活对象的region加入到可分配队列中进行分配。</li>
+</ol>
+<p>YGC选择年轻代的region，通过region的个数来控制GC开销</p>
+<p>MIXGC选择所有年轻代region和全局并发标记中评分高的若干老年代region</p>
+<p>YGC和MIXGC都会STW，但是他的时间是可控的。</p>
+<h3 id="STAB"><a href="#STAB" class="headerlink" title="STAB"></a>STAB</h3><p>snapshot at the begin 原始快照</p>
+<blockquote>
+<p>STAB的做法在GC开始时对内存进行一个对象图的逻辑快照(snapshot)，通过GC Roots tracing 参照并发标记的过程，只要被快照到对象是活的，那在整个GC的过程中对象就被认定的是活的，即使该对象的引用稍后被修改或者删除。同时新分配的对象也会被认为是活的，除此之外其它不可达的对象就被认为是死掉了。这样STAB就保证了真正存活的对象不会被GC误回收，但同时也造成了某些可以被回收的对象逃过了GC，导致了内存里面存在浮动的垃圾(float garbage)。</p>
+<p>参考 <span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC81Mjg0MTc4Nw==">https://zhuanlan.zhihu.com/p/52841787</span></p>
+</blockquote>
+<h2 id="Shenandoah垃圾收集器"><a href="#Shenandoah垃圾收集器" class="headerlink" title="Shenandoah垃圾收集器"></a>Shenandoah垃圾收集器</h2><p><span class="exturl" data-url="aHR0cHM6Ly9mYW55aS5iYWlkdS5jb20vdHJhbnNsYXRlP2FsZHR5cGU9MTYwNDcmcXVlcnk9U2hlbmFuZG9haCUwRCUwQSZrZXlmcm9tPWJhaWR1JnNtYXJ0cmVzdWx0PWRpY3QmbGFuZz1hdXRvMnpoI2VuL3poL1NoZW5hbmRvYWg=">Shenandoah [ˌʃɛnənˈdoʊə] </span></p>
+<blockquote>
+<p>Shenandoah 与 G1 对比：</p>
+<p>相同：</p>
+<p>Shenandoah也是使用基于Region的堆内存布局，同样有着用于存放大对象的Humongous Region，默认的回收策略也同样是优先处理回收价值最大的Region</p>
+<p>不同：</p>
+<p>管理堆内存方面，与G1至少有三个明显的不同之处：</p>
+<p>1、Shenandoah 支持并发的整理算法;G1支持并行整理算法。</p>
+<p>2、Shenandoah（目前）是默认不使用分代收集的；G1 有专门的新生代Region或者老年代Region的存在;</p>
+<p>3、Shenandoah摒弃了在G1中耗费大量内存和计算资源去维护的记忆集，改用名为“连接矩阵”（Connection Matrix）的全局数据结构来记录跨Region的引用关系，降低了处理跨代指针时的记忆集维护消耗，也降低了伪共享问题的发生概率。</p>
+<p>可参考：G1回收器每一份Region都必须有一份卡表，这导致G1的记忆集（和其他内存消耗）可能会占整个堆容量的20%乃至更多的内存空间<br>参考《 <span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dhb2hhaWNoZW5nMTIzL2FydGljbGUvZGV0YWlscy8xMDY0MTU0MjgjJUU2JUEwJTg3JUU4JUFFJUIwLSVFNiU5NSVCNCVFNyU5MCU4NiVFNyVBRSU5NyVFNiVCMyU5NQ==">虚拟机垃圾收集器原理</span>》</p>
+</blockquote>
+<h3 id="连接矩阵"><a href="#连接矩阵" class="headerlink" title="连接矩阵"></a>连接矩阵</h3><blockquote>
+<p><img data-src='/image-2021-03-30-23.13.28.000.png'></img></p>
+<p>连接矩阵可以简单理解为一张二维表格，如果Region N有对象指向RegionM，就在表格的N行M列中打上一个标记，如图3-15所示，如果Region 5中的对象Baz引用了Region 3的Foo，Foo又引用了Region 1的Bar，那连接矩阵中的5行3列、3行1列就应该被打上标记。在回收时通过这张表格就可以得出哪些Region之间产生了跨代引用。</p>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dhb2hhaWNoZW5nMTIzL2FydGljbGUvZGV0YWlscy8xMDY0Mzc1MDQ=">https://blog.csdn.net/gaohaicheng123/article/details/106437504</span></p>
+</blockquote>
+<h3 id="Brooks-Pointer"><a href="#Brooks-Pointer" class="headerlink" title="Brooks Pointer"></a>Brooks Pointer</h3><p>Brooks提出转发指针以前，在对象的内存上放置保护陷阱，一旦用户程序读取该内存，则会中断，并陷入操作系统的陷阱，此时由这部分陷阱代码来引导真正的访问。但是频繁的中断会导致频繁的用户态切换，影响效率。</p>
+<p>Brooks提出，不需要中断，我们只用在对象的内存布局前加上一个指针，如果对象不处于并发移动状态，则指针指向自己，否则指向移动到的地方。如果只是读取还好，如果用户需要写入对象的字段就涉及到了并发问题。</p>
+<blockquote>
+<p>实际上Shenandoah收集器是通过比较并交换（Compare And Swap，CAS）操作来保证并发时对象的访问正确性的。</p>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dhb2hhaWNoZW5nMTIzL2FydGljbGUvZGV0YWlscy8xMDY0Mzc1MDQ=">https://blog.csdn.net/gaohaicheng123/article/details/106437504</span></p>
+</blockquote>
+<p>但是，这个代价是复杂的读写屏障问题，读写屏障中如果加入了过多的逻辑，则会导致整个代码的执行效率降低</p>
+<h2 id="ZGC"><a href="#ZGC" class="headerlink" title="ZGC"></a>ZGC</h2><p>ZGC支持各种大小的Region</p>
+<blockquote>
+<p>小型Region（Small Region）：容量固定为2MB，用于放置小于256KB的小对象。</p>
+<p>中型Region（Medium Region）：容量固定为32MB，用于放置大于等于256KB但小于4MB的对象。</p>
+<p>大型Region（Large Region）：容量不固定，可以动态变化，但必须为2MB的整数倍，用于放置4MB或以上的大对象。每个大型Region中只会存放一个大对象，这也预示着虽然名字叫作“大型Region”，但它的实际容量完全有可能小于中型Region，最小容量可低至4MB。大型Region在ZGC的实现中是不会被重分配（重分配是ZGC的一种处理动作，用于复制对象的收集器阶段，稍后会介绍到）的，因为复制一个大对象的代价非常高昂。</p>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dhb2hhaWNoZW5nMTIzL2FydGljbGUvZGV0YWlscy8xMDY0Mzc1MDQ=">https://blog.csdn.net/gaohaicheng123/article/details/106437504</span></p>
+</blockquote>
+<h3 id="染色指针"><a href="#染色指针" class="headerlink" title="染色指针"></a>染色指针</h3><p>在64位linux中，操作系统只提供了46位的地址空间，ZGC染色指针技术使用这46位的指针中的高四位来储存额外信息，这也导致了ZGC智能管理42位的内存空间，即4TB</p>
+<p><img data-src='/image-2021-03-30-23.54.28.000.png'></img></p>
+<ul>
+<li>Finalizable：表示是否只能通过finalize()方法才能被访问到，其他途径不行；</li>
+<li>Remapped：表示是否进入了重分配集（即被移动过）；</li>
+<li>Marked1、Marked0：表示对象的三色标记状态；</li>
+</ul>
+<h3 id="三色标记"><a href="#三色标记" class="headerlink" title="三色标记"></a>三色标记</h3><table>
+<thead>
+<tr>
+<th align="left">颜色</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">白色</td>
+<td align="center">表示对象尚未被垃圾收集器访问过</td>
+</tr>
+<tr>
+<td align="left">黑色</td>
+<td align="center">表示对象已经被垃圾收集器访问过，<br />且这个对象的所有引用都已经扫描过</td>
+</tr>
+<tr>
+<td align="left">灰色</td>
+<td align="center">表示对象已经被垃圾收集器访问过，<br />但这个对象上至少存在一个引用还没有被扫描过。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>可达性分析的扫描过程，其实就是一股以灰色为波峰的波纹从黑向白推进的过程，但是在并发的推进过程中会产生“对象消失”的问题，如图：</p>
+<p><img data-src='/image-2021-03-31-00.04.39.000.png'></img></p>
+<p>对象消失理论，只有同时满足才会发生对象消失：</p>
+<ul>
+<li><p>赋值器插入了一条或多条从黑色对象到白色对象的新引用；</p>
+</li>
+<li><p>赋值器删除了全部从灰色对象到该白色对象的直接或间接引用；</p>
+</li>
+</ul>
+<p>要解决对象消失问题只需要破坏其中一条就行了，目前常用有两种方案：</p>
+<ul>
+<li><p>增量更新（Incremental Update）:增量更新要破坏的是第一个条件，当黑色对象插入新的指向白色对象的引用关系时，就将这个新插入的引用记录下来，等并发扫描结束之后，再将这些记录过的引用关系中的黑色对象为根，重新扫描一次。这可以简化理解为，黑色对象一旦新插入了指向白色对象的引用之后，它就变回灰色对象了。</p>
+</li>
+<li><p>原始快照（Snapshot At TheBeginning，SATB）:原始快照要破坏的是第二个条件，当灰色对象要删除指向白色对象的引用关系时，就将这个要删除的引用记录下来，在并发扫描结束之后，再将这些记录过的引用关系中的灰色对象为根，重新扫描一次。这也可以简化理解为，无论引用关系删除与否，都会按照刚刚开始扫描那一刻的对象图快照来进行搜索。</p>
+</li>
+</ul>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpYW9seXVoMTIzL2FydGljbGUvZGV0YWlscy8xMDM5MzcxNjQ=">https://blog.csdn.net/xiaolyuh123/article/details/103937164</span></p>
+</blockquote>
+<blockquote>
+<p>并发标记（Concurrent Mark）：与G1、Shenandoah一样，并发标记是遍历对象图做可达性分析的阶段，它的初始标记和最终标记也会出现短暂的停顿，整个标记阶段只会更新染色指针中的Marked 0、Marked 1标志位。</p>
+<p>并发预备重分配（Concurrent Prepare for Relocate）：这个阶段需要根据特定的查询条件统计得出本次收集过程要清理哪些Region，将这些Region组成重分配集（Relocation Set）。ZGC每次回收都会扫描所有的Region，用范围更大的扫描成本换取省去G1中记忆集的维护成本。</p>
+<p>并发重分配（Concurrent Relocate）：重分配是ZGC执行过程中的核心阶段，这个过程要把重分配集中的存活对象复制到新的Region上，并为重分配集中的每个Region维护一个转发表（Forward Table），记录从旧对象到新对象的转向关系。ZGC收集器能仅从引用上就明确得知一个对象是否处于重分配集之中，如果用户线程此时并发访问了位于重分配集中的对象，这次访问将会被预置的内存屏障所截获，然后立即根据Region上的转发表记录将访问转发到新复制的对象上，并同时修正更新该引用的值，使其直接指向新对象，ZGC将这种行为称为指针的“自愈”（Self-Healing）能力。</p>
+<blockquote>
+<p>ZGC的染色指针因为“自愈”（Self-Healing）能力，所以只有第一次访问旧对象会变慢，而Shenandoah的Brooks转发指针是每次都会变慢。</p>
+<p>一旦重分配集中某个Region的存活对象都复制完毕后，这个Region就可以立即释放用于新对象的分配，但是转发表还得留着不能释放掉，因为可能还有访问在使用这个转发表。</p>
+</blockquote>
+<p>并发重映射（Concurrent Remap）：重映射所做的就是修正整个堆中指向重分配集中旧对象的所有引用，但是ZGC中对象引用存在“自愈”功能，所以这个重映射操作并不是很迫切。ZGC很巧妙地把并发重映射阶段要做的工作，合并到了下一次垃圾收集循环中的并发标记阶段里去完成，反正它们都是要遍历所有对象的，这样合并就节省了一次遍历对象图的开销。<br>参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpYW9seXVoMTIzL2FydGljbGUvZGV0YWlscy8xMDM5MzcxNjQ=">https://blog.csdn.net/xiaolyuh123/article/details/103937164</span></p>
+</blockquote>
+<h1 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h1><p>对象优先分配在Eden中，Eden就是堆中的大块，若不能分，则进行新生代都GC</p>
+<p>大对象直接进入老年代</p>
+<p>对象每存活于一次新生代GC，则年龄增长一岁，达到15岁的时候便进入了老年代。</p>
+<p>如果所有年龄相同的对象所占空间超过了一半，则此年龄以上的对象全部进入老年代。</p>
+<p>在新生代GC的时候会碰到空间不够的情况，这时需要空间分配担保机制，根据概率论设置阈值，在新生代GC的时候根据以往晋升到老年代的对象内存大小的均值和方差计算阈值，若老年代剩余空间小于阈值，则会先进行老年代GC腾出空间，若老年代剩余空间大于阈值，则直接进行新生代GC，这时会有非常小的概率，GC失败，然后出发老年代GC。这里和TCP协议中动态滑动窗口大小协议有点类似。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《深入理解Java虚拟机JVM高级特性与最佳实践第2版》</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC81Mjg0MTc4Nz9mcm9tX3ZvdGVyc19wYWdlPXRydWU=">G1 收集器原理理解与分析</span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly94aWFvbHl1aC5ibG9nLmNzZG4ubmV0L2FydGljbGUvZGV0YWlscy8xMDM5MzU0NjU=">深入理解JVM - Shenandoah垃圾收集器</span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dhb2hhaWNoZW5nMTIzL2FydGljbGUvZGV0YWlscy8xMDY0Mzc1MDQ=">深入理解java虚拟机—— 虚拟机 新型垃圾收集器 Shenandoah GC, ZGC</span></p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-03-30 21:47:31" itemprop="dateModified" datetime="2021-03-30T21:47:31+08:00">2021-03-30</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/Q5KTS0.html" title="垃圾收集器与内存分配策略">http://fightinggg.github.io/shoka/Q5KTS0.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/Q5KMBU.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giph4baakhj20zk0m8h5q.jpg" title="Java内存区域于内存溢出异常">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> JVM</span>
+  <h3>Java内存区域于内存溢出异常</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/Q5QPOK.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicm0n457cj20zk0m8e81.jpg" title="Java内存模型与线程">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> JVM</span>
+  <h3>Java内存模型与线程</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%B7%B2%E6%AD%BB"><span class="toc-number">1.</span> <span class="toc-text">如何判断对象已死</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">引用计数算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">可达性分析算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E5%88%86%E7%B1%BB"><span class="toc-number">1.3.</span> <span class="toc-text">引用分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%AD%98%E8%BF%98%E6%98%AF%E6%AD%BB%E4%BA%A1"><span class="toc-number">1.4.</span> <span class="toc-text">生存还是死亡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E6%94%B6%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-number">1.5.</span> <span class="toc-text">回收方法区</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">标记-清除算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">复制算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">标记-整理算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-number">2.4.</span> <span class="toc-text">分代收集算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HotSpot%E7%9A%84GC"><span class="toc-number">3.</span> <span class="toc-text">HotSpot的GC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E6%A0%B9%E8%8A%82%E7%82%B9"><span class="toc-number">3.1.</span> <span class="toc-text">枚举根节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E7%82%B9"><span class="toc-number">3.2.</span> <span class="toc-text">安全点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">3.3.</span> <span class="toc-text">安全区域</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#serial%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">serial收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParNew%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">ParNew收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel-Scavenge%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.3.</span> <span class="toc-text">Parallel Scavenge收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.4.</span> <span class="toc-text">CMS收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%A1%E8%A1%A8%EF%BC%88card-table%EF%BC%89"><span class="toc-number">4.4.1.</span> <span class="toc-text">卡表（card table）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="toc-number">4.4.2.</span> <span class="toc-text">CMS缺点：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.5.</span> <span class="toc-text">G1收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#YGC"><span class="toc-number">4.5.1.</span> <span class="toc-text">YGC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MIXGC"><span class="toc-number">4.5.2.</span> <span class="toc-text">MIXGC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0"><span class="toc-number">4.5.3.</span> <span class="toc-text">全局并发标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#STAB"><span class="toc-number">4.5.4.</span> <span class="toc-text">STAB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shenandoah%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">4.6.</span> <span class="toc-text">Shenandoah垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%9F%A9%E9%98%B5"><span class="toc-number">4.6.1.</span> <span class="toc-text">连接矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Brooks-Pointer"><span class="toc-number">4.6.2.</span> <span class="toc-text">Brooks Pointer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZGC"><span class="toc-number">4.7.</span> <span class="toc-text">ZGC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%93%E8%89%B2%E6%8C%87%E9%92%88"><span class="toc-number">4.7.1.</span> <span class="toc-text">染色指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0"><span class="toc-number">4.7.2.</span> <span class="toc-text">三色标记</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5"><span class="toc-number">5.</span> <span class="toc-text">内存分配与回收策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q5KF8D.html" rel="bookmark" title="走进Java">走进Java</a></li><li><a href="/shoka/Q5KMBU.html" rel="bookmark" title="Java内存区域于内存溢出异常">Java内存区域于内存溢出异常</a></li><li class="active"><a href="/shoka/Q5KTS0.html" rel="bookmark" title="垃圾收集器与内存分配策略">垃圾收集器与内存分配策略</a></li><li><a href="/shoka/Q5QPOK.html" rel="bookmark" title="Java内存模型与线程">Java内存模型与线程</a></li><li><a href="/shoka/Q5SN0R.html" rel="bookmark" title="Java线程安全与锁优化">Java线程安全与锁优化</a></li><li><a href="/shoka/Q5TYBT.html" rel="bookmark" title="早期(编译期)优化">早期(编译期)优化</a></li><li><a href="/shoka/Q5W8L1.html" rel="bookmark" title="晚期(运行期)优化">晚期(运行期)优化</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/Q5KMBU.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/Q5QPOK.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/hdu1850.html" title="hdu1850">hdu1850</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/" title="分类于 牛客">牛客</a>
+</div>
+
+    <span><a href="/shoka/PZRZBZ.html" title="牛客挑战赛33D">牛客挑战赛33D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8TZMM.html" title="SpringBoot3-日志">SpringBoot3-日志</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/" title="分类于 总结">总结</a>
+</div>
+
+    <span><a href="/shoka/2018%E7%89%9B%E5%AE%A2%E6%80%BB%E7%BB%93.html" title="2018牛客总结">2018牛客总结</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/" title="分类于 思维">思维</a>
+</div>
+
+    <span><a href="/shoka/PQBI61.html" title="莫队算法">莫队算法</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" title="分类于 数学">数学</a>
+</div>
+
+    <span><a href="/shoka/PV8ORI.html" title="类欧几里得算法">类欧几里得算法</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/RCFBSC.html" title="白帽子讲Web安全">白帽子讲Web安全</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/Q79RYN.html" title="trie">trie</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="分类于 操作系统">操作系统</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/" title="分类于 Linux">Linux</a>
+</div>
+
+    <span><a href="/shoka/Q7U3N4.html" title="linux指令学习">linux指令学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8S6PM.html" title="springboot">springboot</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'Q5KTS0.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

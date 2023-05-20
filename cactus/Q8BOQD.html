@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  spring中的AOP 连接点，被拦截到的点，在spring中指的是方法 切入点，被增强的连接点 通知 在调用方法前的是前置通知，在后面的是后置通知，在catch中的是异常通知，在final中的是最终通知">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring10-配置AOP">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q8BOQD.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  spring中的AOP 连接点，被拦截到的点，在spring中指的是方法 切入点，被增强的连接点 通知 在调用方法前的是前置通知，在后面的是后置通知，在catch中的是异常通知，在final中的是最终通知">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-05T16:06:13.000Z">
+<meta property="article:modified_time" content="2020-04-05T16:06:13.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>spring10-配置AOP</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q8DH6N.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q8BOQ3.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8BOQD.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8BOQD.html&text=spring10-配置AOP"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8BOQD.html&is_video=false&description=spring10-配置AOP"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=spring10-配置AOP&body=Check out this article: http://fightinggg.github.io/cactus/Q8BOQD.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8BOQD.html&name=spring10-配置AOP&description=&lt;div&gt;&lt;a href=&#34;/next/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;spring中的AOP&#34;&gt;&lt;a href=&#34;#spring中的AOP&#34; class=&#34;headerlink&#34; title=&#34;spring中的AOP&#34;&gt;&lt;/a&gt;spring中的AOP&lt;/h1&gt;&lt;p&gt; 连接点，被拦截到的点，在spring中指的是方法&lt;br&gt; 切入点，被增强的连接点&lt;br&gt; 通知 在调用方法前的是前置通知，在后面的是后置通知，在catch中的是异常通知，在final中的是最终通知，整个invoke方法就是环绕通知&lt;br&gt; Target 被代理的对象&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8BOQD.html&t=spring10-配置AOP"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spring%E4%B8%AD%E7%9A%84AOP"><span class="toc-number">1.</span> <span class="toc-text">spring中的AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#spring%E4%B8%AD%E7%9A%84AOP%E8%A6%81%E6%98%8E%E7%A1%AE%E7%9A%84%E4%BA%8B%E6%83%85"><span class="toc-number">1.0.1.</span> <span class="toc-text">spring中的AOP要明确的事情</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spring%E4%B8%ADAOP%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">spring中AOP的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E9%85%8D%E7%BD%AEAOP"><span class="toc-number">1.1.1.</span> <span class="toc-text">XML配置AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E9%85%8D%E5%86%99%E6%B3%95"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">通配写法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E6%80%8E%E4%B9%88%E5%86%99%E5%91%A2"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">实际开发怎么写呢</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E9%80%9A%E7%9F%A5%E9%83%BD%E5%8A%A0%E8%BF%9B%E6%9D%A5"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">各种通知都加进来</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%88%87%E7%82%B9"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">配置切点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">配置环绕通知</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AEAOP"><span class="toc-number">1.1.2.</span> <span class="toc-text">注解配置AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">开启注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Aspect"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">@Aspect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Pointcut"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">@Pointcut</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Before"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">@Before</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">注解调用顺序的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%AF%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">纯注解</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        spring10-配置AOP
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-05T16:06:13.000Z" class="dt-published" itemprop="datePublished">2020-04-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/Java/">Java</a> › <a class="category-link" href="/cactus/categories/Language/Java/Spring/">Spring</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8BOQD.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="spring中的AOP"><a href="#spring中的AOP" class="headerlink" title="spring中的AOP"></a>spring中的AOP</h1><p> 连接点，被拦截到的点，在spring中指的是方法<br> 切入点，被增强的连接点<br> 通知 在调用方法前的是前置通知，在后面的是后置通知，在catch中的是异常通知，在final中的是最终通知，整个invoke方法就是环绕通知<br> Target 被代理的对象</p>
+<span id="more"></span>
+<p> proxy 代理对象<br> 织入 把被代理对象增强的过程<br> 切面  通知+切入点</p>
+<h3 id="spring中的AOP要明确的事情"><a href="#spring中的AOP要明确的事情" class="headerlink" title="spring中的AOP要明确的事情"></a>spring中的AOP要明确的事情</h3><p> 编写核心代码，抽取公共代码制作为通知，在配置文件中声明切入点和通知之间的关系</p>
+<h2 id="spring中AOP的配置"><a href="#spring中AOP的配置" class="headerlink" title="spring中AOP的配置"></a>spring中AOP的配置</h2><h3 id="XML配置AOP"><a href="#XML配置AOP" class="headerlink" title="XML配置AOP"></a>XML配置AOP</h3><p> aop:config 表明aop配置开始,<br> aop:aspect 切面配置开始 id是切面的名字，ref是通知类bean<br> aop:before 前置通知 method用于指定中的方法 pointcut是切入点</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&#x27;logger&#x27;</span> <span class="attr">class</span>=<span class="string">&quot;com.wsx.utils.logger&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">&quot;logAdvice&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;logger&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;pringLog&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="通配写法"><a href="#通配写法" class="headerlink" title="通配写法"></a>通配写法</h4><p> 访问修饰符可以省略 如public<br> 返回值可以是通配符，表示任意返回值<br> 包名可以是通配符表示任意包，几个包就有几个*， 可以用..*表示当前包的所有子包<br> 方法可以用*<br> 参数可以用通配符，或者类型名<br>  * *..**.*(..)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&#x27;logger&#x27;</span> <span class="attr">class</span>=<span class="string">&quot;com.wsx.utils.logger&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">&quot;logAdvice&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;logger&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;pringLog&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(* *..*.*(..)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="实际开发怎么写呢"><a href="#实际开发怎么写呢" class="headerlink" title="实际开发怎么写呢"></a>实际开发怎么写呢</h4><p>  * com.wsx.wsx.wsx.*.*(..)</p>
+<h4 id="各种通知都加进来"><a href="#各种通知都加进来" class="headerlink" title="各种通知都加进来"></a>各种通知都加进来</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&#x27;logger&#x27;</span> <span class="attr">class</span>=<span class="string">&quot;com.wsx.utils.logger&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">&quot;logAdvice&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;logger&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;before&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">&quot;after-returning&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-returning</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;after-throwing&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwing</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;after&quot;</span> <span class="attr">porint</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置切点"><a href="#配置切点" class="headerlink" title="配置切点"></a>配置切点</h4><p> 减少代码量，写在aop:aspect外可以所有切面都可以使用(写在aspect之前)，写在aop:aspect内只在内部有用</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&#x27;logger&#x27;</span> <span class="attr">class</span>=<span class="string">&quot;com.wsx.utils.logger&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">&quot;logAdvice&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;logger&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;before&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">&quot;after-returning&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-returning</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;after-throwing&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;after&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;pt1&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:pointcut</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置环绕通知"><a href="#配置环绕通知" class="headerlink" title="配置环绕通知"></a>配置环绕通知</h4><p> 当我们配置了环绕通知以后，spring就不自动帮我们调用被代理对象了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">&quot;?&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pt1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:around</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">arroundPringLog</span><span class="params">(ProceedingJoinPoint pjp)</span>&#123;</span><br><span class="line">    <span class="type">Object</span> <span class="variable">rtValue</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        Object[] args = pjp.getArgs(); <span class="comment">// 获得参数</span></span><br><span class="line">        rtValue = pip.proceed(args); <span class="comment">//调用函数</span></span><br><span class="line">        <span class="keyword">return</span> rtValue;</span><br><span class="line">    &#125;<span class="keyword">catch</span>(Throwable t)&#123;</span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="注解配置AOP"><a href="#注解配置AOP" class="headerlink" title="注解配置AOP"></a>注解配置AOP</h3><h4 id="开启注解"><a href="#开启注解" class="headerlink" title="开启注解"></a>开启注解</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:aspectj-autoproxy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Aspect"><a href="#Aspect" class="headerlink" title="@Aspect"></a>@Aspect</h4><p> 表明当前类是一个切面类</p>
+<h4 id="Pointcut"><a href="#Pointcut" class="headerlink" title="@Pointcut"></a>@Pointcut</h4><p> 切入点表达式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pointcut(&quot;execution(public void com.wsx.wsx.wsx.saveAccount())&quot;)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">pt1</span><span class="params">()</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Before"><a href="#Before" class="headerlink" title="@Before"></a>@Before</h4><p> 表明当前方法是一个前置通知， AfterReturning、AfterThrowing、After、Arount同理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before(&quot;pt1()&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f</span><span class="params">()</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="注解调用顺序的问题"><a href="#注解调用顺序的问题" class="headerlink" title="注解调用顺序的问题"></a>注解调用顺序的问题</h4><p> 前置、最终、后置&#x2F;异常</p>
+<h4 id="纯注解"><a href="#纯注解" class="headerlink" title="纯注解"></a>纯注解</h4><p> 加在类的前面即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(..)</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy</span></span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spring%E4%B8%AD%E7%9A%84AOP"><span class="toc-number">1.</span> <span class="toc-text">spring中的AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#spring%E4%B8%AD%E7%9A%84AOP%E8%A6%81%E6%98%8E%E7%A1%AE%E7%9A%84%E4%BA%8B%E6%83%85"><span class="toc-number">1.0.1.</span> <span class="toc-text">spring中的AOP要明确的事情</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spring%E4%B8%ADAOP%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">spring中AOP的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XML%E9%85%8D%E7%BD%AEAOP"><span class="toc-number">1.1.1.</span> <span class="toc-text">XML配置AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E9%85%8D%E5%86%99%E6%B3%95"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">通配写法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E6%80%8E%E4%B9%88%E5%86%99%E5%91%A2"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">实际开发怎么写呢</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E9%80%9A%E7%9F%A5%E9%83%BD%E5%8A%A0%E8%BF%9B%E6%9D%A5"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">各种通知都加进来</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%88%87%E7%82%B9"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">配置切点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E7%BB%95%E9%80%9A%E7%9F%A5"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">配置环绕通知</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AEAOP"><span class="toc-number">1.1.2.</span> <span class="toc-text">注解配置AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">开启注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Aspect"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">@Aspect</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Pointcut"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">@Pointcut</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Before"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">@Before</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">注解调用顺序的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%AF%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">纯注解</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8BOQD.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8BOQD.html&text=spring10-配置AOP"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8BOQD.html&is_video=false&description=spring10-配置AOP"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=spring10-配置AOP&body=Check out this article: http://fightinggg.github.io/cactus/Q8BOQD.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8BOQD.html&title=spring10-配置AOP"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8BOQD.html&name=spring10-配置AOP&description=&lt;div&gt;&lt;a href=&#34;/next/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8BOQD.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;spring中的AOP&#34;&gt;&lt;a href=&#34;#spring中的AOP&#34; class=&#34;headerlink&#34; title=&#34;spring中的AOP&#34;&gt;&lt;/a&gt;spring中的AOP&lt;/h1&gt;&lt;p&gt; 连接点，被拦截到的点，在spring中指的是方法&lt;br&gt; 切入点，被增强的连接点&lt;br&gt; 通知 在调用方法前的是前置通知，在后面的是后置通知，在catch中的是异常通知，在final中的是最终通知，整个invoke方法就是环绕通知&lt;br&gt; Target 被代理的对象&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8BOQD.html&t=spring10-配置AOP"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

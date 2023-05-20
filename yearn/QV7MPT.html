@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>跟我一起自己写编译器-6.语义分析</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    跟我一起自己写编译器-6.语义分析
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2021-06-24T14:25:05.000Z" itemprop="datePublished">2021-06-24</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2021-08-29T09:41:05.000Z" itemprop="dateUpdated">2021-08-29</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPT.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="6-语义分析"><a href="#6-语义分析" class="headerlink" title="6. 语义分析"></a>6. 语义分析</h1><h1 id="6-1-语法制导翻译"><a href="#6-1-语法制导翻译" class="headerlink" title="6.1. 语法制导翻译"></a>6.1. 语法制导翻译</h1><p>语法制导翻译分为两类，一类是S型语法制导翻译，另一类是L型语法制导翻译。这里我们主要介绍S型语法制导翻译，因为他更简单，更加适用于语法树。</p>
+<h1 id="6-2-S型语法制导翻译"><a href="#6-2-S型语法制导翻译" class="headerlink" title="6.2. S型语法制导翻译"></a>6.2. S型语法制导翻译</h1><p>当我们构建出语法书以后，其每个节点与自己的子节点的关系就是产生式的关系，对语法树进行DFS就是遍历整个语法树，很多信息可以在遍历的过程中自底向上进行逐步翻译。</p>
+<span id="more"></span>
+
+<h1 id="6-3-正则文法语法制导翻译"><a href="#6-3-正则文法语法制导翻译" class="headerlink" title="6.3. 正则文法语法制导翻译"></a>6.3. 正则文法语法制导翻译</h1><p>这里列举一个笔者的项目compiler中一个有趣的子模块，<a target="_blank" rel="noopener" href="https://github.com/fightinggg/compiler/blob/master/main/src/main/java/com/example/lang/reg/RegSyntaxDirectedTranslation.java">正则子模块</a>，</p>
+<p>直接看代码, 这里是一个语法制导翻译片段，在产生式<code>unit -&gt; char</code>下， </p>
+<p>其中有四个参数，fa是上下问信息，rt是当前节点，sonlist是子节点数组，accessAllSon是一个子树分析的接口。</p>
+<p>首先调用<code> accessAllSon.run();</code>将子树进行翻译</p>
+<p>当子树翻译完成以后，sonlist中会有子节点的所有信息，这时候我们只需要将子树所生产的nfa放入当前节点的nfa即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map.entry(<span class="string">&quot;unit -&gt; char&quot;</span>, (fa, rt, sonList, accessAllSon) -&gt; &#123;</span><br><span class="line">    accessAllSon.run();</span><br><span class="line">    rt.put(<span class="string">&quot;nfa&quot;</span>, sonList.get(<span class="number">0</span>).get(<span class="string">&quot;nfa&quot;</span>));</span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+
+<p>然后看星号片段，一个正则后面紧跟着一个add代表这个正则可以出现1次或者多次，所以我们只需要先对子树进行翻译，然后取出翻译后的unit的nfa，对他进行自循环操作。何为自循环可见<code>5.5.4. 正则例4</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map.entry(<span class="string">&quot;unit -&gt; unit add&quot;</span>, (fa, rt, sonList, accessAllSon) -&gt; &#123;</span><br><span class="line">    accessAllSon.run();</span><br><span class="line">    Nfa&lt;Object, String&gt; nfa = toNfa(sonList.get(<span class="number">0</span>).get(<span class="string">&quot;nfa&quot;</span>));</span><br><span class="line">    rt.put(<span class="string">&quot;nfa&quot;</span>, NfaUtils.series(nfa, NfaUtils.selfLoop(nfa, Nfa.EMPTY_TRANS), Nfa.EMPTY_TRANS));</span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="6-4-JSON文法语法制导翻译"><a href="#6-4-JSON文法语法制导翻译" class="headerlink" title="6.4. JSON文法语法制导翻译"></a>6.4. JSON文法语法制导翻译</h1><p>然后来看笔者i项目中另一个有趣的子模块，<a target="_blank" rel="noopener" href="https://github.com/fightinggg/compiler/blob/master/main/src/main/java/com/example/lang/json/JsonSyntaxDirectedTranslation.java">JSON子模块</a>, 这部分代码非常短，我们就直接全部贴过来，</p>
+<p><code>object -&gt; string | array | leftCurlyBracket kvs rightCurlyBracket  </code>等 则直接将子树的结果放入当前的obj</p>
+<p><code>kv -&gt; string colon object</code>则将子树的string变为key，obj当作value，制造一个map</p>
+<p><code>kvs -&gt; kvs comma kv</code>则合并子树的map</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, SyntaxDirectedTranslationUtils.SyntaxDirectedTranslationConsumer&gt; innerNodeConfig = Map.ofEntries(</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; string&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;tokenRaw&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; number&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>();</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; array&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; leftCurlyBracket kvs rightCurlyBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">1</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;object -&gt; leftCurlyBracket rightCurlyBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, Map.of());</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;target -&gt; object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;array -&gt; leftSquareBracket objects rightSquareBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">1</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;array -&gt; leftSquareBracket rightSquareBracket&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, List.of());</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kvs -&gt; kv&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kvs -&gt; kvs comma kv&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        Map&lt;String, Object&gt; kvs = toMap(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        Map&lt;String, Object&gt; kv = toMap(son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, MergeableMap.merge(kvs, kv));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;kv -&gt; string colon object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> toString(son.get(<span class="number">0</span>).get(<span class="string">&quot;tokenRaw&quot;</span>));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">value</span> <span class="operator">=</span> son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>);</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, Map.of(key, value));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;objects -&gt; object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, List.of(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>)));</span><br><span class="line">    &#125;),</span><br><span class="line">    Map.entry(<span class="string">&quot;objects -&gt; objects comma object&quot;</span>, (fa, rt, son, accessAllSon) -&gt; &#123;</span><br><span class="line">        accessAllSon.run();</span><br><span class="line">        Collection&lt;Object&gt; l1 = toList(son.get(<span class="number">0</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        Collection&lt;Object&gt; l2 = List.of(son.get(<span class="number">2</span>).get(<span class="string">&quot;object&quot;</span>));</span><br><span class="line">        rt.put(<span class="string">&quot;object&quot;</span>, MergeableCollection.merge(l1, l2));</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-5-Pava子项目语法制导翻译"><a href="#6-5-Pava子项目语法制导翻译" class="headerlink" title="6.5. Pava子项目语法制导翻译"></a>6.5. Pava子项目语法制导翻译</h1><p>pava语言是一门类c语言，其支持函数、整形、字符串、加减乘除等运算、for、if、while等循环。</p>
+<p>pava项目非常复杂，其中涉及到了三地址代码、作用域、CPU抽象、寄存器分配等信息，这里不打算展开，笔者会在另一篇Blog中进行详细分析。这里只做简要介绍。</p>
+<h2 id="6-5-1-三地址代码"><a href="#6-5-1-三地址代码" class="headerlink" title="6.5.1. 三地址代码"></a>6.5.1. 三地址代码</h2><p>三地址代码是一种类似于汇编的代码，每个代码最多只有三个地址，一个运算，往往为第二和第三个地址操作以后，其值存入地址1。</p>
+<h2 id="6-5-2-变量定义"><a href="#6-5-2-变量定义" class="headerlink" title="6.5.2. 变量定义"></a>6.5.2. 变量定义</h2><p>当定义一个变量时，将其作用域提升至函数入口，具体方案为在语法制导翻译的时候将子树的作用域合并到自己身上</p>
+<h2 id="6-5-3-变量计算"><a href="#6-5-3-变量计算" class="headerlink" title="6.5.3. 变量计算"></a>6.5.3. 变量计算</h2><p>按照语法制导翻译，所有的二元运算、一元运算，都需要新建一个临时变量来储存</p>
+<h2 id="6-5-4-if-条件分支"><a href="#6-5-4-if-条件分支" class="headerlink" title="6.5.4. if 条件分支"></a>6.5.4. if 条件分支</h2><p>if只需要支持jump指令即可翻译，先计算if的条件的值，将其结果放入临时变量，然后使用jumpIfTrue这种指令来进行跳转。</p>
+<h2 id="6-5-5-for-x2F-while循环"><a href="#6-5-5-for-x2F-while循环" class="headerlink" title="6.5.5. for&#x2F;while循环"></a>6.5.5. for&#x2F;while循环</h2><p>稍微改改if的跳转即可实现</p>
+<h2 id="6-5-6-函数"><a href="#6-5-6-函数" class="headerlink" title="6.5.6. 函数"></a>6.5.6. 函数</h2><p>函数是一个很复杂的东西，当调用一个函数的时候，需要保存当前所有的变量，然后参数入栈，跳转，</p>
+<p>当一个函数执行时， 需要从栈中取出变量，执行函数体以后，需要从栈中取出返回地址（PC指针），将返回值存入寄存器，然后返回。</p>
+<h1 id="6-6-IF条件分支翻译"><a href="#6-6-IF条件分支翻译" class="headerlink" title="6.6. IF条件分支翻译"></a>6.6. IF条件分支翻译</h1><p>查看下面的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if condititon code1 else code2</span><br></pre></td></tr></table></figure>
+
+
+
+<p>假设condition的代码为conditon.code,这段代码执行完以后值保留在地址condition.address中，</p>
+<p>假设code1的代码为code1.code, code2的代码为code2.code，</p>
+<p>这是的代码布局为四段，第一段对应if，先执行完condition.code，然后根据conditon.address来决定是否跳转到code2Begin，</p>
+<p>如果为真则跳转，否则继续向下执行</p>
+<p>注意到code1.code和code2.code执行完以后，都会跳转的到LABEL IFEND</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$&#123;conditon.code&#125;</span><br><span class="line">JUMIFFALSE conditon.address code2Begin</span><br><span class="line"></span><br><span class="line">LABEL code1Begin</span><br><span class="line">$&#123;code1.code&#125;</span><br><span class="line">JUMP IFEND</span><br><span class="line"></span><br><span class="line">LABEL code2Begin</span><br><span class="line">$&#123;code2.code&#125;</span><br><span class="line">JUMP IFEND</span><br><span class="line"></span><br><span class="line">LABEL IFEND</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="6-7-WHILE循环翻译"><a href="#6-7-WHILE循环翻译" class="headerlink" title="6.7. WHILE循环翻译"></a>6.7. WHILE循环翻译</h1><p>还是一样</p>
+<p>假设condition的代码为conditon.code,这段代码执行完以后值保留在地址condition.address中，</p>
+<p>假设code的代码为code.code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while condititon code</span><br></pre></td></tr></table></figure>
+
+<p>代码分为四段</p>
+<p>第一段为while的开始，</p>
+<p>第二段为条件判断，如果为真则跳转到whileEnd，否则向下执行</p>
+<p>第三段为code，执行以后跳转到whileBegin进行重新循环</p>
+<p>第四段为whlieEnd,是while循环的出口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LABEL whileBegin</span><br><span class="line"></span><br><span class="line">$&#123;conditon.code&#125;</span><br><span class="line">JUMIFFALSE conditon.address whileEnd</span><br><span class="line"></span><br><span class="line">$&#123;code1.code&#125;</span><br><span class="line">JUMP whileBegin</span><br><span class="line"></span><br><span class="line">LABEL whileEnd</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="6-8-FOR-x2F-DOWHILE循环"><a href="#6-8-FOR-x2F-DOWHILE循环" class="headerlink" title="6.8. FOR&#x2F;DOWHILE循环"></a>6.8. FOR&#x2F;DOWHILE循环</h1><p>和while一样</p>
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

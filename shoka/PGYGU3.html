@@ -1,0 +1,682 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PGYGU3.html">
+
+
+
+  <title>
+网络流24题 - 图论 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">网络流24题
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2018-10-21 23:39:39">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2018-10-21T23:39:39+08:00">2018-10-21</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0fdw5cj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeuibk9fj20zk0m8ay2.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhnx9glj20zk0m8npd.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclj61ylzj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclfw2t96j20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciusoyjnj219g0u0x56.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" itemprop="item" rel="index" title="分类于 图论"><span itemprop="name">图论</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PGYGU3.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGYGU3.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc1Ng==">P2756 飞行员配对方案问题</span></p>
+<p>求二分图匹配，输出谁和谁匹配</p>
+<p>使用反向边是否存在流量来输出路径。 </p>
+<h1 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc2Mg==">P2762 太空飞行计划问题</span></p>
+<p>求有向图的最大权闭合子图</p>
+<p>将正权点连接s,容量为点权,负权点连接t容量为点权绝对值,所求得的一个割将图分为两部分,我们发现所有正点权的和减去该简单割，便是与s相连的闭合图的权，因为最小割所以最大权闭合图（即给定常数c，求c-a的最大值，等价于求c减去a的最小值）。注意跑完最大流以后，与s相连的点构成的点集就是最大权闭合图。学会了使用bfs之后 的lv数组来输出路径 </p>
+<h1 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc2NCNzdWI=">P2764 最小路径覆盖问题</span></p>
+<p>求DAG的最小路径覆盖</p>
+<p>用原图建立一个两层的新图，如果原图中存在边i-&gt;j我 们建立的新图就有第一层的点i流到第二层的点j，最后建立超级源点流向 所有的第一层图的点，建立超级汇点，由所有第二层的图流入，用DAG的总点数减去去所求的最大流就是最小路径。</p>
+<p>在构造的二分图中的最大流映射回原图，发现每个点最多有一个入度，一个出度，显然整个图形成了一些不相交的链，于是点数减去边数就是联通块的个数。即总点数减去匹配数就是最小路径数。</p>
+<h1 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3UuY29tLmNuL3Byb2JsZW0vUDI3NjU=">P2765 魔术球问题</span></p>
+<p>依旧是是一个最小路径覆盖的问题，我们考虑把球当作点，把盒子当成路径，那么很明显，连边方式就是i-&gt;j当且仅当i&lt;&#x3D;n且j&lt;&#x3D;n且i+j&#x3D;k^2.<br>但是这样子做我们只能解决这样一个问题: 给你从1到n的n个球我们可以找到最少的盒子来装球。 </p>
+<p>仔细分析发现题目给的问题可以二分处理，我们二分来判断n个盒子能不能装到k个球就可以了。 </p>
+<h1 id="第五题"><a href="#第五题" class="headerlink" title="第五题"></a>第五题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMzI1NA==">P3254 圆桌问题</span></p>
+<p>给m组人，每个人要分到不同的桌子上，每个桌子可以一定量的人，组内的人不能坐在一个桌子上， 网络流问题，s连到组，流量组内人数，桌子连到t，流量为可以坐下的人数，组与桌子自由组合， 流量为1。 </p>
+<h1 id="第六题"><a href="#第六题" class="headerlink" title="第六题"></a>第六题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc2Ng==">P2766 最长不下降子序列问题</span></p>
+<p>让你求一个数列的最长不下降子序列的长度k</p>
+<p>然后求这个序列最多可以分出多少个长度为k的子序列，</p>
+<p>再求如果可以多次使用第一个元素和最后一个元素，可以分出多少个长度为k的子序列</p>
+<p>我们考虑到每个元素dp的值（dp[i]表示以i结尾的最长不下降子序列的长度），并以dp值为标准，给所有点分层，并给所有第一层的点连s，所有最后一层的点连t， 如果i&lt;j且a[i]&lt;&#x3D;a[j]我们就连一条边i-&gt;j，如此如果每当从s流到t,就是一个子串,考虑到一个点只能用一次,拆点限流就可以了。 </p>
+<h1 id="第七题"><a href="#第七题" class="headerlink" title="第七题"></a>第七题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc2Mw==">P2763 试题库问题</span></p>
+<p>给你一个试题库，告诉你每个题目的类型（一个题目可能属于多种类型），让你 用这些题为每个类型组一套题（告诉了你每套题包含的题数），每道题只能用一次，<br>类型在左，题目在右，s连类型，流量为该套题的题数，类型连题目流量1，题目连 t流量1，如果最大流不够要求的题目数量，说明无法组成套题。 </p>
+<h1 id="第八题"><a href="#第八题" class="headerlink" title="第八题"></a>第八题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc3NQ==">P2775 机器人路径规划问题</span></p>
+<p>什么怪东西，明明是深搜题 </p>
+<h1 id="第九题"><a href="#第九题" class="headerlink" title="第九题"></a>第九题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMjc3NA==">P2774 方格取数</span></p>
+<p>有一个 m 行 n 列的方格图，每个方格中都有一个正整数。现要从方格中取数，使任意两个数所在方格没有公共边，且取出的数的总和最大，请求出最大的和。</p>
+<p> 对于格子我们令k&#x3D;行数加列数，</p>
+<p>对于所有的<code>k&amp;1==1</code>内部，无边，</p>
+<p> 对于所有的<code>k&amp;1==0</code>内部，无边。</p>
+<p>于是取走元素就成了： </p>
+<p>拿走点，使得这些点覆盖所有边，于是剩下的点就是独立的了， 没有边互相连。就是我们要的答案，所以就成了 <a href="https://fightinggg.github.io/ACM/stencil/graph_theory/%E6%9C%80%E5%B0%8F%E9%A1%B6%E7%82%B9%E8%A6%86%E7%9B%96%E4%BA%8C%E5%88%86%E5%9B%BE.html">最小点覆盖二分图</a> </p>
+<h1 id="第十题"><a href="#第十题" class="headerlink" title="第十题"></a>第十题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3Uub3JnL3Byb2JsZW1uZXcvc2hvdy9QMTI1MQ==">P1251 餐巾纸计划</span></p>
+<p>此处不方便证明，详情见： <a href="https://fightinggg.github.io/ACM/stencil/graph_theory/%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%B0%8F%E8%B4%B9%E7%94%A8%E5%9B%BA%E5%AE%9A%E6%B5%81.html">建图与证明</a></p>
+<h1 id="第十一题"><a href="#第十一题" class="headerlink" title="第十一题"></a>第十一题</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cubHVvZ3UuY29tLmNuL3Byb2JsZW0vUDI3NzA="> P2770 航空路线问题</span></p>
+<p>给你一个城市数组，这些城市从左往右分别对应从东到西， 要求你从最西边的城市出发，到达最东边的城市，在从最东边的城市出发，到达最西边的城市 除了最西边和最东边的城市以外，其他城市只能经过一次 让你求最多经过多少城市， </p>
+<p>考虑最大流，s连最西边的城市，最东边的的城市连t，容量2，对于他给的边只连从东到西的边， 对于一个城市只经过一次考虑拆点限流即可。 </p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PGYGU3.html" title="网络流24题">http://fightinggg.github.io/shoka/PGYGU3.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PGY13F.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeybxm1pj20zk0m8niv.jpg" title="广义组合数">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 数学</span>
+  <h3>广义组合数</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PH2UB0.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipexoj0moj20zk0m8kgu.jpg" title="最小顶点覆盖二分图">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 图论</span>
+  <h3>最小顶点覆盖二分图</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">第一题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">第二题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">第三题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">第四题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">第五题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">第六题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">第七题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">第八题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E9%A2%98"><span class="toc-number">9.</span> <span class="toc-text">第九题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E9%A2%98"><span class="toc-number">10.</span> <span class="toc-text">第十题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">第十一题</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/PGMDBM.html" rel="bookmark" title="最小费用最大流">最小费用最大流</a></li><li><a href="/shoka/PGMUCH.html" rel="bookmark" title="最大流最小割算法">最大流最小割算法</a></li><li class="active"><a href="/shoka/PGYGU3.html" rel="bookmark" title="网络流24题">网络流24题</a></li><li><a href="/shoka/PH2UB0.html" rel="bookmark" title="最小顶点覆盖二分图">最小顶点覆盖二分图</a></li><li><a href="/shoka/PH5S7Y.html" rel="bookmark" title="二分图最小费用固定流">二分图最小费用固定流</a></li><li><a href="/shoka/PPJIW2.html" rel="bookmark" title="最大团">最大团</a></li><li><a href="/shoka/PQWPYU.html" rel="bookmark" title="最短路和第k短路">最短路和第k短路</a></li><li><a href="/shoka/PRCNKV.html" rel="bookmark" title="LCA">LCA</a></li><li><a href="/shoka/PREMDT.html" rel="bookmark" title="Tarjan联通算法">Tarjan联通算法</a></li><li><a href="/shoka/PUKAKX.html" rel="bookmark" title="树的最小路径覆盖">树的最小路径覆盖</a></li><li><a href="/shoka/PUPS7Y.html" rel="bookmark" title="斯坦纳树">斯坦纳树</a></li><li><a href="/shoka/PW86WJ.html" rel="bookmark" title="霍尔定理">霍尔定理</a></li><li><a href="/shoka/PX3YQ4.html" rel="bookmark" title="支配树">支配树</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PGY13F.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PH2UB0.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Spring/" title="分类于 Spring">Spring</a>
+</div>
+
+    <span><a href="/shoka/Q8BOP2.html" title="spring7-注解配置IOC">spring7-注解配置IOC</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="分类于 操作系统">操作系统</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/" title="分类于 OS">OS</a>
+</div>
+
+    <span><a href="/shoka/Q84350.html" title="操作系统7-进程">操作系统7-进程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="分类于 大数据">大数据</a>
+</div>
+
+    <span><a href="/shoka/QFH340.html" title="Hadoop学习">Hadoop学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QRVGA0.html" title="第45届ICPC亚洲赛区昆明站">第45届ICPC亚洲赛区昆明站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringCloud/" title="分类于 SpringCloud">SpringCloud</a>
+</div>
+
+    <span><a href="/shoka/QJJDS0.html" title="springcloud-gateway">springcloud-gateway</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/PHCM3Z.html" title="错位比较">错位比较</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QSOXOA.html" title="2020CCPC长春站">2020CCPC长春站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/" title="分类于 CodeForces">CodeForces</a>
+</div>
+
+    <span><a href="/shoka/PVYFI4.html" title="Codeforces Round ##FF (Div. 1) - C">Codeforces Round ##FF (Div. 1) - C</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" title="分类于 图论">图论</a>
+</div>
+
+    <span><a href="/shoka/PQWPYU.html" title="最短路和第k短路">最短路和第k短路</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" title="分类于 图论">图论</a>
+</div>
+
+    <span><a href="/shoka/PUKAKX.html" title="树的最小路径覆盖">树的最小路径覆盖</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PGYGU3.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

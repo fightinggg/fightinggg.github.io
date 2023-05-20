@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Java运行时分析工具 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+Jpsjps 可以看到运行中的java进程
+123sh-4.2$ jps370 xxx.jar180682 Jps
+
+Jcmdjcmd可以看到运行中的java进程以及参数
+123sh-4.2$ jcmd370 /usr/local/xxx.jar config_path=xxx.yaml180773 sun.tools.jcmd.JCmd
+
+
+
+Jmapjmap是可以查看整个JVM内存的工具。">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/QZX2O0.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/QZX2O0.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Java运行时分析工具 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+Jpsjps 可以看到运行中的java进程
+123sh-4.2$ jps370 xxx.jar180682 Jps
+
+Jcmdjcmd可以看到运行中的java进程以及参数
+123sh-4.2$ jcmd370 /usr/local/xxx.jar config_path=xxx.yaml180773 sun.tools.jcmd.JCmd
+
+
+
+Jmapjmap是可以查看整个JVM内存的工具。">
+    
+
+    
+        <meta property="article:published_time" content="Fri Sep 24 2021 10:24:00 GMT+0800">
+        <meta property="article:modified_time" content="Fri Sep 24 2021 11:27:00 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/QZX2O0.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/QZX2O0.html",
+    "headline": "Java运行时分析工具",
+    "datePublished": "Fri Sep 24 2021 10:24:00 GMT+0800",
+    "dateModified": "Fri Sep 24 2021 11:27:00 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+Jpsjps 可以看到运行中的java进程
+123sh-4.2$ jps370 xxx.jar180682 Jps
+
+Jcmdjcmd可以看到运行中的java进程以及参数
+123sh-4.2$ jcmd370 /usr/local/xxx.jar config_path=xxx.yaml180773 sun.tools.jcmd.JCmd
+
+
+
+Jmapjmap是可以查看整个JVM内存的工具。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jps"><span class="post-toc-number">1.</span> <span class="post-toc-text">Jps</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jcmd"><span class="post-toc-number">2.</span> <span class="post-toc-text">Jcmd</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jmap"><span class="post-toc-number">3.</span> <span class="post-toc-text">Jmap</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jstack"><span class="post-toc-number">4.</span> <span class="post-toc-text">Jstack</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jstat"><span class="post-toc-number">5.</span> <span class="post-toc-text">Jstat</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#options"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">options</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%83%85%E5%86%B5"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">类加载情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JIT%E6%83%85%E5%86%B5"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">JIT情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GC%E6%83%85%E5%86%B5"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">GC情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GC-capacity%E6%83%85%E5%86%B5"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">GC capacity情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GC-cause-%E6%83%85%E5%86%B5"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">GC cause 情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GC-utils%E6%83%85%E5%86%B5"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">GC utils情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#printcompilation%E6%83%85%E5%86%B5"><span class="post-toc-number">5.8.</span> <span class="post-toc-text">printcompilation情况</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jinfo"><span class="post-toc-number">6.</span> <span class="post-toc-text">Jinfo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jhat"><span class="post-toc-number">7.</span> <span class="post-toc-text">Jhat</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Javah"><span class="post-toc-number">8.</span> <span class="post-toc-text">Javah</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JavaP"><span class="post-toc-number">9.</span> <span class="post-toc-text">JavaP</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Jshell"><span class="post-toc-number">10.</span> <span class="post-toc-text">Jshell</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Java运行时分析工具
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>9月 24, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Java运行时分析工具&url=http://fightinggg.github.io/material/material/QZX2O0.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Java运行时分析工具&url=http://fightinggg.github.io/material/material/QZX2O0.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/QZX2O0.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/QZX2O0.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QZX2O0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="Jps"><a href="#Jps" class="headerlink" title="Jps"></a>Jps</h1><p>jps 可以看到运行中的java进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jps</span><br><span class="line">370 xxx.jar</span><br><span class="line">180682 Jps</span><br></pre></td></tr></table></figure>
+
+<h1 id="Jcmd"><a href="#Jcmd" class="headerlink" title="Jcmd"></a>Jcmd</h1><p>jcmd可以看到运行中的java进程以及参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jcmd</span><br><span class="line">370 /usr/local/xxx.jar config_path=xxx.yaml</span><br><span class="line">180773 sun.tools.jcmd.JCmd</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jmap"><a href="#Jmap" class="headerlink" title="Jmap"></a>Jmap</h1><p>jmap是可以查看整个JVM内存的工具。</p>
+<span id="more"></span>
+
+<p><code>jmap -heap &lt;pid&gt;</code>即可查看JVM堆堆使用情况，主要有两块，一块是Heap配置，另一块是Heap使用情况。</p>
+<p>Heap配置中包含了最小堆空余空间比例、最大比例、最大堆大小、新生代大小、老生代大小、新生代比例、老生代比例、原空间大小等等。这部分是Java进程启动的时候由JVM参数决定的</p>
+<p>Heap Usage是堆的使用情况，包括新生代使用情况、老生代使用情况（容量、使用、未使用）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -heap 364</span><br><span class="line">Attaching to process ID 364, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 48 thread(s)</span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 32210157568 (30718.0MB)</span><br><span class="line">   NewSize                  = 715653120 (682.5MB)</span><br><span class="line">   MaxNewSize               = 10736369664 (10239.0MB)</span><br><span class="line">   OldSize                  = 1431830528 (1365.5MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage:</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space:</span><br><span class="line">   capacity = 88604672 (84.5MB)</span><br><span class="line">   used     = 6212968 (5.925148010253906MB)</span><br><span class="line">   free     = 82391704 (78.5748519897461MB)</span><br><span class="line">   7.0120094795904215% used</span><br><span class="line">From Space:</span><br><span class="line">   capacity = 9961472 (9.5MB)</span><br><span class="line">   used     = 1900544 (1.8125MB)</span><br><span class="line">   free     = 8060928 (7.6875MB)</span><br><span class="line">   19.07894736842105% used</span><br><span class="line">To Space:</span><br><span class="line">   capacity = 9961472 (9.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 9961472 (9.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">PS Old Generation</span><br><span class="line">   capacity = 1482162176 (1413.5MB)</span><br><span class="line">   used     = 230906152 (220.20926666259766MB)</span><br><span class="line">   free     = 1251256024 (1193.2907333374023MB)</span><br><span class="line">   15.57900719226018% used</span><br><span class="line"></span><br><span class="line">20563 interned Strings occupying 1939392 bytes.</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>jmap -histo &lt;pid&gt;</code>可以查看JVM内存中每个类的内存使用情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -histo 370 | less</span><br><span class="line">num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:       1887996      284532232  [C</span><br><span class="line">   2:         51934       55537536  [I</span><br><span class="line">   3:       1368797       51696928  [B</span><br><span class="line">   4:       1686385       46376560  [Ljava.lang.Object;</span><br><span class="line">   5:        846166       33846640  java.util.TreeMap$Entry</span><br><span class="line">   6:        494971       23758608  java.util.TreeMap</span><br><span class="line">   7:        984173       23620152  java.lang.String</span><br><span class="line">   8:        349310       19561360  sun.nio.cs.UTF_8$Encoder</span><br><span class="line">   9:        495105       15843360  java.util.Collections$UnmodifiableMap</span><br><span class="line">  10:        494750       15832000  java.util.TreeMap$EntryIterator</span><br><span class="line">  11:        494925       11878200  java.util.Arrays$ArrayList</span><br><span class="line">  12:        473586       11366064  java.util.Collections$UnmodifiableMap$UnmodifiableEntrySet$1</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>jmap -finalizerinfo &lt;pid&gt;</code>可以看到有多少个对象在等待finalizer</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -finalizerinfo 370</span><br><span class="line">Attaching to process ID 370, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line">Number of objects pending for finalization: 0</span><br></pre></td></tr></table></figure>
+
+<p><code>jmap -dump:format=b,file=dump.bin 370</code> 可以把堆中的数据导出到二进制文件中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jmap -dump:format=b,file=dump.bin 370</span><br><span class="line">Heap dump file created</span><br><span class="line">sh-4.2$ ls</span><br><span class="line">dump.bin</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jstack"><a href="#Jstack" class="headerlink" title="Jstack"></a>Jstack</h1><p><code>jstack &lt;pid&gt;</code>可以看到所有线程目前的栈信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;Finalizer&quot; #3 daemon prio=8 os_prio=0 tid=0x00007fd8506eb000 nid=0x1a7 in Object.wait() [0x00007fd77b826000]</span><br><span class="line">   java.lang.Thread.State: WAITING (on object monitor)</span><br><span class="line">        at java.lang.Object.wait(Native Method)</span><br><span class="line">        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:144)</span><br><span class="line">        - locked &lt;0x000000008023bb50&gt; (a java.lang.ref.ReferenceQueue$Lock)</span><br><span class="line">        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:165)</span><br><span class="line">        at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:216)</span><br><span class="line"></span><br><span class="line">&quot;Reference Handler&quot; #2 daemon prio=10 os_prio=0 tid=0x00007fd8506de800 nid=0x1a6 in Object.wait() [0x00007fd77baf9000]</span><br><span class="line">   java.lang.Thread.State: WAITING (on object monitor)</span><br><span class="line">        at java.lang.Object.wait(Native Method)</span><br><span class="line">        at java.lang.Object.wait(Object.java:502)</span><br><span class="line">        at java.lang.ref.Reference.tryHandlePending(Reference.java:191)</span><br><span class="line">        - locked &lt;0x00000000802478a8&gt; (a java.lang.ref.Reference$Lock)</span><br><span class="line">        at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)</span><br><span class="line"></span><br><span class="line">&quot;VM Thread&quot; os_prio=0 tid=0x00007fd8506db000 nid=0x1a5 runnable</span><br><span class="line"></span><br><span class="line">&quot;GC task thread#0 (ParallelGC)&quot; os_prio=0 tid=0x00007fd85001f000 nid=0x175 runnable</span><br><span class="line"></span><br><span class="line">&quot;GC task thread#1 (ParallelGC)&quot; os_prio=0 tid=0x00007fd850021000 nid=0x176 runnable</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="Jstat"><a href="#Jstat" class="headerlink" title="Jstat"></a>Jstat</h1><h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><p>查看options</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -options</span><br><span class="line">-class</span><br><span class="line">-compiler</span><br><span class="line">-gc</span><br><span class="line">-gccapacity</span><br><span class="line">-gccause</span><br><span class="line">-gcmetacapacity</span><br><span class="line">-gcnew</span><br><span class="line">-gcnewcapacity</span><br><span class="line">-gcold</span><br><span class="line">-gcoldcapacity</span><br><span class="line">-gcutil</span><br><span class="line">-printcompilation</span><br></pre></td></tr></table></figure>
+
+<h2 id="类加载情况"><a href="#类加载情况" class="headerlink" title="类加载情况"></a>类加载情况</h2><p>查看类的个数, 每1000毫秒打印一次，一共打印10次</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -class 370 1000 10</span><br><span class="line">Loaded  Bytes  Unloaded  Bytes     Time</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br><span class="line"> 12501 23290.5        0     0.0       9.15</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="JIT情况"><a href="#JIT情况" class="headerlink" title="JIT情况"></a>JIT情况</h2><p>查看JIT实时编译器编译的情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -compiler 370 1000 3</span><br><span class="line">Compiled Failed Invalid   Time   FailedType FailedMethod</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br><span class="line">   12448      5       0    68.28          1 io/netty/buffer/SizeClasses sizeClass</span><br></pre></td></tr></table></figure>
+
+<h2 id="GC情况"><a href="#GC情况" class="headerlink" title="GC情况"></a>GC情况</h2><p>查看GC情况，每一列分别对应</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S0C</td>
+<td>第一个survivor的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>S1C</td>
+<td>第二个survivor的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>S0U</td>
+<td>第一个survivor的使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>S1U</td>
+<td>第二个survivor的使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>EC</td>
+<td>eden容量</td>
+<td>eden和survivor的比例是8:1:1</td>
+</tr>
+<tr>
+<td>EU</td>
+<td>eden使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>OC</td>
+<td>老年代容量</td>
+<td></td>
+</tr>
+<tr>
+<td>OU</td>
+<td>老年代使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>MC</td>
+<td>方法区的容量</td>
+<td></td>
+</tr>
+<tr>
+<td>MU</td>
+<td>方法区使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>CCSC</td>
+<td>压缩类容量</td>
+<td>注意被压缩的不是类，而是对象头中指向类的指针被压缩成32位了</td>
+</tr>
+<tr>
+<td>CCSU</td>
+<td>压缩类使用空间</td>
+<td></td>
+</tr>
+<tr>
+<td>YGC</td>
+<td>YGC的次数</td>
+<td></td>
+</tr>
+<tr>
+<td>YGCT</td>
+<td>YGC的时间</td>
+<td></td>
+</tr>
+<tr>
+<td>FGC</td>
+<td>FULL GC的次数</td>
+<td></td>
+</tr>
+<tr>
+<td>FGCT</td>
+<td>FULL GC的时间</td>
+<td></td>
+</tr>
+<tr>
+<td>GCT</td>
+<td>GC总时间</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gc 370 1000 3</span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 256731.1 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 299599.8 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br><span class="line">1024.0 9728.0 576.0   0.0   485888.0 340310.0 1941504.0   60846.4   67968.0 64626.7 8576.0 7907.2     96    1.053   3      0.343    1.396</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="GC-capacity情况"><a href="#GC-capacity情况" class="headerlink" title="GC capacity情况"></a>GC capacity情况</h2><p>主要关注各区域最大最小空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gccapacity 370 1000 3</span><br><span class="line"> NGCMN    NGCMX     NGC     S0C   S1C       EC      OGCMN      OGCMX       OGC         OC       MCMN     MCMX      MC     CCSMN    CCSMX     CCSC    YGC    FGC</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br><span class="line">698880.0 10484736.0 850944.0 8192.0 13824.0 213504.0  1398272.0 20970496.0  1941504.0  1941504.0      0.0 1110016.0  68224.0      0.0 1048576.0   8576.0    228     3</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GC-cause-情况"><a href="#GC-cause-情况" class="headerlink" title="GC cause 情况"></a>GC cause 情况</h2><p>主要关注导致GC的原因</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gccause 370 1000 3</span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT    LGCC                 GCC</span><br><span class="line"> 93.81   0.00  73.52   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br><span class="line"> 93.81   0.00  73.52   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br><span class="line"> 93.81   0.00  73.53   4.29  95.02  92.27    240    2.204     3    0.343    2.546 Allocation Failure   No GC</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GC-utils情况"><a href="#GC-utils情况" class="headerlink" title="GC utils情况"></a>GC utils情况</h2><p>主要关注内存占比</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -gcutil 370 1000 3</span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT</span><br><span class="line">  0.00  96.98  13.54   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br><span class="line">  0.00  96.98  13.54   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br><span class="line">  0.00  96.98  13.56   4.28  95.01  92.27    235    2.167     3    0.343    2.510</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="printcompilation情况"><a href="#printcompilation情况" class="headerlink" title="printcompilation情况"></a>printcompilation情况</h2><p>JIT的方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jstat -printcompilation 370 1000 3</span><br><span class="line">Compiled  Size  Type Method</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br><span class="line">   13367    285    1 javax/management/ObjectName setCanonicalName</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jinfo"><a href="#Jinfo" class="headerlink" title="Jinfo"></a>Jinfo</h1><p>jinfo能输出一个进程的基本信息，包括他的配置、用户、路径、命令行等等</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jinfo 370</span><br><span class="line">Attaching to process ID 370, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.252-b4</span><br><span class="line">Java System Properties:</span><br><span class="line"></span><br><span class="line">java.runtime.name = OpenJDK Runtime Environment</span><br><span class="line">java.vm.version = 25.252-b4</span><br><span class="line">java.protocol.handler.pkgs = org.springframework.boot.loader</span><br><span class="line">path.separator = :</span><br><span class="line">file.encoding.pkg = sun.io</span><br><span class="line">java.vm.name = OpenJDK 64-Bit Server VM</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Jhat"><a href="#Jhat" class="headerlink" title="Jhat"></a>Jhat</h1><p>jhat是堆快照分析工具，用于分析堆的情况，首先要用jmap导出堆到文件dump.bin中，然后使用jhat分析,再访问7000端口即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jhat  dump.bin</span><br><span class="line">Reading from dump.bin...</span><br><span class="line">Dump file created Fri Sep 24 19:38:36 CST 2021</span><br><span class="line">Snapshot read, resolving...</span><br><span class="line">Resolving 4748880 objects...</span><br><span class="line">Chasing references, expect 949 dots.............</span><br><span class="line">Eliminating duplicate references..............</span><br><span class="line">Snapshot resolved.</span><br><span class="line">Started HTTP server on port 7000</span><br><span class="line">Server is ready.</span><br></pre></td></tr></table></figure>
+
+<p><img src='/image-2021-09-24-19.42.00.000.png'></img></p>
+<h1 id="Javah"><a href="#Javah" class="headerlink" title="Javah"></a>Javah</h1><p>用于编写JNI方法</p>
+<h1 id="JavaP"><a href="#JavaP" class="headerlink" title="JavaP"></a>JavaP</h1><p>字节码分析工具</p>
+<h1 id="Jshell"><a href="#Jshell" class="headerlink" title="Jshell"></a>Jshell</h1><p>Java交互式工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ jshell</span><br><span class="line">|  欢迎使用 JShell -- 版本 16.0.2</span><br><span class="line">|  要大致了解该版本, 请键入: /help intro</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">int a = 1</span></span><br><span class="line">a ==&gt; 1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">int b = 1</span></span><br><span class="line">b ==&gt; 1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">jshell&gt; </span><span class="language-bash">System.out.print(a+b)</span></span><br><span class="line">2</span><br><span class="line"><span class="meta prompt_">jshell&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/QZX2O0.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/QZX2O0.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/QZX4AC.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/QZIIYO.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

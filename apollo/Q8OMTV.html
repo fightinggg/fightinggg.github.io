@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> java并发编程9-JDK线程池 · Believe it</title><meta name="description" content="java并发编程9-JDK线程池 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">java并发编程9-JDK线程池</h1><div class="post-info">2020年4月12日</div><div class="post-content"><div><a href="/next/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMTV.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="JDK的线程池"><a href="#JDK的线程池" class="headerlink" title="JDK的线程池"></a>JDK的线程池</h1><p> 线程池状态，RUNNING，SHUTDOWN(不会再接受新任务了)，STOP(立刻停止)，TIDYING(任务执行完毕，即将TERMINATED)，TERMINATED</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ThreadPollExecutor</span><span class="params">(<span class="type">int</span> corePoolsize,<span class="type">int</span> maximumPoolSize,<span class="type">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>核心线程数量</li>
+<li>最大线程数量</li>
+<li>就急线程生存时间</li>
+<li>时间单位</li>
+<li>阻塞队列</li>
+<li>线程工厂: 给线程起个名字</li>
+<li>拒绝策略</li>
+</ul>
+<span id="more"></span>
+<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3><ul>
+<li>AbortPolicy 让调用者抛出异常</li>
+<li>CallerRunsPolicy 让调用者运行任务</li>
+<li>DiscardPolicy 放弃本次任务</li>
+<li>DIcardOldestPolicy 放弃队列中最先进入的任务</li>
+<li>Dubbo 抛出异常并记录线程栈信息</li>
+<li>Netty 创建新的线程来执行</li>
+<li>ActiveMQ 等待超时</li>
+<li>PinPoint 拒绝策略链， 比如先用方法A，如果失败就要方法B，…</li>
+</ul>
+<h2 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h2><p> 固定大小的线程池<br> 阻塞队列无界，没有就急线程，nThreads个核心线程, 是非守护线程<br> 当然我们也可以自己创建线程工厂，自己给线程取名字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newFixedThreadPool</span><span class="params">(<span class="type">int</span> nThreads)</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(nThreads, nThreads,</span><br><span class="line">                                     <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                     <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="newCachedThraedPool"><a href="#newCachedThraedPool" class="headerlink" title="newCachedThraedPool"></a>newCachedThraedPool</h2><p> 不固定大小的线程池<br> 阻塞队列无界，没有核心线程，全是救急线程，但不是无限个，活60秒</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newCachedThreadPool</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SynchronousQueue"><a href="#SynchronousQueue" class="headerlink" title="SynchronousQueue"></a>SynchronousQueue</h3><p> 如果没有人取出东西，放入操作会被阻塞, 如果没有人放入东西，同理拿出会被阻塞，如果有多个同时拿，这时候就像栈一样，后来的人，会先拿到东西</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">test10_f1</span><span class="params">(SynchronousQueue&lt;Integer&gt; integers, String string)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;begin&quot;</span>);</span><br><span class="line">            integers.put(<span class="number">1</span>);</span><br><span class="line">            logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, string).start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">test10_f2</span><span class="params">(SynchronousQueue&lt;Integer&gt; integers, String string)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;begin&quot;</span>);</span><br><span class="line">            integers.take();</span><br><span class="line">            logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, string).start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test10</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    SynchronousQueue&lt;Integer&gt; integers = <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;&gt;();</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;3&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;5&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;6&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;7&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;8&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;a&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;b&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;c&quot;</span>);</span><br><span class="line">    test10_f2(integers, <span class="string">&quot;d&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;e&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;f&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;g&quot;</span>);</span><br><span class="line">    test10_f1(integers, <span class="string">&quot;h&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 下面是输出, 可以看到，1234按顺序进入，4321按顺序出来</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">16:33:54.391 [1] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.591 [2] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.792 [3] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:54.996 [4] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.202 [5] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.202 [5] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.202 [4] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.407 [6] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.409 [6] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.409 [3] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.609 [7] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.609 [2] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.609 [7] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.813 [8] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:55.814 [8] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:55.814 [1] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:56.017 [a] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.221 [b] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.425 [c] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.630 [d] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.835 [e] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:56.836 [e] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:56.836 [d] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.038 [f] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.039 [f] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.039 [c] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.244 [g] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.244 [g] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.244 [b] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.448 [h] DEBUG com.wsx.test.ThreadTest - begin</span><br><span class="line">16:33:57.449 [h] DEBUG com.wsx.test.ThreadTest - end</span><br><span class="line">16:33:57.449 [a] DEBUG com.wsx.test.ThreadTest - end</span><br></pre></td></tr></table></figure>
+
+<h2 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h2><p> 1个核心线程，0个救急线程，使用无界队列,于是任务可以无数个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newSingleThreadExecutor</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FinalizableDelegatedExecutorService</span></span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 1个线程的线程池能叫池吗？我干嘛不自己用？ 实际上我们自己创建的话如果碰到一些错误的任务，可能线程就退出了，这里不好处理，但是线程池在该线程退出以后会帮我们重新创建线程<br> FinalizableDelegatedExecutorService 是一个装饰者模式，只暴露部分接口，避免后期被修改容量</p>
+<h2 id="TimerTask"><a href="#TimerTask" class="headerlink" title="TimerTask"></a>TimerTask</h2><p> 这个不重要，他很差，他是串行执行的，如果前面的太耗时会导致后面的被推迟，如果前面发生异常，后面的不会执行</p>
+<h2 id="ScheduledExecutorService"><a href="#ScheduledExecutorService" class="headerlink" title="ScheduledExecutorService"></a>ScheduledExecutorService</h2><p> 用法和TimerTask很像，但是他不会出现上面的异常影响后续任务的情况</p>
+<h3 id="ScheduledExecutorService-scheduleAtFixedTate"><a href="#ScheduledExecutorService-scheduleAtFixedTate" class="headerlink" title="ScheduledExecutorService.scheduleAtFixedTate()"></a>ScheduledExecutorService.scheduleAtFixedTate()</h3><p> 在初始延迟以后，能够在单位时间内被反复执行</p>
+<h3 id="ScheduledExecutorService-scheduleWithFixedDelay"><a href="#ScheduledExecutorService-scheduleWithFixedDelay" class="headerlink" title="ScheduledExecutorService.scheduleWithFixedDelay()"></a>ScheduledExecutorService.scheduleWithFixedDelay()</h3><p> 在初始延迟以后，反复执行的两个任务之间隔固定时间</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="submit"><a href="#submit" class="headerlink" title="submit"></a>submit</h3><p> 用future来返回，future.get();</p>
+<h3 id="invokeAll-tasks"><a href="#invokeAll-tasks" class="headerlink" title="invokeAll(tasks)"></a>invokeAll(tasks)</h3><p> 提交tasks中的所有任务</p>
+<h3 id="invokeAll-tasks-timeout-unit"><a href="#invokeAll-tasks-timeout-unit" class="headerlink" title="invokeAll(tasks,timeout,unit)"></a>invokeAll(tasks,timeout,unit)</h3><p> 带一个超时时间</p>
+<h3 id="invokeAny"><a href="#invokeAny" class="headerlink" title="invokeAny"></a>invokeAny</h3><p> 谁最先执行完就返回谁，其他的就不管了</p>
+<h3 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h3><p> 无阻塞，不会接受新提交的任务，但已提交的任务后执行完。</p>
+<h3 id="shutdownNow"><a href="#shutdownNow" class="headerlink" title="shutdownNow"></a>shutdownNow</h3><p> 打断所有的线程，并返回队列中的任务，</p>
+<h3 id="isShutdown"><a href="#isShutdown" class="headerlink" title="isShutdown"></a>isShutdown</h3><p> 只要不是running， 就返回true</p>
+<h3 id="isTerminated"><a href="#isTerminated" class="headerlink" title="isTerminated"></a>isTerminated</h3><p> 只有TREMINATED返回真</p>
+<h3 id="awaitTermination"><a href="#awaitTermination" class="headerlink" title="awaitTermination"></a>awaitTermination</h3><p> 就一直等，等到超时或者线程结束</p>
+<h2 id="正确处理异常"><a href="#正确处理异常" class="headerlink" title="正确处理异常"></a>正确处理异常</h2><p> 如果执行过程中没有异常，future.get()正常返回,如果出现异常，future.get()会抛出异常</p>
+<h2 id="Fork-x2F-Join"><a href="#Fork-x2F-Join" class="headerlink" title="Fork&#x2F;Join"></a>Fork&#x2F;Join</h2><p> fork能创建新的线程来执行，join会阻塞，这就实现了并行，下面是100的阶乘模998244353</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(RecursiveTaskTest.class);</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Task</span> <span class="keyword">extends</span> <span class="title class_">RecursiveTask</span>&lt;Integer&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> begin;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> end;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> mod;</span><br><span class="line"></span><br><span class="line">        Task(<span class="type">int</span> begin, <span class="type">int</span> end, <span class="type">int</span> mod) &#123;</span><br><span class="line">            <span class="built_in">this</span>.begin = begin;</span><br><span class="line">            <span class="built_in">this</span>.end = end;</span><br><span class="line">            <span class="built_in">this</span>.mod = mod;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> Integer <span class="title function_">compute</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (begin == end) <span class="keyword">return</span> begin;</span><br><span class="line">            <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> begin + end &gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="type">Task</span> <span class="variable">task1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Task</span>(begin, mid, mod);</span><br><span class="line">            <span class="type">Task</span> <span class="variable">task2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Task</span>(mid + <span class="number">1</span>, end, mod);</span><br><span class="line">            task1.fork();</span><br><span class="line">            task2.fork();</span><br><span class="line">            <span class="keyword">return</span> Math.toIntExact(<span class="number">1L</span> * task1.join() * task2.join() % mod);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">ForkJoinPool</span> <span class="variable">forkJoinPool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>(<span class="number">3</span>);</span><br><span class="line">    logger.debug(<span class="string">&quot;&#123;&#125;&quot;</span>, forkJoinPool.invoke(<span class="keyword">new</span> <span class="title class_">Task</span>(<span class="number">1</span>, <span class="number">100</span>, <span class="number">998244353</span>)));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8OMU7.html" class="prev">PREV</a><a href="/apollo/Q8OMTK.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>java并发编程11-JUC | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程11-JUC">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/Q8OMUJ.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial   JUCAQS&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架 ReentrantLock如何重入&amp;emsp;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:modified_time" content="2020-04-12T15:54:19.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">java并发编程11-JUC</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">java并发编程11-JUC</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-04-12T15:54:19.000Z" itemprop="datePublished" class="page-time">
+  2020-04-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/">Language</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/Java/">Java</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li></ul></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JUC"><span class="post-toc-number">1.</span> <span class="post-toc-text">JUC</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AQS"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">AQS</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ReentrantLock"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">ReentrantLock</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A6%82%E4%BD%95%E9%87%8D%E5%85%A5"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">如何重入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#NonfairSync"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">NonfairSync</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#lock"><span class="post-toc-number">1.2.2.1.</span> <span class="post-toc-text">lock</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#acquire"><span class="post-toc-number">1.2.2.2.</span> <span class="post-toc-text">acquire</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#unlock"><span class="post-toc-number">1.2.2.3.</span> <span class="post-toc-text">unlock</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#release"><span class="post-toc-number">1.2.2.4.</span> <span class="post-toc-text">release</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#acquireInterruptibly"><span class="post-toc-number">1.2.2.5.</span> <span class="post-toc-text">acquireInterruptibly</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#FairSync"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">FairSync</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Condition"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">Condition</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#fullrelease"><span class="post-toc-number">1.2.4.1.</span> <span class="post-toc-text">fullrelease</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#signal"><span class="post-toc-number">1.2.4.2.</span> <span class="post-toc-text">signal</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ReentrantReadWriteLock"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">ReentrantReadWriteLock</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">锁升级</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%94%81%E9%99%8D%E7%BA%A7"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">锁降级</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">缓存问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#query"><span class="post-toc-number">1.3.3.1.</span> <span class="post-toc-text">query</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#update"><span class="post-toc-number">1.3.3.2.</span> <span class="post-toc-text">update</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="post-toc-number">1.3.3.3.</span> <span class="post-toc-text">缓存更新策略</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%88%E5%88%A0%E7%BC%93%E5%AD%98%EF%BC%8C%E5%90%8E%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="post-toc-number">1.3.3.3.1.</span> <span class="post-toc-text">先删缓存，后更新数据库</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%90%8E%E5%88%A0%E7%BC%93%E5%AD%98"><span class="post-toc-number">1.3.3.3.2.</span> <span class="post-toc-text">先更新数据库，后删缓存</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BF%9D%E8%AF%81%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7"><span class="post-toc-number">1.3.3.4.</span> <span class="post-toc-text">保证强一致性</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%B2%A1%E6%9C%89%E8%80%83%E8%99%91%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="post-toc-number">1.3.3.5.</span> <span class="post-toc-text">没有考虑到的问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AF%BB%E5%86%99%E9%94%81%E5%8E%9F%E7%90%86"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">读写锁原理</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#StampedLock"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">StampedLock</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Semaphore"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Semaphore</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A8"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">应用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%9F%E7%90%86"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">原理</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CountdownLatch"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">CountdownLatch</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8join%EF%BC%9F"><span class="post-toc-number">1.6.2.</span> <span class="post-toc-text">为什么不用join？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A81"><span class="post-toc-number">1.6.3.</span> <span class="post-toc-text">应用1</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BA%94%E7%94%A82"><span class="post-toc-number">1.6.4.</span> <span class="post-toc-text">应用2</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%EF%BC%9F"><span class="post-toc-number">1.6.5.</span> <span class="post-toc-text">返回结果？</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cyclicbarrier"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">cyclicbarrier</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Language/Java/Java并发/java并发编程11-JUC/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">java并发编程11-JUC</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-04-12 23:54:19" datetime="2020-04-12T15:54:19.000Z"  itemprop="datePublished">2020-04-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/">Language</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/Java/">Java</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li></ul></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUJ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+<h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p>&amp;emsp;&amp;emsp; AbstractQueuedSynchronizer 是阻塞式的锁和相关的同步器工具的框架</p>
+<h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><h3 id="如何重入"><a href="#如何重入" class="headerlink" title="如何重入"></a>如何重入</h3><p>&amp;emsp;&amp;emsp; 用一个变量记录重入了多少次</p>
+<h3 id="NonfairSync"><a href="#NonfairSync" class="headerlink" title="NonfairSync"></a>NonfairSync</h3><h4 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h4><p>&amp;emsp;&amp;emsp; cas ,成功就吧ouner改为自己，否则acquire，把自己放进链表中</p>
+<h4 id="acquire"><a href="#acquire" class="headerlink" title="acquire"></a>acquire</h4><p>&amp;emsp;&amp;emsp; tryacquire，成功就结束，失败的话还会尝试几次，然后才park，并为前驱标记，让前驱记得唤醒自己,如果曾经被打断的话，会被忽略，再次进入aqs队列，得到锁以后会打断自己来再次重新打断</p>
+<span id="more"></span>
+<h4 id="unlock"><a href="#unlock" class="headerlink" title="unlock"></a>unlock</h4><p>&amp;emsp;&amp;emsp; 调用release</p>
+<h4 id="release"><a href="#release" class="headerlink" title="release"></a>release</h4><p>&amp;emsp;&amp;emsp; 如果成功，unpark唤醒后继，为什么是非公平呢？因为被唤醒以后，可能会有不在链表中线程来跟自己竞争，所以这不公平</p>
+<h4 id="acquireInterruptibly"><a href="#acquireInterruptibly" class="headerlink" title="acquireInterruptibly"></a>acquireInterruptibly</h4><p>&amp;emsp;&amp;emsp; 不忽略打断，抛出异常即可</p>
+<h3 id="FairSync"><a href="#FairSync" class="headerlink" title="FairSync"></a>FairSync</h3><p>&amp;emsp;&amp;emsp; 区别再也tryAccquire，如果c&#x3D;0,即没人占用锁，他还会去检测AQS队列是否为空，其实就是看一下链表队列首部是否为自己，或者链表队列是否为空</p>
+<h3 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h3><p>&amp;emsp;&amp;emsp; 条件变量又是一个链表，当我们调用await的时候，当前线程的节点会被放进其中，然后把节点状态设为CONDITION,</p>
+<h4 id="fullrelease"><a href="#fullrelease" class="headerlink" title="fullrelease"></a>fullrelease</h4><p>&amp;emsp;&amp;emsp; 拿到锁的重数，然后一次性释放，在唤醒后面的节点，然后park自己</p>
+<h4 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h4><p>&amp;emsp;&amp;emsp; 当调用的时候讲条件变量的链表中第一个元素取出并加入到锁的等待链表中。</p>
+<h2 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h2><ul>
+<li>ReentrantReadWriteLock rw &#x3D; new ReentrantReadWriteLock()</li>
+<li>rw.readLock();</li>
+<li>rw.writeLock();</li>
+</ul>
+<h3 id="锁升级"><a href="#锁升级" class="headerlink" title="锁升级"></a>锁升级</h3><p>&amp;emsp;&amp;emsp; 下面的代码会写锁永久等待</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().lock();</span><br></pre></td></tr></table></figure>
+<h3 id="锁降级"><a href="#锁降级" class="headerlink" title="锁降级"></a>锁降级</h3><p>&amp;emsp;&amp;emsp; 你可以把写锁转化为读锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获得写锁</span></span><br><span class="line">rw.writeLock().lock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁降级</span></span><br><span class="line">rw.readLock().lock();</span><br><span class="line">rw.writeLock().unlock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获得读锁</span></span><br><span class="line">rw.readLock().unlock();</span><br></pre></td></tr></table></figure>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>&amp;emsp;&amp;emsp; 我们可以把对数据库的某些操作缓存到内存中，来降低数据库的压力</p>
+<h4 id="query"><a href="#query" class="headerlink" title="query"></a>query</h4><p>&amp;emsp;&amp;emsp; 先在缓存中找，找不到就加锁进数据库找，然后更新缓存,可以考虑双重检查锁</p>
+<h4 id="update"><a href="#update" class="headerlink" title="update"></a>update</h4><p>&amp;emsp;&amp;emsp; 先更新数据库,后清除缓存</p>
+<h4 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h4><h5 id="先删缓存，后更新数据库"><a href="#先删缓存，后更新数据库" class="headerlink" title="先删缓存，后更新数据库"></a>先删缓存，后更新数据库</h5><p>&amp;emsp;&amp;emsp; A删了缓存，准备更新，结果B来了，B一查缓存没用，去数据找数据，就找到了旧值。</p>
+<h5 id="先更新数据库，后删缓存"><a href="#先更新数据库，后删缓存" class="headerlink" title="先更新数据库，后删缓存"></a>先更新数据库，后删缓存</h5><p>&amp;emsp;&amp;emsp; A更新数据库的时候，B去查了缓存的旧</p>
+<h4 id="保证强一致性"><a href="#保证强一致性" class="headerlink" title="保证强一致性"></a>保证强一致性</h4><p>&amp;emsp;&amp;emsp; query查缓存套读锁，查数据库更新缓存加写锁<br>&amp;emsp;&amp;emsp; update直接加写锁</p>
+<h4 id="没有考虑到的问题"><a href="#没有考虑到的问题" class="headerlink" title="没有考虑到的问题"></a>没有考虑到的问题</h4><ul>
+<li>上面的操作时候读多写少</li>
+<li>没有考虑缓存容量</li>
+<li>没有考虑缓存过期</li>
+<li>只适合单机</li>
+<li>并发度还是太低， 可以降低锁粒度</li>
+</ul>
+<h3 id="读写锁原理"><a href="#读写锁原理" class="headerlink" title="读写锁原理"></a>读写锁原理</h3><p>&amp;emsp;&amp;emsp; 写锁就是简单加锁，注意照顾读锁的情况就可以了<br>&amp;emsp;&amp;emsp; 源码太复杂了，我说不清了，留个坑吧</p>
+<h2 id="StampedLock"><a href="#StampedLock" class="headerlink" title="StampedLock"></a>StampedLock</h2><p>&amp;emsp;&amp;emsp; 乐观读，每个操作都可以返回一个戳，解锁的时候可以吧戳还回去，如果这中间有人进行了修改，会返回失败，否则成功</p>
+<ul>
+<li>stamp &#x3D; tryOptimisticRead() 乐观读</li>
+<li>validate(stamp)  校验是否被修改</li>
+<li>stamp &#x3D; readLock() 读锁</li>
+<li>stamp &#x3D; writeLock() 写锁</li>
+<li>unlockRead(stamp) 释放</li>
+<li>unlockWriteLock() 释放<br>&amp;emsp;&amp;emsp; 不支持条件变量，不支持重入</li>
+</ul>
+<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><p>&amp;emsp;&amp;emsp; acquire、release，和PV有点像</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&amp;emsp;&amp;emsp; 可以限流，在高峰区让线程阻塞，比如数据库连接池，</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; state存信号量的值<br>&amp;emsp;&amp;emsp; acquire 用cas，如果不成功但是位置还够就一直尝试，如果位置不够的话就吧当前线程节点加入AQS队列<br>&amp;emsp;&amp;emsp; release依然是先cas，失败就一直尝试，绝对会成功，成功以后，依然是改状态，然后唤醒后面的线程，</p>
+<h2 id="CountdownLatch"><a href="#CountdownLatch" class="headerlink" title="CountdownLatch"></a>CountdownLatch</h2><p>&amp;emsp;&amp;emsp; 可以用来同步，等待n个线程countDown以后，await的线程才会开始运行</p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&amp;emsp;&amp;emsp; 维护一个值，每当一个线程执行完成，就让他减少1，当减少为0的时候唤醒await的线程</p>
+<h3 id="为什么不用join？"><a href="#为什么不用join？" class="headerlink" title="为什么不用join？"></a>为什么不用join？</h3><p>&amp;emsp;&amp;emsp; 在线程池中，线程都不带停下来的，join没用</p>
+<h3 id="应用1"><a href="#应用1" class="headerlink" title="应用1"></a>应用1</h3><p>&amp;emsp;&amp;emsp; 在游戏中，每个玩家都自己加载自己的数据，当他们都加载完成的时候，游戏才能开始，<br>&amp;emsp;&amp;emsp; 我们设置10的倒计时，当10个玩家执行完的时候，让他们各自调用countdount，然后就能唤醒游戏开始线程</p>
+<h3 id="应用2"><a href="#应用2" class="headerlink" title="应用2"></a>应用2</h3><p>&amp;emsp;&amp;emsp; 在微服务中，我们可能需要请求多个信息，当信息都请求完成才能返回，如果串行，效率太低了，我们考虑并发，这里也是个倒计时</p>
+<h3 id="返回结果？"><a href="#返回结果？" class="headerlink" title="返回结果？"></a>返回结果？</h3><p>&amp;emsp;&amp;emsp; 如果线程需要返回结果，还是用fature更为合适，CountdownLatch不太适合</p>
+<h2 id="cyclicbarrier"><a href="#cyclicbarrier" class="headerlink" title="cyclicbarrier"></a>cyclicbarrier</h2><p>&amp;emsp;&amp;emsp; CountdownLatch 不能用多次，要多次用的话，只能反复创建才行。<br>&amp;emsp;&amp;emsp; await()即为CountdownLatch的countDown<br>&amp;emsp;&amp;emsp; cyclicbarrier 构造的时候可以传进一个Runnable，当信号值降低为0的时候，运行Runnable，然后信号量再次赋值为n达到重用的效果<br>&amp;emsp;&amp;emsp; 千万要注意nthreads和线程数要相等，不要搞骚操作,不是说不行，是不太好。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-04-12T15:54:19.000Z" itemprop="dateUpdated">2020-04-12 23:54:19</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q8OMUJ.html&title=《java并发编程11-JUC》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q8OMUJ.html&title=《java并发编程11-JUC》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q8OMUJ.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《java并发编程11-JUC》 — Believe it&url=http://fightinggg.github.io/indigo/Q8OMUJ.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q8OMUJ.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/Q8OMUY.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">java并发编程12-集合的线程安全类</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/Q8OMU7.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">java并发编程10-异步模式</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/Q8OMUJ.html&title=《java并发编程11-JUC》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/Q8OMUJ.html&title=《java并发编程11-JUC》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/Q8OMUJ.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《java并发编程11-JUC》 — Believe it&url=http://fightinggg.github.io/indigo/Q8OMUJ.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/Q8OMUJ.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aQXLEIAwF0bn/pZ0DJGP3l3CqEM3KlXGA54VKEnw+eFxg/H6Tz5n+b3HIkCFjW0a6uW+/pquQX8neZMiQcQ7j28LkmbzZX+thHhkyZMgIg+D9+7V1ZciQISOdjgNIGkrCtwwZMmTUylRevnaeF9fiMmTI2JDBu+7///zK+YYMGTK2YlzhqLXe+F9qQ4YMGbMZqw4geZheFXBlyJBxGiMNozx0dmYg/xvnsDJkyNiWQcLo/UTkyletbRdc3ZAhQ8ZQBl+gX+iScExC7Se1ypAhYwSDJF61jfIQXCtx/+gaypAhYxzjvXNA3qrjnwY142TIkDGOQYIjL2vTS2akQEVsGTJkHMDgxWSaINbaefHFDhkyZIxmoLPN8KpEWvSmxwAPH0WGDBmjGf3jyXSxztUKGTJknMmoJXC8DF4bspddDpMhQ8a2jNpVifSSBAnl/LPKkCFjKiPdBEkEyYdIDx4edihDhozRjDeaXGk4TtNNGTJknMxIG2SddJA/B2/KkCHjMAYvL1e1/gkmrsJlyJAxlNFZjLfy04IWDRkyZAxlXOFIZ+ahk7TnWkmhDBkytmV0gjI54OwE5bS4lSFDxmwGb8enTbfO4SXfgwwZMs5h9K87cEDtUAHluTJkyJDR2AQ/SEhTRhkyZMioLRAndrf7uS+eZciQcQ4jvTZaa+inhWuQUMqQIWM0Iy0d+UUK3rCrXQiTIUPGAYwfHMsZBlxGw7YAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

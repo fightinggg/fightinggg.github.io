@@ -1,0 +1,684 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/PQ8MNU.html">
+
+
+
+  <title>
+凸四边形不等式优化dp - DP - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">凸四边形不等式优化dp
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2019-04-20 10:23:54">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2019-04-20T10:23:54+08:00">2019-04-20</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciuja1j1j20zk0m8kjl.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeubcbajj20zk0m8h1h.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciundwu5j20zk0m8n9e.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeudstjqj20zk0m8k3r.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicli3sbvtj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicivghyooj20zk0m8dir.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/" itemprop="item" rel="index" title="分类于 DP"><span itemprop="name">DP</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/PQ8MNU.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PQ8MNU.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="理论篇"><a href="#理论篇" class="headerlink" title="理论篇"></a>理论篇</h1><h2 id="决策单调性"><a href="#决策单调性" class="headerlink" title="决策单调性"></a>决策单调性</h2><p>对于一类一维$dp$,若有转移$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) 0&lt;j&lt;i$，并假定$pri[i]$为到$dp[i]$的最优转移$j$，如果$pri[i]$关于$i$单调，那么我们称该$dp$具有决策单调性。</p>
+<p>对于一类二维$dp$,如果有转移$dp[i][j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) i&lt;&#x3D;k&lt;j $并假定$pro[i][j]$为到$dp[i][j]$的最优转移$k$,如果$pri[i][j]$关于$i$单调，且关于$j$单调，那么我们称该$dp$具有决策单调性。</p>
+<h2 id="四边形不等式"><a href="#四边形不等式" class="headerlink" title="四边形不等式"></a>四边形不等式</h2><p>对于二元数论函数，$w(i,j)$，若满足$a\le b\le c\le d$恒有 $w(a,d)+w(b,c) \ge w(a,c)+w(b,d)$则该二元函数满足四边形不等式</p>
+<p>他的充要条件是: 若$a\lt b$ 恒有$w(a,b)+w(a+1,b+1) \ge w(a,b+1)+w(a+1,b)$</p>
+<p>可以理解为，交叉小于包含</p>
+<h2 id="区间包含单调性"><a href="#区间包含单调性" class="headerlink" title="区间包含单调性"></a>区间包含单调性</h2><p>对于二元数论函数，$i&lt;j$的$w(i,j)$ 我们将参数看做区间，定义区间的包含为偏序关系， 若$w$的值关于该偏序关系单调，则称该函数具有区间包含单调性。</p>
+<span id="more"></span>
+
+<h2 id="新增定义"><a href="#新增定义" class="headerlink" title="新增定义"></a>新增定义</h2><p>如果存在转移$dp[j]\to dp[i]$不管此转移是否最优，我们都把$j$叫做一个决策点。</p>
+<p>强化的决策单调性：对于某一维$dp$，如果在某决策点集合中，若$x$为到$dp(i)$的最优决策，则对于所有的大于$i$的$j$，$x$依旧是此决策点集合中的最优决策。 二维同理。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="一维DP"><a href="#一维DP" class="headerlink" title="一维DP"></a>一维DP</h3><p>考虑转移式$dp[i]&#x3D;\min(dp[j]+w(j,i))$，其中$1\le j\lt i$ ，且函数$w$满足四边形不等式</p>
+<p>不妨假设$p_x$是$dp[x]$的最佳转移之一，$p$是一个$dp[x]$的任意一个转移</p>
+<p>则$\forall p \lt x$ 都有$dp[p_x]+w(p_x,x)\le dp[p]+w(p,x)$ 即 $dp[p_x]-dp[p]\le w(p,x) -w(p_x,x)$</p>
+<p>根据四边形不等式，$\forall p \le p_x \le x \le y $ 都有$w(p,y)+w(p_x,x)\ge w(p,x)+w(p_x,y)$ 即$w(p,x)-w(p_x,x)\le w(p,y)-w(p_x,y)$</p>
+<p>合并上面两个不等式得到了$dp[p_x]-dp[p]\le w(p,y)-w(p_x,y)$ 即$dp[p_x]+w(p_x,y)\le dp[p]+w(p,y)$, 根据这个不等式，我们发现他说明了这样一个事实，即:</p>
+<p><strong>如果$p_x$是$dp[x]$的最佳转移之一，则$\forall p\le p_x \le x \le y$，对于$dp[y]$都有决策点$p_x$优于$p$</strong></p>
+<h3 id="二维DP较复杂"><a href="#二维DP较复杂" class="headerlink" title="二维DP较复杂"></a>二维DP较复杂</h3><p>需要对每一纬单独证明决策单调性，其中涉及到$w$函数的四边形不等式性质和$dp$自身的四边形不等式性质，此处不做证明，实战中也不会遇到，决策单调性需要依靠敏感的直觉，你需要用最快的速度猜测决策点单调，然后用一两分钟编写程序验证其单调性。</p>
+<h1 id="做法篇"><a href="#做法篇" class="headerlink" title="做法篇"></a>做法篇</h1><h2 id="强化的决策单调性优化一维dp"><a href="#强化的决策单调性优化一维dp" class="headerlink" title="强化的决策单调性优化一维dp"></a>强化的决策单调性优化一维dp</h2><p>当此$dp$满足强化的决策单调性的时候，我们可以用单调队列来优化$dp$,此单调队列维护一个数据结构，该数据结构维护一个决策数组,当我们处理$dp[i]$的时候，该数组维护了$dp[i]$到$dp[n]$的在$[1,i)$中的最优决策点。 显然该决策数组单调增，我们拿出最优队首，为$dp[i]$赋值，下一步应该是更新该决策数组，怎么更新呢，我们二分即可。</p>
+<h2 id="用二分更新决策数组"><a href="#用二分更新决策数组" class="headerlink" title="用二分更新决策数组"></a>用二分更新决策数组</h2><p>先证明,对于新加进来的决策，对于旧决策数组的影响具有单调性，即存在一个分界点，分界点左边，新决策不如旧决策，分界点右边，新决策优于旧决策， 首先，我们假设新决策的影响不具有单调性，即新决策的影响杂乱无章，在这种情况下，我们取出靠左边的决策为新决策的元素的下标，根据强化的决策单调性，此元素右边的 元素的当前最优决策值必须且只能为$i$，因为当前大于等于i的决策只有$i$。矛盾发生，故新决策的影响具有单调性。</p>
+<p> 当于是我们二分出这个点即可解决 ，</p>
+<h2 id="单调队列优化"><a href="#单调队列优化" class="headerlink" title="单调队列优化"></a>单调队列优化</h2><p>为什么我们要用单调队列呢，我们先考虑，如果我们采取线段树优化，那么更新决策数组显然是$lg$级别的，但是 二分新决策边界的时候，复杂度为$lg*lg$，因为单点查询是$lg$级别的，再加个二分就双$lg$了。</p>
+<p>为了时间复杂度好写，我们采取单调队列来维护，单调队列维护一个三元组分别是决策点和目前以此决策点为最优决策的$dp$，因为这是个区间，所有要用两个数来维护。</p>
+<p>更新的时候，直接修改队尾的三元组即可，查询的时候，暴力枚举队尾的三元组，如果新决策完全不如旧决策， 此次修改结束，如果队尾的决策完全不如新决策弹掉了队尾，修改新队尾的区间为后缀区间，继续枚举，如果新决策优于队尾决策的一部分，二分出位置后直接修改即可。</p>
+<p>很容易证明单调队列优化的时间复杂度是$lg$的，优于线段树。</p>
+<h2 id="决策单调性优化二维dp"><a href="#决策单调性优化二维dp" class="headerlink" title="决策单调性优化二维dp"></a>决策单调性优化二维dp</h2><p>这个就特别简单了，$dp[i][j]$的转移在$dp[i][j-1]$和$dp[i+1][j]$之间枚举即可。</p>
+<h2 id="什么时候可以使用这些优化？"><a href="#什么时候可以使用这些优化？" class="headerlink" title="什么时候可以使用这些优化？"></a>什么时候可以使用这些优化？</h2><p>对于一维$dp[i]&#x3D;min&#x2F;max(dp[j]+w(i,j)) $,若w满足四边形不等式则，此$dp$满足决策单调性,并且，满足强化的决策单调性。</p>
+<p>对于二维$dp[i,j]&#x3D;min&#x2F;max(dp[i][k]+dp[k+1][j]+w(i,j)) $若w满足四边形不等式，且$w$满足区间 包含单调性，则$dp$满足四边形不等式，且具有决策单调性。</p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-05-19 23:10:00" itemprop="dateModified" datetime="2021-05-19T23:10:00+08:00">2021-05-19</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/PQ8MNU.html" title="凸四边形不等式优化dp">http://fightinggg.github.io/shoka/PQ8MNU.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/PPJIW2.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgi503lj20zk0m8hdt.jpg" title="最大团">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 图论</span>
+  <h3>最大团</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/PQBI61.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipex2cdtbj20zk0m8x6p.jpg" title="莫队算法">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 思维</span>
+  <h3>莫队算法</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E7%AF%87"><span class="toc-number">1.</span> <span class="toc-text">理论篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7"><span class="toc-number">1.1.</span> <span class="toc-text">决策单调性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E8%BE%B9%E5%BD%A2%E4%B8%8D%E7%AD%89%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">四边形不等式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E9%97%B4%E5%8C%85%E5%90%AB%E5%8D%95%E8%B0%83%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">区间包含单调性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%A2%9E%E5%AE%9A%E4%B9%89"><span class="toc-number">1.4.</span> <span class="toc-text">新增定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%81%E6%98%8E"><span class="toc-number">1.5.</span> <span class="toc-text">证明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4DP"><span class="toc-number">1.5.1.</span> <span class="toc-text">一维DP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4DP%E8%BE%83%E5%A4%8D%E6%9D%82"><span class="toc-number">1.5.2.</span> <span class="toc-text">二维DP较复杂</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%81%9A%E6%B3%95%E7%AF%87"><span class="toc-number">2.</span> <span class="toc-text">做法篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E7%9A%84%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%E4%B8%80%E7%BB%B4dp"><span class="toc-number">2.1.</span> <span class="toc-text">强化的决策单调性优化一维dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E4%BA%8C%E5%88%86%E6%9B%B4%E6%96%B0%E5%86%B3%E7%AD%96%E6%95%B0%E7%BB%84"><span class="toc-number">2.2.</span> <span class="toc-text">用二分更新决策数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%E4%BC%98%E5%8C%96"><span class="toc-number">2.3.</span> <span class="toc-text">单调队列优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E4%BC%98%E5%8C%96%E4%BA%8C%E7%BB%B4dp"><span class="toc-number">2.4.</span> <span class="toc-text">决策单调性优化二维dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E8%BF%99%E4%BA%9B%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">什么时候可以使用这些优化？</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/PGWDPS.html" rel="bookmark" title="斜率优化dp">斜率优化dp</a></li><li><a href="/shoka/PKKB6K.html" rel="bookmark" title="树形dp">树形dp</a></li><li class="active"><a href="/shoka/PQ8MNU.html" rel="bookmark" title="凸四边形不等式优化dp">凸四边形不等式优化dp</a></li><li><a href="/shoka/PQEPJ5.html" rel="bookmark" title="数位dp">数位dp</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/PPJIW2.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/PQBI61.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PX7LJD.html" title="hdu6578">hdu6578</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8LY8O.html" title="java并发编程5-Java内存">java并发编程5-Java内存</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="分类于 字符串">字符串</a>
+</div>
+
+    <span><a href="/shoka/PHMIY1.html" title="回文自动机">回文自动机</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PXACE6.html" title="hdu6586">hdu6586</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cfedu63D.html" title="cfedu63D">cfedu63D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R7T.html" title="23Tree">23Tree</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/" title="分类于 uoj">uoj</a>
+</div>
+
+    <span><a href="/shoka/PVZ4HG.html" title="uoj119">uoj119</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/poj2739.html" title="poj2739">poj2739</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cf523C.html" title="cf523C">cf523C</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/JVM/" title="分类于 JVM">JVM</a>
+</div>
+
+    <span><a href="/shoka/Q5SN0R.html" title="Java线程安全与锁优化">Java线程安全与锁优化</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'PQ8MNU.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Go进阶-Web框架 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+0. 前言简单介绍Beego和Gin，水一水文章。
+1.1. 安装Beego库1go get github.com/astaxie/beego
+
+同时安装Bee工具
+1go get github.com/beego/bee
+
+看到如下内容代表安装成功
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546s@HELLOWANG-MB1 ~ % go get github.com/astaxie/beegogo: downloading github.com/astaxie/beego v1.12.3go: downloading github.com/prometheus/client_golang v1.7.0go: downloading github.com/hashicorp/golang-lru v0.5.4go: downloading golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550go: downloading github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644go: downloading github.com/prometheus/common v0.10.0go: downloading github.com/prometheus/client_model v0.2.0go: downloading github.com/prometheus/procfs v0.1.3go: downloading github.com/beorn7/perks v1.0.1go: downloading golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1go: downloading github.com/cespare/xxhash/v2 v2.1.1go: downloading github.com/golang/protobuf v1.4.2go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1go: downloading google.golang.org/protobuf v1.23.0s@HELLOWANG-MB1 ~ % go get github.com/beego/beego: downloading github.com/beego/bee v1.12.3go: downloading github.com/gadelkareem/delve v1.4.2-0.20200619175259-dcd01330766fgo: downloading github.com/gorilla/websocket v1.4.2go: downloading github.com/lib/pq v1.7.0go: downloading github.com/flosch/pongo2 v0.0.0-20200529170236-5abacdfa4915go: downloading github.com/pelletier/go-toml v1.2.0go: downloading github.com/smartwalle/pongo2render v1.0.1go: downloading github.com/spf13/viper v1.7.0go: downloading github.com/astaxie/beego v1.12.1go: downloading github.com/hashicorp/hcl v1.0.0go: downloading github.com/magiconair/properties v1.8.1go: downloading github.com/spf13/afero v1.1.2go: downloading github.com/spf13/cast v1.3.0go: downloading github.com/spf13/jwalterweatherman v1.0.0go: downloading github.com/spf13/pflag v1.0.3go: downloading github.com/subosito/gotenv v1.2.0go: downloading gopkg.in/ini.v1 v1.51.0go: downloading golang.org/x/text v0.3.2go: downloading github.com/sirupsen/logrus v1.6.0go: downloading github.com/cosiner/argv v0.1.0go: downloading github.com/peterh/liner v0.0.0-20170317030525-88609521dc4bgo: downloading github.com/mattn/go-colorable v0.0.9go: downloading github.com/mattn/go-isatty v0.0.3go: downloading golang.org/x/arch v0.0.0-20190927153633-4e8777c89be4go: downloading go.starlark.net v0.0.0-20190702223751-32f345186213go: downloading github.com/konsorten/go-windows-terminal-sequences v1.0.3go get: installing executables with &amp;#x27;go get&amp;#x27; in module mode is deprecated.	Use &amp;#x27;go install pkg@version&amp;#x27; instead.	For more information, see https://golang.org/doc/go-get-install-deprecation	or run &amp;#x27;go help get&amp;#x27; or &amp;#x27;go help install&amp;#x27;.">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/R162KO.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/R162KO.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Go进阶-Web框架 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+0. 前言简单介绍Beego和Gin，水一水文章。
+1.1. 安装Beego库1go get github.com/astaxie/beego
+
+同时安装Bee工具
+1go get github.com/beego/bee
+
+看到如下内容代表安装成功
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546s@HELLOWANG-MB1 ~ % go get github.com/astaxie/beegogo: downloading github.com/astaxie/beego v1.12.3go: downloading github.com/prometheus/client_golang v1.7.0go: downloading github.com/hashicorp/golang-lru v0.5.4go: downloading golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550go: downloading github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644go: downloading github.com/prometheus/common v0.10.0go: downloading github.com/prometheus/client_model v0.2.0go: downloading github.com/prometheus/procfs v0.1.3go: downloading github.com/beorn7/perks v1.0.1go: downloading golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1go: downloading github.com/cespare/xxhash/v2 v2.1.1go: downloading github.com/golang/protobuf v1.4.2go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1go: downloading google.golang.org/protobuf v1.23.0s@HELLOWANG-MB1 ~ % go get github.com/beego/beego: downloading github.com/beego/bee v1.12.3go: downloading github.com/gadelkareem/delve v1.4.2-0.20200619175259-dcd01330766fgo: downloading github.com/gorilla/websocket v1.4.2go: downloading github.com/lib/pq v1.7.0go: downloading github.com/flosch/pongo2 v0.0.0-20200529170236-5abacdfa4915go: downloading github.com/pelletier/go-toml v1.2.0go: downloading github.com/smartwalle/pongo2render v1.0.1go: downloading github.com/spf13/viper v1.7.0go: downloading github.com/astaxie/beego v1.12.1go: downloading github.com/hashicorp/hcl v1.0.0go: downloading github.com/magiconair/properties v1.8.1go: downloading github.com/spf13/afero v1.1.2go: downloading github.com/spf13/cast v1.3.0go: downloading github.com/spf13/jwalterweatherman v1.0.0go: downloading github.com/spf13/pflag v1.0.3go: downloading github.com/subosito/gotenv v1.2.0go: downloading gopkg.in/ini.v1 v1.51.0go: downloading golang.org/x/text v0.3.2go: downloading github.com/sirupsen/logrus v1.6.0go: downloading github.com/cosiner/argv v0.1.0go: downloading github.com/peterh/liner v0.0.0-20170317030525-88609521dc4bgo: downloading github.com/mattn/go-colorable v0.0.9go: downloading github.com/mattn/go-isatty v0.0.3go: downloading golang.org/x/arch v0.0.0-20190927153633-4e8777c89be4go: downloading go.starlark.net v0.0.0-20190702223751-32f345186213go: downloading github.com/konsorten/go-windows-terminal-sequences v1.0.3go get: installing executables with &amp;#x27;go get&amp;#x27; in module mode is deprecated.	Use &amp;#x27;go install pkg@version&amp;#x27; instead.	For more information, see https://golang.org/doc/go-get-install-deprecation	or run &amp;#x27;go help get&amp;#x27; or &amp;#x27;go help install&amp;#x27;.">
+    
+
+    
+        <meta property="article:published_time" content="Mon Oct 18 2021 17:34:00 GMT+0800">
+        <meta property="article:modified_time" content="Tue Oct 19 2021 05:49:00 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/R162KO.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/R162KO.html",
+    "headline": "Go进阶-Web框架",
+    "datePublished": "Mon Oct 18 2021 17:34:00 GMT+0800",
+    "dateModified": "Tue Oct 19 2021 05:49:00 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+
+
+0. 前言简单介绍Beego和Gin，水一水文章。
+1.1. 安装Beego库1go get github.com/astaxie/beego
+
+同时安装Bee工具
+1go get github.com/beego/bee
+
+看到如下内容代表安装成功
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546s@HELLOWANG-MB1 ~ % go get github.com/astaxie/beegogo: downloading github.com/astaxie/beego v1.12.3go: downloading github.com/prometheus/client_golang v1.7.0go: downloading github.com/hashicorp/golang-lru v0.5.4go: downloading golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550go: downloading github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644go: downloading github.com/prometheus/common v0.10.0go: downloading github.com/prometheus/client_model v0.2.0go: downloading github.com/prometheus/procfs v0.1.3go: downloading github.com/beorn7/perks v1.0.1go: downloading golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1go: downloading github.com/cespare/xxhash/v2 v2.1.1go: downloading github.com/golang/protobuf v1.4.2go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1go: downloading google.golang.org/protobuf v1.23.0s@HELLOWANG-MB1 ~ % go get github.com/beego/beego: downloading github.com/beego/bee v1.12.3go: downloading github.com/gadelkareem/delve v1.4.2-0.20200619175259-dcd01330766fgo: downloading github.com/gorilla/websocket v1.4.2go: downloading github.com/lib/pq v1.7.0go: downloading github.com/flosch/pongo2 v0.0.0-20200529170236-5abacdfa4915go: downloading github.com/pelletier/go-toml v1.2.0go: downloading github.com/smartwalle/pongo2render v1.0.1go: downloading github.com/spf13/viper v1.7.0go: downloading github.com/astaxie/beego v1.12.1go: downloading github.com/hashicorp/hcl v1.0.0go: downloading github.com/magiconair/properties v1.8.1go: downloading github.com/spf13/afero v1.1.2go: downloading github.com/spf13/cast v1.3.0go: downloading github.com/spf13/jwalterweatherman v1.0.0go: downloading github.com/spf13/pflag v1.0.3go: downloading github.com/subosito/gotenv v1.2.0go: downloading gopkg.in/ini.v1 v1.51.0go: downloading golang.org/x/text v0.3.2go: downloading github.com/sirupsen/logrus v1.6.0go: downloading github.com/cosiner/argv v0.1.0go: downloading github.com/peterh/liner v0.0.0-20170317030525-88609521dc4bgo: downloading github.com/mattn/go-colorable v0.0.9go: downloading github.com/mattn/go-isatty v0.0.3go: downloading golang.org/x/arch v0.0.0-20190927153633-4e8777c89be4go: downloading go.starlark.net v0.0.0-20190702223751-32f345186213go: downloading github.com/konsorten/go-windows-terminal-sequences v1.0.3go get: installing executables with &amp;#x27;go get&amp;#x27; in module mode is deprecated.	Use &amp;#x27;go install pkg@version&amp;#x27; instead.	For more information, see https://golang.org/doc/go-get-install-deprecation	or run &amp;#x27;go help get&amp;#x27; or &amp;#x27;go help install&amp;#x27;.",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#0-%E5%89%8D%E8%A8%80"><span class="post-toc-number">1.</span> <span class="post-toc-text">0. 前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-1-%E5%AE%89%E8%A3%85Beego%E5%BA%93"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1.1. 安装Beego库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-2-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">1.2. 创建项目</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-1-%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">1.2.1. 创建项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-2-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">1.2.2. 初始化项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-3-%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">1.2.3. 启动项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-4-Contorller"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">1.2.4. Contorller</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-4-1-%E8%B7%AF%E7%94%B1"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">1.2.4.1 路由</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-4-2-Controller"><span class="post-toc-number">1.2.6.</span> <span class="post-toc-text">1.2.4.2. Controller</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-2-4-3-%E8%BF%94%E5%9B%9EJSON%E6%95%B0%E6%8D%AE%E7%9A%84Controller"><span class="post-toc-number">1.2.7.</span> <span class="post-toc-text">1.2.4.3. 返回JSON数据的Controller</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2-1-%E5%AE%89%E8%A3%85Gin"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.1. 安装Gin</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2-2-%E7%BC%96%E5%86%99Hello-World"><span class="post-toc-number">3.</span> <span class="post-toc-text">2.2.  编写Hello World</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Go进阶-Web框架
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>10月 18, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Go进阶-Web框架&url=http://fightinggg.github.io/material/material/R162KO.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Go进阶-Web框架&url=http://fightinggg.github.io/material/material/R162KO.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/R162KO.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/R162KO.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R162KO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h1><p>简单介绍Beego和Gin，水一水文章。</p>
+<h2 id="1-1-安装Beego库"><a href="#1-1-安装Beego库" class="headerlink" title="1.1. 安装Beego库"></a>1.1. 安装Beego库</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/astaxie/beego</span><br></pre></td></tr></table></figure>
+
+<p>同时安装Bee工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/beego/bee</span><br></pre></td></tr></table></figure>
+
+<p>看到如下内容代表安装成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">s@HELLOWANG-MB1 ~ % go get github.com/astaxie/beego</span><br><span class="line">go: downloading github.com/astaxie/beego v1.12.3</span><br><span class="line">go: downloading github.com/prometheus/client_golang v1.7.0</span><br><span class="line">go: downloading github.com/hashicorp/golang-lru v0.5.4</span><br><span class="line">go: downloading golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550</span><br><span class="line">go: downloading github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644</span><br><span class="line">go: downloading github.com/prometheus/common v0.10.0</span><br><span class="line">go: downloading github.com/prometheus/client_model v0.2.0</span><br><span class="line">go: downloading github.com/prometheus/procfs v0.1.3</span><br><span class="line">go: downloading github.com/beorn7/perks v1.0.1</span><br><span class="line">go: downloading golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1</span><br><span class="line">go: downloading github.com/cespare/xxhash/v2 v2.1.1</span><br><span class="line">go: downloading github.com/golang/protobuf v1.4.2</span><br><span class="line">go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.1</span><br><span class="line">go: downloading google.golang.org/protobuf v1.23.0</span><br><span class="line">s@HELLOWANG-MB1 ~ % go get github.com/beego/bee</span><br><span class="line">go: downloading github.com/beego/bee v1.12.3</span><br><span class="line">go: downloading github.com/gadelkareem/delve v1.4.2-0.20200619175259-dcd01330766f</span><br><span class="line">go: downloading github.com/gorilla/websocket v1.4.2</span><br><span class="line">go: downloading github.com/lib/pq v1.7.0</span><br><span class="line">go: downloading github.com/flosch/pongo2 v0.0.0-20200529170236-5abacdfa4915</span><br><span class="line">go: downloading github.com/pelletier/go-toml v1.2.0</span><br><span class="line">go: downloading github.com/smartwalle/pongo2render v1.0.1</span><br><span class="line">go: downloading github.com/spf13/viper v1.7.0</span><br><span class="line">go: downloading github.com/astaxie/beego v1.12.1</span><br><span class="line">go: downloading github.com/hashicorp/hcl v1.0.0</span><br><span class="line">go: downloading github.com/magiconair/properties v1.8.1</span><br><span class="line">go: downloading github.com/spf13/afero v1.1.2</span><br><span class="line">go: downloading github.com/spf13/cast v1.3.0</span><br><span class="line">go: downloading github.com/spf13/jwalterweatherman v1.0.0</span><br><span class="line">go: downloading github.com/spf13/pflag v1.0.3</span><br><span class="line">go: downloading github.com/subosito/gotenv v1.2.0</span><br><span class="line">go: downloading gopkg.in/ini.v1 v1.51.0</span><br><span class="line">go: downloading golang.org/x/text v0.3.2</span><br><span class="line">go: downloading github.com/sirupsen/logrus v1.6.0</span><br><span class="line">go: downloading github.com/cosiner/argv v0.1.0</span><br><span class="line">go: downloading github.com/peterh/liner v0.0.0-20170317030525-88609521dc4b</span><br><span class="line">go: downloading github.com/mattn/go-colorable v0.0.9</span><br><span class="line">go: downloading github.com/mattn/go-isatty v0.0.3</span><br><span class="line">go: downloading golang.org/x/arch v0.0.0-20190927153633-4e8777c89be4</span><br><span class="line">go: downloading go.starlark.net v0.0.0-20190702223751-32f345186213</span><br><span class="line">go: downloading github.com/konsorten/go-windows-terminal-sequences v1.0.3</span><br><span class="line">go get: installing executables with &#x27;go get&#x27; in module mode is deprecated.</span><br><span class="line">	Use &#x27;go install pkg@version&#x27; instead.</span><br><span class="line">	For more information, see https://golang.org/doc/go-get-install-deprecation</span><br><span class="line">	or run &#x27;go help get&#x27; or &#x27;go help install&#x27;.</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>注意安装以后对二进制文件在$GOPATH&#x2F;bin下，所以请确保该路径在你的环境变量下,笔者使用MACOS，在<code>~/.zshrc</code>中使用如下配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GOPATH=~/go</span><br><span class="line">PATH=$PATH:~/go/bin</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="1-2-创建项目"><a href="#1-2-创建项目" class="headerlink" title="1.2. 创建项目"></a>1.2. 创建项目</h2><h3 id="1-2-1-创建项目"><a href="#1-2-1-创建项目" class="headerlink" title="1.2.1. 创建项目"></a>1.2.1. 创建项目</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">s@HELLOWANG-MB1 src % bee new bee-demo</span><br><span class="line">2021/10/18 17:47:29 INFO     ▶ 0001 generate new project support go modules.</span><br><span class="line">2021/10/18 17:47:29 INFO     ▶ 0002 Creating application...</span><br><span class="line">	create	 /Users/s/src/bee-demo/go.mod</span><br><span class="line">	create	 /Users/s/src/bee-demo/</span><br><span class="line">	create	 /Users/s/src/bee-demo/conf/</span><br><span class="line">	create	 /Users/s/src/bee-demo/controllers/</span><br><span class="line">	create	 /Users/s/src/bee-demo/models/</span><br><span class="line">	create	 /Users/s/src/bee-demo/routers/</span><br><span class="line">	create	 /Users/s/src/bee-demo/tests/</span><br><span class="line">	create	 /Users/s/src/bee-demo/static/</span><br><span class="line">	create	 /Users/s/src/bee-demo/static/js/</span><br><span class="line">	create	 /Users/s/src/bee-demo/static/css/</span><br><span class="line">	create	 /Users/s/src/bee-demo/static/img/</span><br><span class="line">	create	 /Users/s/src/bee-demo/views/</span><br><span class="line">	create	 /Users/s/src/bee-demo/conf/app.conf</span><br><span class="line">	create	 /Users/s/src/bee-demo/controllers/default.go</span><br><span class="line">	create	 /Users/s/src/bee-demo/views/index.tpl</span><br><span class="line">	create	 /Users/s/src/bee-demo/routers/router.go</span><br><span class="line">	create	 /Users/s/src/bee-demo/tests/default_test.go</span><br><span class="line">	create	 /Users/s/src/bee-demo/main.go</span><br><span class="line">2021/10/18 17:47:29 SUCCESS  ▶ 0003 New application successfully created!</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-初始化项目"><a href="#1-2-2-初始化项目" class="headerlink" title="1.2.2. 初始化项目"></a>1.2.2. 初始化项目</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s@HELLOWANG-MB1 bee-demo % go get</span><br><span class="line">go: downloading gopkg.in/yaml.v2 v2.2.1</span><br><span class="line">go: downloading github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18</span><br><span class="line">go get: added github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-3-启动项目"><a href="#1-2-3-启动项目" class="headerlink" title="1.2.3. 启动项目"></a>1.2.3. 启动项目</h3><p>在GoLand IDE中点击▶启动项目，看到如下输出，访问<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a>即可看到小蜜蜂</p>
+<p><img src='/beego-logo.png'></img></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GOROOT=/usr/local/Cellar/go/1.17.2/libexec #gosetup</span><br><span class="line">GOPATH=/Users/s/go #gosetup</span><br><span class="line">/usr/local/Cellar/go/1.17.2/libexec/bin/go build -o /private/var/folders/6t/kt2nf9z17cv87lqk842lngj80000gn/T/GoLand/___go_build_bee_demo bee-demo #gosetup</span><br><span class="line">/private/var/folders/6t/kt2nf9z17cv87lqk842lngj80000gn/T/GoLand/___go_build_bee_demo</span><br><span class="line">2021/10/18 18:01:42.769 [I] [asm_amd64.s:1581]  http server Running on http://:8080</span><br><span class="line">2021/10/18 18:04:54.533 [D] [server.go:2878]  |            ::1| 200 |   4.493325ms|   match| GET      /     r:/</span><br><span class="line">2021/10/18 18:04:54.607 [D] [server.go:2878]  |            ::1| 200 |    316.098µs|   match| GET      /static/js/reload.min.js</span><br><span class="line">2021/10/18 18:04:58.868 [D] [server.go:2878]  |            ::1| 200 |    1.40659ms|   match| GET      /     r:/</span><br><span class="line">2021/10/18 18:05:03.305 [D] [server.go:2878]  |            ::1| 200 |   1.215993ms|   match| GET      /     r:/</span><br><span class="line">2021/10/18 18:05:43.326 [D] [server.go:2878]  |            ::1| 200 |   2.620439ms|   match| GET      /     r:/</span><br><span class="line">2021/10/18 18:05:43.381 [D] [server.go:2878]  |            ::1| 200 |     60.791µs|   match| GET      /static/js/reload.min.js</span><br><span class="line">2021/10/18 18:09:39.216 [D] [server.go:2878]  |            ::1| 200 |   2.486943ms|   match| GET      /     r:/</span><br><span class="line">2021/10/18 18:09:39.266 [D] [server.go:2878]  |            ::1| 200 |     66.282µs|   match| GET      /static/js/reload.min.js</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-2-4-Contorller"><a href="#1-2-4-Contorller" class="headerlink" title="1.2.4. Contorller"></a>1.2.4. Contorller</h3><h3 id="1-2-4-1-路由"><a href="#1-2-4-1-路由" class="headerlink" title="1.2.4.1 路由"></a>1.2.4.1 路由</h3><p>路由在文件<code>routers/router.go</code>中, 在Beego的设计中，路由需要手动添加，即哪个PATH交给哪个Controller来处理。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> routers</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bee-demo/controllers&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/astaxie/beego&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    beego.Router(<span class="string">&quot;/&quot;</span>, &amp;controllers.MainController&#123;&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-4-2-Controller"><a href="#1-2-4-2-Controller" class="headerlink" title="1.2.4.2. Controller"></a>1.2.4.2. Controller</h3><p>MainController继承了beego.Controller,所以我们可以复写他的方法，注意到beego.Controller实现了beegoControllerInterface这个接口，里边的方法其实都比较明显了，就是HTTP协议的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ControllerInterface <span class="keyword">interface</span> &#123;</span><br><span class="line">	Init(ct *context.Context, controllerName, actionName <span class="type">string</span>, app <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">	Prepare()</span><br><span class="line">	Get()</span><br><span class="line">	Post()</span><br><span class="line">	Delete()</span><br><span class="line">	Put()</span><br><span class="line">	Head()</span><br><span class="line">	Patch()</span><br><span class="line">	Options()</span><br><span class="line">	Trace()</span><br><span class="line">	Finish()</span><br><span class="line">	Render() <span class="type">error</span></span><br><span class="line">	XSRFToken() <span class="type">string</span></span><br><span class="line">	CheckXSRFCookie() <span class="type">bool</span></span><br><span class="line">	HandlerFunc(fn <span class="type">string</span>) <span class="type">bool</span></span><br><span class="line">	URLMapping()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="1-2-4-3-返回JSON数据的Controller"><a href="#1-2-4-3-返回JSON数据的Controller" class="headerlink" title="1.2.4.3. 返回JSON数据的Controller"></a>1.2.4.3. 返回JSON数据的Controller</h3><p>首先编写一个HelloController,然后把它加入到route中，最后访问&#x2F;hello，就可以看到输出了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> controllers</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/astaxie/beego&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> HelloController <span class="keyword">struct</span> &#123;</span><br><span class="line">	beego.Controller</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> HelloVO <span class="keyword">struct</span> &#123;</span><br><span class="line">	Say1 <span class="type">string</span> <span class="string">`json:&quot;say_1&quot;`</span></span><br><span class="line">	Say2 <span class="type">int</span>    <span class="string">`json:&quot;say_2&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *HelloController)</span></span> Get() &#123;</span><br><span class="line">	c.Data[<span class="string">&quot;json&quot;</span>] = &amp;HelloVO&#123;</span><br><span class="line">		Say1: <span class="string">&quot;world&quot;</span>,</span><br><span class="line">		Say2: <span class="number">9527</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	c.ServeJSON()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /hello</span><br><span class="line">&#123;</span><br><span class="line">  &quot;say_1&quot;: &quot;world&quot;,</span><br><span class="line">  &quot;say_2&quot;: 9527</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这一块就点到为止了，听说Beego框架不太火，了解了解就好了，笔者也不是文档翻译器，更多更加细节的部分关注<a target="_blank" rel="noopener" href="https://www.topgoer.com/beego%E6%A1%86%E6%9E%B6/">这里</a></p>
+<h1 id="2-1-安装Gin"><a href="#2-1-安装Gin" class="headerlink" title="2.1. 安装Gin"></a>2.1. 安装Gin</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-2-编写Hello-World"><a href="#2-2-编写Hello-World" class="headerlink" title="2.2.  编写Hello World"></a>2.2.  编写Hello World</h1><p>编写下面的代码，然后直接运行，访问<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a>即可看到Hello World</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(<span class="string">&quot;/&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.String(http.StatusOK, <span class="string">&quot;hello World!&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>日志如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GOROOT=/usr/local/Cellar/go/1.17.2/libexec #gosetup</span><br><span class="line">GOPATH=/Users/s/go #gosetup</span><br><span class="line">/usr/local/Cellar/go/1.17.2/libexec/bin/go build -o /private/var/folders/6t/kt2nf9z17cv87lqk842lngj80000gn/T/GoLand/___go_build_gin_demo gin-demo #gosetup</span><br><span class="line">/private/var/folders/6t/kt2nf9z17cv87lqk842lngj80000gn/T/GoLand/___go_build_gin_demo</span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:   export GIN_MODE=release</span><br><span class="line"> - using code:  gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    /                         --&gt; main.main.func1 (3 handlers)</span><br><span class="line">[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default</span><br><span class="line">[GIN-debug] Listening and serving HTTP on :8080</span><br><span class="line">[GIN] 2021/10/19 - 15:02:00 | 200 |      16.428µs |             ::1 | GET      &quot;/&quot;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>更加具体的，参见文档，太没技术的东西笔者不喜欢写。</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/R162KO.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/R162KO.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/R16K60.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/R0X17C.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

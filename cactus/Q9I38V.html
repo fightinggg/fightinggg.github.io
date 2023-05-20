@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  启动配置原理几个重要的事件回调机制  ApplicationContextInitializer SpringApplicationRunListener ApplicationRunner Comman">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot6-启动的源码分析">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q9I38V.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  启动配置原理几个重要的事件回调机制  ApplicationContextInitializer SpringApplicationRunListener ApplicationRunner Comman">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-28T13:38:55.000Z">
+<meta property="article:modified_time" content="2020-04-28T13:38:55.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>SpringBoot6-启动的源码分析</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q9I7BR.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q9I31Z.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q9I38V.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q9I38V.html&text=SpringBoot6-启动的源码分析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q9I38V.html&is_video=false&description=SpringBoot6-启动的源码分析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SpringBoot6-启动的源码分析&body=Check out this article: http://fightinggg.github.io/cactus/Q9I38V.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q9I38V.html&name=SpringBoot6-启动的源码分析&description=&lt;div&gt;&lt;a href=&#34;/next/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;启动配置原理&#34;&gt;&lt;a href=&#34;#启动配置原理&#34; class=&#34;headerlink&#34; title=&#34;启动配置原理&#34;&gt;&lt;/a&gt;启动配置原理&lt;/h1&gt;&lt;p&gt;几个重要的事件回调机制&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ApplicationContextInitializer&lt;/li&gt;
+&lt;li&gt;SpringApplicationRunListener&lt;/li&gt;
+&lt;li&gt;ApplicationRunner&lt;/li&gt;
+&lt;li&gt;CommandLineRunner&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;启动流程&#34;&gt;&lt;a href=&#34;#启动流程&#34; class=&#34;headerlink&#34; title=&#34;启动流程&#34;&gt;&lt;/a&gt;启动流程&lt;/h1&gt;&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;SpringApplication&lt;/span&gt;(primarySources).run(args);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;创建SpringApplication对象&lt;/li&gt;
+&lt;li&gt;运行run方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;创建对象&#34;&gt;&lt;a href=&#34;#创建对象&#34; class=&#34;headerlink&#34; title=&#34;创建对象&#34;&gt;&lt;/a&gt;创建对象&lt;/h2&gt;&lt;p&gt;现在左边的参数是null&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;SpringApplication&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;(&lt;span class=&#34;literal&#34;&gt;null&lt;/span&gt;, primarySources);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;SpringApplication&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.resourceLoader = resourceLoader;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       Assert.notNull(primarySources, &lt;span class=&#34;string&#34;&gt;&amp;quot;PrimarySources must not be null&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.primarySources = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;LinkedHashSet&lt;/span&gt;&amp;lt;&amp;gt;(Arrays.asList(primarySources));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.webApplicationType = WebApplicationType.deduceFromClasspath();&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.mainApplicationClass = deduceMainApplicationClass();&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q9I38V.html&t=SpringBoot6-启动的源码分析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">启动配置原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">启动流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.</span> <span class="toc-text">创建对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC8%E8%A1%8C"><span class="toc-number">2.1.1.</span> <span class="toc-text">第8行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC9%E8%A1%8C"><span class="toc-number">2.1.2.</span> <span class="toc-text">第9行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC10%E8%A1%8C"><span class="toc-number">2.1.3.</span> <span class="toc-text">第10行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC11%E8%A1%8C"><span class="toc-number">2.1.4.</span> <span class="toc-text">第11行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">2.2.</span> <span class="toc-text">run</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC12%E8%A1%8C"><span class="toc-number">2.2.1.</span> <span class="toc-text">第12行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC13-14%E8%A1%8C"><span class="toc-number">2.2.2.</span> <span class="toc-text">第13-14行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC17%E8%A1%8C"><span class="toc-number">2.2.3.</span> <span class="toc-text">第17行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC19%E8%A1%8C"><span class="toc-number">2.2.4.</span> <span class="toc-text">第19行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC20%E8%A1%8C"><span class="toc-number">2.2.5.</span> <span class="toc-text">第20行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC23%E8%A1%8C"><span class="toc-number">2.2.6.</span> <span class="toc-text">第23行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC24%E8%A1%8C"><span class="toc-number">2.2.7.</span> <span class="toc-text">第24行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC31%E8%A1%8C"><span class="toc-number">2.2.8.</span> <span class="toc-text">第31行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#run%E7%BB%93%E6%9D%9F%E4%BA%86"><span class="toc-number">2.2.9.</span> <span class="toc-text">run结束了</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        SpringBoot6-启动的源码分析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-28T13:38:55.000Z" class="dt-published" itemprop="datePublished">2020-04-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/Java/">Java</a> › <a class="category-link" href="/cactus/categories/Language/Java/SpringBoot/">SpringBoot</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q9I38V.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="启动配置原理"><a href="#启动配置原理" class="headerlink" title="启动配置原理"></a>启动配置原理</h1><p>几个重要的事件回调机制</p>
+<ul>
+<li>ApplicationContextInitializer</li>
+<li>SpringApplicationRunListener</li>
+<li>ApplicationRunner</li>
+<li>CommandLineRunner</li>
+</ul>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建SpringApplication对象</li>
+<li>运行run方法</li>
+</ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>现在左边的参数是null</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">       <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">       Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">       <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">       <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">       setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">       setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">       <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="第8行"><a href="#第8行" class="headerlink" title="第8行"></a>第8行</h3><p>判断这是哪一类web应用,web分三类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">WebApplicationType</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should not run as a web application and should not start an</span></span><br><span class="line"><span class="comment">     * embedded web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    NONE,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a servlet-based web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded servlet web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SERVLET,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The application should run as a reactive web application and should start an</span></span><br><span class="line"><span class="comment">     * embedded reactive web server.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    REACTIVE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> WebApplicationType <span class="title function_">deduceFromClasspath</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ClassUtils.isPresent(WEBFLUX_INDICATOR_CLASS, <span class="literal">null</span>) &amp;&amp; !ClassUtils.isPresent(WEBMVC_INDICATOR_CLASS, <span class="literal">null</span>)</span><br><span class="line">            &amp;&amp; !ClassUtils.isPresent(JERSEY_INDICATOR_CLASS, <span class="literal">null</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> WebApplicationType.REACTIVE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String className : SERVLET_INDICATOR_CLASSES) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!ClassUtils.isPresent(className, <span class="literal">null</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> WebApplicationType.NONE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> WebApplicationType.SERVLET;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第9行"><a href="#第9行" class="headerlink" title="第9行"></a>第9行</h3><p>从类路径下找到所有的spring.factories配置的所有ApplicationConterxtInitializeer，然后保存</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, List&lt;String&gt;&gt; <span class="title function_">loadSpringFactories</span><span class="params">(<span class="meta">@Nullable</span> ClassLoader classLoader)</span> &#123;</span><br><span class="line">    MultiValueMap&lt;String, String&gt; result = cache.get(classLoader);</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Enumeration&lt;URL&gt; urls = (classLoader != <span class="literal">null</span> ?</span><br><span class="line">                classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :</span><br><span class="line">                ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));</span><br><span class="line">        result = <span class="keyword">new</span> <span class="title class_">LinkedMultiValueMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span> (urls.hasMoreElements()) &#123;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">FACTORIES_RESOURCE_LOCATION</span> <span class="operator">=</span> <span class="string">&quot;META-INF/spring.factories&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="第10行"><a href="#第10行" class="headerlink" title="第10行"></a>第10行</h3><p>找listener</p>
+<h3 id="第11行"><a href="#第11行" class="headerlink" title="第11行"></a>第11行</h3><p>找到主配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Class&lt;?&gt; deduceMainApplicationClass() &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        StackTraceElement[] stackTrace = <span class="keyword">new</span> <span class="title class_">RuntimeException</span>().getStackTrace();</span><br><span class="line">        <span class="keyword">for</span> (StackTraceElement stackTraceElement : stackTrace) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;main&quot;</span>.equals(stackTraceElement.getMethodName())) &#123;</span><br><span class="line">                <span class="keyword">return</span> Class.forName(stackTraceElement.getClassName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">        <span class="comment">// Swallow and continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Run the Spring application, creating and refreshing a new</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> ApplicationContext&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> args the application arguments (usually passed from a Java main method)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a running &#123;<span class="doctag">@link</span> ApplicationContext&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">    <span class="type">StopWatch</span> <span class="variable">stopWatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line">    stopWatch.start();</span><br><span class="line">    <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    Collection&lt;SpringBootExceptionReporter&gt; exceptionReporters = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    configureHeadlessProperty();</span><br><span class="line">    <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">    listeners.starting();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">        <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, applicationArguments);</span><br><span class="line">        configureIgnoreBeanInfo(environment);</span><br><span class="line">        <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">        context = createApplicationContext();</span><br><span class="line">        exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">Class</span>[] &#123; ConfigurableApplicationContext.class &#125;, context);</span><br><span class="line">        prepareContext(context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">        refreshContext(context);</span><br><span class="line">        afterRefresh(context, applicationArguments);</span><br><span class="line">        stopWatch.stop();</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);</span><br><span class="line">        &#125;</span><br><span class="line">        listeners.started(context);</span><br><span class="line">        callRunners(context, applicationArguments);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, listeners);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        listeners.running(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, <span class="literal">null</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第12行"><a href="#第12行" class="headerlink" title="第12行"></a>第12行</h3><p>配置awt</p>
+<h3 id="第13-14行"><a href="#第13-14行" class="headerlink" title="第13-14行"></a>第13-14行</h3><p>获取listener， 然后回调所有的listener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">starting</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (SpringApplicationRunListener listener : <span class="built_in">this</span>.listeners) &#123;</span><br><span class="line">        listener.starting();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第17行"><a href="#第17行" class="headerlink" title="第17行"></a>第17行</h3><p>准备环境, 获取环境，这里的getOrCreateEnvironment分三种，点进去就知道了, 获取后配置环境,之后回调listeners的环境准备完成函数<code>listeners.environmentPrepared(environment);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ConfigurableEnvironment <span class="title function_">prepareEnvironment</span><span class="params">(SpringApplicationRunListeners listeners,</span></span><br><span class="line"><span class="params">        ApplicationArguments applicationArguments)</span> &#123;</span><br><span class="line">    <span class="comment">// Create and configure the environment</span></span><br><span class="line">    <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> getOrCreateEnvironment();</span><br><span class="line">    configureEnvironment(environment, applicationArguments.getSourceArgs());</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    listeners.environmentPrepared(environment);</span><br><span class="line">    bindToSpringApplication(environment);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">this</span>.isCustomEnvironment) &#123;</span><br><span class="line">        environment = <span class="keyword">new</span> <span class="title class_">EnvironmentConverter</span>(getClassLoader()).convertEnvironmentIfNecessary(environment,</span><br><span class="line">                deduceEnvironmentClass());</span><br><span class="line">    &#125;</span><br><span class="line">    ConfigurationPropertySources.attach(environment);</span><br><span class="line">    <span class="keyword">return</span> environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第19行"><a href="#第19行" class="headerlink" title="第19行"></a>第19行</h3><p>打印图标</p>
+<h3 id="第20行"><a href="#第20行" class="headerlink" title="第20行"></a>第20行</h3><p>利用反射,根据当前的web环境创建IOC容器,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Strategy method used to create the &#123;<span class="doctag">@link</span> ApplicationContext&#125;. By default this</span></span><br><span class="line"><span class="comment"> * method will respect any explicitly set application context or application context</span></span><br><span class="line"><span class="comment"> * class before falling back to a suitable default.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the application context (not yet refreshed)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setApplicationContextClass(Class)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> ConfigurableApplicationContext <span class="title function_">createApplicationContext</span><span class="params">()</span> &#123;</span><br><span class="line">    Class&lt;?&gt; contextClass = <span class="built_in">this</span>.applicationContextClass;</span><br><span class="line">    <span class="keyword">if</span> (contextClass == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (<span class="built_in">this</span>.webApplicationType) &#123;</span><br><span class="line">            <span class="keyword">case</span> SERVLET:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_SERVLET_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> REACTIVE:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_REACTIVE_WEB_CONTEXT_CLASS);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                contextClass = Class.forName(DEFAULT_CONTEXT_CLASS);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(</span><br><span class="line">                    <span class="string">&quot;Unable create a default ApplicationContext, please specify an ApplicationContextClass&quot;</span>, ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (ConfigurableApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第23行"><a href="#第23行" class="headerlink" title="第23行"></a>第23行</h3><p>准备上下文环境, 在环境保存到ioc中，而且applyInitializers, 即回调之前保存的所有的initializer, 然后监听器调用环境准备完毕，之后就是打印日志、在IOC中注册Banner、命令行参数。最后回调监听器的环境加载完成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">prepareContext</span><span class="params">(ConfigurableApplicationContext context, ConfigurableEnvironment environment,</span></span><br><span class="line"><span class="params">        SpringApplicationRunListeners listeners, ApplicationArguments applicationArguments, Banner printedBanner)</span> &#123;</span><br><span class="line">    context.setEnvironment(environment);</span><br><span class="line">    postProcessApplicationContext(context);</span><br><span class="line">    applyInitializers(context);</span><br><span class="line">    listeners.contextPrepared(context);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">        logStartupInfo(context.getParent() == <span class="literal">null</span>);</span><br><span class="line">        logStartupProfileInfo(context);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Add boot specific singleton beans</span></span><br><span class="line">    <span class="type">ConfigurableListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> context.getBeanFactory();</span><br><span class="line">    beanFactory.registerSingleton(<span class="string">&quot;springApplicationArguments&quot;</span>, applicationArguments);</span><br><span class="line">    <span class="keyword">if</span> (printedBanner != <span class="literal">null</span>) &#123;</span><br><span class="line">        beanFactory.registerSingleton(<span class="string">&quot;springBootBanner&quot;</span>, printedBanner);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (beanFactory <span class="keyword">instanceof</span> DefaultListableBeanFactory) &#123;</span><br><span class="line">        ((DefaultListableBeanFactory) beanFactory)</span><br><span class="line">                .setAllowBeanDefinitionOverriding(<span class="built_in">this</span>.allowBeanDefinitionOverriding);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.lazyInitialization) &#123;</span><br><span class="line">        context.addBeanFactoryPostProcessor(<span class="keyword">new</span> <span class="title class_">LazyInitializationBeanFactoryPostProcessor</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Load the sources</span></span><br><span class="line">    Set&lt;Object&gt; sources = getAllSources();</span><br><span class="line">    Assert.notEmpty(sources, <span class="string">&quot;Sources must not be empty&quot;</span>);</span><br><span class="line">    load(context, sources.toArray(<span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>]));</span><br><span class="line">    listeners.contextLoaded(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第24行"><a href="#第24行" class="headerlink" title="第24行"></a>第24行</h3><p>这里之前讲过，是加载IOC容器中的所有组件的,如果是web应用，还会创建嵌入式的tomcat</p>
+<h3 id="第31行"><a href="#第31行" class="headerlink" title="第31行"></a>第31行</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">回调所有的runner，里面包含了APplicationRunner和CommandLineRunner， 优先调用前者</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">callRunners</span><span class="params">(ApplicationContext context, ApplicationArguments args)</span> &#123;</span><br><span class="line">        List&lt;Object&gt; runners = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        runners.addAll(context.getBeansOfType(ApplicationRunner.class).values());</span><br><span class="line">        runners.addAll(context.getBeansOfType(CommandLineRunner.class).values());</span><br><span class="line">        AnnotationAwareOrderComparator.sort(runners);</span><br><span class="line">        <span class="keyword">for</span> (Object runner : <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(runners)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> ApplicationRunner) &#123;</span><br><span class="line">                callRunner((ApplicationRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (runner <span class="keyword">instanceof</span> CommandLineRunner) &#123;</span><br><span class="line">                callRunner((CommandLineRunner) runner, args);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="run结束了"><a href="#run结束了" class="headerlink" title="run结束了"></a>run结束了</h3><p>返回IOC容器</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">启动配置原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">启动流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.</span> <span class="toc-text">创建对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC8%E8%A1%8C"><span class="toc-number">2.1.1.</span> <span class="toc-text">第8行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC9%E8%A1%8C"><span class="toc-number">2.1.2.</span> <span class="toc-text">第9行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC10%E8%A1%8C"><span class="toc-number">2.1.3.</span> <span class="toc-text">第10行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC11%E8%A1%8C"><span class="toc-number">2.1.4.</span> <span class="toc-text">第11行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">2.2.</span> <span class="toc-text">run</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC12%E8%A1%8C"><span class="toc-number">2.2.1.</span> <span class="toc-text">第12行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC13-14%E8%A1%8C"><span class="toc-number">2.2.2.</span> <span class="toc-text">第13-14行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC17%E8%A1%8C"><span class="toc-number">2.2.3.</span> <span class="toc-text">第17行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC19%E8%A1%8C"><span class="toc-number">2.2.4.</span> <span class="toc-text">第19行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC20%E8%A1%8C"><span class="toc-number">2.2.5.</span> <span class="toc-text">第20行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC23%E8%A1%8C"><span class="toc-number">2.2.6.</span> <span class="toc-text">第23行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC24%E8%A1%8C"><span class="toc-number">2.2.7.</span> <span class="toc-text">第24行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC31%E8%A1%8C"><span class="toc-number">2.2.8.</span> <span class="toc-text">第31行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#run%E7%BB%93%E6%9D%9F%E4%BA%86"><span class="toc-number">2.2.9.</span> <span class="toc-text">run结束了</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q9I38V.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q9I38V.html&text=SpringBoot6-启动的源码分析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q9I38V.html&is_video=false&description=SpringBoot6-启动的源码分析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SpringBoot6-启动的源码分析&body=Check out this article: http://fightinggg.github.io/cactus/Q9I38V.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q9I38V.html&title=SpringBoot6-启动的源码分析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q9I38V.html&name=SpringBoot6-启动的源码分析&description=&lt;div&gt;&lt;a href=&#34;/next/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q9I38V.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;启动配置原理&#34;&gt;&lt;a href=&#34;#启动配置原理&#34; class=&#34;headerlink&#34; title=&#34;启动配置原理&#34;&gt;&lt;/a&gt;启动配置原理&lt;/h1&gt;&lt;p&gt;几个重要的事件回调机制&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ApplicationContextInitializer&lt;/li&gt;
+&lt;li&gt;SpringApplicationRunListener&lt;/li&gt;
+&lt;li&gt;ApplicationRunner&lt;/li&gt;
+&lt;li&gt;CommandLineRunner&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;启动流程&#34;&gt;&lt;a href=&#34;#启动流程&#34; class=&#34;headerlink&#34; title=&#34;启动流程&#34;&gt;&lt;/a&gt;启动流程&lt;/h1&gt;&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;SpringApplication&lt;/span&gt;(primarySources).run(args);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;创建SpringApplication对象&lt;/li&gt;
+&lt;li&gt;运行run方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;创建对象&#34;&gt;&lt;a href=&#34;#创建对象&#34; class=&#34;headerlink&#34; title=&#34;创建对象&#34;&gt;&lt;/a&gt;创建对象&lt;/h2&gt;&lt;p&gt;现在左边的参数是null&lt;/p&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;SpringApplication&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;(&lt;span class=&#34;literal&#34;&gt;null&lt;/span&gt;, primarySources);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;SpringApplication&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(ResourceLoader resourceLoader, Class&amp;lt;?&amp;gt;... primarySources)&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.resourceLoader = resourceLoader;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       Assert.notNull(primarySources, &lt;span class=&#34;string&#34;&gt;&amp;quot;PrimarySources must not be null&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.primarySources = &lt;span class=&#34;keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;LinkedHashSet&lt;/span&gt;&amp;lt;&amp;gt;(Arrays.asList(primarySources));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.webApplicationType = WebApplicationType.deduceFromClasspath();&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;       &lt;span class=&#34;built_in&#34;&gt;this&lt;/span&gt;.mainApplicationClass = deduceMainApplicationClass();&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q9I38V.html&t=SpringBoot6-启动的源码分析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

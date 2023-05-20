@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>线段树 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                 线段树                    线段树         &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线段树">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                 线段树                    线段树         &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:modified_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">线段树</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">线段树</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-05T15:23:08.000Z" itemprop="datePublished" class="page-time">
+  2019-08-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li></ul></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link"><span class="post-toc-number">1.</span> <span class="post-toc-text">线段树</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">线段树</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">节点信息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">线段树的平衡性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">线段树的区间操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">对节点分类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">继续分析复杂度</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">子树的操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">懒惰标记（懒修改）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#text"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">线段树和树状数组</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ACM/老Blog迁移/stencil/data_struct/线段树"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">线段树</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-05 23:23:08" datetime="2019-08-05T15:23:08.000Z"  itemprop="datePublished">2019-08-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/">ACM</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li></ul></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+转移自<a href='/ACM/stencil/data_struct/线段树.html'>老blog</a>
+
+<div type="text/javadiv" src="/ACM/js/web_begin.js"></div>
+<div>
+    <center>
+        <h1>线段树</h1>
+    </center>
+
+    <div id="text">
+        <h2>线段树</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线段树是树状数组的强化版，它每次对区间进行二分，每一个深度都维护了整个区间，在同一深度里面，每个节点维护的区间长度大致相同，而每深入一层又大致比上一层多一倍的节点，故空间复杂度为Onlgn<br>
+        <h2>节点信息</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个非叶子节点维护一个区间[l,r]，令mid=(l+r)&gt&gt1,则该节点的左儿子维护[l,mid]，右儿子维护[mid+1,r]；<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;每个叶子节点维护一个点；<br>
+        <h2>线段树的平衡性</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线段树是一颗几乎完全平衡的树。<br>
+        <h2>线段树的区间操作</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因此当我们对于一个长度为n区间[l,r]进行操作的时候，我们就要操作所有与这些区间相关节点，这些节点数目接近2*N。要操作2*N个节点，，，，复杂度过高，，，问题无法解决。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们的操作相当于对树进行函数递归。<br>
+        <h2>对节点分类</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里我们把这个问题简化一下，对于那些节点对应区间属于[l,r]的我们分为一类，对于那些节点对应区间与[l,r]有交集，但不是[l,r]的子区间的节点我们分为第二类，第二类节点一定是某个第一类节点的父亲节点，借此我们可以在函数回溯时候利用区间加法处理，容易解决。<br>
+        <h2>继续分析复杂度</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们容易发现第一类节点数目接近ON而第二类节点数目接近OlgN，第二类节点一个一个处理可以接受，第一类节点必须安排一下。可以证明第一类节点恰好可以用OlgN颗子树的所有节点唯一表达。<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这里我们简化问题为对于OlgN个节点以及OlgN颗子树的操作，<br>
+        <h2>子树的操作</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现在我们只需要考虑对某颗子树进行操作<br>
+        <h2>懒惰标记（懒修改）</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当我们进行修改的时候，我们试着只对该子树的根进行修改，并为其加入一个懒惰标记，表示他的所有子孙都有一个与懒惰标记有关的操作还未进行，(例如整段区间加上d，我们就设懒惰标记为d)&nbsp，如此区间修改就不用跑到叶子节点，就成了OlgN<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当我们进行查询时，每当我们查询一个节点，我们要查询的恰好为该节点所对应的区间，直接就处理了；如果不是该区间，而是该区间的某个子区间，那么我们考虑把该区间的懒惰标记下放到左右儿子，然后递归左右儿子，回溯答案。over<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为什么线段树快，因为它把区间分成OlgN个处理，并且每次在树上只跑了OlgN个节点，依据区间加法处理询问，依据区间加法回溯处理修改，依据懒惰标记不实时更新叶子节点。所以线段树快。<br>
+        <h2>线段树和树状数组</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为什么我在开头说线段树是树状数组的强化版，因为树状数组虽然能依据区间加法处理询问，也可以依靠区间加法处理更新，但是它的非叶子节点过少，导致复杂的数据维护时程序较为复杂，不太好处理。<br>
+    </div>
+
+    <div id="code">
+
+        <pre><span class="cp">#define ls (u&lt;&lt;1)</span>
+<span class="cp">#define rs (u&lt;&lt;1|1)</span>
+<span class="cp">#define ml ((l+r)&gt;&gt;1)</span>
+<span class="cp">#define mr (ml+1)</span>
+<span class="k">struct</span> <span class="n">segment_tree</span><span class="p">{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">ll</span> <span
+            class="n">maxn</span><span class="o">=</span><span class="mf">2.1e5</span><span class="p">;</span>
+    <span class="n">ll</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">ll</span> <span class="n">a</span><span class="p">[</span><span class="n">maxn</span><span
+            class="p">],</span><span class="n">tree</span><span class="p">[</span><span class="n">maxn</span><span
+            class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">lazy</span><span
+            class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span
+            class="p">];</span>
+    <span class="c1">//////////////</span>
+    <span class="c1">//树链剖分接口</span>
+    <span class="n">ll</span> <span class="n">rnk</span><span class="p">[</span><span class="n">maxn</span><span
+            class="p">];</span>
+    <span class="c1">//////////////</span>
+    <span class="kt">void</span> <span class="n">pushdown</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">u</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span class="p">,</span><span
+            class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+        <span class="c1">//lazy[ls]+=lazy[u];</span>
+        <span class="c1">//lazy[rs]+=lazy[u];</span>
+        <span class="c1">//tree[ls]+=lazy[u]*(ml-l+1);</span>
+        <span class="c1">//tree[rs]+=lazy[u]*(r-mr+1);</span>
+        <span class="n">lazy</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span
+            class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">pushup</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">u</span><span class="p">){</span>
+        <span class="c1">//tree[u]=tree[ls]+tree[rs];</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">nn</span><span class="p">){</span>
+        <span class="n">n</span><span class="o">=</span><span class="n">nn</span><span class="p">;</span>
+        <span class="n">build</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span
+            class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">l</span><span class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">,</span><span
+            class="n">ll</span> <span class="n">u</span><span class="p">){</span>
+        <span class="n">lazy</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span
+            class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span
+            class="n">r</span><span class="p">){</span>
+            <span class="c1">//tree[u]=a[rnk[l]];</span>
+            <span class="k">return</span> <span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">build</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span
+            class="n">ml</span><span class="p">,</span><span class="n">ls</span><span class="p">);</span>
+        <span class="n">build</span><span class="p">(</span><span class="n">mr</span><span class="p">,</span><span
+            class="n">r</span><span class="p">,</span><span class="n">rs</span><span class="p">);</span>
+        <span class="n">pushup</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span class="n">qr</span><span
+            class="p">,</span><span class="n">ll</span> <span class="n">d</span><span class="p">){</span>
+        <span class="n">update</span><span class="p">(</span><span class="n">ql</span><span class="p">,</span><span
+            class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span
+            class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span class="n">qr</span><span
+            class="p">,</span><span class="n">ll</span> <span class="n">d</span><span class="p">,</span><span class="n">ll</span> <span
+            class="n">u</span><span class="p">,</span><span class="n">ll</span> <span class="n">l</span><span class="p">,</span><span
+            class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+            class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span
+            class="n">qr</span><span class="p">){</span>
+            <span class="c1">//tree[u]+=(r-l+1)*d;</span>
+            <span class="c1">//lazy[u]+=d;</span>
+            <span class="k">return</span> <span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">lazy</span><span class="p">[</span><span
+            class="n">u</span><span class="p">])</span><span class="n">pushdown</span><span class="p">(</span><span
+            class="n">u</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span
+            class="n">r</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+            class="n">ml</span><span class="p">)</span><span class="n">update</span><span class="p">(</span><span
+            class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+            class="p">,</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span
+            class="p">,</span><span class="n">ml</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">qr</span><span class="o">&gt;=</span><span
+            class="n">mr</span><span class="p">)</span><span class="n">update</span><span class="p">(</span><span
+            class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span
+            class="p">,</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span
+            class="n">r</span><span class="p">);</span>
+        <span class="n">pushup</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ll</span> <span class="n">query</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span class="n">qr</span><span
+            class="p">){</span>
+        <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">ql</span><span
+            class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span
+            class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ll</span> <span class="n">query</span><span class="p">(</span><span class="n">ll</span> <span
+            class="n">ql</span><span class="p">,</span><span class="n">ll</span> <span class="n">qr</span><span
+            class="p">,</span><span class="n">ll</span> <span class="n">u</span><span class="p">,</span><span class="n">ll</span> <span
+            class="n">l</span><span class="p">,</span><span class="n">ll</span> <span class="n">r</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+            class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span
+            class="n">qr</span><span class="p">)</span><span class="k">return</span> <span class="n">tree</span><span
+            class="p">[</span><span class="n">u</span><span class="p">];</span>
+        <span class="n">ll</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span
+            class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">lazy</span><span class="p">[</span><span
+            class="n">u</span><span class="p">])</span><span class="n">pushdown</span><span class="p">(</span><span
+            class="n">u</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span
+            class="n">r</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span
+            class="n">ml</span><span class="p">)</span><span class="n">ret</span><span class="o">+=</span><span
+            class="n">query</span><span class="p">(</span><span class="n">ql</span><span class="p">,</span><span
+            class="n">qr</span><span class="p">,</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span
+            class="p">,</span><span class="n">ml</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">qr</span><span class="o">&gt;=</span><span
+            class="n">mr</span><span class="p">)</span><span class="n">ret</span><span class="o">+=</span><span
+            class="n">query</span><span class="p">(</span><span class="n">ql</span><span class="p">,</span><span
+            class="n">qr</span><span class="p">,</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span
+            class="p">,</span><span class="n">r</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+
+
+    </div>
+
+
+    <div id="code">
+        <pre><span class="cp">#define ml ((l+r)&gt;&gt;1)</span>
+<span class="cp">#define mr (ml+1)</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span><span class="o">=</span><span class="mf">5e4</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">rev</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">cov</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">sum</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">tot</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">push_son</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">son</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">covrt</span><span class="p">,</span><span class="kt">int</span> <span class="n">revrt</span><span class="p">){</span><span class="c1">// 这个函数要注意重写</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">son</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">son</span><span class="o">=++</span><span class="n">tot</span><span class="p">;</span>
+        <span class="n">cov</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">ls</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">rs</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">covrt</span><span class="o">!=-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">cov</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">revrt</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">];</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">^=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_down</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span><span class="c1">// 这行要注意重写</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span><span class="c1">// 这行要注意重写</span>
+    <span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="c1">// 这行要注意重写</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_up</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">]]</span><span class="o">+</span><span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">]];</span><span class="c1">// 这行要注意重写</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">rt</span><span class="o">=</span><span class="n">tot</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="c1">// 这行要注意重写</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span><span class="kt">int</span> <span class="n">type</span><span class="p">){</span><span class="c1">//</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span><span class="c1">// 这行要注意重写</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="c1">//rev</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="c1">//cover</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+    <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="k">return</span> <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">];</span><span class="c1">// 这行要注意重写</span>
+    <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="c1">// 这行要注意重写</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span><span class="c1">// 这行要注意重写</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span><span class="c1">// 这行要注意重写</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+    </div>
+
+
+</div>
+<div type="text/javadiv" src="/ACM/js/web_end.js"></div>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-08-05T15:23:08.000Z" itemprop="dateUpdated">2019-08-05 23:23:08</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《线段树》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《线段树》 — Believe it&source=O ever youthful, O ever weeping" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《线段树》 — Believe it&url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">树链剖分</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%A5%97%E7%BA%BF%E6%AE%B5%E6%A0%91.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">线段树套线段树</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《线段树》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=《线段树》 — Believe it&source=O ever youthful, O ever weeping" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《线段树》 — Believe it&url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/%E7%BA%BF%E6%AE%B5%E6%A0%91.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsklEQVR42u3c0YrbQAwF0Pz/T7fQp4US515ppruF46fgeDM6DlgTSezrFR+//hxfX389/j7/7szz+edrnq9fHXh4eHij0N8d+Uc/B528m9y+PGY8PDy827xkyeTBnRwtPonn7Xk8PDy8b+UlCaPd+OZgPDw8vP+R90ydhZ4z8PDw8H4aL1ky2SIn7yZnTsWDh4eHd4M3a4B97+vr/T08PDy8UVd9/4A+1VqbrYWHh4d3g5c3n/bFi3a4alberSca8PDw8Epe/kF5iEkKmVHrLwAPDw/vAq8trc7aY/t2V1v2fW0weHh4eCVvD8vHtpLk0bbTigo0Hh4e3oj3/JCdlS3yYkFb2K0TGB4eHt41Xtvc2m/EZ82wetgLDw8P7xqvXThq2K/bYHnjLcp7eHh4eBd4s81uTp0VfDetODw8PLx7vDy4pNyQlxI2CSP6AvDw8PAu8PYtrnZzXDf+40LG29Xx8PDwLvD2raa8GJH/1eym17MSeHh4eCWvXX7/EM/HrdoN/YeMh4eHh3eU15ZrNw/6faG22Grj4eHhXebt9+Z5uLNSbz2ggIeHh3eNl49JzQoQ7RhWWwI+UJ/Gw8PD6+I58I/wNkMAz4zZ7SjmI/Dw8PAWvPxn/9lr9uXdD9fg4eHhXeDlW+Q2DSTL54WPfNzqw8YaDw8P7zLv1LY4D2jTQnttQsfDw8OLeXnbaf+wTppkLWZYjMDDw8M7xNsMReWfU4e4OfDw8PCO8mbtrvZMPmSwTyR4eHh4t3mz5NF2lzbLt4lkiMTDw8MrebMf/7MNcZtsZn+Lh4eH9294+UM5vya5ce2oQZ268PDw8H4AbzY6kCSAWYL5cD0eHh7et/KSoNsqyL3yLh4eHt5tXtv0ykPcbLjbhLSqteDh4eEdPfLgZtvrfSn5wDeMh4eH95n3G2w6VLl7vuY2AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

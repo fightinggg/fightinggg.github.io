@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>STL源码分析 | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  从这开始我们进入《STL源码分析》的学习 STL分为6大组件: 空间配置器、容器、迭代器、算法、仿函数、配接器 空间配置器 STL的空间适配器事STL的基础，我们不能靠操作系统来为我们管理内存，那样的代价">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL源码分析">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/Q7P485.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  从这开始我们进入《STL源码分析》的学习 STL分为6大组件: 空间配置器、容器、迭代器、算法、仿函数、配接器 空间配置器 STL的空间适配器事STL的基础，我们不能靠操作系统来为我们管理内存，那样的代价">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-24T11:36:05.000Z">
+<meta property="article:modified_time" content="2020-03-25T14:23:39.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Language/C++/STL源码分析/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/Q7P485.html" class="article-date">
+  <time class="dt-published" datetime="2020-03-24T11:36:05.000Z" itemprop="datePublished">2020-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/Language/">Language</a>►<a class="article-category-link" href="/landscape/categories/Language/C/">C++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      STL源码分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q7P485.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="从这开始我们进入《STL源码分析》的学习"><a href="#从这开始我们进入《STL源码分析》的学习" class="headerlink" title="从这开始我们进入《STL源码分析》的学习"></a>从这开始我们进入《STL源码分析》的学习</h1><p> STL分为6大组件: 空间配置器、容器、迭代器、算法、仿函数、配接器</p>
+<h1 id="空间配置器"><a href="#空间配置器" class="headerlink" title="空间配置器"></a>空间配置器</h1><p> STL的空间适配器事STL的基础，我们不能靠操作系统来为我们管理内存，那样的代价太大了，这不划算，作为一个c&#x2F;c++开发人员，我们要完全控制我们程序的一切。</p>
+<h2 id="allocator"><a href="#allocator" class="headerlink" title="allocator"></a>allocator</h2><p> 这是他的英文名字，我们的allocator定义了四个操作</p>
+<ul>
+<li>alloc::allocate() 内存配置</li>
+<li>alloc::dellocate() 内存释放</li>
+<li>alloc::construct() 构造对象</li>
+<li>alloc::destroy() 析构对象</li>
+</ul>
+<!---more-->
+
+<h2 id="type-traits-lt-T-gt"><a href="#type-traits-lt-T-gt" class="headerlink" title="type_traits&lt;T&gt;"></a>type_traits&lt;T&gt;</h2><p> 一个模版元技术，他是一个类,能够萃取类型的相关信息，模版元详见C++笔记中的Boost源码分析</p>
+<h2 id="destroy"><a href="#destroy" class="headerlink" title="destroy"></a>destroy</h2><p> 对于基本数据类型，我们啥都不用干，对于用户定义的数据类型，我们显示调用析构函数即可，这个使用模版特化即可。</p>
+<h2 id="construct"><a href="#construct" class="headerlink" title="construct"></a>construct</h2><p> 就是new，但是不用申请空间了，因为allocate已经干了</p>
+<h2 id="一级配置器、二级配置器"><a href="#一级配置器、二级配置器" class="headerlink" title="一级配置器、二级配置器"></a>一级配置器、二级配置器</h2><p> 一级配置大空间(&gt;128bytes)就是malloc和free，二级配置小空间，利用内存池。</p>
+<h3 id="一级配置器"><a href="#一级配置器" class="headerlink" title="一级配置器"></a>一级配置器</h3><p> 直接new的，new失败以后调用out of memery的处理方式调用处理例程，让其释放内存，不断尝试,释放的时候直接free</p>
+<h3 id="二级配置器"><a href="#二级配置器" class="headerlink" title="二级配置器"></a>二级配置器</h3><p>维护16个链表，每个链表维护一种类型的内存，分别为8bytes、16bytes、24bytes、一直到128bytes。更加巧妙的地方是将维护的内存和链表的指针使用联合体组装。这就不浪费空间了。当需要配置内存的时候，向8字节对齐，然后再分配，当释放内存的时候，丢到链表里面就行了<br> 当链表空了的时候，从内存池中取出20个新的内存块填充链表。<br> 内存池是一个大块大内存，当内存池空了以后，申请更多的内存，保证每次都比上一次申请的多就行了，要是让我实现，我才不这样做，我要用计算机网络中的自适应rtt原理来做。</p>
+<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p> 说白了就是个指针，但是他比指针更强大，更灵活。</p>
+<h2 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h2><ul>
+<li>input iterator 只读</li>
+<li>output iterator 只写</li>
+<li>forward iterator 单向迭代器</li>
+<li>bidirectional iterator 双向移动一个单位</li>
+<li>random access iterator 双向移动多个单位</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">1((input)) --&gt; 3((forward))</span><br><span class="line">2((output)) --&gt; 3((forward))</span><br><span class="line">3((forward)) --&gt; 4((bi))</span><br><span class="line">4((bi)) --&gt; 5((random))</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p> 首先为了实现的容易，得设计iterator_category为迭代器自己的类型，value_type为迭代器维护的具体数据的类型，diference_type为两个迭代器之间的距离的类型，pointer为原生指针，reference为原生引用。</p>
+<h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><p> 不讲了，太简单了</p>
+<h2 id="vector-的迭代器"><a href="#vector-的迭代器" class="headerlink" title="vector 的迭代器"></a>vector 的迭代器</h2><p> 服了，居然就是指针，我一直以为他封装了一下，这也太懒了。</p>
+<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>算了这都跳过算了，没啥意思，</p>
+<h2 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h2><p> 用分段连续来制造整体连续的假象。<br> 两个迭代器维护首尾，一个二维指针维护一个二维数组，感觉很low，每一行被称为一个缓冲区,但是列的话，他前后都预留了一些指针位置。<br> 当我们随机访问的时候，就可以根据每一行的长度来选择正确的缓冲区了。</p>
+<h2 id="deque的迭代器"><a href="#deque的迭代器" class="headerlink" title="deque的迭代器"></a>deque的迭代器</h2><p> 这个就厉害一些了，他包含了4个地方，当前指针、当前缓冲区首尾指针，中控器上面当前缓冲区的指针。</p>
+<p>代码我感觉也一般般，我写也这样</p>
+<h2 id="queue和stack"><a href="#queue和stack" class="headerlink" title="queue和stack"></a>queue和stack</h2><p> 居然是deque实现的，明明有更好的实现方法，再见，看都不想看</p>
+<h2 id="heap"><a href="#heap" class="headerlink" title="heap"></a>heap</h2><p> 算法都是这样写的</p>
+<h2 id="priority-heap"><a href="#priority-heap" class="headerlink" title="priority heap"></a>priority heap</h2><p> vector实现的，</p>
+<h2 id="slist"><a href="#slist" class="headerlink" title="slist"></a>slist</h2><p>我还是不适合这个东西</p>
+<h1 id="关联式容器"><a href="#关联式容器" class="headerlink" title="关联式容器"></a>关联式容器</h1><p> 这玩意就是红黑树啦，上一章的序列容器看的我难受死了，希望这个能爽一些</p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p> 翻了好几页，都是红黑树，并没有让我感到很吃惊的代码</p>
+<h2 id="set和map"><a href="#set和map" class="headerlink" title="set和map"></a>set和map</h2><p> set就是直接红黑树，map就把用pair分别存kv，然后自己定一个仿函数，难怪map找到的都是pair</p>
+<h2 id="multi"><a href="#multi" class="headerlink" title="multi"></a>multi</h2><p> 算了自己写过平衡树的都知道，和非multi没几行代码不一样。</p>
+<h2 id="hashtable"><a href="#hashtable" class="headerlink" title="hashtable"></a>hashtable</h2><p> 下一章下一章。。。</p>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><p> 分为质变算法和非质变算法，一个会改变操作对象，另一个不会。</p>
+<h2 id="accumulate"><a href="#accumulate" class="headerlink" title="accumulate"></a>accumulate</h2><p> 这个强，accmulate(first,last,init),将[first,last)的值累加到init上</p>
+<p>accmulate(first,last,init,binary op),将[first,last)从左到右二元操作(init,*)到init上</p>
+<h2 id="adjacent-difference"><a href="#adjacent-difference" class="headerlink" title="adjacent_difference"></a>adjacent_difference</h2><p> 666666666，adjacent_difference(first,last,result)差分都来了[first,last)差分到[result,*)</p>
+<p>6666666,自己定义的差分adjacent_difference(first,last,result,binary_op); 这个能自定定义减法，</p>
+<p> 注意可以result设为first</p>
+<h2 id="inner-product"><a href="#inner-product" class="headerlink" title="inner_product"></a>inner_product</h2><p> 内积，inner_product(first1,last1,first2,init),加到init上然后返回。</p>
+<p>参数在加上一个binary_op1和binary_op2,init&#x3D;binary_op1(init,binary_op2(eme1,eme2))</p>
+<p>太强了，佩服的五体投地，明天继续学,看java去</p>
+<h2 id="partial-sum"><a href="#partial-sum" class="headerlink" title="partial_sum"></a>partial_sum</h2><p> 和前面的差分一样,partial_sum 为前缀和，partial_sum(first,last,result)为前缀和输出到result中</p>
+<p> 当然你也可以定义binary_op操作，加在最后面</p>
+<h2 id="power"><a href="#power" class="headerlink" title="power"></a>power</h2><p> 快速幂算法了解一下，power(x,n)x的n次方，n为整数，要求满足乘法结合律。</p>
+<p>power(x,n,op),这个同理</p>
+<h2 id="itoa"><a href="#itoa" class="headerlink" title="itoa"></a>itoa</h2><p> <code>itoa(first,last,value);</code></p>
+<p><code>while(first!=last) *first++=value++;</code></p>
+<!---more-->
+
+<h2 id="equal"><a href="#equal" class="headerlink" title="equal"></a>equal</h2><p><code> equal(first1,last1,first2)</code></p>
+<p> 判断[first1,last1) 和[first2,…)是否相同</p>
+<p> 同样支持二元仿函数。</p>
+<h2 id="fill"><a href="#fill" class="headerlink" title="fill"></a>fill</h2><p> <code>fill(first,last,value)</code></p>
+<p> 把区间的值设为value</p>
+<h2 id="fill-n"><a href="#fill-n" class="headerlink" title="fill_n"></a>fill_n</h2><p> <code>fill(first,n,value)</code></p>
+<p> 把first开始的n个元素设为value</p>
+<h2 id="iter-swap"><a href="#iter-swap" class="headerlink" title="iter_swap"></a>iter_swap</h2><p> <code>iter_swap(a,b) </code></p>
+<p> 交换迭代器的内容，这里就有意思了，如何获取迭代器内容的类型呢？还记得之前讲迭代器的时候，在迭代器内部定义的</p>
+<p>value_type吗？对！就是那个。</p>
+<h2 id="lexicographical-compare"><a href="#lexicographical-compare" class="headerlink" title="lexicographical_compare"></a>lexicographical_compare</h2><p> <code>lexicographical_compare(first1,last1,first2,last2)</code></p>
+<p>字典序比大小，需要支持小于号</p>
+<h2 id="max-min"><a href="#max-min" class="headerlink" title="max min"></a>max min</h2><p> 这俩也支持仿函数</p>
+<h2 id="mismatch"><a href="#mismatch" class="headerlink" title="mismatch"></a>mismatch</h2><p> <code>mismatch(first1,last1,first2)</code></p>
+<p>用第一个去匹配第二个，你需要保证第二个不必第一个短，返回匹配尾部</p>
+<p> 支持仿函数&#x3D;&#x3D;</p>
+<h2 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h2><p> 就是很普通的交换，</p>
+<h2 id="copy-first-last-result"><a href="#copy-first-last-result" class="headerlink" title="copy(first,last,result)"></a>copy(first,last,result)</h2><p> 特化了char*和wchar_t*为memmove，特化了T*和const T*，通过萃取，若指向的数据为基本数据类型则调用memmove，</p>
+<p>否则再分为随机迭代器和非随机迭代器，随机迭代器使用last-first这个值来控制，非随机迭代器用if(last&#x3D;&#x3D;frist)来控制。</p>
+<h2 id="copy-backward"><a href="#copy-backward" class="headerlink" title="copy_backward"></a>copy_backward</h2><p> 和上面一样，但是为逆序拷贝</p>
+<h2 id="set-union"><a href="#set-union" class="headerlink" title="set_union"></a>set_union</h2><p>set_union(first1,last1,first2,last2,result)</p>
+<p>就是遍历两个有序容器，然后赋值到result中，注意到它在碰到相同元素的时候两个迭代器都自增了，导致若第一个中有3个1，第二个中有5个1，则输出的时候只有5个1</p>
+<h2 id="set-intersection"><a href="#set-intersection" class="headerlink" title="set_intersection"></a>set_intersection</h2><p> 同上</p>
+<p> 交集，得到3个1</p>
+<h2 id="set-difference"><a href="#set-difference" class="headerlink" title="set_difference"></a>set_difference</h2><p> 代码越来越平庸了，这个是S1-S2，出现在S1中不出现在S2中</p>
+<h2 id="set-symmetric-difference"><a href="#set-symmetric-difference" class="headerlink" title="set_symmetric_difference"></a>set_symmetric_difference</h2><p> 对称差，平庸的代码</p>
+<h2 id="adjacent-find-first-last"><a href="#adjacent-find-first-last" class="headerlink" title="adjacent_find(first,last)"></a>adjacent_find(first,last)</h2><p> 找到第一个相等的相邻元素，允许自定义仿函数</p>
+<h2 id="count-first-last-value"><a href="#count-first-last-value" class="headerlink" title="count(first,last,value)"></a>count(first,last,value)</h2><p> 对value出现对次数计数</p>
+<p> count_if(first,last,op) 对op(*it)为真计数</p>
+<p>越看越无聊了</p>
+<h2 id="find-first-last-value"><a href="#find-first-last-value" class="headerlink" title="find(first,last,value)"></a>find(first,last,value)</h2><p> 找value出现的位置，这个函数应该挺有用的</p>
+<p> find_if(first,last,op) 同上啦</p>
+<h2 id="find-end-和find-first-of"><a href="#find-end-和find-first-of" class="headerlink" title="find_end 和find_first_of"></a>find_end 和find_first_of</h2><p> 这个函数没用，我为啥不用kmp算法</p>
+<h2 id="for-each-first-last-op"><a href="#for-each-first-last-op" class="headerlink" title="for_each(first,last,op)"></a>for_each(first,last,op)</h2><p> op(*i)</p>
+<h2 id="geterate-first-last-op"><a href="#geterate-first-last-op" class="headerlink" title="geterate(first,last,op)"></a>geterate(first,last,op)</h2><p> *i&#x3D;op()</p>
+<p> generate_n 同上</p>
+<h2 id="transform-first-last-result-op"><a href="#transform-first-last-result-op" class="headerlink" title="transform(first,last,result,op)"></a>transform(first,last,result,op)</h2><p> *result&#x3D;op(*first)</p>
+<h2 id="transform-first1-last1-first2-last2-result-op"><a href="#transform-first1-last1-first2-last2-result-op" class="headerlink" title="transform(first1,last1,first2,last2,result,op)"></a>transform(first1,last1,first2,last2,result,op)</h2><p> *result&#x3D;op(*first1,*first2)</p>
+<h2 id="includes-first1-last1-first2-last2"><a href="#includes-first1-last1-first2-last2" class="headerlink" title="includes(first1,last1,first2,last2)"></a>includes(first1,last1,first2,last2)</h2><p> 保证有序，然后判断2是不是1的子序列，显然On</p>
+<h2 id="max-element-first-last"><a href="#max-element-first-last" class="headerlink" title="max_element(first,last)"></a>max_element(first,last)</h2><p> 区间最大值</p>
+<h2 id="min-element-first-last"><a href="#min-element-first-last" class="headerlink" title="min_element(first,last)"></a>min_element(first,last)</h2><p> 同上</p>
+<h2 id="merge-first1-last1-first2-last2-result"><a href="#merge-first1-last1-first2-last2-result" class="headerlink" title="merge(first1,last1,first2,last2,result)"></a>merge(first1,last1,first2,last2,result)</h2><p> 归并排序的时候应该用得到吧</p>
+<h2 id="partition-first-last-pred"><a href="#partition-first-last-pred" class="headerlink" title="partition(first,last,pred)"></a>partition(first,last,pred)</h2><p> pred(*)为真在前，为假在后On</p>
+<h2 id="remove-first-last-value"><a href="#remove-first-last-value" class="headerlink" title="remove(first,last,value)"></a>remove(first,last,value)</h2><p> 把value移到尾部<br> remove_copu(first,last,result,value),非质变算法</p>
+<h2 id="remove-if-remove-copy-if"><a href="#remove-if-remove-copy-if" class="headerlink" title="remove_if remove_copy_if"></a>remove_if remove_copy_if</h2><p>同上</p>
+<h2 id="replace-first-last-old-value-new-value"><a href="#replace-first-last-old-value-new-value" class="headerlink" title="replace(first,last,old_value,new_value)"></a>replace(first,last,old_value,new_value)</h2><p> 看名字就知道怎么实现的</p>
+<p> replace_copy,replace_if,replace_copy_if</p>
+<h2 id="revese"><a href="#revese" class="headerlink" title="revese"></a>revese</h2><p> 秀得我头皮发麻，这个。。。。。。。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">if</span>(first==last||first==--last) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="built_in">iter_swap</span>(first++,last);</span><br></pre></td></tr></table></figure>
+
+<p>随机迭代器的版本还好</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(first&lt;last) <span class="built_in">iter_swap</span>(first++,--last);</span><br></pre></td></tr></table></figure>
+
+<p> reverse_copy ，常见的代码</p>
+<h2 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h2><p> 这个代码有点数学，大概率用不到，一般情况下我们写splay都用3次reverse来实现的，复杂度也不过On,他这个代码就一步到位了，使用了gcd，没啥意思，STL果然效率第一</p>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p> 子序列首次出现的位置，</p>
+<h2 id="search-n"><a href="#search-n" class="headerlink" title="search_n"></a>search_n</h2><p> 好偏，算了，没啥用的代码</p>
+<h2 id="swap-ranges-first1-last1-first2"><a href="#swap-ranges-first1-last1-first2" class="headerlink" title="swap_ranges(first1,last1,first2)"></a>swap_ranges(first1,last1,first2)</h2><p> 区间交换，swap的增强版</p>
+<h2 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h2><p> 移除重复元素</p>
+<p> unique_copy</p>
+<h2 id="lower-bound-upper-bound-binary-search"><a href="#lower-bound-upper-bound-binary-search" class="headerlink" title="lower_bound upper_bound binary_search"></a>lower_bound upper_bound binary_search</h2><p> 不多说了，就是二分，</p>
+<h2 id="next-permutation"><a href="#next-permutation" class="headerlink" title="next_permutation"></a>next_permutation</h2><p> 一直想不明白这个函数怎么实现的，今天来看看，既然是下一个排列，显然是需要找到一个刚好比现在这个大大排列，简单分析……6532,如果一个后缀都是递减的，显然这个后缀不能更大了，如果一个后缀都不能变得更大，就必须调整更前的，所以我们要找到这样的非降序….16532,把最后一个放到1的位置，其他的从小到大排列好就行了。也即swap(1,2),reverse(6531)</p>
+<!---more-->
+
+<h2 id="prev-permutation"><a href="#prev-permutation" class="headerlink" title="prev_permutation"></a>prev_permutation</h2><p> 同理</p>
+<h2 id="random-shuffle"><a href="#random-shuffle" class="headerlink" title="random_shuffle"></a>random_shuffle</h2><p> 洗牌算法，从first往last遍历，每次从最后面随机选一个放到当前位置即可。</p>
+<h2 id="partial-sort"><a href="#partial-sort" class="headerlink" title="partial_sort"></a>partial_sort</h2><p> partial_sort(first,middle,last)<br> 保证[first,middle)有序且均小于[middle,last)直接对后面元素使用堆上浮，这样保证了小的元素均在[first,middle)中，然后使用sort_heap?????<br>&amp;ems; 为啥第一步不用线性时间选择，第二步不用快排？</p>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><p> 大一就听说了这个的大名，现在来学习学习</p>
+<h2 id="Median-of-three"><a href="#Median-of-three" class="headerlink" title="Median_of_three"></a>Median_of_three</h2><p>__median(a,b,c) 返回中间那个值</p>
+<h2 id="Partitionining"><a href="#Partitionining" class="headerlink" title="Partitionining"></a>Partitionining</h2><p> 这个大家都会写，就是按照枢轴，把小的放左边，大的放到右边</p>
+<h2 id="threshold"><a href="#threshold" class="headerlink" title="threshold"></a>threshold</h2><p> 当只有很少很少的几个元素的时候，插入排序更快。</p>
+<h2 id="final-insertion-sort"><a href="#final-insertion-sort" class="headerlink" title="final insertion sort"></a>final insertion sort</h2><p> 我们不必在快速排序中进行插入排序，但是可以提前推出，保证序列基本有序，然后再对整体使用插入排序</p>
+<h2 id="SGI-sort"><a href="#SGI-sort" class="headerlink" title="SGI sort"></a>SGI sort</h2><p> 先快速排序到基本有序，然后插入排序</p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p> 先排序右边，后左边，且将左边当作下一层，当迭代深度恶化的时候，即超过了lg(n)*2的时候，采取堆排序<br> 枢轴的选择，首、尾、中间的中位数</p>
+<h2 id="RW-sort"><a href="#RW-sort" class="headerlink" title="RW sort"></a>RW sort</h2><p> 这个就少了堆排序了，其他的和SGI一样</p>
+<h2 id="equal-range"><a href="#equal-range" class="headerlink" title="equal_range"></a>equal_range</h2><p> lower_bound和upper_bound的合体<br> 比直接lower_bound+upper_bound应该快一些，大概这样，二分中值偏小，做缩左断点，偏大则缩右端点，若二分中值等于value，则对左边lower_bound,对右边upper_bound,然后就能直接返回了</p>
+<h2 id="inplace-merge"><a href="#inplace-merge" class="headerlink" title="inplace_merge"></a>inplace_merge</h2><p> 将两个相邻的有序序列合并为有序序列，他在分析卡空间的做法，再见。。。不缺空间，</p>
+<h2 id="nth-element"><a href="#nth-element" class="headerlink" title="nth_element"></a>nth_element</h2><p> 线性时间选择，三点中值，递归变迭代，长度很小以后直接插入排序，666666</p>
+<h2 id="mergesort"><a href="#mergesort" class="headerlink" title="mergesort"></a>mergesort</h2><p> 借助inplace_merge直接完成了，</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> STL的算法还是很厉害的。</p>
+<h1 id="仿函数"><a href="#仿函数" class="headerlink" title="仿函数"></a>仿函数</h1><p> c++的一大特色，通过重载()来实现像函数一样的功能</p>
+<h2 id="一元仿函数"><a href="#一元仿函数" class="headerlink" title="一元仿函数"></a>一元仿函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Arg</span>,<span class="keyword">class</span> <span class="title class_">Result</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">unary_function</span>&#123;</span><br><span class="line">  <span class="keyword">typedef</span> Arg argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p> 看到上面那玩意没，你得继承它。</p>
+<!---more-->
+
+<ul>
+<li>negeta 取反，返回-x</li>
+<li>logical_not  !x</li>
+<li>identity x</li>
+<li>select1st a.first</li>
+<li>select2nd a.second</li>
+</ul>
+<h2 id="二元仿函数"><a href="#二元仿函数" class="headerlink" title="二元仿函数"></a>二元仿函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">Arg1</span>,<span class="keyword">class</span> <span class="title class_">Arg2</span>,<span class="keyword">class</span> <span class="title class_">Result</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">unary_function</span>&#123;</span><br><span class="line">  <span class="keyword">typedef</span> Arg1 first_argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Arg2 second_argument_type;</span><br><span class="line">  <span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>plus a+b</li>
+<li>minus a-b</li>
+<li>multiplies a*b</li>
+<li>divides a&#x2F;b</li>
+<li>modulus a%b</li>
+<li>equal_to a&#x3D;&#x3D;b</li>
+<li>not_equal_to a!&#x3D;b</li>
+<li>greater a&gt;b</li>
+<li>greater_equal a&gt;&#x3D;b</li>
+<li>less a&lt;b</li>
+<li>less_equal a&lt;&#x3D;b</li>
+<li>logical_and a&amp;&amp;b</li>
+<li>logical_or a||b</li>
+<li>project1st a</li>
+<li>project2nd b</li>
+</ul>
+<h2 id="仿函数单位元"><a href="#仿函数单位元" class="headerlink" title="仿函数单位元"></a>仿函数单位元</h2><p> 你要为你的仿函数设置一个identity_element单位元，用于快速幂</p>
+<h1 id="配接器"><a href="#配接器" class="headerlink" title="配接器"></a>配接器</h1><p> 本质上，配接器是一种设计模式，改变仿函数的接口，成为仿函数配接器，改变容器接口，称为容器配接器，改变迭代器接口，称为迭代器配接器</p>
+<h2 id="容器配接器"><a href="#容器配接器" class="headerlink" title="容器配接器"></a>容器配接器</h2><p> queue和stack就是修饰了deque的配接器</p>
+<h2 id="迭代器配接器"><a href="#迭代器配接器" class="headerlink" title="迭代器配接器"></a>迭代器配接器</h2><p> 迭代器的配接器有3个，insert itertors,reverse iterators,iostream iterators.</p>
+<p>哇塞这东西有点深，明天再看。</p>
+<!---more-->
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/Q7P485.html" data-id="clhvp2d3i005wzimcgz824irr" data-title="STL源码分析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/Q7PE5O.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          spring学习1-spring入门
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/Q7OQEI.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">hadoop</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

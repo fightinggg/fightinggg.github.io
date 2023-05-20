@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  0. 一个错误的概念123456int main() &amp;#123;    int a &#x3D; 111;    int &amp;b &#x3D; a;    b &#x3D; 222;    std::cout&lt;&lt;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++引用的秘密">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/R7DSQO.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  0. 一个错误的概念123456int main() &amp;#123;    int a &#x3D; 111;    int &amp;b &#x3D; a;    b &#x3D; 222;    std::cout&lt;&lt;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2022-02-16-13.39.00.000-%E5%BC%95%E7%94%A8.svg">
+<meta property="og:image" content="http://fightinggg.github.io/image-2022-02-16-13.47.00.000-%E5%A6%82%E4%BD%95%E5%BC%95%E7%94%A8.svg">
+<meta property="og:image" content="http://fightinggg.github.io/image-2022-02-16-14.09.00.000-%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%BC%95%E7%94%A8.svg">
+<meta property="article:published_time" content="2022-02-16T05:04:00.000Z">
+<meta property="article:modified_time" content="2022-02-16T05:04:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="结构体中的引用">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2022-02-16-13.39.00.000-%E5%BC%95%E7%94%A8.svg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>C++引用的秘密</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/R9L6IO.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/R5MNS0.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/R7DSQO.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/R7DSQO.html&text=C++引用的秘密"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/R7DSQO.html&is_video=false&description=C++引用的秘密"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C++引用的秘密&body=Check out this article: http://fightinggg.github.io/cactus/R7DSQO.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/R7DSQO.html&name=C++引用的秘密&description=&lt;div&gt;&lt;a href=&#34;/next/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;0-一个错误的概念&#34;&gt;&lt;a href=&#34;#0-一个错误的概念&#34; class=&#34;headerlink&#34; title=&#34;0. 一个错误的概念&#34;&gt;&lt;/a&gt;0. 一个错误的概念&lt;/h1&gt;&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a = &lt;span class=&#34;number&#34;&gt;111&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &amp;amp;b = a;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    b = &lt;span class=&#34;number&#34;&gt;222&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout&amp;lt;&amp;lt;&amp;amp;a&amp;lt;&amp;lt;&amp;amp;b;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;我们能看到这里输出的两个值相同。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;错误1:&lt;/p&gt;
+&lt;p&gt;很多人认为这里的b就是a，a就是b，a和b的地址是一样的，如下图。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#39;/image-2022-02-16-13.39.00.000-引用.svg&#39;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;p&gt;但是笔者要说，其实这个概念是有问题的，a是a，b是b，a和b并不是同一个地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/R7DSQO.html&t=C++引用的秘密"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">0. 一个错误的概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BB%8ESTD%E7%9A%84tie%E7%B1%BB%E5%9E%8B%E8%AF%B4%E8%B5%B7"><span class="toc-number">2.</span> <span class="toc-text">1. 从STD的tie类型说起</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">3.</span> <span class="toc-text">2. 如何实现的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E5%A6%82%E4%BD%95%E5%82%A8%E5%AD%98%E5%BC%95%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">3. 结构体中如何储存引用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%8F%AD%E7%A7%98%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">4. 揭秘结构体中的引用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%99%AE%E9%80%9A%E5%BC%95%E7%94%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">6.</span> <span class="toc-text">5. 普通引用是如何实现的</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        C++引用的秘密
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-16T05:04:00.000Z" class="dt-published" itemprop="datePublished">2022-02-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/C/">C++</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/cactus/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R7DSQO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="0-一个错误的概念"><a href="#0-一个错误的概念" class="headerlink" title="0. 一个错误的概念"></a>0. 一个错误的概念</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">111</span>;</span><br><span class="line">    <span class="type">int</span> &amp;b = a;</span><br><span class="line">    b = <span class="number">222</span>;</span><br><span class="line">    std::cout&lt;&lt;&amp;a&lt;&lt;&amp;b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们能看到这里输出的两个值相同。</p>
+<ul>
+<li><p>错误1:</p>
+<p>很多人认为这里的b就是a，a就是b，a和b的地址是一样的，如下图。</p>
+<p><img src='/image-2022-02-16-13.39.00.000-引用.svg'></img></p>
+<p>但是笔者要说，其实这个概念是有问题的，a是a，b是b，a和b并不是同一个地址。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="1-从STD的tie类型说起"><a href="#1-从STD的tie类型说起" class="headerlink" title="1. 从STD的tie类型说起"></a>1. 从STD的tie类型说起</h1><p>笔者在阅读ClickHouse源码的时候发现了有趣的现象，该源码中有如下代码，我们注意第7-9行，可以发现这使用了STD的tie，该类型让C++实现了一次性返回两个值的效果。下面的executeQueryImpl函数返回了两个值，分别写入到了ast和streams中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BlockIO <span class="title">executeQuery</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> String &amp; query,</span></span></span><br><span class="line"><span class="params"><span class="function">    ContextMutablePtr context,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">bool</span> internal,</span></span></span><br><span class="line"><span class="params"><span class="function">    QueryProcessingStage::Enum stage)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ASTPtr ast;</span><br><span class="line">    BlockIO streams;</span><br><span class="line">    std::<span class="built_in">tie</span>(ast, streams) = <span class="built_in">executeQueryImpl</span>(query.<span class="built_in">data</span>(), query.<span class="built_in">data</span>() + query.<span class="built_in">size</span>(), context, internal, stage, <span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="type">const</span> <span class="keyword">auto</span> * ast_query_with_output = <span class="built_in">dynamic_cast</span>&lt;<span class="type">const</span> ASTQueryWithOutput *&gt;(ast.<span class="built_in">get</span>()))</span><br><span class="line">    &#123;</span><br><span class="line">        String format_name = ast_query_with_output-&gt;format</span><br><span class="line">                ? <span class="built_in">getIdentifierName</span>(ast_query_with_output-&gt;format)</span><br><span class="line">                : context-&gt;<span class="built_in">getDefaultFormat</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (format_name == <span class="string">&quot;Null&quot;</span>)</span><br><span class="line">            streams.null_format = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> streams;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-如何实现的"><a href="#2-如何实现的" class="headerlink" title="2. 如何实现的"></a>2. 如何实现的</h1><p>实际上C++中可以在结构体中指定一个引用字段，通过构造函数将外界的变量传递进结构体，再通过该结构体的拷贝构造函数实现赋值。</p>
+<h1 id="3-结构体中如何储存引用"><a href="#3-结构体中如何储存引用" class="headerlink" title="3. 结构体中如何储存引用"></a>3. 结构体中如何储存引用</h1><p>结构体如何储存其他值的引用？按照前文的说法，如果引用的地址是一样的，结构体如何储存其他值的引用呢，如下图。</p>
+<p><img src='/image-2022-02-16-13.47.00.000-如何引用.svg'></img></p>
+<p>实际上唯一的办法只能使用指针，让变量b指向变量a，当然这里的变量b的类型就是指针类型了，这么说肯定很多人不能接受，我定义的引用类型，怎么就成了指针了。</p>
+<h1 id="4-揭秘结构体中的引用"><a href="#4-揭秘结构体中的引用" class="headerlink" title="4. 揭秘结构体中的引用"></a>4. 揭秘结构体中的引用</h1><p>先来看下面的代码,下面这两个函数，写法不一样，但是被GCC编译器编译以后的结果是一模一样的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Ref</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Ref</span><span class="params">(<span class="type">int</span> &amp;ref)</span> : ref(ref) &#123;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> &amp;ref;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Point</span><span class="params">(<span class="type">int</span> *ref)</span> : ref(ref) &#123;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> *ref;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ref</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">222</span>;</span><br><span class="line">    <span class="function">Ref <span class="title">a</span><span class="params">(x)</span></span>;</span><br><span class="line">    a.ref = <span class="number">333</span>;</span><br><span class="line">    a.value = <span class="number">444</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">point</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">222</span>;</span><br><span class="line">    <span class="function">Point <span class="title">a</span><span class="params">(&amp;x)</span></span>;</span><br><span class="line">    *a.ref = <span class="number">333</span>;</span><br><span class="line">    a.value = <span class="number">444</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读者可以通过指令<code> gcc -S -O0 main.cpp</code>来编译该文件。可以看到两个函数都被编译结果为下面的内容，注意14-15行，这里就是ref赋值的地方，我们很容易发现，第一步是把rbp栈寄存器指向的地址偏移24的位置的值放入了寄存器rax中，第二步是将数据333写入rax寄存器所指向的地址。所以引用不过是指针的另一种写法而已。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">__Z5pointv:                             ## @_Z5pointv</span><br><span class="line">	.cfi_startproc</span><br><span class="line">## %bb.0:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">	.cfi_def_cfa_offset 16</span><br><span class="line">	.cfi_offset %rbp, -16</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">	.cfi_def_cfa_register %rbp</span><br><span class="line">	subq	$32, %rsp</span><br><span class="line">	movl	$222, -4(%rbp)</span><br><span class="line">	leaq	-24(%rbp), %rdi</span><br><span class="line">	leaq	-4(%rbp), %rsi</span><br><span class="line">	callq	__ZN5PointC1EPi</span><br><span class="line">	movq	-24(%rbp), %rax</span><br><span class="line">	movl	$333, (%rax)                    ## imm = 0x14D</span><br><span class="line">	movl	$444, -16(%rbp)                 ## imm = 0x1BC</span><br><span class="line">	addq	$32, %rsp</span><br><span class="line">	popq	%rbp</span><br><span class="line">	retq</span><br><span class="line">	.cfi_endproc</span><br><span class="line">                                        ## -- End function</span><br><span class="line">	.globl	__ZN5PointC1EPi                 ## -- Begin function _ZN5PointC1EPi</span><br><span class="line">	.weak_def_can_be_hidden	__ZN5PointC1EPi</span><br><span class="line">	.p2align	4, 0x90</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5-普通引用是如何实现的"><a href="#5-普通引用是如何实现的" class="headerlink" title="5. 普通引用是如何实现的"></a>5. 普通引用是如何实现的</h1><p>我们使用<code>gcc -S -O0 main.cpp</code>编译下面的代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">check</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">111</span>;</span><br><span class="line">    <span class="type">int</span> &amp;b = a;</span><br><span class="line">    b = <span class="number">222</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">check2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">111</span>;</span><br><span class="line">    <span class="type">int</span> *b = &amp;a;</span><br><span class="line">    *b = <span class="number">222</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不难发现两个函数都被编译成了相同的代码,于是乎，现在应该不会再有人认为这里的b就是a，a就是b，a和b的地址是一样的了吧</p>
+<p>很明显b就是指针啊，他怎么能是和a的地址相同呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">__Z5checkv:                             ## @_Z5checkv</span><br><span class="line">	.cfi_startproc</span><br><span class="line">## %bb.0:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">	.cfi_def_cfa_offset 16</span><br><span class="line">	.cfi_offset %rbp, -16</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">	.cfi_def_cfa_register %rbp</span><br><span class="line">	movl	$111, -4(%rbp)</span><br><span class="line">	leaq	-4(%rbp), %rax</span><br><span class="line">	movq	%rax, -16(%rbp)</span><br><span class="line">	movq	-16(%rbp), %rax</span><br><span class="line">	movl	$222, (%rax)</span><br><span class="line">	popq	%rbp</span><br><span class="line">	retq</span><br><span class="line">	.cfi_endproc</span><br><span class="line">                                        ## -- End function</span><br><span class="line">	.globl	__Z6check2v                     ## -- Begin function _Z6check2v</span><br><span class="line">	.p2align	4, 0x90</span><br></pre></td></tr></table></figure>
+
+<p>正确的引用图应该是下面这张</p>
+<p><img src='/image-2022-02-16-14.09.00.000-正确的引用.svg'></img></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">0. 一个错误的概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%BB%8ESTD%E7%9A%84tie%E7%B1%BB%E5%9E%8B%E8%AF%B4%E8%B5%B7"><span class="toc-number">2.</span> <span class="toc-text">1. 从STD的tie类型说起</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">3.</span> <span class="toc-text">2. 如何实现的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E5%A6%82%E4%BD%95%E5%82%A8%E5%AD%98%E5%BC%95%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">3. 结构体中如何储存引用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%8F%AD%E7%A7%98%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">4. 揭秘结构体中的引用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%99%AE%E9%80%9A%E5%BC%95%E7%94%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">6.</span> <span class="toc-text">5. 普通引用是如何实现的</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/R7DSQO.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/R7DSQO.html&text=C++引用的秘密"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/R7DSQO.html&is_video=false&description=C++引用的秘密"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C++引用的秘密&body=Check out this article: http://fightinggg.github.io/cactus/R7DSQO.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/R7DSQO.html&title=C++引用的秘密"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/R7DSQO.html&name=C++引用的秘密&description=&lt;div&gt;&lt;a href=&#34;/next/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/R7DSQO.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;0-一个错误的概念&#34;&gt;&lt;a href=&#34;#0-一个错误的概念&#34; class=&#34;headerlink&#34; title=&#34;0. 一个错误的概念&#34;&gt;&lt;/a&gt;0. 一个错误的概念&lt;/h1&gt;&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a = &lt;span class=&#34;number&#34;&gt;111&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &amp;amp;b = a;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    b = &lt;span class=&#34;number&#34;&gt;222&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    std::cout&amp;lt;&amp;lt;&amp;amp;a&amp;lt;&amp;lt;&amp;amp;b;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;我们能看到这里输出的两个值相同。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;错误1:&lt;/p&gt;
+&lt;p&gt;很多人认为这里的b就是a，a就是b，a和b的地址是一样的，如下图。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#39;/image-2022-02-16-13.39.00.000-引用.svg&#39;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;p&gt;但是笔者要说，其实这个概念是有问题的，a是a，b是b，a和b并不是同一个地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/R7DSQO.html&t=C++引用的秘密"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

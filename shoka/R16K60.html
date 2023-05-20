@@ -1,0 +1,710 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/R16K60.html">
+
+
+
+  <title>
+双数组字典树 - 字符串 - 学习笔记 - ACM |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">双数组字典树
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-10-18 23:54:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-10-18T23:54:00+08:00">2021-10-18</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciuv0socj20zk0m8qes.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipexe4oykj20zk0m87ji.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipew8gmvyj20zk0m87wh.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicis3attqj20zk0m8k7l.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclh0m9pdj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeuibk9fj20zk0m8ay2.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/" itemprop="item" rel="index" title="分类于 ACM"><span itemprop="name">ACM</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="item" rel="index" title="分类于 学习笔记"><span itemprop="name">学习笔记</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="item" rel="index" title="分类于 字符串"><span itemprop="name">字符串</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/R16K60.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/R16K60.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="0-前置知识"><a href="#0-前置知识" class="headerlink" title="0. 前置知识"></a>0. 前置知识</h1><p><a href="https://fightinggg.github.io/Q79RYN.html">需要提前有字典树的知识</a></p>
+<h1 id="1-双数组字典树介绍"><a href="#1-双数组字典树介绍" class="headerlink" title="1. 双数组字典树介绍"></a>1. 双数组字典树介绍</h1><p>双数组字典树英文名为DoubleArrayTrie，他的特点就是使用两个数组来表示一颗字典树，这里有比较有趣了，两个数组是怎么表达出字典树的呢？</p>
+<h1 id="2-双数组介绍"><a href="#2-双数组介绍" class="headerlink" title="2. 双数组介绍"></a>2. 双数组介绍</h1><p>顾名思义，有两个数组，一个是base，另一个是check。</p>
+<p>首先介绍数组的下标，数组的下标代表字典树上节点的编号，一个下标对应一个节点。</p>
+<p>其实base数组的作用是用来记录一个基础值，这个值可以是随机值，只要不产生冲突就可以了，所以这个值可以用随机数算法获取，当然这样效率不高，高效的做法应该是使用指针枚举技术，ok，现在你已经明白了，base数组是一个不产生冲突的随机数组。</p>
+<p>最后，check数组，check数组与base数组相互照应，如果<code>base[i]=check[j]</code> 则说明j是i的儿子，而且i到j的边权恰好为<code>j-base[i]</code>，也可以写作<code>j-check[j]</code>好好理解这句话</p>
+<p>从另一个方面而言，双数组字典树的base数组，应该是一个指针数组，他指向了一个长度为字符集大小的数组的首地址，而check数组是一种hash碰撞思路，由于base数组疯狂指向自己，导致产生了很多碰撞，但是由于字典树是一个稀疏图，导致儿子节点指针利用率低，所以base数组疯狂复用这段空间，最后必须要依赖check来解决冲突，</p>
+<p>双数组字典树相比于传统字典树，仅仅只在内存方面于增删改查占有优势，但是唯一不好的地方就是删和改会导致base数组内存分裂，难以回收，删和改如果占大头，那么传统字典树的内存效率更高</p>
+<p>由于搜索领域几乎不涉及到删和改，所以这个数据结构很nice，字符集多大，就节省了多少倍的空间</p>
+<p>数据结构很棒，但是在现在这个内存不值钱的时代，这些指针的储存用hashmap直接无脑顶掉，空间占用也高不了多少，hashmap顶多浪费两倍空间</p>
+<p>两倍的空间算不上啥，除非这是唯一的优化点，否则不会优化到这个数据结构上来</p>
+<span id="more"></span>
+
+
+<h1 id="3-图解双数组字典树"><a href="#3-图解双数组字典树" class="headerlink" title="3. 图解双数组字典树"></a>3. 图解双数组字典树</h1><p>首先我们直接给出一颗双数组字典树，下面是三列，第一列是下标，第二列是base，第三列是check， 我们来根据这个双数组还原那颗字典树</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">index base check</span><br><span class="line">0 1 0</span><br><span class="line">66 2 1</span><br><span class="line">68 3 1</span><br><span class="line">69 5 2</span><br><span class="line">70 6 2</span><br><span class="line">71 7 3</span><br><span class="line">73 8 3</span><br><span class="line">74 10 5</span><br><span class="line">75 11 5</span><br><span class="line">81 12 11</span><br><span class="line">85 9 4</span><br><span class="line">91 4 1</span><br></pre></td></tr></table></figure>
+
+<p>从第一行看起，base[0]&#x3D;1, check[0]&#x3D;0 ,这说明根节点是0号节点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后我们来找0节点的子节点，只需要哪些check值为base[0]即可，我们发现check[66],check[68],check[91]满足，所以他们都是0号节点的子节点</p>
+<p>对于check[66], 边权为66-check[66]&#x3D;65 ,是字符<code>A</code></p>
+<p>对于check[68], 边权67, 是字符<code>C</code></p>
+<p>对于check[91], 边权90，是字符<code>Z</code></p>
+<p>所以现在图成了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  0--A--&gt;66</span><br><span class="line">  0--C--&gt;68</span><br><span class="line">  0--Z--&gt;91</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着我们看66号节点，base[66]&#x3D;2,那么他的子节点为69和70，边权分别为69-check[69]&#x3D;67,70-check[70]&#x3D;68,分别是C和D</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  0--A--&gt;66</span><br><span class="line">  0--C--&gt;68</span><br><span class="line">  0--Z--&gt;91</span><br><span class="line">  66--C--&gt;69</span><br><span class="line">  66--D--&gt;70</span><br></pre></td></tr></table></figure>
+
+<p>69的字节点为74和75， 权重为74-5&#x3D;69和75-5&#x3D;70， 分别是E和F</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">  0--A--&gt;66</span><br><span class="line">  0--C--&gt;68</span><br><span class="line">  0--Z--&gt;91</span><br><span class="line">  66--C--&gt;69</span><br><span class="line">  66--D--&gt;70</span><br><span class="line">  69--E--&gt;74</span><br><span class="line">  69--F--&gt;75</span><br></pre></td></tr></table></figure>
+
+<p>当然，后面的笔者就不进行模拟了，到此为止。</p>
+<h1 id="4-双数组字典树的构建算法"><a href="#4-双数组字典树的构建算法" class="headerlink" title="4. 双数组字典树的构建算法"></a>4. 双数组字典树的构建算法</h1><p>首先算法的第一步是构建一颗字典树，你需要将这颗字典树构建出来。字典树的代码如下,这个不用多说了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">addTire</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* str, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">int</span> root = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tire[root][str[i]] == <span class="number">0</span>) &#123;</span><br><span class="line">            tire[root][str[i]] = ++tireTot;</span><br><span class="line">        &#125;</span><br><span class="line">        root = tire[root][str[i]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第二步，就是在字典树上进行BFS，在BFS过程中增量构建双数组字典树，当我们BFS到某个节点U的时候，便开始寻找，当前还有哪个base值没有被使用，可以使得这个U的子节点的check值均为0， no BB , show code</p>
+<p>先找到U的所有子节点</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; sonTransList;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; maxCharest;i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (tire[tireTop][i] != <span class="number">0</span>) &#123;</span><br><span class="line">        sonTransList.push_back(i);</span><br><span class="line">        tireQ.push(tire[tireTop][i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;find son: &quot;</span> &lt;&lt; sonTransList.size() &lt;&lt; <span class="built_in">endl</span>;;</span><br></pre></td></tr></table></figure>
+
+<p>然后寻找一个合适的base值，这个值储存在变量begin中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// find begin</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    begin++;</span><br><span class="line">    <span class="type">bool</span> ok = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> son : sonTransList) &#123;</span><br><span class="line">        <span class="keyword">if</span> (check[begin + code[son]] != <span class="number">0</span>) &#123;</span><br><span class="line">            ok = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ok) &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后就是赋值就好了.</p>
+<h1 id="5-代码"><a href="#5-代码" class="headerlink" title="5. 代码"></a>5. 代码</h1><p>最后附上一个很丑的代码，第三节中介绍的双数组就来源于这个代码的输出。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ConsoleApplication1.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> stringData[] = &#123;</span><br><span class="line">        <span class="string">&quot;AC&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ACE&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ACFF&quot;</span>,</span><br><span class="line">        <span class="string">&quot;AD&quot;</span>,</span><br><span class="line">        <span class="string">&quot;CD&quot;</span>,</span><br><span class="line">        <span class="string">&quot;CF&quot;</span>,</span><br><span class="line">        <span class="string">&quot;ZQ&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxCharest = <span class="number">256</span>;</span><br><span class="line"><span class="type">int</span> tire[<span class="number">1000</span>][maxCharest], tireTot = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">addTire</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* str, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">int</span> root = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tire[root][str[i]] == <span class="number">0</span>) &#123;</span><br><span class="line">            tire[root][str[i]] = ++tireTot;</span><br><span class="line">        &#125;</span><br><span class="line">        root = tire[root][str[i]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> code[maxCharest];</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">buildDAT</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// init code</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; maxCharest;i++) &#123;</span><br><span class="line">        code[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">tireState2DatState</span><span class="params">(<span class="number">1000</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// TODO vector</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; <span class="title function_">check</span><span class="params">(<span class="number">1000</span>)</span>, <span class="title function_">base</span><span class="params">(<span class="number">1000</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// bfs</span></span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="type">int</span>&gt; tireQ;</span><br><span class="line">    tireQ.push(<span class="number">1</span>);</span><br><span class="line">    tireState2DatState[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> begin = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!tireQ.empty()) &#123;</span><br><span class="line">        <span class="type">int</span> tireTop = tireQ.front();</span><br><span class="line">        tireQ.pop();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt; sonTransList;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; maxCharest;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tire[tireTop][i] != <span class="number">0</span>) &#123;</span><br><span class="line">                sonTransList.push_back(i);</span><br><span class="line">                tireQ.push(tire[tireTop][i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;find son: &quot;</span> &lt;&lt; sonTransList.size() &lt;&lt; <span class="built_in">endl</span>;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// find begin</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            begin++;</span><br><span class="line">            <span class="type">bool</span> ok = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> son : sonTransList) &#123;</span><br><span class="line">                <span class="keyword">if</span> (check[begin + code[son]] != <span class="number">0</span>) &#123;</span><br><span class="line">                    ok = <span class="literal">false</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (ok) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        base[tireState2DatState[tireTop]] = begin;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; maxCharest;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tire[tireTop][i] != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="type">int</span> son = i;</span><br><span class="line">                <span class="keyword">if</span> (check[begin + code[son]] != <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                check[begin + code[son]] = begin;</span><br><span class="line">                tireState2DatState[tire[tireTop][i]] = begin + code[son];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; <span class="number">1000</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (check[i] != <span class="number">0</span> || base[i] != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; base[i] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; check[i] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;begin&lt;&lt;<span class="string">&quot;--------&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; <span class="number">7</span>;i++) &#123;</span><br><span class="line">        addTire(stringData[i].data(), stringData[i].size());</span><br><span class="line">    &#125;</span><br><span class="line">    buildDAT();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/R16K60.html" title="双数组字典树">http://fightinggg.github.io/shoka/R16K60.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/R162KO.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeybxm1pj20zk0m8niv.jpg" title="Go进阶-Web框架">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Go</span>
+  <h3>Go进阶-Web框架</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/R17ULO.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giciuv0socj20zk0m8qes.jpg" title="Go入门-Effective-Go">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Go</span>
+  <h3>Go入门-Effective-Go</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">0. 前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8F%8C%E6%95%B0%E7%BB%84%E5%AD%97%E5%85%B8%E6%A0%91%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">1. 双数组字典树介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8F%8C%E6%95%B0%E7%BB%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.</span> <span class="toc-text">2. 双数组介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9B%BE%E8%A7%A3%E5%8F%8C%E6%95%B0%E7%BB%84%E5%AD%97%E5%85%B8%E6%A0%91"><span class="toc-number">4.</span> <span class="toc-text">3. 图解双数组字典树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%8F%8C%E6%95%B0%E7%BB%84%E5%AD%97%E5%85%B8%E6%A0%91%E7%9A%84%E6%9E%84%E5%BB%BA%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">4. 双数组字典树的构建算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E4%BB%A3%E7%A0%81"><span class="toc-number">6.</span> <span class="toc-text">5. 代码</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/PGMJAT.html" rel="bookmark" title="KMP算法">KMP算法</a></li><li><a href="/shoka/PGMJAU.html" rel="bookmark" title="字符串Hash">字符串Hash</a></li><li><a href="/shoka/PHCJTA.html" rel="bookmark" title="后缀数组">后缀数组</a></li><li><a href="/shoka/PHCM3Z.html" rel="bookmark" title="错位比较">错位比较</a></li><li><a href="/shoka/PHMIY1.html" rel="bookmark" title="回文自动机">回文自动机</a></li><li><a href="/shoka/PHRG42.html" rel="bookmark" title="AC自动机">AC自动机</a></li><li><a href="/shoka/PJEZJ9.html" rel="bookmark" title="Manacher算法">Manacher算法</a></li><li><a href="/shoka/PO1JY5.html" rel="bookmark" title="后缀自动机">后缀自动机</a></li><li><a href="/shoka/Q79RYN.html" rel="bookmark" title="trie">trie</a></li><li><a href="/shoka/Q7A1K1.html" rel="bookmark" title="后缀树">后缀树</a></li><li><a href="/shoka/Q7A1SI.html" rel="bookmark" title="基数树">基数树</a></li><li class="active"><a href="/shoka/R16K60.html" rel="bookmark" title="双数组字典树">双数组字典树</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/R162KO.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/R17ULO.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QN6V40.html" title="设计模式Java版">设计模式Java版</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/%E7%BA%BF%E6%AE%B5%E6%A0%91.html" title="线段树">线段树</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" title="分类于 图论">图论</a>
+</div>
+
+    <span><a href="/shoka/PW86WJ.html" title="霍尔定理">霍尔定理</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/" title="分类于 黑科技">黑科技</a>
+</div>
+
+    <span><a href="/shoka/PQV0UA.html" title="多项式倍增">多项式倍增</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" title="分类于 Java并发">Java并发</a>
+</div>
+
+    <span><a href="/shoka/Q8K6JX.html" title="java并发编程3-线程运行原理">java并发编程3-线程运行原理</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" title="分类于 数学">数学</a>
+</div>
+
+    <span><a href="/shoka/PS5HGM.html" title="杜教筛">杜教筛</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cfedu61F.html" title="cfedu61F">cfedu61F</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QSUHO0.html" title="第44届ICPC亚洲赛区银川站">第44届ICPC亚洲赛区银川站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/" title="分类于 算法">算法</a>
+</div>
+
+    <span><a href="/shoka/PRYSG0.html" title="递归大数">递归大数</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QSL8C0.html" title="2020CCPC威海站">2020CCPC威海站</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'R16K60.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

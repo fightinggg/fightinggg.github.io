@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  Springboot和日志 考虑和jdbc和数据库驱动一样，我们抽象出一个日志的接口 常见的java日志 JUL,JCL,JBoss-logging,logback,log4j,log4j2,slf4j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot3-日志">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/Q8TZMM.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  Springboot和日志 考虑和jdbc和数据库驱动一样，我们抽象出一个日志的接口 常见的java日志 JUL,JCL,JBoss-logging,logback,log4j,log4j2,slf4j">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-15T13:18:22.000Z">
+<meta property="article:modified_time" content="2020-04-15T13:18:22.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>SpringBoot3-日志</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/Q8V5AK.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/Q8TZMI.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8TZMM.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8TZMM.html&text=SpringBoot3-日志"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8TZMM.html&is_video=false&description=SpringBoot3-日志"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SpringBoot3-日志&body=Check out this article: http://fightinggg.github.io/cactus/Q8TZMM.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8TZMM.html&name=SpringBoot3-日志&description=&lt;div&gt;&lt;a href=&#34;/next/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;Springboot和日志&#34;&gt;&lt;a href=&#34;#Springboot和日志&#34; class=&#34;headerlink&#34; title=&#34;Springboot和日志&#34;&gt;&lt;/a&gt;Springboot和日志&lt;/h1&gt;&lt;p&gt; 考虑和jdbc和数据库驱动一样，我们抽象出一个日志的接口&lt;/p&gt;
+&lt;h2 id=&#34;常见的java日志&#34;&gt;&lt;a href=&#34;#常见的java日志&#34; class=&#34;headerlink&#34; title=&#34;常见的java日志&#34;&gt;&lt;/a&gt;常见的java日志&lt;/h2&gt;&lt;p&gt; JUL,JCL,JBoss-logging,logback,log4j,log4j2,slf4j&lt;/p&gt;
+&lt;h3 id=&#34;Java抽象&#34;&gt;&lt;a href=&#34;#Java抽象&#34; class=&#34;headerlink&#34; title=&#34;Java抽象&#34;&gt;&lt;/a&gt;Java抽象&lt;/h3&gt;&lt;p&gt; JCL,SLF4j,Jboss-logging&lt;/p&gt;
+&lt;h3 id=&#34;Java实现&#34;&gt;&lt;a href=&#34;#Java实现&#34; class=&#34;headerlink&#34; title=&#34;Java实现&#34;&gt;&lt;/a&gt;Java实现&lt;/h3&gt;&lt;p&gt; Log4j,JUL,Log4j2,logback&lt;/p&gt;
+&lt;h3 id=&#34;怎么选择&#34;&gt;&lt;a href=&#34;#怎么选择&#34; class=&#34;headerlink&#34; title=&#34;怎么选择&#34;&gt;&lt;/a&gt;怎么选择&lt;/h3&gt;&lt;p&gt;选择SLF4j+Logback&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8TZMM.html&t=SpringBoot3-日志"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Springboot%E5%92%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.</span> <span class="toc-text">Springboot和日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84java%E6%97%A5%E5%BF%97"><span class="toc-number">1.1.</span> <span class="toc-text">常见的java日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E6%8A%BD%E8%B1%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Java抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">Java实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9"><span class="toc-number">1.1.3.</span> <span class="toc-text">怎么选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringBoot%E6%80%8E%E4%B9%88%E6%90%9E%EF%BC%9F"><span class="toc-number">1.1.4.</span> <span class="toc-text">SpringBoot怎么搞？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SLF4j%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">SLF4j使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#log4j"><span class="toc-number">1.2.1.</span> <span class="toc-text">log4j</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">遗留问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">统一日志记录</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.2.1.1.</span> <span class="toc-text">具体操作</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringBoot%E5%92%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.3.</span> <span class="toc-text">SpringBoot和日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%97"><span class="toc-number">1.4.</span> <span class="toc-text">使用日志</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        SpringBoot3-日志
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-15T13:18:22.000Z" class="dt-published" itemprop="datePublished">2020-04-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Language/">Language</a> › <a class="category-link" href="/cactus/categories/Language/Java/">Java</a> › <a class="category-link" href="/cactus/categories/Language/Java/SpringBoot/">SpringBoot</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8TZMM.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="Springboot和日志"><a href="#Springboot和日志" class="headerlink" title="Springboot和日志"></a>Springboot和日志</h1><p> 考虑和jdbc和数据库驱动一样，我们抽象出一个日志的接口</p>
+<h2 id="常见的java日志"><a href="#常见的java日志" class="headerlink" title="常见的java日志"></a>常见的java日志</h2><p> JUL,JCL,JBoss-logging,logback,log4j,log4j2,slf4j</p>
+<h3 id="Java抽象"><a href="#Java抽象" class="headerlink" title="Java抽象"></a>Java抽象</h3><p> JCL,SLF4j,Jboss-logging</p>
+<h3 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h3><p> Log4j,JUL,Log4j2,logback</p>
+<h3 id="怎么选择"><a href="#怎么选择" class="headerlink" title="怎么选择"></a>怎么选择</h3><p>选择SLF4j+Logback</p>
+<span id="more"></span>
+<h3 id="SpringBoot怎么搞？"><a href="#SpringBoot怎么搞？" class="headerlink" title="SpringBoot怎么搞？"></a>SpringBoot怎么搞？</h3><p> Spring选择了JUL，SpringBoot选择了SLF4j+Logback</p>
+<h2 id="SLF4j使用"><a href="#SLF4j使用" class="headerlink" title="SLF4j使用"></a>SLF4j使用</h2><p> 调用日志抽象层的方法，而不是实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(?.class);</span><br><span class="line">logger.info(<span class="string">&quot;hello world&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="log4j"><a href="#log4j" class="headerlink" title="log4j"></a>log4j</h3><p> log4j出现的早，没想过会有slf4j的出现，那我们要怎么用它呢？实际上是实现了一个适配器，用适配器调用log4j，用slf4j调用适配器，这里是一个设计模式</p>
+<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><p> 我们用了多个框架，这些框架有用了不同的日志系统，我们该怎么办？</p>
+<h4 id="统一日志记录"><a href="#统一日志记录" class="headerlink" title="统一日志记录"></a>统一日志记录</h4><p> 偷天换日，你趁框架不注意，把jar包换一下，如Commons loggingAPI就用jcl-over-slf4j.jar, 如log4jAPI就用log4j-over-slf4j.jar来替换，就可以了，这些jar其实调用了slf4j。</p>
+<h5 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h5><p> 先排除日志框架，然后用中间包替换原用的日志框架，最后导入slf4j其他的实现。</p>
+<h2 id="SpringBoot和日志"><a href="#SpringBoot和日志" class="headerlink" title="SpringBoot和日志"></a>SpringBoot和日志</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring-boot-starter-logging</span><br><span class="line">logback-classic</span><br><span class="line">3个狸猫包偷梁换柱</span><br><span class="line">jul-to-slf4j</span><br><span class="line">log4j-ober-slf4j</span><br><span class="line">jcl-ober-slf4j</span><br></pre></td></tr></table></figure>
+<p> Springboot给我们做好了偷梁换柱，所以我们在引入其他框架的时候一定要把这个框架的默认日志依赖移除掉。</p>
+<h2 id="使用日志"><a href="#使用日志" class="headerlink" title="使用日志"></a>使用日志</h2><p> springboot都集成了这些</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">logging.level.com.wsx.springboothelloworld</span> = <span class="string">debug</span></span><br><span class="line"><span class="attr">logging.path</span>= <span class="string">log</span></span><br><span class="line"><span class="attr">logging.pattern.console</span>=<span class="string">%d&#123;yyyy-MM-dd:HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;50&#125; -%msg%n</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="comment">//        System.out.println(person);</span></span><br><span class="line">        <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(getClass());</span><br><span class="line">        logger.error(<span class="string">&quot;hi&quot;</span>);</span><br><span class="line">        logger.warn(<span class="string">&quot;hi&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;info hi&quot;</span>);</span><br><span class="line">        logger.debug(<span class="string">&quot;debug hi&quot;</span>);</span><br><span class="line">        logger.trace(<span class="string">&quot;trace hi&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p> 想用自己的配置文件直接把它放到resources文件夹下面就可以了，推荐使用xxx-spring.xml,<br> 比如你使用了logback.xml, 那么这个xml就直接被日志框架识别了，绕开了spring,如果你是用logback-spring.xml, 那么日志框架无法加载，有springboot接管，springboot就可以根据环境来安排不同的配置，在开发环境和非开发环境使用不同的配置。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Springboot%E5%92%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.</span> <span class="toc-text">Springboot和日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84java%E6%97%A5%E5%BF%97"><span class="toc-number">1.1.</span> <span class="toc-text">常见的java日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E6%8A%BD%E8%B1%A1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Java抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">Java实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9"><span class="toc-number">1.1.3.</span> <span class="toc-text">怎么选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SpringBoot%E6%80%8E%E4%B9%88%E6%90%9E%EF%BC%9F"><span class="toc-number">1.1.4.</span> <span class="toc-text">SpringBoot怎么搞？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SLF4j%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">SLF4j使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#log4j"><span class="toc-number">1.2.1.</span> <span class="toc-text">log4j</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">遗留问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">统一日志记录</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.2.1.1.</span> <span class="toc-text">具体操作</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringBoot%E5%92%8C%E6%97%A5%E5%BF%97"><span class="toc-number">1.3.</span> <span class="toc-text">SpringBoot和日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%97"><span class="toc-number">1.4.</span> <span class="toc-text">使用日志</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/Q8TZMM.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/Q8TZMM.html&text=SpringBoot3-日志"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/Q8TZMM.html&is_video=false&description=SpringBoot3-日志"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SpringBoot3-日志&body=Check out this article: http://fightinggg.github.io/cactus/Q8TZMM.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/Q8TZMM.html&title=SpringBoot3-日志"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/Q8TZMM.html&name=SpringBoot3-日志&description=&lt;div&gt;&lt;a href=&#34;/next/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/Q8TZMM.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;Springboot和日志&#34;&gt;&lt;a href=&#34;#Springboot和日志&#34; class=&#34;headerlink&#34; title=&#34;Springboot和日志&#34;&gt;&lt;/a&gt;Springboot和日志&lt;/h1&gt;&lt;p&gt; 考虑和jdbc和数据库驱动一样，我们抽象出一个日志的接口&lt;/p&gt;
+&lt;h2 id=&#34;常见的java日志&#34;&gt;&lt;a href=&#34;#常见的java日志&#34; class=&#34;headerlink&#34; title=&#34;常见的java日志&#34;&gt;&lt;/a&gt;常见的java日志&lt;/h2&gt;&lt;p&gt; JUL,JCL,JBoss-logging,logback,log4j,log4j2,slf4j&lt;/p&gt;
+&lt;h3 id=&#34;Java抽象&#34;&gt;&lt;a href=&#34;#Java抽象&#34; class=&#34;headerlink&#34; title=&#34;Java抽象&#34;&gt;&lt;/a&gt;Java抽象&lt;/h3&gt;&lt;p&gt; JCL,SLF4j,Jboss-logging&lt;/p&gt;
+&lt;h3 id=&#34;Java实现&#34;&gt;&lt;a href=&#34;#Java实现&#34; class=&#34;headerlink&#34; title=&#34;Java实现&#34;&gt;&lt;/a&gt;Java实现&lt;/h3&gt;&lt;p&gt; Log4j,JUL,Log4j2,logback&lt;/p&gt;
+&lt;h3 id=&#34;怎么选择&#34;&gt;&lt;a href=&#34;#怎么选择&#34; class=&#34;headerlink&#34; title=&#34;怎么选择&#34;&gt;&lt;/a&gt;怎么选择&lt;/h3&gt;&lt;p&gt;选择SLF4j+Logback&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/Q8TZMM.html&t=SpringBoot3-日志"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 操作系统10-进入临界区 · Believe it</title><meta name="description" content="操作系统10-进入临界区 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">操作系统10-进入临界区</h1><div class="post-info">2020年4月1日</div><div class="post-content"><div><a href="/next/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q844OR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1js411b7vg?p=61">n个进程互斥，留坑</a></p>
+<h1 id="禁用中断"><a href="#禁用中断" class="headerlink" title="禁用中断"></a>禁用中断</h1><p> 进入临界区以后禁用中断，离开临界区以后开启中断<br> 一但禁用了中断，整个系统都停止，可能导致饥饿，要是临界区有个死循环就完蛋，多个CPU无法解决问题。</p>
+<span id="more"></span>
+
+<h1 id="利用软件解决"><a href="#利用软件解决" class="headerlink" title="利用软件解决"></a>利用软件解决</h1><h2 id="轮换"><a href="#轮换" class="headerlink" title="轮换"></a>轮换</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(turn!=i);</span><br><span class="line">  <span class="comment">// 进入临界区</span></span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">  turn=j</span><br><span class="line">  <span class="comment">// 离开临界区</span></span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="peterson算法"><a href="#peterson算法" class="headerlink" title="peterson算法"></a>peterson算法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  flag[i]=<span class="literal">true</span>; <span class="comment">// 自己要进去</span></span><br><span class="line">  turn = j; <span class="comment">// 把机会让给别人</span></span><br><span class="line">  <span class="keyword">while</span>(flag[j]&amp;&amp;turn==j);</span><br><span class="line">  <span class="comment">// 进入临界区</span></span><br><span class="line">  <span class="comment">// do something </span></span><br><span class="line">  flag[i]=<span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// 离开临界区</span></span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="n个进程的互斥"><a href="#n个进程的互斥" class="headerlink" title="n个进程的互斥"></a>n个进程的互斥</h2><p> Bakery算法， 进入临界区以前，进程接受一个数字，得到最小数字的进入临界区，如果数字相同，id小的进去</p>
+<h1 id="基于硬件解决"><a href="#基于硬件解决" class="headerlink" title="基于硬件解决"></a>基于硬件解决</h1><p> 优点: 简单，适用于多CPU中任意数量的进程，支持多临界区，开销小<br> 可能发生饥饿，可能死锁，如果低优先级进程拥有锁，高优先级进程拥有CPU，还在忙等待，就死锁了</p>
+<h2 id="Test-and-Set"><a href="#Test-and-Set" class="headerlink" title="Test and Set"></a>Test and Set</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">testAndSet</span><span class="params">(<span class="type">bool</span>*p)</span></span>&#123; </span><br><span class="line">  <span class="type">bool</span> res = *p;</span><br><span class="line">  *p=<span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="change"><a href="#change" class="headerlink" title="change"></a>change</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">bool</span> *a,<span class="type">bool</span>*b)</span></span>&#123;</span><br><span class="line">  <span class="type">bool</span> tmp = *a;</span><br><span class="line">  *a=*b;</span><br><span class="line">  *b=tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></article></div></main><footer><div class="paginator"><a href="/apollo/Q846CC.html" class="prev">PREV</a><a href="/apollo/Q8436X.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

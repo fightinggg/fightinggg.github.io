@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>自己动手写Docker | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="读书">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     容器与开发语言容器随着云计算领域的兴起，容器这个词出现了，但是什么是容器？ 容器英文名Container，是基于Linux Namespace以及Cgroups技术实现的具备隔离特性的一组进程。 O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自己动手写Docker">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/QRN6OO.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     容器与开发语言容器随着云计算领域的兴起，容器这个词出现了，但是什么是容器？ 容器英文名Container，是基于Linux Namespace以及Cgroups技术实现的具备隔离特性的一组进程。 O">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-16-13.59.48.106.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-17-13.55.00.000.svg">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-17-16.17.00.000.svg">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-17-16.28.41.938.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-06-04-23.22.00.000.svg">
+<meta property="article:published_time" content="2021-04-16T05:46:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T06:44:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="读书">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-04-16-13.59.48.106.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">自己动手写Docker</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">自己动手写Docker</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-04-16T05:46:00.000Z" itemprop="datePublished" class="page-time">
+  2021-04-16
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Docker/">Docker</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80"><span class="post-toc-number">1.</span> <span class="post-toc-text">容器与开发语言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">容器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">虚拟机</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">操作系统和进程的区别</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GO"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">GO</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF"><span class="post-toc-number">2.</span> <span class="post-toc-text">基础技术</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux-Namespace"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Linux Namespace</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#UTS-Namespace"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">UTS Namespace</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84Namespace"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">其他的Namespace</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Linux-Cgroups"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Linux Cgroups</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Task"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">Task</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cgroup"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">Cgroup</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Subsystem"><span class="post-toc-number">2.2.3.</span> <span class="post-toc-text">Subsystem</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Hierarchy"><span class="post-toc-number">2.2.4.</span> <span class="post-toc-text">Hierarchy</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85Cgroup%E5%BA%93"><span class="post-toc-number">2.2.5.</span> <span class="post-toc-text">安装Cgroup库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9F%A5%E7%9C%8Bcgroup"><span class="post-toc-number">2.2.6.</span> <span class="post-toc-text">查看cgroup</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">2.2.7.</span> <span class="post-toc-text">查看子系统</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AD%90%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD"><span class="post-toc-number">2.2.8.</span> <span class="post-toc-text">查看子系统挂载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cgroup%E4%BE%8B%E5%AD%90"><span class="post-toc-number">2.2.9.</span> <span class="post-toc-text">Cgroup例子</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cgroups%E4%B8%89%E4%B8%AA%E7%BB%84%E4%BB%B6%E7%9A%84%E7%BA%A6%E6%9D%9F"><span class="post-toc-number">2.2.10.</span> <span class="post-toc-text">Cgroups三个组件的约束</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cgroups-%E5%AE%9E%E6%88%98"><span class="post-toc-number">2.2.11.</span> <span class="post-toc-text">Cgroups 实战</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Union-File-System"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Union File System</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AUFS"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">AUFS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#AUFS%E5%AE%9E%E6%88%98"><span class="post-toc-number">2.3.1.1.</span> <span class="post-toc-text">AUFS实战</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#AUFS%E7%BB%86%E8%8A%82"><span class="post-toc-number">2.3.1.2.</span> <span class="post-toc-text">AUFS细节</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="post-toc-number">2.3.1.2.1.</span> <span class="post-toc-text">读文件</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%86%99%E6%96%87%E4%BB%B6"><span class="post-toc-number">2.3.1.2.2.</span> <span class="post-toc-text">写文件</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="post-toc-number">2.3.1.2.3.</span> <span class="post-toc-text">删除文件</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%86%E8%A7%A3%E6%9B%B4%E5%A4%9A"><span class="post-toc-number">2.3.1.3.</span> <span class="post-toc-text">了解更多</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#OverlayFS"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">OverlayFS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%86%E8%A7%A3%E6%9B%B4%E5%A4%9A-1"><span class="post-toc-number">2.3.2.1.</span> <span class="post-toc-text">了解更多</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9E%84%E9%80%A0%E5%AE%B9%E5%99%A8"><span class="post-toc-number">3.</span> <span class="post-toc-text">构造容器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Proc文件系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%89Go%E6%88%91%E4%B8%8D%E7%94%A8"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">有Go我不用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-1%E7%89%88%E6%9C%AC"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">3.1版本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BC%96%E8%AF%91%E8%BF%90%E8%A1%8C3-1"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">编译运行3.1</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pocker3-1-in-docker"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">pocker3.1 in docker</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-2-cpu%E7%89%88%E6%9C%AC"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">3.2-cpu版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-2-mem%E7%89%88%E6%9C%AC"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">3.2-mem版本</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9E%84%E9%80%A0%E9%95%9C%E5%83%8F"><span class="post-toc-number">4.</span> <span class="post-toc-text">构造镜像</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-1-busybox%E7%89%88%E6%9C%AC"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">4.1-busybox版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-2-overlay%E7%89%88%E6%9C%AC"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">4.2-overlay版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-3-volumes%E7%89%88%E6%9C%AC"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">4.3-volumes版本</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%B9%E5%99%A8%E8%BF%9B%E9%98%B6"><span class="post-toc-number">5.</span> <span class="post-toc-text">容器进阶</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C"><span class="post-toc-number">6.</span> <span class="post-toc-text">容器网络</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%AB%98%E7%BA%A7%E5%AE%9E%E8%B7%B5"><span class="post-toc-number">7.</span> <span class="post-toc-text">高级实践</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#OCI"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">OCI</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#runC"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">runC</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Containerd"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">Containerd</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CRI%E5%AE%B9%E5%99%A8%E5%BC%95%E6%93%8E"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">CRI容器引擎</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Docker/自己动手写Docker/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">自己动手写Docker</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-04-16 13:46:00" datetime="2021-04-16T05:46:00.000Z"  itemprop="datePublished">2021-04-16</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/Docker/">Docker</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QRN6OO.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<p><img src='/image-2021-04-16-13.59.48.106.png'></img></p>
+<h1 id="容器与开发语言"><a href="#容器与开发语言" class="headerlink" title="容器与开发语言"></a>容器与开发语言</h1><h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><p>随着云计算领域的兴起，容器这个词出现了，但是什么是容器？</p>
+<p>容器英文名Container，是基于Linux Namespace以及Cgroups技术实现的具备隔离特性的一组进程。</p>
+<p>OK，他是一组具备隔离特性的进程。</p>
+<h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>虚拟机是使用Hypervisor技术提供的虚拟化硬件的操作系统。</p>
+<p>OK，虚拟机是一个操作系统。</p>
+<span id="more"></span>
+
+<h2 id="操作系统和进程的区别"><a href="#操作系统和进程的区别" class="headerlink" title="操作系统和进程的区别"></a>操作系统和进程的区别</h2><p>操作系统是管理软件、硬件的一组进程。</p>
+<h2 id="GO"><a href="#GO" class="headerlink" title="GO"></a>GO</h2><p>这里不做介绍（其实我只能看懂一点点Go代码，没时间学，后面有机会再出这方面的Blog吧）</p>
+<h1 id="基础技术"><a href="#基础技术" class="headerlink" title="基础技术"></a>基础技术</h1><h2 id="Linux-Namespace"><a href="#Linux-Namespace" class="headerlink" title="Linux Namespace"></a>Linux Namespace</h2><p>Namespace即为名称空间，这是一个树状的结构，父名称空间可以看到子名称空间的所有内容，反之则不行。这类似于Spring框架的父子Beanfactory。</p>
+<p>Linux 一个实现了6个不同的Namespace</p>
+<table>
+<thead>
+<tr>
+<th align="center">Namespace 类型</th>
+<th align="center">系统调用参数</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Mount Namespace</td>
+<td align="center">CLONE NEWNS</td>
+<td align="center">文件系统挂载点</td>
+</tr>
+<tr>
+<td align="center">UTS Namespace</td>
+<td align="center">CLONE NEWUTS</td>
+<td align="center">主机名</td>
+</tr>
+<tr>
+<td align="center">IPC Namespace</td>
+<td align="center">CLONE NEWIPC</td>
+<td align="center">进程通信</td>
+</tr>
+<tr>
+<td align="center">PID Namespace</td>
+<td align="center">CLONE NEWPID</td>
+<td align="center">进程ID</td>
+</tr>
+<tr>
+<td align="center">Network Namespace</td>
+<td align="center">CLONE NEWNET</td>
+<td align="center">网络</td>
+</tr>
+<tr>
+<td align="center">User Namespace</td>
+<td align="center">CLONE NEWUSER</td>
+<td align="center">用户</td>
+</tr>
+</tbody></table>
+<p>对于这些Namespace，Linux提供了3个系统调用。</p>
+<table>
+<thead>
+<tr>
+<th align="center">API</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">clone</td>
+<td align="center">创建新进程，并为其分配6个名称空间</td>
+</tr>
+<tr>
+<td align="center">unshare</td>
+<td align="center">把进程移出名称空间</td>
+</tr>
+<tr>
+<td align="center">setns</td>
+<td align="center">把进程加入名称空间</td>
+</tr>
+</tbody></table>
+<h3 id="UTS-Namespace"><a href="#UTS-Namespace" class="headerlink" title="UTS Namespace"></a>UTS Namespace</h3><p>下面是一个<code>main.go</code>文件，我们使用指令<code>go run main.go</code></p>
+<blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;os/exec&quot;</span></span><br><span class="line">  <span class="string">&quot;syscall&quot;</span></span><br><span class="line">  <span class="string">&quot;os&quot;</span></span><br><span class="line">  <span class="string">&quot;log&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span> <span class="params">()</span></span> &#123;</span><br><span class="line">  cmd := exec.Command(<span class="string">&quot;sh&quot;</span>)</span><br><span class="line">  cmd.SysProcAttr = &amp;syscall.SysProcAttr&#123;</span><br><span class="line">    Cloneflags: syscall.CLONE_NEWUTS,</span><br><span class="line">  &#125;</span><br><span class="line">  cmd.Stdin = os.Stdin</span><br><span class="line">  cmd.Stdout = os.Stdout</span><br><span class="line">  cmd.Stderr = os.Stderr</span><br><span class="line">  <span class="keyword">if</span> err := cmd.Run(); err!= <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatal(err)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>取自原书第10页</p>
+</blockquote>
+<p>然后我们发现我们进入到了一个shell命令中。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># go run main.go </span></span><br><span class="line">sh-4.4<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>接下来我们查看hostname并更改然后再次查看。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># go run main.go </span></span><br><span class="line">sh-4.4<span class="comment"># hostname</span></span><br><span class="line">VM-4-4-centos</span><br><span class="line">sh-4.4<span class="comment"># hostname</span></span><br><span class="line">VM-4-4-centos</span><br><span class="line">sh-4.4<span class="comment"># hostname wsx</span></span><br><span class="line">sh-4.4<span class="comment"># hostname</span></span><br><span class="line">wsx</span><br><span class="line">sh-4.4<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>回到宿主机上使用指令hostname,发现宿主机的hostname并没有发生改变。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos src]<span class="comment"># hostname</span></span><br><span class="line">VM-4-4-centos</span><br><span class="line">[root@VM-4-4-centos src]<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>我们使用指令<code>ps -ef | grep $$</code>查看当前进程的pid为1539189， ppid为1539185。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4<span class="comment"># ps -ef | grep $$</span></span><br><span class="line">root     1539189 1539185  0 15:01 pts/0    00:00:00 sh</span><br><span class="line">root     1540099 1539189  0 15:05 pts/0    00:00:00 ps -ef</span><br><span class="line">root     1540100 1539189  0 15:05 pts/0    00:00:00 grep 1539189</span><br></pre></td></tr></table></figure>
+
+<p>然后分别查看他们的ns空间, 不难发现只有uts空间不一样。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4<span class="comment"># ls -l /proc/$$/ns</span></span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 cgroup -&gt; <span class="string">&#x27;cgroup:[4026531835]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 ipc -&gt; <span class="string">&#x27;ipc:[4026531839]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 mnt -&gt; <span class="string">&#x27;mnt:[4026531840]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 net -&gt; <span class="string">&#x27;net:[4026531992]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 pid -&gt; <span class="string">&#x27;pid:[4026531836]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 pid_for_children -&gt; <span class="string">&#x27;pid:[4026531836]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 user -&gt; <span class="string">&#x27;user:[4026531837]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:06 uts -&gt; <span class="string">&#x27;uts:[4026532643]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:07 uts -&gt; <span class="string">&#x27;uts:[4026531838]&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sh-4.4<span class="comment"># ls -l /proc/1539185/ns</span></span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 cgroup -&gt; <span class="string">&#x27;cgroup:[4026531835]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 ipc -&gt; <span class="string">&#x27;ipc:[4026531839]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 mnt -&gt; <span class="string">&#x27;mnt:[4026531840]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 net -&gt; <span class="string">&#x27;net:[4026531992]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 pid -&gt; <span class="string">&#x27;pid:[4026531836]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 pid_for_children -&gt; <span class="string">&#x27;pid:[4026531836]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:08 user -&gt; <span class="string">&#x27;user:[4026531837]&#x27;</span></span><br><span class="line">lrwxrwxrwx 1 root root 0 Apr 16 15:07 uts -&gt; <span class="string">&#x27;uts:[4026531838]&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他的Namespace"><a href="#其他的Namespace" class="headerlink" title="其他的Namespace"></a>其他的Namespace</h3><p>更多的例子可以查看原书11-19页，即可实现其他5个空间的隔离，其实只需要修改代码为下面这样即可。我们只需要使用符号 <code>|</code>就能同时开启多个资源的隔离。 </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmd.SysProcAttr = &amp;syscall.SysProcAttr&#123;</span><br><span class="line">  Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWIPC,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Linux-Cgroups"><a href="#Linux-Cgroups" class="headerlink" title="Linux Cgroups"></a>Linux Cgroups</h2><p>有了资源隔离，还差一点东西才能实现容器，那就是资源限制、控制、统计（包括CPU、Memory、IO等）。Linux Cgroups就是干这个事的。</p>
+<blockquote>
+<p>cgroups（Control Groups）最初叫 Process Container，由 Google 工程师（Paul Menage 和 Rohit Seth）于 2006 年提出，后来因为 Container 有多重含义容易引起误解，就在 2007 年更名为 Control Groups，并被整合进 Linux 内核。顾名思义就是把进程放到一个组里面统一加以控制。</p>
+<p>引用自： <a target="_blank" rel="noopener" href="https://www.infoq.cn/article/docker-kernel-knowledge-cgroups-resource-isolation">原文链接</a></p>
+</blockquote>
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p>在Cgroups术语中，Task就是一个进程。</p>
+<h3 id="Cgroup"><a href="#Cgroup" class="headerlink" title="Cgroup"></a>Cgroup</h3><p>即一个控制组，可以对一组进程进行配置。</p>
+<h3 id="Subsystem"><a href="#Subsystem" class="headerlink" title="Subsystem"></a>Subsystem</h3><p>具体的配置子系统，例如cpu子系统可以配置Cgroup中进程被调度的策略，memory子系统可以控制Cgroup中进程的内存占用。</p>
+<h3 id="Hierarchy"><a href="#Hierarchy" class="headerlink" title="Hierarchy"></a>Hierarchy</h3><p>hierarchy把cgroup描述为一个树状结构，在这个树状结构中，Cgroups完成了继承，就和前面的Linux Namespace一样。</p>
+<h3 id="安装Cgroup库"><a href="#安装Cgroup库" class="headerlink" title="安装Cgroup库"></a>安装Cgroup库</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y libcgroup-tools.x86_64</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看cgroup"><a href="#查看cgroup" class="headerlink" title="查看cgroup"></a>查看cgroup</h3><p>我们可以看到这里有很多cgroup，冒号左边是子系统，右边是cgroup。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos cpu]<span class="comment"># lscgroup | head -n 15</span></span><br><span class="line">cpu,cpuacct:/</span><br><span class="line">cpu,cpuacct:/YunJing</span><br><span class="line">cpu,cpuacct:/docker</span><br><span class="line">cpu,cpuacct:/docker/de0ca6c8064d53b51a3076317c90c472b3b62e31d5110c08a9e158d4470bde2a</span><br><span class="line">cpu,cpuacct:/docker/5e0cd00a0390669e38f844b1ecf56c63dc8d406d0c12d330d278ff137aafd2d2</span><br><span class="line">cpu,cpuacct:/docker/29f1d2a9d2d3baaf7e108696dace633e84a75dca7182b3015d0a632d72b2f1f8</span><br><span class="line">cpu,cpuacct:/docker/d97f48af25382fad8175a285dfe3c6ebc93fe28d022c534c20c35152a47e9a09</span><br><span class="line">cpu,cpuacct:/docker/dfdc0ad0ca19f736e8bb70abcbdbbd75b483b9830920097566e01bb8dc83d1b6</span><br><span class="line">cpu,cpuacct:/docker/28c73206d27e9bfcbca5fd9f801ff96a57cd07c5b6806f1bcf5932e4643296e1</span><br><span class="line">cpu,cpuacct:/docker/9852a95cfef5ff071cb4554ea73b6699be0ab5aa08f873abe1575ef07c31c68f</span><br><span class="line">cpu,cpuacct:/docker/a3845de540c9eaa8dc609b67d09fb40f262a0bc286eef8363607d4fba68dad36</span><br><span class="line">cpu,cpuacct:/docker/d46d67f40ea34e5a9e0aaf9e32d0438d9fc9c0db614c2e60139971ab7917602f</span><br><span class="line">cpu,cpuacct:/docker/a3fa62cd8e9ec321a708e81c0f5aa1048b636815db225e1f9b3252dd9f676913</span><br><span class="line">cpu,cpuacct:/user.slice</span><br><span class="line">cpu,cpuacct:/init.scope</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看子系统"><a href="#查看子系统" class="headerlink" title="查看子系统"></a>查看子系统</h3><p>下面的指令会列出所有的子系统，一般就几个子系统。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos cpu]<span class="comment"># lssubsys -a</span></span><br><span class="line">cpuset</span><br><span class="line">cpu,cpuacct</span><br><span class="line">blkio</span><br><span class="line">memory</span><br><span class="line">devices</span><br><span class="line">freezer</span><br><span class="line">net_cls,net_prio</span><br><span class="line">perf_event</span><br><span class="line">hugetlb</span><br><span class="line">pids</span><br><span class="line">rdma</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看子系统挂载"><a href="#查看子系统挂载" class="headerlink" title="查看子系统挂载"></a>查看子系统挂载</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos src]<span class="comment"># lssubsys -m</span></span><br><span class="line">cpuset /sys/fs/cgroup/cpuset</span><br><span class="line">cpu,cpuacct /sys/fs/cgroup/cpu,cpuacct</span><br><span class="line">blkio /sys/fs/cgroup/blkio</span><br><span class="line">memory /sys/fs/cgroup/memory</span><br><span class="line">devices /sys/fs/cgroup/devices</span><br><span class="line">freezer /sys/fs/cgroup/freezer</span><br><span class="line">net_cls,net_prio /sys/fs/cgroup/net_cls,net_prio</span><br><span class="line">perf_event /sys/fs/cgroup/perf_event</span><br><span class="line">hugetlb /sys/fs/cgroup/hugetlb</span><br><span class="line">pids /sys/fs/cgroup/pids</span><br><span class="line">rdma /sys/fs/cgroup/rdma</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Cgroup例子"><a href="#Cgroup例子" class="headerlink" title="Cgroup例子"></a>Cgroup例子</h3><p>如下图所示，cgroup（粉色） 是一个树状结构，组成了一个Hierarchy（绿色），而每一个子系统（蓝色）可以分配到一个Hierarchy上。</p>
+<p><img src='/image-2021-04-17-13.55.00.000.svg'></img></p>
+<h3 id="Cgroups三个组件的约束"><a href="#Cgroups三个组件的约束" class="headerlink" title="Cgroups三个组件的约束"></a>Cgroups三个组件的约束</h3><blockquote>
+<p>系统在创建了新的 hierarchy之后,系统中所有的进程都会加入这个 hierarchy的 cgroup根节点,这个 cgroup根节点是 hierarchy默认创建的。</p>
+<p>一个 subsystem只能附加到一个 hierarchy上面。</p>
+<p>一个 hierarchy可以附加多个 subsystem。</p>
+<p>一个进程可以作为多个 cgroup的成员,但是这些 cgroup必须在不同的 hierarchy中。</p>
+<p>一个进程fork出子进程时,子进程是和父进程在同一个 cgroup中的,也可以根据需要将其移动到其他 cgroup中。</p>
+</blockquote>
+<h3 id="Cgroups-实战"><a href="#Cgroups-实战" class="headerlink" title="Cgroups 实战"></a>Cgroups 实战</h3><p>我们安装下面的方式即可创建一个cgroup，这个cgroup在子系统cpu所附着的Hierarchy上。</p>
+<p>只需要创建一个文件夹，cgroup就被创建了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos cpu]<span class="comment"># cd /sys/fs/cgroup/cpu</span></span><br><span class="line">[root@VM-4-4-centos cpu]<span class="comment"># mkdir my-cpu</span></span><br><span class="line">[root@VM-4-4-centos cpu]<span class="comment"># cd my-cpu/</span></span><br><span class="line">[root@VM-4-4-centos my-cpu]<span class="comment"># ll</span></span><br><span class="line">total 0</span><br><span class="line">-rw-r--r-- 1 root root 0 Apr 17 14:32 cgroup.clone_children</span><br><span class="line">-rw-r--r-- 1 root root 0 Apr 17 14:32 cgroup.procs</span><br><span class="line">-r--r--r-- 1 root root 0 Apr 17 14:32 cpuacct.stat</span><br><span class="line">-rw-r--r-- 1 root root 0 Apr 17 14:32 cpuacct.usage</span><br><span class="line">-r--r--r-- 1 root root 0 Apr 17 14:32 cpuacct.usage_all</span><br><span class="line">-r--r--r-- 1 root root 0 Apr 17 14:32 cpuacct.usage_percpu</span><br><span class="line">-r--r--r-- 1 root root 0 Apr 17 14:32 cpuacct.usage_percpu_sys</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们来看两个文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos my-cpu]<span class="comment"># cat cpu.cfs_period_us </span></span><br><span class="line">100000</span><br><span class="line">[root@VM-4-4-centos my-cpu]<span class="comment"># cat cpu.cfs_quota_us </span></span><br><span class="line">-1</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>cfs_period_us用来配置时间周期长度，cfs_quota_us用来配置当前cgroup在设置的周期长度内所能使用的CPU时间数，两个文件配合起来设置CPU的使用上限。两个文件的单位都是微秒（us），cfs_period_us的取值范围为1毫秒（ms）到1秒（s），cfs_quota_us的取值大于1ms即可，如果cfs_quota_us的值为-1（默认值），表示不受cpu时间的限制。下面是几个例子：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）</span><br><span class="line">   # echo 250000 &gt; cpu.cfs_quota_us /* quota = 250ms */</span><br><span class="line">   # echo 250000 &gt; cpu.cfs_period_us /* period = 250ms */</span><br><span class="line"></span><br><span class="line">2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）</span><br><span class="line">   # echo 1000000 &gt; cpu.cfs_quota_us /* quota = 1000ms */</span><br><span class="line">   # echo 500000 &gt; cpu.cfs_period_us /* period = 500ms */</span><br><span class="line"></span><br><span class="line">3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）</span><br><span class="line">   # echo 10000 &gt; cpu.cfs_quota_us /* quota = 10ms */</span><br><span class="line">   # echo 50000 &gt; cpu.cfs_period_us /* period = 50ms */</span><br></pre></td></tr></table></figure>
+
+<p>引用： <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008323952">原文链接</a></p>
+</blockquote>
+<p>紧接着我们编写一个CPU密集型的算法，计算斐波拉契数列第100000000项的最后4位数字。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> n = <span class="number">100000000</span>;    </span><br><span class="line">    <span class="type">int</span> a[] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="type">int</span>*fib = a-i+<span class="number">2</span>;</span><br><span class="line">        fib[i<span class="number">-2</span>] = fib[i<span class="number">-1</span>];</span><br><span class="line">        fib[i<span class="number">-1</span>] = fib[i];</span><br><span class="line">        fib[i] = (fib[i<span class="number">-1</span>]+fib[i<span class="number">-2</span>])%<span class="number">10000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;a[<span class="number">2</span>]&lt;&lt;endl;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们运行他，发现大概执行了1秒钟</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># g++ main.cpp -o main &amp;&amp; time ./main</span></span><br><span class="line">6875</span><br><span class="line"></span><br><span class="line">real    0m1.020s</span><br><span class="line">user    0m0.967s</span><br><span class="line">sys     0m0.001s</span><br></pre></td></tr></table></figure>
+
+<p>现在我们构建一个只占用10%CPU的Cgroups，并让这个进程运行在这个Cgroups中。我们可以看到，这个进程在9.610秒内占用了0.963秒的CPU时间，这和我们希望看到的10%的CPU时间是相符合的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># echo 10000 &gt; /sys/fs/cgroup/cpu/my-cpu/cpu.cfs_quota_us</span></span><br><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># echo 100000 &gt; /sys/fs/cgroup/cpu/my-cpu/cpu.cfs_period_us </span></span><br><span class="line">[root@VM-4-4-centos tmp]<span class="comment"># g++ main.cpp -o main &amp;&amp; time cgexec -g cpu:my-cpu ./main</span></span><br><span class="line">6875</span><br><span class="line"></span><br><span class="line">real    0m9.610s</span><br><span class="line">user    0m0.963s</span><br><span class="line">sys     0m0.005s</span><br></pre></td></tr></table></figure>
+
+<p>类似如内存占用的实战，在<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/8296063.html">这里</a>可以看到更多</p>
+<h2 id="Union-File-System"><a href="#Union-File-System" class="headerlink" title="Union File System"></a>Union File System</h2><blockquote>
+<p>联合文件系统（Union File System）：2004年由纽约州立大学石溪分校开发，它可以把多个目录(也叫分支)内容联合挂载到同一个目录下，而目录的物理位置是分开的。UnionFS允许只读和可读写目录并存，就是说可同时删除和增加内容。</p>
+<p>作者：<em>一叶</em></p>
+<p>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3ba255463047">https://www.jianshu.com/p/3ba255463047</a></p>
+</blockquote>
+<blockquote>
+<p>写时复制(copy-on-wrie,下文简称CoW),也叫隐式共享,是一种对可修改资源实现高效复制的资源管理技术。它的思想是,如果一个资源是重复的,但没有任何修改,这时并不需要立即创建一个新的资源,这个资源可以被新旧实例共享。创建新资源发生在第一次写操作,也就是对资源进行修改的时候。通过这种资源共享的方式,可以显著地减少未修改资源复制带来的消耗,但是也会在进行资源修改时增加小部分的开销。</p>
+<p>引用： 原书27页</p>
+</blockquote>
+<h3 id="AUFS"><a href="#AUFS" class="headerlink" title="AUFS"></a>AUFS</h3><p> Advanced Multi-Layered Unification Filesystem 改写了UFS，提高其可靠性和性能。</p>
+<h4 id="AUFS实战"><a href="#AUFS实战" class="headerlink" title="AUFS实战"></a>AUFS实战</h4><p>我们先创建如下目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos aufs]<span class="comment"># tree </span></span><br><span class="line">.</span><br><span class="line">├── container-layer</span><br><span class="line">├── image-layer1</span><br><span class="line">│   └── file1.txt</span><br><span class="line">├── image-layer2</span><br><span class="line">│   └── file2.txt</span><br><span class="line">├── image-layer3</span><br><span class="line">│   └── file3.txt</span><br><span class="line">├── image-layer4</span><br><span class="line">│   └── file4.txt</span><br><span class="line">└── mnt</span><br></pre></td></tr></table></figure>
+
+<p>内容如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos aufs]<span class="comment"># cat image-layer1/file1.txt </span></span><br><span class="line">I<span class="string">&#x27;m in layer1</span></span><br><span class="line"><span class="string">[root@VM-4-4-centos aufs]# cat image-layer2/file2.txt </span></span><br><span class="line"><span class="string">I&#x27;</span>m <span class="keyword">in</span> layer2</span><br><span class="line">[root@VM-4-4-centos aufs]<span class="comment"># cat image-layer3/file3.txt </span></span><br><span class="line">I<span class="string">&#x27;m in layer3</span></span><br><span class="line"><span class="string">[root@VM-4-4-centos aufs]# cat image-layer4/file4.txt </span></span><br><span class="line"><span class="string">I&#x27;</span>m <span class="keyword">in</span> layer4</span><br></pre></td></tr></table></figure>
+
+<p>开始挂载</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos aufs]<span class="comment">#  sudo mount -t aufs -o dirs=container-layer:image-layer1:image-layer2:image-layer3:image-layer4 none mnt</span></span><br><span class="line">mount: /data/src/tmp/aufs/mnt: unknown filesystem <span class="built_in">type</span> <span class="string">&#x27;aufs&#x27;</span>.</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dmw412724/article/details/107159288">GG</a> 现在的centos上的docker，使用的不是aufs，而是OverlayFS，不信你看</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos aufs]<span class="comment"># df</span></span><br><span class="line">Filesystem     1K-blocks     Used Available Use% Mounted on</span><br><span class="line">devtmpfs          407188        0    407188   0% /dev</span><br><span class="line">tmpfs             420616       48    420568   1% /dev/shm</span><br><span class="line">tmpfs             420616     1052    419564   1% /run</span><br><span class="line">tmpfs             420616        0    420616   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1       25736400 21166108   3421600  87% /</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/665fa7b38b75b193df7995e1535782c88e9922d6097e16472ac94d254e18c850/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/1f2ddfe4b78e83f2ba5b721d167b584187726a3fae80ce4ffcf400fa0b0ad1db/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/d76eb09f0d9388bd10daeba94112025dd55c0b6c67cc37fd05ac6664fd4f9947/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/9c8e0bf244fc65294eb2d4455994ca470cd48d3a7b65318d7382bf53ac611cfe/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/0cbbbfc5ed25c5583abe765b06f367add27d0834cedea47e8e5bf12d633af1ee/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/434275a20afd962e4dfea51329f1520fad94ea49b2b9c3d299a06cbf55423b40/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/180399a29eeb51f456a165adf7ea52a79d1219882fc707b9988b93a8c60a2000/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/f7afc7f62355db8f11449d0559fad921c929418b5b8fd80c6b20e7db93054546/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/46d0b181bfd0218a5fa88f3ec0b3f55ef710fc5e8de9ebbac3dc8025c084a372/merged</span><br><span class="line">overlay         25736400 21166108   3421600  87% /var/lib/docker/overlay2/4b64e9d775bdc157a476a2b7edc6a8141916e57107f2bca0bb795bd18ebe79ea/merged</span><br><span class="line">tmpfs              84120        0     84120   0% /run/user/0</span><br></pre></td></tr></table></figure>
+
+<h4 id="AUFS细节"><a href="#AUFS细节" class="headerlink" title="AUFS细节"></a>AUFS细节</h4><h5 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h5><p>下图是一个AUFS挂载情况，当我们对&#x2F;mnt处进行读取文件的时候，他会从顶层依次向下寻找，如果在layer4层找到了这个文件，则直接读取，如果找不到就递归向下寻找。</p>
+<p><img src='/image-2021-04-17-16.17.00.000.svg'></img></p>
+<h5 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h5><p>写文件比较特殊，如果底层文件无法写入，则通过COW技术直接写mnt层即可。如果底层文件可读写，则直接写入底层文件。</p>
+<h5 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h5><ul>
+<li>文件在mnt层，下层只读，且下层无此文件，直接删除</li>
+<li>文件在mnt层，下层只读，且下层有此文件，删除mnt层，然后创建一个隐藏文件.wh.{filename}表示该文件被删除</li>
+<li>文件在下层读写层，直接删除。</li>
+</ul>
+<h4 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h4><p><a target="_blank" rel="noopener" href="https://arkingc.github.io/2017/04/13/2017-04-13-docker-filesystem-aufs/">拓展阅读</a></p>
+<h3 id="OverlayFS"><a href="#OverlayFS" class="headerlink" title="OverlayFS"></a>OverlayFS</h3><blockquote>
+<p>如下图所示，Overlay在主机上用到2个目录，这2个目录被看成是overlay的层。<br>upperdir为容器层、lowerdir为镜像层使用联合挂载技术将它们挂载在同一目录(merged)下，提供统一视图</p>
+<p><img src='/image-2021-04-17-16.28.41.938.png'></img></p>
+<p>原文:  <a target="_blank" rel="noopener" href="https://docs.docker.com/storage/storagedriver/overlayfs-driver/">链接</a></p>
+</blockquote>
+<h4 id="了解更多-1"><a href="#了解更多-1" class="headerlink" title="了解更多"></a>了解更多</h4><p><a target="_blank" rel="noopener" href="https://docs.docker.com/storage/storagedriver/overlayfs-driver/">拓展阅读</a></p>
+<h1 id="构造容器"><a href="#构造容器" class="headerlink" title="构造容器"></a>构造容器</h1><h2 id="Proc文件系统"><a href="#Proc文件系统" class="headerlink" title="Proc文件系统"></a>Proc文件系统</h2><blockquote>
+<p>Linux下的proc文件系统是由内核提供的,它其实不是一个真正的文件系统只包含了系统运行时的信息(比如系统内存、 mount设备信息、一些硬件配置等),它只存在于内存中,而不占用外存空间。它以文件系统的形式,为访问内核数据的操作提供接口。实际上,很多系统工具都是简单地去读取这个文件系统的某个文件内容,比如 Ismo,其实就是cat<br>proc&#x2F;modules</p>
+<p>当遍历这个目录的时候,会发现很多数字,这些都是为每个进程创建的空间,数字就是它们的PID。</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-4-centos aufs]<span class="comment"># ll /proc | head -n 15</span></span><br><span class="line">total 0</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr  9 15:16 1</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 16:26 10</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 16:26 11</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1102</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1106</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1108</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1111</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1112</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1116</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1135</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 15:57 1136</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 16:26 12</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 16:26 13</span><br><span class="line">dr-xr-xr-x  9 root             root         0 Apr 17 16:17 1411993</span><br></pre></td></tr></table></figure>
+
+
+
+<p>目录结构</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;proc&#x2F;N</td>
+<td>PID为N的进程信息</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;cmdline</td>
+<td>进程启动命令</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;cwd</td>
+<td>链接到进程当前工作目录</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;environ</td>
+<td>进程环境变量列表</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;exe</td>
+<td>链接到进程的执行命令文件</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;fd</td>
+<td>包含进程相关的所有文件描述符</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;maps</td>
+<td>与进程相关的内存映射信息</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;mem</td>
+<td>指代进程持有的内存,不可读</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;root</td>
+<td>链接到进程的根目录</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;stat</td>
+<td>进程的状态</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;statm</td>
+<td>进程使用的内存状态</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;N&#x2F;status</td>
+<td>进程状态信息,比stat&#x2F; statm更具可读性</td>
+</tr>
+<tr>
+<td>&#x2F;proc&#x2F;self&#x2F;</td>
+<td>链接到当前正在运行的进程</td>
+</tr>
+</tbody></table>
+<h2 id="有Go我不用"><a href="#有Go我不用" class="headerlink" title="有Go我不用"></a>有Go我不用</h2><p>就用C++，哎，就是玩。</p>
+<h2 id="3-1版本"><a href="#3-1版本" class="headerlink" title="3.1版本"></a>3.1版本</h2><p><a target="_blank" rel="noopener" href="https://github1s.com/fightinggg/pocker/tree/3.1">项目地址</a></p>
+<p>直接看<code>main.cpp</code>中的主函数, 首先是解析参数，然后使用clone 系统调用制造一个进程。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    Param *param = ParamParse::<span class="built_in">parse</span>(argc, argv);</span><br><span class="line"></span><br><span class="line">    <span class="type">void</span> *stack = <span class="built_in">malloc</span>(FIBER_STACK);<span class="comment">//为子进程申请系统堆栈</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> containerFlag = SIGCHLD | CLONE_NEWUTS | CLONE_NEWPID</span><br><span class="line">                        | CLONE_NEWNS | CLONE_NEWNET | CLONE_NEWIPC | CLONE_NEWUSER;</span><br><span class="line">    <span class="type">int</span> pid = <span class="built_in">clone</span>(doContainer, (<span class="type">char</span> *) stack + FIBER_STACK, containerFlag, param);<span class="comment">//创建子线程</span></span><br><span class="line">    <span class="built_in">waitpid</span>(pid, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;parent exit &quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后看<code>main.cpp</code>的子进程， 这里挂在proc目录是为了隔离，然后由于我们并没有编写镜像，所以我们mock了一个只支持centos的镜像。紧接着就是子进程调用exec替换掉自己的代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">doContainer</span><span class="params">(<span class="type">void</span> *param)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> *runParam = (RunParam *) param;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">mount</span>(<span class="string">&quot;proc&quot;</span>, <span class="string">&quot;/proc&quot;</span>, <span class="string">&quot;proc&quot;</span>, MS_NOEXEC | MS_NOSUID | MS_NODEV, <span class="literal">NULL</span>)) &#123;</span><br><span class="line">        cerr &lt;&lt; <span class="string">&quot;mount proc error&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (runParam-&gt;<span class="built_in">getImage</span>() == <span class="string">&quot;centos&quot;</span>) &#123;</span><br><span class="line">        vector&lt;string&gt; v = runParam-&gt;<span class="built_in">getExec</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (v.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="built_in">execlp</span>(v[<span class="number">0</span>].<span class="built_in">data</span>(), <span class="literal">nullptr</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="built_in">execlp</span>(v[<span class="number">0</span>].<span class="built_in">data</span>(), v[<span class="number">1</span>].<span class="built_in">data</span>(), <span class="literal">NULL</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="built_in">execlp</span>(v[<span class="number">0</span>].<span class="built_in">data</span>(), v[<span class="number">1</span>].<span class="built_in">data</span>(), v[<span class="number">2</span>].<span class="built_in">data</span>(), <span class="literal">NULL</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                <span class="built_in">execlp</span>(v[<span class="number">0</span>].<span class="built_in">data</span>(), v[<span class="number">1</span>].<span class="built_in">data</span>(), v[<span class="number">2</span>].<span class="built_in">data</span>(), v[<span class="number">3</span>].<span class="built_in">data</span>(), <span class="literal">NULL</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                cerr &lt;&lt; <span class="string">&quot;too many params, only four params support&quot;</span> &lt;&lt; endl;</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        cerr &lt;&lt; <span class="string">&quot;exec error: &quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cerr &lt;&lt; <span class="string">&quot;could not find image &#x27;&quot;</span> &lt;&lt; runParam-&gt;<span class="built_in">getImage</span>() &lt;&lt; <span class="string">&quot;&#x27;&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="编译运行3-1"><a href="#编译运行3-1" class="headerlink" title="编译运行3.1"></a>编译运行3.1</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx pocker]<span class="comment"># mkdir build</span></span><br><span class="line">[root@wsx pocker]<span class="comment"># cd build</span></span><br><span class="line">[root@wsx build]<span class="comment"># cmake ..</span></span><br><span class="line">-- The C compiler identification is GNU 8.3.1</span><br><span class="line">-- The CXX compiler identification is GNU 8.3.1</span><br><span class="line">-- Check <span class="keyword">for</span> working C compiler: /usr/bin/cc</span><br><span class="line">-- Check <span class="keyword">for</span> working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - <span class="keyword">done</span></span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - <span class="keyword">done</span></span><br><span class="line">-- Check <span class="keyword">for</span> working CXX compiler: /usr/bin/c++</span><br><span class="line">-- Check <span class="keyword">for</span> working CXX compiler: /usr/bin/c++ -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - <span class="keyword">done</span></span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - <span class="keyword">done</span></span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /data/src/pocker/build</span><br><span class="line">[root@wsx build]<span class="comment"># make</span></span><br><span class="line">Scanning dependencies of target pocker</span><br><span class="line">[ 25%] Building CXX object CMakeFiles/pocker.dir/src/param/parse/ParamParse.cpp.o</span><br><span class="line">[ 50%] Building CXX object CMakeFiles/pocker.dir/src/param/parse/RunParamParse.cpp.o</span><br><span class="line">[ 75%] Building CXX object CMakeFiles/pocker.dir/src/main.cpp.o</span><br><span class="line">[100%] Linking CXX executable pocker</span><br><span class="line">[100%] Built target pocker</span><br></pre></td></tr></table></figure>
+
+<p>默认的提示</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx build]<span class="comment"># ./pocker </span></span><br><span class="line">please run:</span><br><span class="line">      ./pocker run --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<p><code>pocker run</code>的提示</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx build]<span class="comment"># ./pocker run --help</span></span><br><span class="line">usage: ./pocker [options] ... image...</span><br><span class="line">options:</span><br><span class="line">  -i, --interactive    interactive</span><br><span class="line">  -t, --<span class="built_in">tty</span>            <span class="built_in">tty</span></span><br><span class="line">  -d, --detach         detach</span><br><span class="line">  -?, --<span class="built_in">help</span>           <span class="built_in">print</span> this message</span><br></pre></td></tr></table></figure>
+
+<p>调用ls指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx build]<span class="comment"># ./pocker run -it centos ls .</span></span><br><span class="line">CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  pocker</span><br><span class="line">parent <span class="built_in">exit</span> </span><br></pre></td></tr></table></figure>
+
+<p>调用ps指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx build]<span class="comment"># ./pocker run -it centos ps aux</span></span><br><span class="line">    PID TTY          TIME CMD</span><br><span class="line">      1 pts/0    00:00:00 ps</span><br><span class="line">parent <span class="built_in">exit</span> </span><br></pre></td></tr></table></figure>
+
+<p>调用bash指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@wsx build]<span class="comment"># ./pocker run -it centos bash</span></span><br><span class="line">[nobody@wsx build]$ ps -ef</span><br><span class="line">UID          PID    PPID  C STIME TTY          TIME CMD</span><br><span class="line">nobody         1       0  0 02:38 pts/0    00:00:00 [bash]</span><br><span class="line">nobody        22       1  0 02:38 pts/0    00:00:00 ps -ef</span><br><span class="line">[nobody@wsx build]$ <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">parent <span class="built_in">exit</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="pocker3-1-in-docker"><a href="#pocker3-1-in-docker" class="headerlink" title="pocker3.1 in docker"></a>pocker3.1 in docker</h3><p>笔者还为大家准备了一份开箱即用的3.1版本。大家可以一起来学习。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">s@s ~ % docker run  --privileged  -it --<span class="built_in">rm</span> 1144560553/pocker:3.1 bash </span><br><span class="line">Unable to find image <span class="string">&#x27;1144560553/pocker:3.1&#x27;</span> locally</span><br><span class="line">3.1: Pulling from 1144560553/pocker</span><br><span class="line">7a0437f04f83: Already exists </span><br><span class="line">4bbae049836d: Pull complete </span><br><span class="line">Digest: sha256:8340325bed1f0c26a1a24f0052e03fd06cb873d47a1b5d750f827d2ad4691b9e</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> 1144560553/pocker:3.1</span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># pocker </span></span><br><span class="line">please run:</span><br><span class="line">      pocker run --<span class="built_in">help</span></span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># pocker run --help</span></span><br><span class="line">usage: pocker [options] ... image...</span><br><span class="line">options:</span><br><span class="line">  -i, --interactive    interactive</span><br><span class="line">  -t, --<span class="built_in">tty</span>            <span class="built_in">tty</span></span><br><span class="line">  -d, --detach         detach</span><br><span class="line">  -?, --<span class="built_in">help</span>           <span class="built_in">print</span> this message</span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># pocker run -it centos ps ef</span></span><br><span class="line">  PID TTY          TIME CMD</span><br><span class="line">    1 pts/0    00:00:00 ps</span><br><span class="line">parent <span class="built_in">exit</span> </span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># pocker run -it centos ls . </span></span><br><span class="line">bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc</span><br><span class="line">root  run  sbin  srv  sys  tmp  usr  var</span><br><span class="line">parent <span class="built_in">exit</span> </span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># pocker run -it centos bash</span></span><br><span class="line">[nobody@ed07427b0ebd /]$ ps -ef</span><br><span class="line">UID        PID  PPID  C STIME TTY          TIME CMD</span><br><span class="line">nobody       1     0  0 07:24 pts/0    00:00:00 [bash]</span><br><span class="line">nobody      14     1  0 07:24 pts/0    00:00:00 ps -ef</span><br><span class="line">[nobody@ed07427b0ebd /]$ <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">parent <span class="built_in">exit</span> </span><br><span class="line">[root@ed07427b0ebd /]<span class="comment"># exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-2-cpu版本"><a href="#3-2-cpu版本" class="headerlink" title="3.2-cpu版本"></a>3.2-cpu版本</h2><p>这个版本笔者主要增加了一些cpu的限制，先看main.cpp中多了一个函数，这个函数是在容器启动前就已经调用了的，目的就是创建CPU子系统，我们可以看到这里主要使用了system系统调用，在目录<code>/sys/fs/cgroup/cpu</code>下用容器的id为文件夹名字创建了一个cpu子系统，在其中修改cfs_quota_us和cfs_period_us来解决cpu资源的问题。具体可见[Cgroups 实战](#Cgroups 实战)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">prepareContainer</span><span class="params">(RunParam *runParam)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// create cpu subsystem</span></span><br><span class="line">    <span class="type">char</span> cmd[<span class="number">128</span>];</span><br><span class="line">    string cmdList[] = &#123;</span><br><span class="line">            <span class="string">&quot;cd /sys/fs/cgroup/cpu &quot;</span>,</span><br><span class="line">            <span class="string">&quot;&amp;&amp; mkdir %s &quot;</span>,</span><br><span class="line">            <span class="string">&quot;&amp;&amp; cd %s &quot;</span>,</span><br><span class="line">            <span class="string">&quot;&amp;&amp; echo %d &gt; cpu.cfs_quota_us &quot;</span>,</span><br><span class="line">            <span class="string">&quot;&amp;&amp; echo 50000 &gt; cpu.cfs_period_us &quot;</span></span><br><span class="line">    &#125;;</span><br><span class="line">    string cmdOrigin;</span><br><span class="line">    <span class="keyword">for</span> (string &amp;s:cmdList) &#123;</span><br><span class="line">        cmdOrigin += s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sprintf</span>(cmd, cmdOrigin.<span class="built_in">data</span>(),</span><br><span class="line">            runParam-&gt;<span class="built_in">getContainerId</span>().<span class="built_in">data</span>(),</span><br><span class="line">            runParam-&gt;<span class="built_in">getContainerId</span>().<span class="built_in">data</span>(),</span><br><span class="line">            <span class="built_in">int</span>(runParam-&gt;<span class="built_in">getCpus</span>() * <span class="number">50000</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="built_in">system</span>(cmd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就是在容器启动后增加了下面这一段代码, 依然使用系统调用system，把容器所在的进程ID加入到tasks文件中，其目的就是让当前进程加入cpu子系统，来限制cpu的使用率。然后为了测试cpu子系统的有效性，笔者还在其中加了一个0到1e9的for循环来完成一个计算密集型任务。pocker会输出这个任务所占用的时间（单位为秒）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add cpu subsystem</span></span><br><span class="line"><span class="type">char</span> cmd[<span class="number">128</span>];</span><br><span class="line"><span class="built_in">sprintf</span>(cmd, <span class="string">&quot;echo %d &gt;&gt; /sys/fs/cgroup/cpu/%s/tasks&quot;</span>,</span><br><span class="line">        <span class="built_in">getpid</span>(), runParam-&gt;<span class="built_in">getContainerId</span>().<span class="built_in">data</span>());</span><br><span class="line"><span class="built_in">system</span>(cmd);</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> cur = <span class="built_in">time</span>(<span class="number">0</span>);</span><br><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1e9</span>; i++) &#123;</span><br><span class="line">    a += i;</span><br><span class="line">&#125;</span><br><span class="line">cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;cost: &quot;</span> &lt;&lt; <span class="built_in">time</span>(<span class="number">0</span>) - cur &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<p>当然笔者依然准备了一份开箱即用的docker版本，大家可以自行尝试。下面是笔者测试的结果。 我们可以看到当cpus取值为0.5的时候，花费了7秒，当取值为0.25的时候，花费了18秒。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">s@s ~ % docker run  --privileged  -it --<span class="built_in">rm</span> 1144560553/pocker:3.2-cpu bash</span><br><span class="line">Unable to find image <span class="string">&#x27;1144560553/pocker:3.2-cpu&#x27;</span> locally</span><br><span class="line">3.2-cpu: Pulling from 1144560553/pocker</span><br><span class="line">7a0437f04f83: Pull complete </span><br><span class="line">cc5cd42589c1: Pull complete </span><br><span class="line">Digest: sha256:01ac27156f599acfa588a51301455b92eca7c4963b0e6c6ab943d66f4c5cb06f</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> 1144560553/pocker:3.2-cpu</span><br><span class="line">[root@37ab95d1bfdb /]<span class="comment"># pocker</span></span><br><span class="line">please run:</span><br><span class="line">      pocker run --<span class="built_in">help</span></span><br><span class="line">[root@37ab95d1bfdb /]<span class="comment"># pocker run -idt --memory 50m --cpus 0.5 --memory-swap 1024m centos ps ef</span></span><br><span class="line">RunParam:: <span class="built_in">tty</span>: 1, interactive: 1, detach: 1, memory: 50, memorySwap: 1024, cpus: 0.500000, image: centos,containerId: 205b8eaf-76a3-474f-9a3f-4d5a9e5b64ad,containerName: </span><br><span class="line">-1243309311</span><br><span class="line">cost: 7</span><br><span class="line">  PID TTY          TIME CMD</span><br><span class="line">    1 pts/0    00:00:03 ps</span><br><span class="line">parent <span class="built_in">exit</span> </span><br><span class="line">[root@37ab95d1bfdb /]<span class="comment"># pocker run -idt --memory 50m --cpus 0.25 --memory-swap 1024m centos ps ef</span></span><br><span class="line">RunParam:: <span class="built_in">tty</span>: 1, interactive: 1, detach: 1, memory: 50, memorySwap: 1024, cpus: 0.250000, image: centos,containerId: 322904df-a8b0-46c4-b7c2-ec3e6ea66f17,containerName: </span><br><span class="line">-1243309311</span><br><span class="line">cost: 18</span><br><span class="line">  PID TTY          TIME CMD</span><br><span class="line">    1 pts/0    00:00:04 ps</span><br><span class="line">parent <span class="built_in">exit</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-2-mem版本"><a href="#3-2-mem版本" class="headerlink" title="3.2-mem版本"></a>3.2-mem版本</h2><p>新增的主要部分还是在main.cpp中，这个部分完成了内存子系统，这里直接看到，我们在位置<code>/sys/fs/cgroup/memory</code>新建了一个文件夹，并限制了内存和交换内存的大小，注意到一旦进程发生了内存溢出，默认将会被kill</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create memory subsystem</span></span><br><span class="line">cmdList = &#123;<span class="string">&quot;cd /sys/fs/cgroup/memory &quot;</span>, <span class="string">&quot;&amp;&amp; mkdir %s &quot;</span>,</span><br><span class="line">                          <span class="string">&quot;&amp;&amp; cd %s &quot;</span>, <span class="string">&quot;&amp;&amp; echo %d &gt; memory.limit_in_bytes &quot;</span>,</span><br><span class="line">                          <span class="string">&quot;&amp;&amp; echo %d &gt; memory.memsw.limit_in_bytes &quot;</span>&#125;;</span><br><span class="line"><span class="built_in">sprintf</span>(cmd, StringUtils::<span class="built_in">join</span>(cmdList).<span class="built_in">data</span>(),</span><br><span class="line">        runParam-&gt;<span class="built_in">getContainerId</span>().<span class="built_in">data</span>(), runParam-&gt;<span class="built_in">getContainerId</span>().<span class="built_in">data</span>(),</span><br><span class="line">        <span class="built_in">int</span>(runParam-&gt;<span class="built_in">getMemory</span>()), <span class="built_in">int</span>(runParam-&gt;<span class="built_in">getMemorySwap</span>()));</span><br><span class="line"><span class="built_in">system</span>(cmd);</span><br></pre></td></tr></table></figure>
+
+<p>笔者还是准备了一份开箱即用的docker版本(以后的docker版本都将直接转移到账号fightinggg下，而不是1144560553)，大家可以直接尝试。</p>
+<p>这里首先使用docker创建了一个pocker，然后使用pocker创建了一个内存空间10mb的容器，最后在容器中使用大量的内存，之后发现这个容器被Killed。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">s@s ~ % docker run  --privileged  -it --<span class="built_in">rm</span> fightinggg/pocker:3.2-mem bash</span><br><span class="line">[root@6b67dbf3b43e /]<span class="comment"># pocker run -itd -m 10m --memory-swap 10m centos bash</span></span><br><span class="line">RunParam:: <span class="built_in">tty</span>: 1, interactive: 1, detach: 1, memory: 10485760, memorySwap: 10485760, cpus: 1.000000, image: centos,containerId: 2b90e451-8d10-4efc-b105-42000930b51d,containerName: </span><br><span class="line">[nobody@6b67dbf3b43e /]$ bash -c <span class="string">&quot;arr=(1 2 3); for((i=1;i&lt;=1000000;i++));  do arr[i]=i; done; echo <span class="variable">$&#123;arr[@]&#125;</span>&quot;</span></span><br><span class="line">Killed</span><br><span class="line">[nobody@6b67dbf3b43e /]$ <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">container <span class="built_in">exit</span>, thanks <span class="keyword">for</span> using pocker </span><br><span class="line">[root@6b67dbf3b43e /]<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="构造镜像"><a href="#构造镜像" class="headerlink" title="构造镜像"></a>构造镜像</h1><h2 id="4-1-busybox版本"><a href="#4-1-busybox版本" class="headerlink" title="4.1-busybox版本"></a>4.1-busybox版本</h2><p>这个版本中，我们实现了容器根目录的隔离，首先从docker容器中导出busybox的文件系统，然后将其挂载到pocker所构造的容器中，主要代码在<a target="_blank" rel="noopener" href="https://github.com/fightinggg/pocker/commit/1d55e7326b1cb902ee8d9160f8e6c3ec354cde54#diff-34d21af3c614ea3cee120df276c9c4ae95053830d7f1d3deaf009a4625409ad2">main.cpp</a>中，这里增加了系统调用<code>SYS_pivot_root</code>，把busybox的文件系统挂在到当前根目录，然后卸载旧的根目录。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mount busyBox 1. change workdir</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">chdir</span>(busyBoxDir.<span class="built_in">data</span>())) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;chdir to busyBoxDir error&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// mount busyBox 2. mount busyBox</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">mount</span>(busyBoxDir.<span class="built_in">data</span>(), busyBoxDir.<span class="built_in">data</span>(), <span class="string">&quot;bind&quot;</span>, MS_BIND | MS_REC,</span><br><span class="line">            <span class="literal">NULL</span>)) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;mount busyBox error&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  String privotRootName = <span class="string">&quot;.pivot_root&quot;</span> + runParam-&gt;<span class="built_in">getContainerId</span>();</span><br><span class="line">  String privotRoot = busyBoxDir + <span class="string">&quot;/&quot;</span> + privotRootName;</span><br><span class="line">  <span class="comment">// mount busyBox 3. mkdir put_old</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">mkdir</span>(privotRoot.<span class="built_in">data</span>(), S_IRWXU | S_IRWXG | S_IRWXO)) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;mkdir privotRoot error&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// mount busyBox 4. privot_root()</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">syscall</span>(SYS_pivot_root, busyBoxDir.<span class="built_in">data</span>(), privotRoot.<span class="built_in">data</span>())) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;privot_root error&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// mount busyBox 5. to dir /</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">chdir</span>(<span class="string">&quot;/&quot;</span>)) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;chdir to / error&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// mount busyBox 6. unmount .privot_root</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">umount2</span>((<span class="string">&quot;/&quot;</span> + privotRootName).<span class="built_in">data</span>(), MNT_DETACH)) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;unmount .pivot_root  error &quot;</span> &lt;&lt; <span class="built_in">getErr</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// mount busyBox 7. delete dir</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">rmdir</span>((<span class="string">&quot;/&quot;</span> + privotRootName).<span class="built_in">data</span>())) &#123;</span><br><span class="line">    cerr &lt;&lt; <span class="string">&quot;rm .pivot_root  error &quot;</span> &lt;&lt; <span class="built_in">getErr</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>笔者还是准备了一个docker版本，可以看到这时候使用ls，已经能发现根目录下的文件系统发生了变化。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">s@s hexo-blog % docker run -it --<span class="built_in">rm</span> --privileged fightinggg/pocker:4.1-busybox  </span><br><span class="line">[root@2d2a5c1bcd01 /]<span class="comment"># pocker run -it busybox sh</span></span><br><span class="line">RunParam:: <span class="built_in">tty</span>: 1, interactive: 1, detach: 0, memory: 10485760, memorySwap: 10485760, cpus: 1.000000, image: busybox,containerId: 0ee090e5-9829-4140-bfd1-48982952f4e0,containerName: </span><br><span class="line">container begin: sh</span><br><span class="line">/ <span class="comment"># ps ef</span></span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 sh</span><br><span class="line">    4 root      0:00 ps ef</span><br><span class="line">/ <span class="comment"># ls -a</span></span><br><span class="line">.           ..          .dockerenv  bin         dev         etc         home        proc        root        sys         tmp         usr         var</span><br><span class="line">/ <span class="comment"># df</span></span><br><span class="line">Filesystem           1K-blocks      Used Available Use% Mounted on</span><br><span class="line">overlay               16447356   7816736   7775428  50% /</span><br><span class="line">/ <span class="comment"># exit</span></span><br><span class="line">container exited, status=0,  thanks <span class="keyword">for</span> using pocker</span><br><span class="line">[root@2d2a5c1bcd01 /]<span class="comment"># exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">s@s hexo-blog % </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-2-overlay版本"><a href="#4-2-overlay版本" class="headerlink" title="4.2-overlay版本"></a>4.2-overlay版本</h2><p>这部分笔者并没有选择和原书中一样的aufs文件系统，而是使用了overlay文件系统，哎就是玩。主要的修改还是在<code>main.cpp</code>中。</p>
+<p>大概是先创建一个disk.img文件，然后将其挂载到目录disk下，在disk目录下创建三个文件夹，upper、tmp和overlay，最后使用overlay文件系统以busybox为lower构造出一个两层文件系统。</p>
+<p>这里有一个很重要的点，为什么要挂载disk.img，首先注意到一个事实，docker默认使用overlay文件系统来构造容器，所以我们下面这个程序是有可能运行在overlay文件系统下的。</p>
+<p>overlay文件系统挂载时对upper有一定的要求，这导致了overlay文件系统没办法做为upper层挂载在另一个overlay文件系统下。</p>
+<p>所以我们必须虚拟一个文件系统。</p>
+<p>挂载流程和代码都在下面</p>
+<p><img src='/image-2021-06-04-23.22.00.000.svg'></img></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">String containerDataDir = containerDir + <span class="string">&quot;/&quot;</span> + runParam-&gt;<span class="built_in">getContainerId</span>();</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">mkdir</span>(containerDataDir.<span class="built_in">data</span>(), <span class="number">0777</span>)) &#123;</span><br><span class="line">  cerr &lt;&lt; <span class="string">&quot; mkdir &quot;</span> &lt;&lt; containerDataDir &lt;&lt; <span class="string">&quot; error&quot;</span> &lt;&lt; endl;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String diskFile = containerDataDir + <span class="string">&quot;/disk.img&quot;</span>;</span><br><span class="line">String containerDisk = containerDataDir + <span class="string">&quot;/disk&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// create container disk 1. create disk</span></span><br><span class="line"><span class="built_in">sprintf</span>(cmd, <span class="string">&quot;dd if=/dev/zero bs=1M count=20 of=%s&quot;</span>, diskFile.<span class="built_in">data</span>());</span><br><span class="line"><span class="built_in">system</span>(cmd);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. init file system</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">system</span>((<span class="string">&quot;mkfs.ext4 &quot;</span> + diskFile).<span class="built_in">data</span>())) &#123;</span><br><span class="line">  cerr &lt;&lt; <span class="string">&quot;mkfs error &quot;</span> &lt;&lt; diskFile &lt;&lt; endl;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span>(containerDisk.<span class="built_in">data</span>(), <span class="number">0777</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. mount container disk system</span></span><br><span class="line"><span class="built_in">sprintf</span>(cmd, <span class="string">&quot;mount %s %s&quot;</span>, diskFile.<span class="built_in">data</span>(), containerDisk.<span class="built_in">data</span>());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;mount upper: %s\n&quot;</span>, cmd);</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">system</span>(cmd)) &#123;</span><br><span class="line">  cerr &lt;&lt; <span class="string">&quot;mount &quot;</span> &lt;&lt; diskFile &lt;&lt; <span class="string">&quot; error&quot;</span> &lt;&lt; endl;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String containerUpper = containerDisk + <span class="string">&quot;/upper&quot;</span>;</span><br><span class="line">String containerTmp = containerDisk + <span class="string">&quot;/tmp&quot;</span>;</span><br><span class="line">String containerMerge = containerDisk + <span class="string">&quot;/overlay&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span>(containerUpper.<span class="built_in">data</span>(), <span class="number">0777</span>);</span><br><span class="line"><span class="built_in">mkdir</span>(containerTmp.<span class="built_in">data</span>(), <span class="number">0777</span>);</span><br><span class="line"><span class="built_in">mkdir</span>(containerMerge.<span class="built_in">data</span>(), <span class="number">0777</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// system((&quot;ls -al &quot; + containerDisk).data());</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. build overlay</span></span><br><span class="line"><span class="built_in">sprintf</span>(cmd,</span><br><span class="line">        <span class="string">&quot;mount -t overlay overlay &quot;</span></span><br><span class="line">        <span class="string">&quot;-olowerdir=%s,upperdir=%s,workdir=%s %s&quot;</span>,</span><br><span class="line">        busyBoxDir.<span class="built_in">data</span>(), containerUpper.<span class="built_in">data</span>(), containerTmp.<span class="built_in">data</span>(),</span><br><span class="line">        containerMerge.<span class="built_in">data</span>());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;do: %s\n&quot;</span>, cmd);</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">system</span>(cmd)) &#123;</span><br><span class="line">  cerr &lt;&lt; <span class="string">&quot;build overlay error &quot;</span> &lt;&lt; <span class="built_in">getErr</span>() &lt;&lt; endl;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>笔者依旧准备了一份开箱即用的docker版本。如下。首先演示了在第一个容器中创建文件abc，然后退出容器，接着在第二个进入第二个容器，查看目录，是看不到文件abc的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">s@s pocker % docker run -it --rm --privileged fightinggg/pocker:<span class="number">4.2</span>-overlay bash</span><br><span class="line">Unable to find image <span class="string">&#x27;fightinggg/pocker:4.2-overlay&#x27;</span> locally</span><br><span class="line"><span class="number">4.2</span>-overlay: Pulling from fightinggg/pocker</span><br><span class="line"><span class="number">7</span>a0437f04f83: Already exists </span><br><span class="line"><span class="number">00386041</span>dce7: Pull complete </span><br><span class="line"><span class="number">7b</span>2a7c3db2a0: Pull complete </span><br><span class="line">eeb1e29037fb: Pull complete </span><br><span class="line"><span class="number">74f</span>885815b4e: Pull complete </span><br><span class="line">Digest: sha256:<span class="number">300f</span>607e39217465a547593fda5c93c2a4d20e133dab82a519127bec66976b1e</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> fightinggg/pocker:<span class="number">4.2</span>-overlay</span><br><span class="line">[root@e070166a0ba7 /]<span class="meta"># pocker run -it busybox sh</span></span><br><span class="line">RunParam:: tty: <span class="number">1</span>, interactive: <span class="number">1</span>, detach: <span class="number">0</span>, memory: <span class="number">10485760</span>, memorySwap: <span class="number">10485760</span>, cpus: <span class="number">1.000000</span>, image: busybox,containerId: f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23,containerName: </span><br><span class="line"><span class="number">20</span>+<span class="number">0</span> records in</span><br><span class="line"><span class="number">20</span>+<span class="number">0</span> records out</span><br><span class="line"><span class="number">20971520</span> <span class="built_in">bytes</span> (<span class="number">21</span> MB, <span class="number">20</span> MiB) copied, <span class="number">0.0562303</span> s, <span class="number">373</span> MB/s</span><br><span class="line">mke2fs <span class="number">1.45</span><span class="number">.6</span> (<span class="number">20</span>-Mar<span class="number">-2020</span>)</span><br><span class="line">Discarding device blocks: done                            </span><br><span class="line">Creating filesystem with <span class="number">20480</span> <span class="number">1</span>k blocks <span class="keyword">and</span> <span class="number">5136</span> inodes</span><br><span class="line">Filesystem UUID: <span class="number">61b</span>1d479-fca0<span class="number">-41b</span>0<span class="number">-86b</span>e<span class="number">-5</span>d9c3c501714</span><br><span class="line">Superblock backups stored on blocks: </span><br><span class="line">    <span class="number">8193</span></span><br><span class="line"></span><br><span class="line">Allocating group tables: done                            </span><br><span class="line">Writing inode tables: <span class="function">done                            </span></span><br><span class="line"><span class="function">Creating <span class="title">journal</span> <span class="params">(<span class="number">1024</span> blocks)</span>: done</span></span><br><span class="line"><span class="function">Writing superblocks and filesystem accounting information: done</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">mount upper: mount /usr/local/pocker/data/containers/f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23/disk.img /usr/local/pocker/data/containers/f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23/disk</span></span><br><span class="line"><span class="function">do: mount -t overlay overlay -olowerdir=</span>/usr/local/pocker/data/images/busybox,upperdir=/usr/local/pocker/data/containers/f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23/disk/upper,workdir=/usr/local/pocker/data/containers/f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23/disk/tmp /usr/local/pocker/data/containers/f5212791-e818<span class="number">-4f</span>e2-b040-e7f779473e23/disk/overlay</span><br><span class="line">container begin: sh</span><br><span class="line">/ <span class="meta"># ls</span></span><br><span class="line">bin   dev   etc   home  proc  root  sys   tmp   usr   var</span><br><span class="line">/ <span class="meta"># mkdir abc</span></span><br><span class="line">/ <span class="meta"># ls</span></span><br><span class="line">abc   bin   dev   etc   home  proc  root  sys   tmp   usr   var</span><br><span class="line">/ <span class="meta"># exit</span></span><br><span class="line">container exited, status=<span class="number">0</span>,  thanks <span class="keyword">for</span> <span class="keyword">using</span> pocker</span><br><span class="line">[root@e070166a0ba7 /]<span class="meta"># pocker run -it busybox sh</span></span><br><span class="line">RunParam:: tty: <span class="number">1</span>, interactive: <span class="number">1</span>, detach: <span class="number">0</span>, memory: <span class="number">10485760</span>, memorySwap: <span class="number">10485760</span>, cpus: <span class="number">1.000000</span>, image: busybox,containerId: <span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930,containerName: </span><br><span class="line"><span class="number">20</span>+<span class="number">0</span> records in</span><br><span class="line"><span class="number">20</span>+<span class="number">0</span> records out</span><br><span class="line"><span class="number">20971520</span> <span class="built_in">bytes</span> (<span class="number">21</span> MB, <span class="number">20</span> MiB) copied, <span class="number">0.0629004</span> s, <span class="number">333</span> MB/s</span><br><span class="line">mke2fs <span class="number">1.45</span><span class="number">.6</span> (<span class="number">20</span>-Mar<span class="number">-2020</span>)</span><br><span class="line">Discarding device blocks: done                            </span><br><span class="line">Creating filesystem with <span class="number">20480</span> <span class="number">1</span>k blocks <span class="keyword">and</span> <span class="number">5136</span> inodes</span><br><span class="line">Filesystem UUID: <span class="number">4231f</span>410<span class="number">-3e32</span><span class="number">-4486</span><span class="number">-9</span>d09<span class="number">-2</span>de705563eb8</span><br><span class="line">Superblock backups stored on blocks: </span><br><span class="line">    <span class="number">8193</span></span><br><span class="line"></span><br><span class="line">Allocating group tables: done                            </span><br><span class="line">Writing inode tables: done                            </span><br><span class="line">Creating <span class="built_in">journal</span> (<span class="number">1024</span> blocks): done</span><br><span class="line">Writing superblocks <span class="keyword">and</span> filesystem accounting information: done</span><br><span class="line"></span><br><span class="line">mount upper: mount /usr/local/pocker/data/containers/<span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930/disk.img /usr/local/pocker/data/containers/<span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930/disk</span><br><span class="line"><span class="keyword">do</span>: mount -t overlay overlay -olowerdir=/usr/local/pocker/data/images/busybox,upperdir=/usr/local/pocker/data/containers/<span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930/disk/upper,workdir=/usr/local/pocker/data/containers/<span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930/disk/tmp /usr/local/pocker/data/containers/<span class="number">276</span>d1b7b<span class="number">-72</span>de<span class="number">-4538</span><span class="number">-8b</span>39-fbfb469ae930/disk/overlay</span><br><span class="line">container begin: sh</span><br><span class="line">/ <span class="meta"># ls</span></span><br><span class="line">bin   dev   etc   home  proc  root  sys   tmp   usr   var</span><br><span class="line">/ <span class="meta"># exit</span></span><br><span class="line">container exited, status=<span class="number">0</span>,  thanks <span class="keyword">for</span> <span class="keyword">using</span> pocker</span><br><span class="line">[root@e070166a0ba7 /]<span class="meta"># exit</span></span><br><span class="line">exit</span><br><span class="line">s@s pocker % </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-3-volumes版本"><a href="#4-3-volumes版本" class="headerlink" title="4.3-volumes版本"></a>4.3-volumes版本</h2><p>今天去拍毕业照了，累了一整天，哎，真累，无聊中得到了两个点：</p>
+<ul>
+<li>仔细想了想，4.2中让pocker去适配操作系统的文件系统，有点不太合理，我觉得应该pocker还是不应该管操作系统的文件系统是哪个具体的类型，让用户自己去挂载ext4就可以了，没必要在程序中搞。</li>
+<li>Java代码写C++真是shit到家了，我全给他改成了下划线命名。</li>
+</ul>
+<p>然后步入正题，在4.2版本中我们注意到换根以后，卸载privot以前，可以做一些文件映射，于是笔者直接使用mount指令将其挂载，实现了容器数据的持久化，但是由于笔者使用的命令行框架似乎不支持数组格式的flag，所以目前只能映射一个目录。这个以后应该会修复，新增代码如下，非常简单。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">pre_umount_privot</span><span class="params">(run_param *arg_run_param, string privot_root_name)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!arg_run_param-&gt;volumes.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">    <span class="keyword">auto</span> v = arg_run_param-&gt;volumes[<span class="number">0</span>];</span><br><span class="line">    string src = <span class="string">&quot;/&quot;</span> + privot_root_name + <span class="string">&quot;/&quot;</span> + v.from;</span><br><span class="line">    <span class="built_in">system</span>((<span class="string">&quot;mkdir -p &quot;</span> + v.to).<span class="built_in">data</span>());</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">mount</span>(src.<span class="built_in">data</span>(), v.to.<span class="built_in">data</span>(), <span class="literal">NULL</span>, MS_BIND, <span class="literal">NULL</span>)) &#123;</span><br><span class="line">      cerr &lt;&lt; <span class="string">&quot;mount &quot;</span> &lt;&lt; v.from &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; v.to &lt;&lt; <span class="string">&quot; failed&quot;</span> &lt;&lt; <span class="built_in">getErr</span>()</span><br><span class="line">           &lt;&lt; endl;</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当然笔者还是准备了一个非常nice的docker版本，专门给懒人用的，下面是例子。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">s@s ~ % docker run -it --<span class="built_in">rm</span> --privileged fightinggg/pocker:4.3-volumes </span><br><span class="line">Unable to find image <span class="string">&#x27;fightinggg/pocker:4.3-volumes&#x27;</span> locally</span><br><span class="line">4.3-volumes: Pulling from fightinggg/pocker</span><br><span class="line">7a0437f04f83: Already exists </span><br><span class="line">00386041dce7: Already exists </span><br><span class="line">06435815e90c: Pull complete </span><br><span class="line">7e9a89da8fed: Pull complete </span><br><span class="line">16d9b87459ec: Pull complete </span><br><span class="line">Digest: sha256:f6314e114d6bd6bed21c6749c38b4636d1db51b22f8ab575bbdf72ccd8307dd2</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> fightinggg/pocker:4.3-volumes</span><br><span class="line">[root@1e558fec41d2 /]<span class="comment"># pocker run -it -v /:/hostdir/root busybox sh</span></span><br><span class="line">run_param:: <span class="built_in">tty</span>: 1, interactive: 1, detach: 0, memory: 10485760, memory_swap: 10485760, cpus: 1.000000, image: busybox,volumes: [ (from: /, to: /hostdir/root)]<span class="built_in">id</span>: 744a37f3-a390-4faf-8fbb-3baa43b62988,name: </span><br><span class="line">20+0 records <span class="keyword">in</span></span><br><span class="line">20+0 records out</span><br><span class="line">20971520 bytes (21 MB, 20 MiB) copied, 0.0395407 s, 530 MB/s</span><br><span class="line">mke2fs 1.45.6 (20-Mar-2020)</span><br><span class="line">Discarding device blocks: <span class="keyword">done</span>                            </span><br><span class="line">Creating filesystem with 20480 1k blocks and 5136 inodes</span><br><span class="line">Filesystem UUID: d46262a1-0cc4-46a0-ac1b-1fd908c8fa28</span><br><span class="line">Superblock backups stored on blocks: </span><br><span class="line">    8193</span><br><span class="line"></span><br><span class="line">Allocating group tables: <span class="keyword">done</span>                            </span><br><span class="line">Writing inode tables: <span class="keyword">done</span>                            </span><br><span class="line">Creating journal (1024 blocks): <span class="keyword">done</span></span><br><span class="line">Writing superblocks and filesystem accounting information: <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">mount upper: mount /usr/local/pocker/data/containers/744a37f3-a390-4faf-8fbb-3baa43b62988/disk.img /usr/local/pocker/data/containers/744a37f3-a390-4faf-8fbb-3baa43b62988/disk</span><br><span class="line"><span class="keyword">do</span>: mount -t overlay overlay -olowerdir=/usr/local/pocker/data/images/busybox,upperdir=/usr/local/pocker/data/containers/744a37f3-a390-4faf-8fbb-3baa43b62988/disk/upper,workdir=/usr/local/pocker/data/containers/744a37f3-a390-4faf-8fbb-3baa43b62988/disk/tmp /usr/local/pocker/data/containers/744a37f3-a390-4faf-8fbb-3baa43b62988/disk/overlay</span><br><span class="line">container begin: sh</span><br><span class="line">/ <span class="comment"># ls</span></span><br><span class="line">bin      dev      etc      home     hostdir  proc     root     sys      tmp      usr      var</span><br><span class="line">/ <span class="comment"># cd hostdir</span></span><br><span class="line">/hostdir <span class="comment"># ls</span></span><br><span class="line">root</span><br><span class="line">/hostdir <span class="comment"># cd root</span></span><br><span class="line">/hostdir/root <span class="comment"># ls</span></span><br><span class="line">bin         etc         lib         lost+found  mnt         proc        run         srv         tmp         var</span><br><span class="line">dev         home        lib64       media       opt         root        sbin        sys         usr</span><br><span class="line">/hostdir/root <span class="comment"># mkdir containerCreateDir</span></span><br><span class="line">/hostdir/root <span class="comment"># exit</span></span><br><span class="line">container exited, status=0,  thanks <span class="keyword">for</span> using pocker</span><br><span class="line">[root@1e558fec41d2 /]<span class="comment"># ls</span></span><br><span class="line">bin  containerCreateDir  dev  etc  home  lib  lib64  lost+found  media    mnt  opt  proc    root  run  sbin  srv  sys  tmp    usr  var</span><br><span class="line">[root@1e558fec41d2 /]<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="容器进阶"><a href="#容器进阶" class="headerlink" title="容器进阶"></a>容器进阶</h1><p>笔者不准备实现这部分代码了。</p>
+<p>5.1实现后台运行只需要将容器变为守护进程，让init收管即可</p>
+<p>5.2实现查看运行中的容器是crud，把本地json文件当做了数据库</p>
+<p>5.3实现查看容器日志只需要重定向容器的输出到文件中即可</p>
+<p>5.4实现进入容器还是有点意思的，需要使用系统调用setns进入和容器相同的名称空间即可</p>
+<p>5.5停止容器实际上只是发了一个kill信号</p>
+<p>5.6删除容器清理一下就好了</p>
+<p>5.7通过容器制作镜像只需要提前保留容器的upper文件系统，之后自己合并即可</p>
+<p>5.8配置环境变量也只需要简简单单的在宿主进程进入容器时配置即可</p>
+<h1 id="容器网络"><a href="#容器网络" class="headerlink" title="容器网络"></a>容器网络</h1><p>这部分过于偏向于计算机网络，对于这部分，笔者后面会专门出一篇Blog进行介绍。</p>
+<p>这部分代码笔者也不准备实现。关于容器网络部分，笔者第一次接触到是在《Kubernetes权威指南：从Docker到Kubernetes实践全接触》（第2版）-2016.10-电工-P519-龚正，吴治辉，王伟 等 的第三章第七节网络原理中，这两本书的这两个地方中有很多重复的地方。</p>
+<p>至此，笔者的Pocker项目也将会告一段落了。</p>
+<h1 id="高级实践"><a href="#高级实践" class="headerlink" title="高级实践"></a>高级实践</h1><p>这部分介绍一些名词，希望可以体会到其中的设计理念。</p>
+<h2 id="OCI"><a href="#OCI" class="headerlink" title="OCI"></a>OCI</h2><p>Open Container Initiative 是一个组织，是Linux基金会在2015年成立的，是一个定义容器标准的组织。</p>
+<h2 id="runC"><a href="#runC" class="headerlink" title="runC"></a>runC</h2><p>runC是一个容器引擎，他主要用于构造、运行容器。</p>
+<blockquote>
+<p>runC是个轻量级的容器运行引擎， 包括所有 Docker 使用的和容器相关的系统调用的代码。</p>
+<p>runC的目标就是去构造到处都可以运行的标准容器。</p>
+<p>引用： 原书177页</p>
+</blockquote>
+<p>runC的流程和pocker的流程是比较类似的，pocker只是个小demo，毕竟全部加起来也就几百行代码，他没有使用任何设计模式。</p>
+<blockquote>
+<p>代码读到这里,应该可以大概理解runC创建容器的整个过程了,如下</p>
+<p>1.读取配置文件。</p>
+<p>2.设置 rootfilesystem</p>
+<p>3.使用 factory创建容器,各个系统平台均有不同实现。</p>
+<p>4.创建容器的初始化进程 process</p>
+<p>5.设置容器的输出管道,主要是Go的 pipes</p>
+<p>6.执行 Container. Start)启动物理的容器</p>
+<p>7.回调init方法重新初始化容器进程。</p>
+<p>runC父进程等待子进程初始化成功后退出。</p>
+<p>可以看到,具体的执行流程涉及3个概念: process、 container、 factory。 factory用来创建容器, process 负责进程之间的通信和启动容器</p>
+<p>引用： 原书185页</p>
+</blockquote>
+<h2 id="Containerd"><a href="#Containerd" class="headerlink" title="Containerd"></a>Containerd</h2><p>containerd是一个守护进程，专注于容器的生命周期管理，方便容器编排。当然containerd只是docker的一部分，他不负责镜像的构造。</p>
+<blockquote>
+<p>每个 contained只负责一台机器,Pul镜像、对容器的操作(启动、停止等)、网络、存储都<br>是由 container完成的。具体运行容器由runC负责。</p>
+</blockquote>
+<h2 id="CRI容器引擎"><a href="#CRI容器引擎" class="headerlink" title="CRI容器引擎"></a>CRI容器引擎</h2><p>CRI是 Container Runtime Interface ，即容器运行时，众所周知，容器不只docker这一个软件支持，还有很多其他的支持容器的软件，k8s是负责容器编排的，k8s定义了一套CRI标准，只要你的容器支持CRI，那么k8s就可以帮助你管理他。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">classDiagram</span><br><span class="line">  CRI &lt;|.. docker</span><br><span class="line">  CRI &lt;|.. podman</span><br><span class="line">  CRI &lt;|.. LXC</span><br><span class="line">  CRI &lt;|.. others</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-06-05T06:44:00.000Z" itemprop="dateUpdated">2021-06-05 14:44:00</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/indigo/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/QRN6OO.html&title=《自己动手写Docker》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/QRN6OO.html&title=《自己动手写Docker》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/QRN6OO.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自己动手写Docker》 — Believe it&url=http://fightinggg.github.io/indigo/QRN6OO.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/QRN6OO.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/QRNM0C.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">CICD</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/QRCS8O.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">滴滴笔试题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/QRN6OO.html&title=《自己动手写Docker》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/QRN6OO.html&title=《自己动手写Docker》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/QRN6OO.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自己动手写Docker》 — Believe it&url=http://fightinggg.github.io/indigo/QRN6OO.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/QRN6OO.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aQY7CMAwFUO5/6c4WadTybRekJi8rBKjJY2Ec269XvI639f+ds/cnz3x9Y2FgYDyWcVyu60O/f1rdJfk0ORsGBsY+jLONz15fb3z25N5e19/HwMDAuD5Qsn0CzvfFwMDAqDIm+OQSi4GBgVG9xCYls17aV01DMTAwdmPkVfffv/5KfwMDA+NRjKO48oQvb1Ie44WBgbE2464GZB6m7wq4GBgYuzF619T5oFgvQH+gYmBgLMdIilxJYyAfGssL/YUzYGBgbM9IwmiS9s2f06wFYmBgLMGYjHxVW6HVobEofGNgYCzNqF5Hq1fNXuLY+xExMDBWZeTl/l7bstrazMt/p/8bGBgYizJ6F9okKUzC8WR0DAMDYwfGfIx1cg2uthB6Ax8YGBhPZySmyRU0CbK9CREMDIw9GdUUML+OzpsN5WELDAyMhRjV9kB1TUJ58peAgYGxGyMvyt81TjEfWSs8AgMDYwlGng5Wy/15Ktlrf2JgYOzAyFO0PMje1aosXGsxMDA2Y3zjmpqE6RwWBVwMDIzlGHna1yv93zz3kRwLAwNjCcY3wmsv1UvKc7clhRgYGI9i/CamVYczRgkiBgbGooy8HP+bRDAPuBgYGLsxJuMOSRsyD8G9BBQDAwOjV9zvDWdUU0YMDAyM3gblxC5oVHz4UTAwMDZgVMdG86Jbbyyj/H0MDIylGZOBjKR50Lvo9k6FgYGxHOMPLqxBz3HxAqcAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

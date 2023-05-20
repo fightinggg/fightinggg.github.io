@@ -1,0 +1,1375 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="后缀自动机, Believe it">
+    <meta name="description" content="O ever youthful, O ever weeping">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>后缀自动机 | Believe it</title>
+    <link rel="icon" type="image/png" href="/matery/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/matery/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/matery/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/matery/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/matery/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/matery/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/matery/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/matery/css/my.css">
+
+    <script src="/matery/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/matery/" class="waves-effect waves-light">
+                    
+                    <img src="/matery/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Believe it</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/matery/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/matery/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Believe it</div>
+        <div class="logo-desc">
+            
+            O ever youthful, O ever weeping
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/matery/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/matery/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">后缀自动机</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/matery/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/matery/categories/ACM/" class="post-category">
+                                ACM
+                            </a>
+                        
+                            <a href="/matery/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                学习笔记
+                            </a>
+                        
+                            <a href="/matery/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-category">
+                                字符串
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-03-08
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <div><a href="/next/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PO1JY5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文力争用理性分析的手段，来推测此算法发明者的思维过程， 尝试感受其在设计此算法的时所展现出的思维方式， 力求用数学证明的手段，尽可能多的为读者证明相关结论，建议有其他自动机学习的基础，最好已经学会AC自动机和回文自动机，后缀自动机很难，他 和其他自动机不一样，它的状态更加复杂，一个算法的创作过程很 复杂，学起来当然会感到很难。强烈建议看陈立杰的ppt，看一遍肯定看不懂，仔细看，一遍看不懂看多遍，第一次可能只能看懂几面，第二次可 能就能看懂到十几面了，慢慢的就全懂了。</p>
+<span id="more"></span>
+<h1 id="后缀自动机为什么难？"><a href="#后缀自动机为什么难？" class="headerlink" title="后缀自动机为什么难？"></a>后缀自动机为什么难？</h1><p>后缀自动机是三个自动机里面最难的一个，难的地方不在与编码，在于他背后的数学推导，</p>
+<p>想要完全理解后缀自动机，就必须深入理解什么叫自动机，这和AC自动机、回文自动机不同，因为AC自动机、回文自动机背后的数学推导过于简单。</p>
+<h1 id="自动机"><a href="#自动机" class="headerlink" title="自动机"></a>自动机</h1><p>百度百科里面说的很清楚，也很抽象。自动机，是一个五元组，包含字符集，状态集合，初始状态，结束状态集合，状态转移函数。<br>五元组中，有四个包含了”状态”这个名词。难以理解的，正是这个状态。</p>
+<h1 id="状态是什么"><a href="#状态是什么" class="headerlink" title="状态是什么"></a>状态是什么</h1><p>此处的状态，其实和动态规划算法中出现的名词”状态”，是同一个东西。状态的 本质就是集合，是满足某种条件的所有元素的一个集合体，当然我们很多 时候不好用计算机来储存这样的一个集合体，很多时候我们也不需要去储存他，更多的时候我们只需要储存这个集合体的某一个或者多个性质即可，</p>
+<h1 id="自动机的状态"><a href="#自动机的状态" class="headerlink" title="自动机的状态"></a>自动机的状态</h1><p>字符集好理解，状态集合就是自动机中所有的节点，状态转移函数就是自动机中节点之间 的边。初始状态就是自动机中字典树上的根，结束状态就是自动 机之中包含了结束标记的节点。</p>
+<h1 id="后缀自动机和后缀数组有关吗？"><a href="#后缀自动机和后缀数组有关吗？" class="headerlink" title="后缀自动机和后缀数组有关吗？"></a>后缀自动机和后缀数组有关吗？</h1><p>后缀自动机是建立在一颗后缀树上的，当然他不像AC自动机来源于KMP算法，不像回文自动机来源于 manacher算法一样,他并不是后缀数组算法的加强。<br>一个字符串的后缀树肯定是非常庞大的，n个后缀，如果我们直接把它建立出来，那么空间复杂度和 时间复杂度无疑都是O(n^2),必须优化。<br>我们发现后缀树上的很多节点所代表的状态有某些共同点，毕竟他们都是同一个母串的后缀， AC自动机所定义的节点代表的状态指的是:从根到此节点的路径连接成的字符串以及他的所有后缀。后缀自动机在这一点上 根AC自动机有点类似,此处暂时不先说。</p>
+<h1 id="我们来创建一个最小状态数的后缀自动机"><a href="#我们来创建一个最小状态数的后缀自动机" class="headerlink" title="我们来创建一个最小状态数的后缀自动机"></a>我们来创建一个最小状态数的后缀自动机</h1><p>我们先假设我们已经建立好了一个后缀自动机,此自动机不一定状态数最少,后缀自动机的存在性就不必证明了。 然后我们尝试分析这个不太完美的后缀自动机，来尝试优化他。</p>
+<h1 id="约定一些符号表示"><a href="#约定一些符号表示" class="headerlink" title="约定一些符号表示"></a>约定一些符号表示</h1><p>我们称自动机的初始状态为init，转移函数为trans(state,str),表示状态state经过字符串str的转移后得到的新的状态。 因为是术语，此处暂时不对状态做定义。如果某个状态为结束状态，那么我们用end(state)&#x3D;true来表示。</p>
+<h1 id="将状态形象化，然后造一个暴力的后缀自动机"><a href="#将状态形象化，然后造一个暴力的后缀自动机" class="headerlink" title="将状态形象化，然后造一个暴力的后缀自动机"></a>将状态形象化，然后造一个暴力的后缀自动机</h1><p>我们假设我们建立的后缀自动机，是一棵究极大的，n^2级别状态数量的自动机。我们先来定义此自动机的状态：某个节点 所代表的状态，就是母串的一个子串。显然这不是一个好状态。显然其中的字典树 的根节点root就是初始状态 。</p>
+<h1 id="想办法来优化这个暴力的自动机"><a href="#想办法来优化这个暴力的自动机" class="headerlink" title="想办法来优化这个暴力的自动机"></a>想办法来优化这个暴力的自动机</h1><p>我们必须减少状态，然而，一个串的子串数量明显就是平方级别的，根本就没有多余的状态，对此已经无解，必须减少状态数量，我们考虑后缀自动机关心 的是后缀，而不是子串，那么可能存在某些状态，他们在另外一种状态的定义下，是等价的。我们考虑某个状态state,如果存在某个字符串 str,使得end (trans(state,str))&#x3D;true,那意味着什么？state状态中的元素：子串substring，追加上str，是一个结束状态。</p>
+<h1 id="再具体一点，我们来举例子"><a href="#再具体一点，我们来举例子" class="headerlink" title="再具体一点，我们来举例子"></a>再具体一点，我们来举例子</h1><p>母串是abcabcde，考虑他的某个子串abc，显然此子串对应的状态trans(root,”abc”)在经历串abcde的转移后得到了结束状态，同时此状态在经历串 de的转移后也可以得到结束状态，也就是说，子串abc对应的状态在经历串abcde或de的转移后可以得到结束状态。</p>
+<h1 id="发现了可以优化的地方"><a href="#发现了可以优化的地方" class="headerlink" title="发现了可以优化的地方"></a>发现了可以优化的地方</h1><p>当我们考虑串bc、串c的时候，我们发此案这两个串能够转移到的结束状态根串abc一摸一样，这可不是开玩笑的。如果可能，我们将可以合并串abc、bc、 和c对应的状态，也就是说，trans(root,”abc”),trans(root,”bc”),trans(root,”c”)可以用一个状态来表示。我们来仔细研究研究，为什么会发生这种 事情？如果某两个状态trans(root,str1),trans(root,str2)能够转移的结果是完全一样的，那意味着什么？先考虑trans(root,str)能够转移到某个 结束状态，也就是说str+??？将会成为母串的后缀。</p>
+<h1 id="约定一些符号表示-1"><a href="#约定一些符号表示-1" class="headerlink" title="约定一些符号表示"></a>约定一些符号表示</h1><p>right(str)表示字符串str在母串中出现时的所有右端点的集合，suf(index)表示从下标为index开始的后缀，</p>
+<h1 id="继续分析"><a href="#继续分析" class="headerlink" title="继续分析"></a>继续分析</h1><p>容易证明状态state&#x3D;trans(root,str)能转移到的结束状态，就是对于所有在right(str)中的元素x，计算出的状态：trans(state，suf(x+1)) 当right(str1)与right(str2)一摸一样的时候，其能够转移到的结束状态是一摸一样的，因为这只受到right集合的影响。既然一摸一样，有什么理由 不去利用这个优点呢？</p>
+<h1 id="开始实现优化"><a href="#开始实现优化" class="headerlink" title="开始实现优化"></a>开始实现优化</h1><p>我们尝试修改状态的定义，尝试把right集合一摸一样的串用一个状态来表示。让笔者来概括一下这个新状态:我们对母串 的每一个子串都统计一下right集合，将子串按照right集合分类，每一类就是一个状态。如无特殊声明，下文的出现的状态将不再指的是原状态 ，而是表示新状态。</p>
+<h1 id="证明状态数是线性的"><a href="#证明状态数是线性的" class="headerlink" title="证明状态数是线性的"></a>证明状态数是线性的</h1><p>证明分为两个部分，先证明right集合间的关系只有两种，包含关系和无交集关系，于是right集合间的关系可以用一颗叶子节点最多n个的树来表示。（n是 母串的长度。）再证明此树最多有2n个节点来完成证明。第一部分的证明：考虑串str1，和str2，并假设str2更长，如果str1不是str2的后缀，那么他们的 right集合一定不一样，且没有交集，可以反证，若是后缀，那么str2出现的地方的右端点，也是str1出现的右端点，于是right(str2)是right(str1)的子集 。第二部分的证明很简单，笔者就不再赘述了。<br>既然状态数是线性，转移(边的条数)当然也是线性的。</p>
+<h1 id="证明状态数是最小的"><a href="#证明状态数是最小的" class="headerlink" title="证明状态数是最小的"></a>证明状态数是最小的</h1><p>此处笔者由于水平原因，实在是无法证明，罪过罪过。</p>
+<h1 id="增量法构建最小状态"><a href="#增量法构建最小状态" class="headerlink" title="增量法构建最小状态"></a>增量法构建最小状态</h1><p>所谓增量法，就是一个一个增加的意思，具体一点，如果我们要算f(10),我们先算f(1)，通过f(1)来计算f(2),通过f(2)来算f(3)…最后算出f(10),这就是增量法， 他和数学归纳法有点像。第一步，我们拥有一个初始状态：根，第二步，假设我们已经的到了字符串str的一个后缀自动机SAM(str),x是一个字符，我们怎么得到字符串 str+x的后缀自动机呢?考虑这两个字符串的区别，str+x多了一个x，后缀自动机是来识别后缀的，所以SAM(str)以前能够识别的后缀suf的那些状态全部要改，除此之外 没有其他修改的地方。怎么改呢？那些状态在SAM(str)里面确实是结束状态，但是在SAM(str+x)中却不是。但是他们能够向x字符转移，得到新的结束状态。之前证明过 状态是按照right集合来划分的，而right集合有只有两种关系，于是我们发现了一个新的东西，SAM(str)的所有结束状态在right构成的树上是一条链，也就是说right 构成的树不知可以用来证明状态树是线性的，还可以用来帮助我们建设状态。那么我们就把这棵树取出来，叫做parent树。</p>
+<p>在parent树上，如果我们知道了状态trans(root,str)在哪，就可以根据parent树上面的边遍历所有的结束状态，因为这些结束状态的right集合一定包含了len(str) 也就是说他们都是状态trans(root,str)在parent树上面的祖先。</p>
+<h1 id="细节处理"><a href="#细节处理" class="headerlink" title="细节处理"></a>细节处理</h1><p>现在我们来总结一下，从自动机SAM(str) 增量构建自动机SAM(str+x)，我们需要更改的只是trans(root，str)以及他在parent树上面的所有祖先，容易证明如果状态 q是trans(root，str)的第一个包含字符x转移的状态，那么q的所有祖先都包含了字符x的转移。trans(root,str)到q之间(不包含q)的所有状态都不包含字符x的转移。 可以证明:如果不包含x的转移，我们直接构建一个新的状态p表示trans(root，str+x)状态,此处可以证明他的right集合只有一个元素， 就是len(str+x)。那些不包含x转移的状态，可以直接转移到p，因为那样转移之后的right集合是就是p的right集合。那么我们就一直这样做即可，那么q以及q的祖先呢？他们包含了字符x的转移 但是我们可以直接在那个地方设置一个结束标志吗？这不一定？为什么呢？首先，我们的状态定义是依据right集合的，也就是说right集合一摸一样的，才能用一个状态表示。 如果我们那样做，会造成什么后果呢？节点q向x转移的状态trans(q,x)的right集合是不包含len(str+x)的，我们那样做，会导致right集合扩大。right集合扩大，可能会 导致以前能够用trans(q,x)表示的某些串，不能用trans(q,x)表示了。</p>
+<p>举个例子,abcxabc+x和abcxbc+x，对于第一个，原本abc拥有向x的转移，当时还不是结束标记，当我们加入字符x后我们强行让这个转移变为结束标记，一点问题都没有，abcx 确实是新的结束标记，然而对于第二个，原本bc拥有向x的转移，当时还不是结束标记，当我们加入字符x后，如果还是强行让这个转移变为结束标记，出现问题了，abcx也可以转移到 那里，可是abcx不是串的结束状态。</p>
+<h1 id="到底什么时候需要创建新的节点"><a href="#到底什么时候需要创建新的节点" class="headerlink" title="到底什么时候需要创建新的节点"></a>到底什么时候需要创建新的节点</h1><p>我们来思考一下，什么时候那样做是对的。如果无脑加结束标记是对的，那就意味着，以前能够到达trans(q,x)的串，他们的right集合，现在都能够到达len(str+x),我们再一次 思考状态state的意义，相同right集合的串，用同一个状态表示，这些串之间有什么关系吗？如果我们定义max(state)为这个状态能表达的串的最大长度，min(state)表示这个 状态&#x3D;能表达的串的最小长度，可以证明，这个state能表达的所有串，恰好为max(state)和min(state)之间的所有串，举个例子:如果max(state)为abcdef,min（state)为 def,实际上，state的所有串是:def,cdef,bcdef,abcdef，还可以证明,min(state)&#x3D;max(fa(state))-1，fa(state)表示在parent树上state的父亲。</p>
+<p>我们不难证明在原串中如果max(q+x)&#x3D;max(q)+1的时候，无脑加入结束标记是对的，这确保没有比max(q)更大的其他状态能够转移到trans(root,q+x)在这种情况下，直接设置一下 fa(p)&#x3D;trans（root,q+x),可以证明整个更新到此就已经结束了。</p>
+<p>但是如果不等呢？肯定是不可以那样做的，我们考虑状态到定义，我们发现我们必须重建一个新的状态，来把目前到这个trans(root，q+x)状态分解为两个状态，一个储存串使得max(q’+x)&#x3D;max（q)+x 另一个储存剩余的，那些东西要移到q’+x去呢？我们发现那些q的祖先中，能够转移到trans(root，q+x)的都要改到q’+x ，如此过后，我们发现现在的情况变得根上一段一摸一样了， 终于，整个后缀自动机构建完成。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SAM</span>&#123;<span class="comment">//下标从1开始，0作为保留位，用于做哨兵</span></span><br><span class="line">    <span class="comment">//如果没有特殊要求，尽量选择合适的自动机，要算好内存</span></span><br><span class="line">    <span class="comment">//经过hdu1000测试，10000个map大概是10kb,对于1e6的字符串，不建议使用后缀自动机</span></span><br><span class="line">    <span class="keyword">typedef</span> map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;::iterator IT;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">2e5</span>+<span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> cnt,last,par[MAXN&lt;&lt;<span class="number">1</span>],len[MAXN&lt;&lt;<span class="number">1</span>];</span><br><span class="line"><span class="comment">//    map&lt;int,int&gt;trans[MAXN&lt;&lt;1];//map用于字符集特别大的时候，注意这里占内存可能会特别大</span></span><br><span class="line">    <span class="type">int</span> trans[MAXN&lt;&lt;<span class="number">1</span>][<span class="number">26</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">newnode</span><span class="params">(<span class="type">int</span> parent,<span class="type">int</span> length)</span></span>&#123;</span><br><span class="line">        par[++cnt]=parent;</span><br><span class="line">        len[cnt]=length;</span><br><span class="line"><span class="comment">//        trans[cnt].clear();</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++) trans[cnt][i]=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cnt=<span class="number">0</span>;</span><br><span class="line">        last=<span class="built_in">newnode</span>(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">extend</span><span class="params">(<span class="type">int</span> c)</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> p=last;</span><br><span class="line">        <span class="type">int</span> np=<span class="built_in">newnode</span>(<span class="number">1</span>,len[last]+<span class="number">1</span>);<span class="comment">//新建状态，先让parent指向根（1）</span></span><br><span class="line">        <span class="keyword">while</span>(p!=<span class="number">0</span>&amp;&amp;trans[p][c]==<span class="number">-1</span>)&#123;<span class="comment">//如果没有边，且不为空，根也是要转移的</span></span><br><span class="line">            trans[p][c]=np;<span class="comment">//他们都没有向np转移的边，直接连过去</span></span><br><span class="line">            p=par[p];<span class="comment">//往parent走</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(p!=<span class="number">0</span>)&#123;<span class="comment">//如果p==0，直接就结束了，什么都不用做，否则节点p是第一个拥有转移c的状态，他的祖先都有转移c</span></span><br><span class="line">            <span class="type">int</span> q=trans[p][c];<span class="comment">//q是p转移后的状态</span></span><br><span class="line">            <span class="keyword">if</span>(len[q]==len[p]+<span class="number">1</span>)par[np]=q;<span class="comment">//len[q]是以前的最长串，len[p]+1是合并后的最长串，相等的话，不会影响，直接结束了，</span></span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="type">int</span> nq=<span class="built_in">newnode</span>(par[q],len[p]+<span class="number">1</span>);</span><br><span class="line"><span class="comment">//                trans[nq]=trans[q];//copy出q来，</span></span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">26</span>;i++) trans[nq][i]=trans[q][i];</span><br><span class="line">                par[np]=par[q]=nq;<span class="comment">//改变parent树的形态</span></span><br><span class="line">                <span class="keyword">while</span>(trans[p][c]==q)&#123;<span class="comment">//一直往上面走</span></span><br><span class="line">                    trans[p][c]=nq;<span class="comment">//所有向q连边的状态都连向nq</span></span><br><span class="line">                    p=par[p];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        last=np;<span class="comment">//最后的那个节点</span></span><br><span class="line">    &#125;<span class="comment">//SAM到此结束</span></span><br><span class="line">&#125;sam;</span><br></pre></td></tr></table></figure>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/matery/about" rel="external nofollow noreferrer">fightinggg</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fightinggg.github.io/matery/matery/PO1JY5.html">http://fightinggg.github.io/matery/matery/PO1JY5.html</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/matery/about" target="_blank">fightinggg</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/matery/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/matery/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/matery/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/matery/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/matery/POEN4U.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/matery/medias/featureimages/14.jpg" class="responsive-img" alt="快速幂">
+                        
+                        <span class="card-title">快速幂</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+简介快速幂是能快速计算一个幂的方案，他可以作
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-03-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/matery/categories/ACM/" class="post-category">
+                                    ACM
+                                </a>
+                            
+                            <a href="/matery/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            <a href="/matery/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" class="post-category">
+                                    数学
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/matery/PNHISH.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/matery/medias/featureimages/6.jpg" class="responsive-img" alt="Educational Codeforces Round 60 (Rated for Div. 2) - D">
+                        
+                        <span class="card-title">Educational Codeforces Round 60 (Rated for Div. 2) - D</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-02-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/matery/categories/ACM/" class="post-category">
+                                    ACM
+                                </a>
+                            
+                            <a href="/matery/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" class="post-category">
+                                    刷题实战
+                                </a>
+                            
+                            <a href="/matery/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/" class="post-category">
+                                    CodeForces
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/matery/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/matery/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/matery/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/matery/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/matery/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/matery/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/matery/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <span id="year">2019</span>
+            <a href="/matery/about" target="_blank">fightinggg</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/matery/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/matery/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/matery/libs/materialize/materialize.min.js"></script>
+    <script src="/matery/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/matery/libs/aos/aos.js"></script>
+    <script src="/matery/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/matery/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/matery/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/matery/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/matery/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/matery/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

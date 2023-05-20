@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    dp的意义代码中写的很清楚，唯一要注意的是，有一个卡常的地方，显然对于n个点m条边取k个点的斯坦纳树，我们的dp有意义开到dp[1&lt;&lt;k][n]吗？ 这里是不必的，我们只需要开到dp[1&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦纳树">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/PUPS7Y.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    dp的意义代码中写的很清楚，唯一要注意的是，有一个卡常的地方，显然对于n个点m条边取k个点的斯坦纳树，我们的dp有意义开到dp[1&lt;&lt;k][n]吗？ 这里是不必的，我们只需要开到dp[1&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-16T02:57:34.000Z">
+<meta property="article:modified_time" content="2019-07-16T02:57:34.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>斯坦纳树</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/PV8ORI.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/PUKAKX.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/PUPS7Y.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/PUPS7Y.html&text=斯坦纳树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/PUPS7Y.html&is_video=false&description=斯坦纳树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=斯坦纳树&body=Check out this article: http://fightinggg.github.io/cactus/PUPS7Y.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/PUPS7Y.html&name=斯坦纳树&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/PUPS7Y.html&t=斯坦纳树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        斯坦纳树
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-07-16T02:57:34.000Z" class="dt-published" itemprop="datePublished">2019-07-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/ACM/">ACM</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PUPS7Y.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<p>dp的意义代码中写的很清楚，唯一要注意的是，有一个卡常的地方，显然对于n个点m条边取k个点的斯坦纳树，我们的dp有意义开到<code>dp[1&lt;&lt;k][n]</code>吗？ 这里是不必的，我们只需要开到<code>dp[1&lt;&lt;(k-1)][n]</code>即可，很容易想到<code>dp[(1&lt;&lt;k)-1][any]</code>中对于所有<code>0&lt;any&lt;=k</code>都是答案,然而却不一定能想到<code> dp[(1&lt;&lt;(k-1))-1][k]</code>也是答案，借此我们可以提升50%的时空性能</p>
+<p><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/139/G">牛客上的题目</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mod = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> k;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**graph*/</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">star</span> &#123;</span><br><span class="line">    <span class="type">int</span> v, nex;</span><br><span class="line">&#125; edge[<span class="number">1000</span> * <span class="number">2</span>];</span><br><span class="line"><span class="type">int</span> head[<span class="number">50</span>], cnt, n, m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ini</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cnt = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) head[i] = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add_edge</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> v)</span> </span>&#123;</span><br><span class="line">    edge[++cnt] = star&#123;v, head[u]&#125;, head[u] = cnt;</span><br><span class="line">    edge[++cnt] = star&#123;u, head[v]&#125;, head[v] = cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**dp*/</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">dpnode</span> &#123;</span><br><span class="line">    <span class="type">int</span> w, ct;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">dpnode</span>(<span class="type">int</span> w = <span class="number">0</span>, <span class="type">int</span> ct = <span class="number">0</span>) : <span class="built_in">w</span>(w), <span class="built_in">ct</span>(ct) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">dpnode dp[<span class="number">3</span>][<span class="number">1</span> &lt;&lt; <span class="number">12</span>][<span class="number">50</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// dp[0][s][i] 保证s联通的斯坦纳树的答案中 包含节点i的部分</span></span><br><span class="line"><span class="comment">// dp[1][s][i] 保证s联通 且 删除i节点以后依旧联通 的斯坦纳树的答案中 包含节点i的部分</span></span><br><span class="line"><span class="comment">// dp[2][s][i] 保证s联通 且 删除i节点以后不联通了 的斯坦纳树的答案中 包含节点i的部分</span></span><br><span class="line"><span class="comment">// if   ( dp[1].w==dp[2].w ) dp[0]=merge(dp[1],dp[2])</span></span><br><span class="line"><span class="comment">// elif ( dp[1].w&lt; dp[2].w ) dp[0]=dp[1]</span></span><br><span class="line"><span class="comment">// else                      dp[0]=dp[2]</span></span><br><span class="line"><span class="function">dpnode <span class="title">dpmerge</span><span class="params">(dpnode a, dpnode b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dpnode</span>(a.w + b.w, <span class="number">1ll</span> * a.ct * b.ct % mod);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">upd</span><span class="params">(dpnode &amp;a, dpnode b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b.w &lt; a.w) a = b;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (b.w == a.w) &#123;</span><br><span class="line">        a.ct = a.ct + b.ct;</span><br><span class="line">        <span class="keyword">if</span> (a.ct &gt;= mod) a.ct -= mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (~<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;k)) &#123;</span><br><span class="line">        <span class="built_in">ini</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>, u, v; i &lt; m; i++) &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;u, &amp;v);</span><br><span class="line">            <span class="built_in">add_edge</span>(u - <span class="number">1</span>, v - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        k--;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> s = <span class="number">0</span>; s &lt; <span class="number">1</span> &lt;&lt; k; s++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) dp[<span class="number">0</span>][s][i] = dp[<span class="number">1</span>][s][i] = dp[<span class="number">2</span>][s][i] = <span class="built_in">dpnode</span>(<span class="number">1e9</span>, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            <span class="built_in">upd</span>(dp[<span class="number">1</span>][<span class="number">1</span> &lt;&lt; i][i], <span class="built_in">dpnode</span>(<span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">            <span class="built_in">upd</span>(dp[<span class="number">0</span>][<span class="number">1</span> &lt;&lt; i][i], <span class="built_in">dpnode</span>(<span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> s = <span class="number">1</span>; s &lt; <span class="number">1</span> &lt;&lt; k; s++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> s0 = (s - <span class="number">1</span>) &amp; s; s0; s0 = (s0 - <span class="number">1</span>) &amp; s) &#123;<span class="comment">//枚举s的非空真子集</span></span><br><span class="line">                    <span class="keyword">if</span> ((s0 &amp; -s0) == (s &amp; -s)) &#123;<span class="comment">// s0 必然包含s的最小的点</span></span><br><span class="line"><span class="comment">//                      upd(dp[2][s][i], dpmerge(dp[1][s0][i], dp[0][s ^ s0][i]));</span></span><br><span class="line">                        <span class="built_in">upd</span>(dp[<span class="number">0</span>][s][i], <span class="built_in">dpmerge</span>(dp[<span class="number">1</span>][s0][i], dp[<span class="number">0</span>][s ^ s0][i]));<span class="comment">// type1</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// dij</span></span><br><span class="line">            <span class="keyword">struct</span> <span class="title class_">dijnode</span> &#123;</span><br><span class="line">                <span class="type">int</span> w,id;</span><br><span class="line"></span><br><span class="line">                <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> dijnode &amp;rhs) <span class="type">const</span> &#123; <span class="keyword">return</span> w &gt; rhs.w; &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            priority_queue&lt;dijnode&gt; q;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) q.<span class="built_in">push</span>(dijnode&#123;dp[<span class="number">0</span>][s][i].w, i&#125;);</span><br><span class="line">            <span class="keyword">while</span> (!q.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">                dijnode top = q.<span class="built_in">top</span>(); q.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span>(top.w!=dp[<span class="number">0</span>][s][top.id].w) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> i = head[top.id]; ~i; i = edge[i].nex) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (top.w + <span class="number">1</span> &lt;= dp[<span class="number">0</span>][s][edge[i].v].w) &#123;</span><br><span class="line">                        <span class="built_in">upd</span>(dp[<span class="number">1</span>][s][edge[i].v], <span class="built_in">dpmerge</span>(dp[<span class="number">0</span>][s][top.id], <span class="built_in">dpnode</span>(<span class="number">1</span>, <span class="number">1</span>)));</span><br><span class="line">                        <span class="built_in">upd</span>(dp[<span class="number">0</span>][s][edge[i].v], <span class="built_in">dpmerge</span>(dp[<span class="number">0</span>][s][top.id], <span class="built_in">dpnode</span>(<span class="number">1</span>, <span class="number">1</span>))); <span class="comment">// type2</span></span><br><span class="line">                        q.<span class="built_in">push</span>(dijnode&#123;dp[<span class="number">0</span>][s][edge[i].v].w, edge[i].v&#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; dp[<span class="number">0</span>][(<span class="number">1</span> &lt;&lt; k) - <span class="number">1</span>][k].ct+<span class="number">1</span><span class="number">-1</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/PUPS7Y.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/PUPS7Y.html&text=斯坦纳树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/PUPS7Y.html&is_video=false&description=斯坦纳树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=斯坦纳树&body=Check out this article: http://fightinggg.github.io/cactus/PUPS7Y.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/PUPS7Y.html&title=斯坦纳树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/PUPS7Y.html&name=斯坦纳树&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/PUPS7Y.html&t=斯坦纳树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    前言关于生成函数有很多概念模糊的地方，比如生成函数的乘法是怎么定义的，比如乘法可以换序吗？比如为什么可以把多项式变成对数函数？为什么又可以使用泰勒展开？ 前置知识代数系统，群论 环环是一个具有两个二元">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生成函数与形式幂级数">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/QSRVQC.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    前言关于生成函数有很多概念模糊的地方，比如生成函数的乘法是怎么定义的，比如乘法可以换序吗？比如为什么可以把多项式变成对数函数？为什么又可以使用泰勒展开？ 前置知识代数系统，群论 环环是一个具有两个二元">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-08T05:11:00.000Z">
+<meta property="article:modified_time" content="2021-05-08T05:11:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>生成函数与形式幂级数</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/QSSECC.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/QSQSC0.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QSRVQC.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QSRVQC.html&text=生成函数与形式幂级数"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QSRVQC.html&is_video=false&description=生成函数与形式幂级数"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=生成函数与形式幂级数&body=Check out this article: http://fightinggg.github.io/cactus/QSRVQC.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QSRVQC.html&name=生成函数与形式幂级数&description=&lt;div&gt;&lt;a href=&#34;/next/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;h1 id=&#34;前言&#34;&gt;&lt;a href=&#34;#前言&#34; class=&#34;headerlink&#34; title=&#34;前言&#34;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;关于生成函数有很多概念模糊的地方，比如生成函数的乘法是怎么定义的，比如乘法可以换序吗？比如为什么可以把多项式变成对数函数？为什么又可以使用泰勒展开？&lt;/p&gt;
+&lt;h1 id=&#34;前置知识&#34;&gt;&lt;a href=&#34;#前置知识&#34; class=&#34;headerlink&#34; title=&#34;前置知识&#34;&gt;&lt;/a&gt;前置知识&lt;/h1&gt;&lt;p&gt;代数系统，&lt;a href=&#34;/QSFAYC.html&#34;&gt;群论&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;环&#34;&gt;&lt;a href=&#34;#环&#34; class=&#34;headerlink&#34; title=&#34;环&#34;&gt;&lt;/a&gt;环&lt;/h1&gt;&lt;p&gt;环是一个具有两个二元运算的代数系统。环$\lt R,+,\circ\gt$满足&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;$\lt R,+\gt$构成交换群， 即$+$满足封闭性、结合律、单位元、逆元、交换律&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;$\lt R,\circ\gt$构成半群， 即$\cdot$满足封闭性、结合律、单位元&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;$\circ$对$+$有分配率，即$a\circ(b+c)&amp;#x3D;a\circ b+a\circ c$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QSRVQC.html&t=生成函数与形式幂级数"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%8E%AF"><span class="toc-number">4.</span> <span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%82%E7%BA%A7%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">幂级数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E5%B9%82%E7%BA%A7%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">形式幂级数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E6%90%AD%E5%BB%BA"><span class="toc-number">7.</span> <span class="toc-text">概念搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA%E5%B9%82%E5%87%BD%E6%95%B0"><span class="toc-number">7.1.</span> <span class="toc-text">数论幂函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="toc-number">7.2.</span> <span class="toc-text">数论多项式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E6%95%B0%E8%AE%BA%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">7.3.</span> <span class="toc-text">无穷数论多项式定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84-%E8%BF%90%E7%AE%97"><span class="toc-number">7.4.</span> <span class="toc-text">无穷多项式的$+$运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84-circ-%E8%BF%90%E7%AE%97"><span class="toc-number">7.5.</span> <span class="toc-text">无穷多项式的$\circ$运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%8E%AF"><span class="toc-number">7.6.</span> <span class="toc-text">无穷多项式环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%B0%E5%8B%92%E8%A1%A8%E7%A4%BA%E6%B3%95%EF%BC%88%E6%A0%B8%E6%AD%A6%E5%99%A8%EF%BC%89"><span class="toc-number">7.7.</span> <span class="toc-text">泰勒表示法（核武器）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA1"><span class="toc-number">7.7.1.</span> <span class="toc-text">推论1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA2"><span class="toc-number">7.7.2.</span> <span class="toc-text">推论2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.7.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">生成函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%9E%8B%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0"><span class="toc-number">8.1.</span> <span class="toc-text">普通型生成函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">9.</span> <span class="toc-text">一个重要的结论</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        生成函数与形式幂级数
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-05-08T05:11:00.000Z" class="dt-published" itemprop="datePublished">2021-05-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/ACM/">ACM</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> › <a class="category-link" href="/cactus/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QSRVQC.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>关于生成函数有很多概念模糊的地方，比如生成函数的乘法是怎么定义的，比如乘法可以换序吗？比如为什么可以把多项式变成对数函数？为什么又可以使用泰勒展开？</p>
+<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><p>代数系统，<a href="/QSFAYC.html">群论</a></p>
+<h1 id="环"><a href="#环" class="headerlink" title="环"></a>环</h1><p>环是一个具有两个二元运算的代数系统。环$\lt R,+,\circ\gt$满足</p>
+<ul>
+<li><p>$\lt R,+\gt$构成交换群， 即$+$满足封闭性、结合律、单位元、逆元、交换律</p>
+</li>
+<li><p>$\lt R,\circ\gt$构成半群， 即$\cdot$满足封闭性、结合律、单位元</p>
+</li>
+<li><p>$\circ$对$+$有分配率，即$a\circ(b+c)&#x3D;a\circ b+a\circ c$</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="交换环"><a href="#交换环" class="headerlink" title="交换环"></a>交换环</h1><p>当$\circ$运算满足交换律时，这个环构成了交换环。</p>
+<h1 id="幂级数"><a href="#幂级数" class="headerlink" title="幂级数"></a>幂级数</h1><p>每一项中都包含未知量$x$的无穷级数，是数学分析领域的概念，往往研究他的极限。</p>
+<h1 id="形式幂级数"><a href="#形式幂级数" class="headerlink" title="形式幂级数"></a>形式幂级数</h1><p>每一项中都包含未知量$x$的无穷多项式，是组合数学领域的概念，往往用它研究计数问题。</p>
+<h1 id="概念搭建"><a href="#概念搭建" class="headerlink" title="概念搭建"></a>概念搭建</h1><p>由于笔者并未找到合适的相关资料，于是准备自己搭建一个形式幂级数体系。首先我们需要定义什么是形式幂级数。</p>
+<h2 id="数论幂函数"><a href="#数论幂函数" class="headerlink" title="数论幂函数"></a>数论幂函数</h2><p>形如$f(x)&#x3D;x^a ， a\in N^0$的函数， 即指数是非负整数的幂函数。</p>
+<h2 id="数论多项式"><a href="#数论多项式" class="headerlink" title="数论多项式"></a>数论多项式</h2><p>定义数论多项式是多个数论幂函数的线性组合的和。</p>
+<h2 id="无穷数论多项式定义"><a href="#无穷数论多项式定义" class="headerlink" title="无穷数论多项式定义"></a>无穷数论多项式定义</h2><p>定义有无穷项的数论多项式为无穷数论多项式。后面为了简称，也写作无穷多项式。</p>
+<p>为了方便表示无穷，我们可以使用累和的形式来定义一个无穷数论多项式，即<br>$$<br>\begin{aligned}<br>f&#x3D;\sum_{i&#x3D;0}^\infty f_i\cdot x^i<br>\end{aligned}<br>$$<br>其中$f_i$是一个关于i的函数。</p>
+<p>定义所有无穷多项式的集合为$R$</p>
+<h2 id="无穷多项式的-运算"><a href="#无穷多项式的-运算" class="headerlink" title="无穷多项式的$+$运算"></a>无穷多项式的$+$运算</h2><p>$f$和$g$是一个无穷多项式，定义$\begin{aligned}h&#x3D;f+g&#x3D;\sum_{i&#x3D;0}^\infty (f_i+g_i)\cdot x^i\end{aligned}$</p>
+<p>很明显$&lt;R,+\gt$满足封闭性、结合律、交换律</p>
+<p>单位元是$\begin{aligned}e&#x3D;\sum_{i&#x3D;0}^\infty e_i\cdot x^i\end{aligned}$满足$\forall i, e_i&#x3D;0$，</p>
+<p>$f$的逆元是$\sum_{i&#x3D;0}^\infty -f_i\cdot x^i$</p>
+<p>所以$\lt R,+\gt$构成交换群。</p>
+<h2 id="无穷多项式的-circ-运算"><a href="#无穷多项式的-circ-运算" class="headerlink" title="无穷多项式的$\circ$运算"></a>无穷多项式的$\circ$运算</h2><p>$f$和$g$是一个无穷多项式，定义$\begin{aligned}h&#x3D;f\circ g&#x3D;\sum_{i&#x3D;0}^\infty \sum_{a&#x3D;0}^if_a\cdot g_{i-a}\cdot x^i\end{aligned}$</p>
+<p>很明显$\lt R,\circ\gt$满足封闭性、结合律</p>
+<p>所以$\lt R,+\gt$构成半群。</p>
+<p>单位元是$\begin{aligned}e&#x3D;\sum_{i&#x3D;0}^\infty e_i\cdot x^i\end{aligned}$满足$e_i&#x3D;\begin{cases}1,  &amp; \text{if $i$ is 0} \0, &amp; \text{if $i$ is not 0}\end{cases}$，</p>
+<h2 id="无穷多项式环"><a href="#无穷多项式环" class="headerlink" title="无穷多项式环"></a>无穷多项式环</h2><p>满足分配率(懒得证明了)，$\lt,+,\circ\gt$是环</p>
+<h2 id="泰勒表示法（核武器）"><a href="#泰勒表示法（核武器）" class="headerlink" title="泰勒表示法（核武器）"></a>泰勒表示法（核武器）</h2><p>根据无穷多项式的定义，只要确定了函数$f_i$， 无穷多项式就唯一确定了，受到泰勒展开的启发，我们给出新的表示法，函数$F(x)$的i阶导函数$F^{(i)}(x)$的在点0处的值，可以构成一个序列，我们令$f_i&#x3D;\frac{F^{(i)}(0)}{i!}$,惊讶的发现我们可以通过给定函数$F$确定一个无穷多项式$f$。</p>
+<h3 id="推论1"><a href="#推论1" class="headerlink" title="推论1"></a>推论1</h3><p>泰勒表示法$F$和$G$的和就是$f+g$, 证明过程很简单</p>
+<p>如果$H&#x3D;F+G$ ，则$H^{(i)}(0)&#x3D;F^{(i)}(0)+G^{(i)}(0)$, 即$h_i&#x3D;f_i+g_i$</p>
+<h3 id="推论2"><a href="#推论2" class="headerlink" title="推论2"></a>推论2</h3><p>泰勒表示法$F$和$G$的积就是$f\circ g$, 证明过程很简单</p>
+<p>如果$H&#x3D;F\cdot G$, 则$H^{(i)}(0)&#x3D;\sum_{j&#x3D;0}^i C_j^i\cdot F^{(j)}(0)\cdot G^{(i-j)}(0)$, 即$h_i&#x3D;\sum_{j&#x3D;0}^i f_j\cdot g_{i-j}$,这与$\circ$运算的定义完全一样。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们直接将所有无穷多项式替换为泰勒表示法，然后乘起来，最后使用泰勒展开进行还原，不会对最终答案产生影响。</p>
+<h1 id="生成函数"><a href="#生成函数" class="headerlink" title="生成函数"></a>生成函数</h1><h2 id="普通型生成函数"><a href="#普通型生成函数" class="headerlink" title="普通型生成函数"></a>普通型生成函数</h2><p>n个没有标号的球，你要把它们分成m个有标号的盒子里面，盒子允许空</p>
+<p>$f&#x3D;1+x+x^2+x^3+…$</p>
+<p>然后$f^n$的n次项系数就是答案。</p>
+<p>先转为泰勒表示法$F&#x3D;\frac{1}{1-x}$， 然后做幂，$F^m&#x3D;(1-x)^{-m}$, 最后泰勒展开,得到n次项系数为$C_{m+n-1}^{m-1}$</p>
+<h1 id="一个重要的结论"><a href="#一个重要的结论" class="headerlink" title="一个重要的结论"></a>一个重要的结论</h1><p>$$<br>C_{-a}^b &#x3D; (-1)^b C_{a+b-1}^b<br>$$</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%8E%AF"><span class="toc-number">4.</span> <span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%82%E7%BA%A7%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">幂级数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E5%B9%82%E7%BA%A7%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">形式幂级数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E6%90%AD%E5%BB%BA"><span class="toc-number">7.</span> <span class="toc-text">概念搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA%E5%B9%82%E5%87%BD%E6%95%B0"><span class="toc-number">7.1.</span> <span class="toc-text">数论幂函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="toc-number">7.2.</span> <span class="toc-text">数论多项式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E6%95%B0%E8%AE%BA%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">7.3.</span> <span class="toc-text">无穷数论多项式定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84-%E8%BF%90%E7%AE%97"><span class="toc-number">7.4.</span> <span class="toc-text">无穷多项式的$+$运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84-circ-%E8%BF%90%E7%AE%97"><span class="toc-number">7.5.</span> <span class="toc-text">无穷多项式的$\circ$运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%A9%B7%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%8E%AF"><span class="toc-number">7.6.</span> <span class="toc-text">无穷多项式环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%B0%E5%8B%92%E8%A1%A8%E7%A4%BA%E6%B3%95%EF%BC%88%E6%A0%B8%E6%AD%A6%E5%99%A8%EF%BC%89"><span class="toc-number">7.7.</span> <span class="toc-text">泰勒表示法（核武器）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA1"><span class="toc-number">7.7.1.</span> <span class="toc-text">推论1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%AE%BA2"><span class="toc-number">7.7.2.</span> <span class="toc-text">推论2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.7.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">生成函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%9E%8B%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0"><span class="toc-number">8.1.</span> <span class="toc-text">普通型生成函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">9.</span> <span class="toc-text">一个重要的结论</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QSRVQC.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QSRVQC.html&text=生成函数与形式幂级数"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QSRVQC.html&is_video=false&description=生成函数与形式幂级数"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=生成函数与形式幂级数&body=Check out this article: http://fightinggg.github.io/cactus/QSRVQC.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QSRVQC.html&title=生成函数与形式幂级数"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QSRVQC.html&name=生成函数与形式幂级数&description=&lt;div&gt;&lt;a href=&#34;/next/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QSRVQC.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;h1 id=&#34;前言&#34;&gt;&lt;a href=&#34;#前言&#34; class=&#34;headerlink&#34; title=&#34;前言&#34;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;关于生成函数有很多概念模糊的地方，比如生成函数的乘法是怎么定义的，比如乘法可以换序吗？比如为什么可以把多项式变成对数函数？为什么又可以使用泰勒展开？&lt;/p&gt;
+&lt;h1 id=&#34;前置知识&#34;&gt;&lt;a href=&#34;#前置知识&#34; class=&#34;headerlink&#34; title=&#34;前置知识&#34;&gt;&lt;/a&gt;前置知识&lt;/h1&gt;&lt;p&gt;代数系统，&lt;a href=&#34;/QSFAYC.html&#34;&gt;群论&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;环&#34;&gt;&lt;a href=&#34;#环&#34; class=&#34;headerlink&#34; title=&#34;环&#34;&gt;&lt;/a&gt;环&lt;/h1&gt;&lt;p&gt;环是一个具有两个二元运算的代数系统。环$\lt R,+,\circ\gt$满足&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;$\lt R,+\gt$构成交换群， 即$+$满足封闭性、结合律、单位元、逆元、交换律&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;$\lt R,\circ\gt$构成半群， 即$\cdot$满足封闭性、结合律、单位元&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;$\circ$对$+$有分配率，即$a\circ(b+c)&amp;#x3D;a\circ b+a\circ c$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QSRVQC.html&t=生成函数与形式幂级数"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

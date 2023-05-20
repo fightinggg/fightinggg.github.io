@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> java并发编程12-集合的线程安全类 · Believe it</title><meta name="description" content="java并发编程12-集合的线程安全类 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">java并发编程12-集合的线程安全类</h1><div class="post-info">2020年4月12日</div><div class="post-content"><div><a href="/next/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8OMUY.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="集合的线程安全类"><a href="#集合的线程安全类" class="headerlink" title="集合的线程安全类"></a>集合的线程安全类</h1><h2 id="遗留的线程安全类"><a href="#遗留的线程安全类" class="headerlink" title="遗留的线程安全类"></a>遗留的线程安全类</h2><p> Hashtable，Vector直接把同步加到方法上</p>
+<h2 id="修饰的安全集合"><a href="#修饰的安全集合" class="headerlink" title="修饰的安全集合"></a>修饰的安全集合</h2><p> 装饰器模式，Syncronize*</p>
+<h2 id="JUC安全集合"><a href="#JUC安全集合" class="headerlink" title="JUC安全集合"></a>JUC安全集合</h2><h3 id="Blocking型"><a href="#Blocking型" class="headerlink" title="Blocking型"></a>Blocking型</h3><p> 大部分实现基于锁并提供阻塞的方法</p>
+<span id="more"></span>
+<h3 id="CopyOnWrite"><a href="#CopyOnWrite" class="headerlink" title="CopyOnWrite"></a>CopyOnWrite</h3><p> 在修改的时候会拷贝一份</p>
+<h3 id="Concurrent"><a href="#Concurrent" class="headerlink" title="Concurrent"></a>Concurrent</h3><p> 使用CAS优化，使用多个锁，但是是弱一致性，如迭代的时候得到的内容是旧的，求大小未必100%准确，读取也是弱一致性</p>
+<h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><p> 细粒度锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LongAdder</span> <span class="variable">value</span> <span class="operator">=</span> concurrentHashMap.computeIfAbsent(word,(key)-&gt;<span class="keyword">new</span> <span class="title class_">LongAdder</span>());</span><br><span class="line">value.increment();</span><br></pre></td></tr></table></figure>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><h3 id="并发死链"><a href="#并发死链" class="headerlink" title="并发死链"></a>并发死链</h3><p> 在jdk7中链表是头插法，插入16，35，1,得到了1-&gt;35-&gt;16<br> 线程A准备扩容 e 1-&gt;35-&gt;16-&gt;null ,  next 35-&gt;16-&gt;null,然后被中断<br> 线程B扩容完成， 导致链表成了 head-&gt;35-&gt;1-&gt;null， 然后中断<br> 线程A继续扩容 e 1-&gt;null, next 35-&gt;1-&gt;null, 把e插入到next新的位置,得到了head-&gt;1-&gt;35-&gt;1-&gt;<br> 继续扩容 e &#x3D; 35-&gt;1-&gt; next &#x3D; 1-&gt;35-&gt; ，把e插入，得到了head-&gt;35-&gt;1-&gt;35, 这里已经死循环了</p>
+<h3 id="丢失数据"><a href="#丢失数据" class="headerlink" title="丢失数据"></a>丢失数据</h3><p> jdk8扩容会丢失数据</p>
+<h3 id="ConcurrentHashMap-源码"><a href="#ConcurrentHashMap-源码" class="headerlink" title="ConcurrentHashMap 源码"></a>ConcurrentHashMap 源码</h3><p> ForwardingNode, 当扩容的时候，我们搬运一次就把老位置上连接ForwardingNode， 当查询来临的时候，就会知道去新的table里面找了，<br> TreeBin， 是红黑树来替换链表,添加值优先考虑扩容而不是转化为红黑树<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?p=281">???怎么不讲了??</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8PM7R.html" class="prev">PREV</a><a href="/apollo/Q8OMUJ.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

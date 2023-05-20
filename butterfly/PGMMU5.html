@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>博弈论 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    博弈常常是acm中的签到题，能不能快速拿下，这得看本事。 局面决定一切首先有以下的结论：  胜负取决于局面 如果当前局面能转移给对手的一个输的局面，那么对手就输 如果当前局面转转移给对手的全是赢的局面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="博弈论">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/PGMMU5.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    博弈常常是acm中的签到题，能不能快速拿下，这得看本事。 局面决定一切首先有以下的结论：  胜负取决于局面 如果当前局面能转移给对手的一个输的局面，那么对手就输 如果当前局面转转移给对手的全是赢的局面">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2018-10-15T06:18:05.000Z">
+<meta property="article:modified_time" content="2018-10-15T06:18:05.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/PGMMU5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '博弈论',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2018-10-15 14:18:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">博弈论</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-10-15T06:18:05.000Z" title="发表于 2018-10-15 14:18:05">2018-10-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2018-10-15T06:18:05.000Z" title="更新于 2018-10-15 14:18:05">2018-10-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/">ACM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="博弈论"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGMMU5.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<p>博弈常常是acm中的签到题，能不能快速拿下，这得看本事。</p>
+<h1 id="局面决定一切"><a href="#局面决定一切" class="headerlink" title="局面决定一切"></a>局面决定一切</h1><p>首先有以下的结论：</p>
+<ul>
+<li>胜负取决于局面</li>
+<li>如果当前局面能转移给对手的一个输的局面，那么对手就输</li>
+<li>如果当前局面转转移给对手的全是赢的局面，那么对手就赢</li>
+</ul>
+<p>依据上诉三条规则，博弈题目也可以通过模拟来实现找规律</p>
+<h1 id="例题1"><a href="#例题1" class="headerlink" title="例题1"></a>例题1</h1><p>有a，b两个数字，两人轮流操作，每次可以选择两个之中较小的数字，然后另一个数字减去选择数字的任意倍数（不能减到负数），直到其中一个为0，不能操作为败。比如2，8可以转移为（2，6）（2，4）（2，2）（2，0）</p>
+<p><strong>题解</strong></p>
+<p>不妨设$a\ge 2b$</p>
+<ul>
+<li><p>如果局面(a%b+b,b)先手赢，则局面(a,b)先手就赢</p>
+</li>
+<li><p>如果局面(a%b+b,b)先手输，则a,b先手可以花样拿使得后手得到(a%b+b,b), 最后先手还是赢</p>
+</li>
+</ul>
+<p>对于其他a，b其实只有一种拿法，简单处理一下，细心就行了</p>
+<h1 id="例题2"><a href="#例题2" class="headerlink" title="例题2"></a>例题2</h1><p>有一个从1到n的连续自然数序列，两人轮流操作，可以选取一个数字，拿走它的所有因子（如果序列中存在），直到一方无法拿，该方输。</p>
+<p><strong>题解</strong></p>
+<p>我们先考虑一个这个序列2，3，4，5，6……n,</p>
+<ul>
+<li><p>如果先手输，题目的序列中我们就拿1，题目中先手赢</p>
+</li>
+<li><p>如果先手赢，先手总得拿一个吧，假设他拿的x，题目中我们也拿x，题目中先手赢</p>
+</li>
+</ul>
+<h1 id="例题3"><a href="#例题3" class="headerlink" title="例题3"></a>例题3</h1><p>鲍勃和爱丽丝正在玩一款新游戏。 有n个盒子从1到n编号。 每个盒子都是空的或包含几张卡片。 鲍勃和爱丽丝依次移动卡片。 在每个回合中，相应的玩家应该选择非空框A，然后选择另一个框B，其中B &lt;A &amp;&amp;（A + B）％2 &#x3D; 1 &amp;&amp;（A + B）％3 &#x3D; 0。 然后，从方框A取任意数量（但不是零）的牌到方框B。最后一个可以进行合法移动的人获胜。 爱丽丝是第一个玩家。 请预测谁将赢得比赛。</p>
+<p><strong>题解</strong></p>
+<p>我们发现1，3，4是无法操作的盒子</p>
+<p>有且仅有这三个盒子，</p>
+<p>我们按照n%6&#x3D;1，3，4和n%6&#x3D;0，2，5把所有的盒子分为两类</p>
+<p>考虑二分图模型，这就是一个二分图模型</p>
+<p>除了1 3 4以外，所有其他点都存在出度，我们可以想象，比赛结束时所有卡片都在1 3 4 中</p>
+<p>那么第一类盒子，不影响比赛结果，</p>
+<p>因为每当对手操作了第一类盒子，我们可以操作第二类盒子让这些卡转移到1 3 4 中并恢复到对手上一次操作前到第二类盒子状态，</p>
+<p>那么右边的盒子问题就是一个NIM问题</p>
+<h1 id="例题4"><a href="#例题4" class="headerlink" title="例题4"></a>例题4</h1><p>有一个$n\times n$的网格，左下角有一个东西可以在格子里面走，可以往相邻的格子走，已经走过的格子不能再走，两人轮流走，谁不能走谁输</p>
+<p><strong>题解</strong></p>
+<p>只要当前可以走的区域数目为奇数那么就可以赢，除非对手想打破这个僵局，也就是说，对手走了一步之后，把可以走的区域分成了两部分，只能选择其一，那么我们肯定选取走完之后剩余可以走的格子数为奇数部分那边走啊，也就是说$n*n-1$为奇数先手就赢了，也就是n为偶数先手就赢了。</p>
+<h1 id="例题5"><a href="#例题5" class="headerlink" title="例题5"></a>例题5</h1><p>有n张牌，两个人轮流抓牌，只能抓二的某个幂次方张牌，谁拿最后一张牌谁赢</p>
+<p><strong>题解</strong></p>
+<p>n%3&#x3D;&#x3D;0，先手一定输，因为先手拿了以后一定会变成非三的倍数，后手可以拿1张或两张使得n回到三的倍数，局面还原，直到n&#x3D;3，先手就输了。</p>
+<p>至于其他的博弈题目，一般不是那么容易找到规律的，所以产生了新的算法来模拟博弈进行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//sgf是转移方法</span></span><br><span class="line"><span class="comment">//sgs是前一个状态的集合</span></span><br><span class="line"><span class="type">int</span> sgf[N],sg[N];</span><br><span class="line"><span class="type">bool</span> sgs[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sgf_ini</span><span class="params">()</span></span>&#123;</span><br><span class="line">    sgf[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    sgf[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    sgf[<span class="number">2</span>]=<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">        sgf[i]=sgf[i<span class="number">-1</span>]+sgf[i<span class="number">-2</span>];</span><br><span class="line">        <span class="comment">//cout&lt;&lt;sgf[i]&lt;&lt;endl;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sg_ini</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="built_in">sgf_ini</span>();</span><br><span class="line">    <span class="comment">//sg[0]=0;</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(sgs,<span class="number">0</span>,<span class="built_in">sizeof</span>(sgs));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;<span class="comment">/**/</span>i-sgf[j]&gt;=<span class="number">0</span>;j++)sgs[sg[i-sgf[j]]]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;;j++)<span class="keyword">if</span>(!sgs[j])&#123;</span><br><span class="line">            sg[i]=j;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//for(int i=0;i&lt;=n;i++)&#123;</span></span><br><span class="line">    <span class="comment">//    printf(&quot;%4d %2d&quot;,i,sg[i]);</span></span><br><span class="line">    <span class="comment">//    if(i%10==9)cout&lt;&lt;endl;</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>博弈并不是公平的，博弈的胜负取决于博弈当前的局面。</p>
+<p>必胜态的后继中一定有一个必败态</p>
+<p>必败态的后继中一定全是必胜态</p>
+<p>这其实可以对应到一个运算法则mex集合运算</p>
+<p>mex运算：集合中不存在的最小的非负整数</p>
+<p>我们定义0为失败，其他数字为胜利，（这里我并不理解为什么要用其他数字而不是1，肯能是还有其他用途）</p>
+<p>对于sg[i],我们参考dp算法</p>
+<p>假设nex是i的后继，那么sg[i]&#x3D;mex{sg[nex1]，sg[nex2]，sg[nex3]。。。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/PGMMU5.html">http://fightinggg.github.io/butterfly/PGMMU5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/PGMN1Z.html" title="位运算"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">位运算</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/PGMMKF.html" title="思维"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">思维</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%80%E9%9D%A2%E5%86%B3%E5%AE%9A%E4%B8%80%E5%88%87"><span class="toc-number">1.</span> <span class="toc-text">局面决定一切</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%981"><span class="toc-number">2.</span> <span class="toc-text">例题1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%982"><span class="toc-number">3.</span> <span class="toc-text">例题2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%983"><span class="toc-number">4.</span> <span class="toc-text">例题3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%984"><span class="toc-number">5.</span> <span class="toc-text">例题4</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%985"><span class="toc-number">6.</span> <span class="toc-text">例题5</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                  线段树                                &#x2F;* http:&#x2F;&#x2F;acm.cug.edu.cn&#x2F;problem.php?cid&#x3D;1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial 转移自老blog                  线段树                                &#x2F;* http:&#x2F;&#x2F;acm.cug.edu.cn&#x2F;problem.php?cid&#x3D;1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:modified_time" content="2019-08-05T15:23:08.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/%E5%8C%BA%E9%97%B4%E5%8A%A0+%E5%8C%BA%E9%97%B4%E4%B9%98+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC+%E5%8C%BA%E9%97%B4p%E6%AC%A1%E6%96%B9%E6%B1%82%E5%92%8C%E7%9A%84%E4%B8%89%E6%A0%87%E8%AE%B0%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/%E5%90%89%E5%8F%B8%E6%9C%BA%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&text=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&is_video=false&description=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树&body=Check out this article: http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&name=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&t=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">线段树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">离散化方法线段树</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-05T15:23:08.000Z" class="dt-published" itemprop="datePublished">2019-08-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/ACM/">ACM</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a> › <a class="category-link" href="/cactus/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+转移自<a href='/ACM/stencil/data_struct/区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树.html'>老blog</a>
+
+<!--区间翻转0/1+区间赋值0/1+区间求和的双标记动态开点线段树.html-->
+<div type="text/javadiv" src="/ACM/js/web_begin.js"></div>
+<div>
+    <center>
+        <h1>线段树</h1>
+    </center>
+    <div id="code">
+        <div>
+            <pre><span class="cp">/* http://acm.cug.edu.cn/problem.php?cid=1176&amp;pid=1 */</span>
+<span class="cp">// 区间赋值为0/1,区间的值取反</span>
+<span class="cp">//线段树动态开点</span>
+
+<span class="cp">//  区间翻转0/1+区间赋值0/1+区间求和的双标记动态开点线段树.html</span>
+
+<span class="cp">#define ml ((l+r)&gt;&gt;1)</span>
+<span class="cp">#define mr (ml+1)</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span><span class="o">=</span><span class="mf">5e4</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">rev</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">cov</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">sum</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">ls</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">rs</span><span class="p">[</span><span class="n">maxn</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">35</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">tot</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">push_son</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">son</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">covrt</span><span class="p">,</span><span class="kt">int</span> <span class="n">revrt</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">son</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">son</span><span class="o">=++</span><span class="n">tot</span><span class="p">;</span>
+        <span class="n">cov</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">ls</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">rs</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">covrt</span><span class="o">!=-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">cov</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">revrt</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">];</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">^=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_down</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span>
+    <span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_up</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">]]</span><span class="o">+</span><span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">]];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">rt</span><span class="o">=</span><span class="n">tot</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span><span class="kt">int</span> <span class="n">type</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="c1">//rev</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="c1">//cover</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+        </div>
+    </div>
+
+    <h2>离散化方法线段树</h2>
+    <div id="code">
+        <div>
+            <pre><span class="cm">/*</span>
+
+<span class="cm">3 6 </span>
+<span class="cm">1 1 1 </span>
+<span class="cm">1 1 4</span>
+<span class="cm">1 2 2 </span>
+<span class="cm">1 2 4 </span>
+<span class="cm">1 3 3 </span>
+<span class="cm">1 3 4</span>
+
+
+<span class="cm">*/</span>
+
+
+
+
+<span class="cp">#include&lt;bits/stdc++.h&gt;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">disc</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">getid</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">lower_bound</span><span class="p">(</span><span class="n">disc</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">disc</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="n">disc</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">//hdu 4578</span>
+<span class="cp">#define ls (rt&lt;&lt;1)</span>
+<span class="cp">#define rs (ls|1)</span>
+<span class="cp">#define ml ((l+r)&gt;&gt;1)</span>
+<span class="cp">#define mr (ml+1)</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span><span class="o">=</span><span class="mi">55555</span><span class="o">*</span><span class="mi">6</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">rev</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">cov</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">sum</span><span class="p">[</span><span class="n">maxn</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+
+<span class="kt">void</span> <span class="n">push_son</span><span class="p">(</span><span class="kt">int</span> <span class="n">son</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">covrt</span><span class="p">,</span><span class="kt">int</span> <span class="n">revrt</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">covrt</span><span class="o">!=-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">((</span><span class="n">disc</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">disc</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">cov</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="n">covrt</span><span class="p">;</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">revrt</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">=</span><span class="p">((</span><span class="n">disc</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">disc</span><span class="p">[</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">sum</span><span class="p">[</span><span class="n">son</span><span class="p">];</span>
+        <span class="n">rev</span><span class="p">[</span><span class="n">son</span><span class="p">]</span><span class="o">^=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_down</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span>
+    <span class="n">push_son</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">],</span><span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]);</span>
+    <span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">push_up</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="n">sum</span><span class="p">[</span><span class="n">ls</span><span class="p">]</span><span class="o">+</span><span class="n">sum</span><span class="p">[</span><span class="n">rs</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">build</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">){</span>
+    <span class="n">cov</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">rev</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">==</span><span class="n">r</span><span class="p">){</span>
+        <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="n">build</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">);</span>
+        <span class="n">build</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">,</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span><span class="kt">int</span> <span class="n">type</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">!=</span><span class="n">r</span><span class="p">)</span> <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="c1">//rev</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">type</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="n">push_son</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="c1">//cover</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">type</span><span class="p">);</span>
+        <span class="n">push_up</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">query</span><span class="p">(</span><span class="kt">int</span> <span class="n">rt</span><span class="p">,</span><span class="kt">int</span> <span class="n">l</span><span class="p">,</span><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="kt">int</span> <span class="n">ql</span><span class="p">,</span><span class="kt">int</span> <span class="n">qr</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">l</span><span class="o">!=</span><span class="n">r</span><span class="p">)</span> <span class="n">push_down</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ql</span><span class="o">&lt;=</span><span class="n">l</span><span class="o">&amp;&amp;</span><span class="n">r</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">sum</span><span class="p">[</span><span class="n">rt</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="kt">int</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ml</span><span class="o">&gt;=</span><span class="n">ql</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">ls</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">ml</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mr</span><span class="o">&lt;=</span><span class="n">qr</span><span class="p">)</span> <span class="n">ret</span><span class="o">+=</span><span class="n">query</span><span class="p">(</span><span class="n">rs</span><span class="p">,</span><span class="n">mr</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">ql</span><span class="p">,</span><span class="n">qr</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">read</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fu</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">ch</span><span class="o">&lt;</span><span class="sc">&#39;0&#39;</span><span class="o">||</span><span class="n">ch</span><span class="o">&gt;</span><span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ch</span><span class="o">==</span><span class="sc">&#39;-&#39;</span><span class="p">)</span> <span class="n">fu</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="sc">&#39;0&#39;</span><span class="o">&lt;=</span><span class="n">ch</span><span class="o">&amp;&amp;</span><span class="n">ch</span><span class="o">&lt;=</span><span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ret</span><span class="o">=</span><span class="p">(</span><span class="n">ret</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">ret</span><span class="o">&lt;&lt;</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">ch</span><span class="o">^</span><span class="mi">48</span><span class="p">);</span>
+        <span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="o">*</span><span class="n">fu</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="n">L</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">R</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">OP</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">read</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">q</span><span class="o">=</span><span class="n">read</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">q</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">read</span><span class="p">();</span>
+        <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">read</span><span class="p">();</span>
+        <span class="n">OP</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">read</span><span class="p">();</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">disc</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">sort</span><span class="p">(</span><span class="n">disc</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">disc</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+    <span class="n">disc</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">disc</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">disc</span><span class="p">.</span><span class="n">end</span><span class="p">()),</span><span class="n">disc</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+
+    <span class="n">build</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">disc</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">q</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="n">getid</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="kt">int</span> <span class="n">r</span><span class="o">=</span><span class="n">getid</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="kt">int</span> <span class="n">op</span><span class="o">=</span><span class="n">OP</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">disc</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">disc</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">3</span><span class="p">)</span> <span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">disc</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">op</span><span class="o">==</span><span class="mi">4</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">query</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">disc</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="n">l</span><span class="p">,</span><span class="n">r</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+</pre>
+        </div>
+    </div>
+</div>
+<div type="text/javadiv" src="/ACM/js/web_end.js"></div>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">线段树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">离散化方法线段树</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&text=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&is_video=false&description=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树&body=Check out this article: http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&title=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&name=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/%E5%8C%BA%E9%97%B4%E7%BF%BB%E8%BD%AC0-1+%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC0-1+%E5%8C%BA%E9%97%B4%E6%B1%82%E5%92%8C%E7%9A%84%E5%8F%8C%E6%A0%87%E8%AE%B0%E5%8A%A8%E6%80%81%E5%BC%80%E7%82%B9%E7%BA%BF%E6%AE%B5%E6%A0%91.html&t=区间翻转0-1+区间赋值0-1+区间求和的双标记动态开点线段树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

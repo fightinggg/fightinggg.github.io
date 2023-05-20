@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>java并发编程4-同步与互斥</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    java并发编程4-同步与互斥
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-04-10T15:59:09.000Z" itemprop="datePublished">2020-04-10</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-04-10T15:59:09.000Z" itemprop="dateUpdated">2020-04-10</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p> 锁住对象，放在静态方法前为锁类，放在普通方法前为锁类的对像。使用管程实现</p>
+<h1 id="线程安全类"><a href="#线程安全类" class="headerlink" title="线程安全类"></a>线程安全类</h1><p> String, Integer, StringBuffer,Random,Vector,Hashtable,juc;</p>
+<h1 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h1><p> 把对象头的hash、Age和对象的指针放进自己的栈中，让对象头的hash、Age,位置指向自己的栈，<br> 这时候来了另一个线程也想拿到锁，但是他肯定会失败，失败以后他就申请重量级锁，让对象头再次改变为指向管程，<br> 当原来当线程想要释放锁的时候，依然使用cas，但是肯定失败，他发现现在的锁已经变成了重量级锁了。</p>
+<span id="more"></span>
+
+<h1 id="自旋优化"><a href="#自旋优化" class="headerlink" title="自旋优化"></a>自旋优化</h1><p> 不阻塞，使用自旋，如果自旋多次失败就阻塞了</p>
+<h1 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h1><p> 可以在对象头中加入线程的ID，然后对象的锁就被这个线程所持有了。程序启动3秒以后启动偏向锁，可以通过VM参数来改变</p>
+<h1 id="禁用偏向锁"><a href="#禁用偏向锁" class="headerlink" title="禁用偏向锁"></a>禁用偏向锁</h1><p> -XX: -UseBiasedLocking</p>
+<h1 id="hashcode"><a href="#hashcode" class="headerlink" title="hashcode"></a>hashcode</h1><p> 轻量级锁和重量级锁都不会因为调用hashcode而撤销锁状态，但是偏向锁会，因为他没有地方储存hashcode，所以调用hashcode以后，偏向锁会被撤销</p>
+<h1 id="wait-x2F-notify"><a href="#wait-x2F-notify" class="headerlink" title="wait&#x2F;notify"></a>wait&#x2F;notify</h1><p> 这个是只有重量级锁才有的东西，所以也会撤销轻量锁</p>
+<h1 id="批量重偏向"><a href="#批量重偏向" class="headerlink" title="批量重偏向"></a>批量重偏向</h1><p> 如果连续撤销锁超过20次，jvm会批量的让类的所有对象都偏向于另一个线程</p>
+<h1 id="批量撤销"><a href="#批量撤销" class="headerlink" title="批量撤销"></a>批量撤销</h1><p> 如果撤销次数超过40次，jvm会撤销这个类的所有对象的偏向锁，甚至新建的对象也不会有偏向锁</p>
+<h1 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h1><p> JIT即时编译器会优化热点代码，如果分析出某个锁不会逃离方法，则进行锁消除</p>
+<h1 id="保护性暂停GuardObject"><a href="#保护性暂停GuardObject" class="headerlink" title="保护性暂停GuardObject"></a>保护性暂停GuardObject</h1><p> 用一个中间对象把线程连接起来，注意虚假唤醒的情况发生。我们用时间相减来避免产生等待时间错误的情况</p>
+<h1 id="park和unpark"><a href="#park和unpark" class="headerlink" title="park和unpark"></a>park和unpark</h1><p> 他们就像PV操作一样，但是信号量不能叠加<br> park和unpark实现的时候有三部分,_mutex,_condition,_counter,这里的_counter最多只能是<br> 调用park : 检查_counter，如果为0，就获得_mutex锁，然后该线程进入_condition开始阻塞,如果为1，就把它设为0，然后继续执行线程<br> 调用unpark, 把counter设为1，然后唤醒_condition中的线程</p>
+<h1 id="线程状态转换"><a href="#线程状态转换" class="headerlink" title="线程状态转换"></a>线程状态转换</h1><h2 id="start"><a href="#start" class="headerlink" title="start"></a>start</h2><ul>
+<li>NEW -&gt; RUNNABLE 调用start()</li>
+</ul>
+<h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
+<li>RUNNABLE -&gt; WAITING 获得对象锁后wait()</li>
+<li>WAITING -&gt; RUNNABLE notify(),notifyAll(),interrupt()且竞争成功</li>
+<li>WAITING -&gt; BLOCKED  notify(),notifyAll(),interrupt()且竞争失败</li>
+<li>BLOCKED -&gt; WAITING 当持有锁的线程执行完毕会唤醒其他BLOCKED的线程</li>
+</ul>
+<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><ul>
+<li>RUNNABLE -&gt; WAITING 调用join()</li>
+<li>WAITING -&gt; RUNNABLE join的线程执行完成或者当前线程被interrupt()</li>
+</ul>
+<h2 id="park和unpark-1"><a href="#park和unpark-1" class="headerlink" title="park和unpark"></a>park和unpark</h2><ul>
+<li>RUNNABLE -&gt; WAITING 调用park()</li>
+<li>WAITING -&gt; RUNNABLE 调用unpark()或者interrupt()</li>
+</ul>
+<h2 id="wait-long-t"><a href="#wait-long-t" class="headerlink" title="wait(long t)"></a>wait(long t)</h2><ul>
+<li>RUNNABLE -&gt; TIMED_WAITING 获得对象锁后wait(long)</li>
+<li>TIMED_WAITING -&gt; RUNNABLE 超时，notify(),notifyAll(),interrupt()且竞争成功</li>
+<li>TIMED_WAITING -&gt; BLOCKED  超时，notify(),notifyAll(),interrupt()且竞争失败</li>
+</ul>
+<h2 id="join-long-t"><a href="#join-long-t" class="headerlink" title="join(long t)"></a>join(long t)</h2><ul>
+<li>RUNNABLE -&gt; TIMED_WAITING 调用join(long)</li>
+<li>TIMED_WAITING -&gt; 超时，RUNNABLE join的线程执行完成或者当前线程被interrupt()</li>
+</ul>
+<h2 id="sleep-long"><a href="#sleep-long" class="headerlink" title="sleep(long)"></a>sleep(long)</h2><ul>
+<li>RUNNABLE -&gt; TIMED_WAITING 调用sleep(long)</li>
+<li>TIMED_WAITING -&gt; 超时，RUNNABLE sleep的线程执行完成或者当前线程被interrupt()</li>
+</ul>
+<h2 id="parkNanos和parkUntil"><a href="#parkNanos和parkUntil" class="headerlink" title="parkNanos和parkUntil"></a>parkNanos和parkUntil</h2><h2 id="终止"><a href="#终止" class="headerlink" title="终止"></a>终止</h2><ul>
+<li>RUNNABLE -&gt; TERMINATED 当线程执行完毕</li>
+</ul>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><h2 id="定位死锁"><a href="#定位死锁" class="headerlink" title="定位死锁"></a>定位死锁</h2><p> jconsole，jps都可以</p>
+<h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p> 如果死锁，会提示Found One Java-level deadlock,在里面找去</p>
+<h2 id="jconsole"><a href="#jconsole" class="headerlink" title="jconsole"></a>jconsole</h2><p> 选择线程，点检测死锁，就能看到了</p>
+<h1 id="活锁"><a href="#活锁" class="headerlink" title="活锁"></a>活锁</h1><p> 一个线程i++，另一个i–,难以结束了,原因是改变了互相的结束条件</p>
+<h1 id="饥饿"><a href="#饥饿" class="headerlink" title="饥饿"></a>饥饿</h1><p> 可以通过顺序加锁来避免死锁，但是这又会导致饥饿发生</p>
+<h1 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h1><p> 可中断，可设置超时时间，可设置公平锁，支持多个条件变量，可重入</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">reentrantLock.lock();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  reentrantLock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="可打断"><a href="#可打断" class="headerlink" title="可打断"></a>可打断</h2><p> 没有竞争就能得到锁，如果进入了阻塞队列，可以被其他线程用interruput打断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  reentrantLock.lockInterruptibly();</span><br><span class="line">&#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">//....</span></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  reentrantLock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h2><p> tryLock()</p>
+<h2 id="超时机制"><a href="#超时机制" class="headerlink" title="超时机制"></a>超时机制</h2><p> tryLock(1,TimeUnit.SECONDS)</p>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p> ReentrantLock支持多个条件变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Condition</span> <span class="variable">c1</span> <span class="operator">=</span> reentrantLock.newCondition()</span><br><span class="line"><span class="type">Condition</span> <span class="variable">c2</span> <span class="operator">=</span> reentrantLock.newCondition()</span><br><span class="line"><span class="comment">// 获得锁之后</span></span><br><span class="line">c1.await();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1.signal();</span><br></pre></td></tr></table></figure>
+
+<h1 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h1><p> await和signal,park和unpark,wati和notify，</p>
+<h1 id="3个线程分别输出a-b-c-要看到abcabcabcabcabc"><a href="#3个线程分别输出a-b-c-要看到abcabcabcabcabc" class="headerlink" title="3个线程分别输出a,b,c, 要看到abcabcabcabcabc"></a>3个线程分别输出a,b,c, 要看到abcabcabcabcabc</h1><h2 id="一个整数-wait-x2F-notifyAll"><a href="#一个整数-wait-x2F-notifyAll" class="headerlink" title="一个整数+wait&#x2F;notifyAll"></a>一个整数+wait&#x2F;notifyAll</h2><p> 轮换，1则a输出，2则b输出，3则c输出，如果不是自己的就wait，是的话就输出然后notifyAll</p>
+<h2 id="使用信号量-await-x2F-signal"><a href="#使用信号量-await-x2F-signal" class="headerlink" title="使用信号量+await&#x2F;signal"></a>使用信号量+await&#x2F;signal</h2><p> 设置3个信号量，一个线程用一个，然后a唤醒b，b唤醒c，c唤醒a</p>
+<h2 id="park和unpark-2"><a href="#park和unpark-2" class="headerlink" title="park和unpark"></a>park和unpark</h2><p> a unpark b, b unpark c, c unpark a;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="literal">null</span>, t2 = <span class="literal">null</span>, t3 = <span class="literal">null</span>;</span><br><span class="line"> <span class="keyword">void</span> <span class="title function_">show</span><span class="params">(String string, Thread thread)</span> &#123;</span><br><span class="line">     <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">         LockSupport.park();</span><br><span class="line">         System.out.print(string);</span><br><span class="line">         LockSupport.unpark(thread);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="meta">@Test</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test7</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">     t1 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;a&quot;</span>, t2));</span><br><span class="line">     t2 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;b&quot;</span>, t3));</span><br><span class="line">     t3 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;c&quot;</span>, t1));</span><br><span class="line">     t1.start();</span><br><span class="line">     t2.start();</span><br><span class="line">     t3.start();</span><br><span class="line">     LockSupport.unpark(t1);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

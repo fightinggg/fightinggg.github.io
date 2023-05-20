@@ -1,0 +1,665 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/Q8K6JX.html">
+
+
+
+  <title>
+java并发编程3-线程运行原理 - Java并发 - Java - Language |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">java并发编程3-线程运行原理
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-04-10 14:11:57">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-04-10T14:11:57+08:00">2020-04-10</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipey84bjtj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeybxm1pj20zk0m8niv.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclj61ylzj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclh3brzpj20zk0m8ann.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclx6phq6j20zk0m8e36.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclfdu6exj20zk0m87hw.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/" itemprop="item" rel="index" title="分类于 Language"><span itemprop="name">Language</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/" itemprop="item" rel="index" title="分类于 Java"><span itemprop="name">Java</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" itemprop="item" rel="index" title="分类于 Java并发"><span itemprop="name">Java并发</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/Q8K6JX.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8K6JX.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p> 每个线程都有自己的栈，</p>
+<h1 id="线程上下文切换"><a href="#线程上下文切换" class="headerlink" title="线程上下文切换"></a>线程上下文切换</h1><ul>
+<li>CPU时间片用完</li>
+<li>gc</li>
+<li>有更高优先级的线程要运行</li>
+<li>线程自己sleep,yield,wait,join,park,synchronized,lock</li>
+</ul>
+<span id="more"></span>
+
+
+<h1 id="线程中常用的方法"><a href="#线程中常用的方法" class="headerlink" title="线程中常用的方法"></a>线程中常用的方法</h1><ul>
+<li>start() 线程进入就绪状态</li>
+<li>run() 线程要执行的方法</li>
+<li>join() 等待某个线程结束</li>
+<li>join(long) 最多等待n毫秒</li>
+<li>getId() 线程的长整型id</li>
+<li>getName() 线程名</li>
+<li>setName() </li>
+<li>getPriority() 优先级</li>
+<li>setPriority() </li>
+<li>getState() 线程状态</li>
+<li>isInterrupted() 是否被打断</li>
+<li>isAlive() 是否存活</li>
+<li>interrupt() 打断线程</li>
+<li>interrupted() 判断是否被打断，会清楚标记</li>
+<li>currentThread() 获得当前正在执行的线程</li>
+<li>sleep() 睡眠</li>
+<li>yield() 提示调度器让出当前线程对cpu使用</li>
+</ul>
+<h1 id="run和start"><a href="#run和start" class="headerlink" title="run和start"></a>run和start</h1><p> 主线程也可以直接调用thread的run，但这不是多线程</p>
+<h1 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h1><p> 让当前线程进入就绪状态,而不是sleep的阻塞</p>
+<h1 id="防止CPU占用100"><a href="#防止CPU占用100" class="headerlink" title="防止CPU占用100%"></a>防止CPU占用100%</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test5</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Thread.sleep(<span class="number">50</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="打断"><a href="#打断" class="headerlink" title="打断"></a>打断</h1><p> 打断会让打断标记变为true，sleep的时候打断会抛出异常，并清除打断标记，没有sleep的程序，可以用Thread.isInterrupted()退出</p>
+<h1 id="两阶段终止模式-别用stop"><a href="#两阶段终止模式-别用stop" class="headerlink" title="两阶段终止模式(别用stop)"></a>两阶段终止模式(别用stop)</h1><p> 每次循环前尝试判断自己是否被打断，sleep的时候被打断会被清除,就自己打断自己，最后料理后事</p>
+<h1 id="LockSupport-park"><a href="#LockSupport-park" class="headerlink" title="LockSupport.park()"></a>LockSupport.park()</h1><p> 打断park的线程，不会清除标记，所以连续的park其实后面的都无效了，你可以手动用Interrupted来清除。</p>
+<h1 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h1><p> setDaemon(true);<br> 只要进程的所有非守护线程都结束以后，不管守护线程有没有结束，他都会被强制结束，垃圾回收器就是守护线程。Tomcat中的Acceptor和Poller线程都是守护线程，他们用来接受请求和分发请求的，如果shutdown以后，不会等待他们处理的</p>
+<h1 id="线程的五种状态"><a href="#线程的五种状态" class="headerlink" title="线程的五种状态"></a>线程的五种状态</h1><p> 初始、就绪、运行、阻塞、终止</p>
+<h1 id="线程的六种状态"><a href="#线程的六种状态" class="headerlink" title="线程的六种状态"></a>线程的六种状态</h1><p> new,runnable,blockded,wating,timedwaiting,terminated,分别是没有调用start，正在被调度，没有获得锁，join之类的等待，sleep之类的等待，执行完成<br> 千万注意runnable包含了物种状态中的就绪、运行和阻塞</p>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/Q8K6JX.html" title="java并发编程3-线程运行原理">http://fightinggg.github.io/shoka/Q8K6JX.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/Q8K2TR.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclize41wj20zk0m87gk.jpg" title="java并发编程2-创建和运行线程">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Java并发</span>
+  <h3>java并发编程2-创建和运行线程</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/Q8KXQL.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipev1x5e4j20zk0m8b29.jpg" title="java并发编程4-同步与互斥">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Java并发</span>
+  <h3>java并发编程4-同步与互斥</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%88"><span class="toc-number">1.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">线程上下文切换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">线程中常用的方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#run%E5%92%8Cstart"><span class="toc-number">4.</span> <span class="toc-text">run和start</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sleep"><span class="toc-number">5.</span> <span class="toc-text">sleep</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#yield"><span class="toc-number">6.</span> <span class="toc-text">yield</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E6%AD%A2CPU%E5%8D%A0%E7%94%A8100"><span class="toc-number">7.</span> <span class="toc-text">防止CPU占用100%</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%93%E6%96%AD"><span class="toc-number">8.</span> <span class="toc-text">打断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E7%BB%88%E6%AD%A2%E6%A8%A1%E5%BC%8F-%E5%88%AB%E7%94%A8stop"><span class="toc-number">9.</span> <span class="toc-text">两阶段终止模式(别用stop)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LockSupport-park"><span class="toc-number">10.</span> <span class="toc-text">LockSupport.park()</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-number">11.</span> <span class="toc-text">守护线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%BA%94%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-number">12.</span> <span class="toc-text">线程的五种状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%AD%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="toc-number">13.</span> <span class="toc-text">线程的六种状态</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q8IRJ2.html" rel="bookmark" title="java并发编程1-进程与线程">java并发编程1-进程与线程</a></li><li><a href="/shoka/Q8K2TR.html" rel="bookmark" title="java并发编程2-创建和运行线程">java并发编程2-创建和运行线程</a></li><li class="active"><a href="/shoka/Q8K6JX.html" rel="bookmark" title="java并发编程3-线程运行原理">java并发编程3-线程运行原理</a></li><li><a href="/shoka/Q8KXQL.html" rel="bookmark" title="java并发编程4-同步与互斥">java并发编程4-同步与互斥</a></li><li><a href="/shoka/Q8LY8O.html" rel="bookmark" title="java并发编程5-Java内存">java并发编程5-Java内存</a></li><li><a href="/shoka/Q8M6IO.html" rel="bookmark" title="java并发编程6-无锁并发">java并发编程6-无锁并发</a></li><li><a href="/shoka/Q8MD9G.html" rel="bookmark" title="java并发编程7-不可变设计">java并发编程7-不可变设计</a></li><li><a href="/shoka/Q8OMTK.html" rel="bookmark" title="java并发编程8-自定义线程池">java并发编程8-自定义线程池</a></li><li><a href="/shoka/Q8OMTV.html" rel="bookmark" title="java并发编程9-JDK线程池">java并发编程9-JDK线程池</a></li><li><a href="/shoka/Q8OMU7.html" rel="bookmark" title="java并发编程10-异步模式">java并发编程10-异步模式</a></li><li><a href="/shoka/Q8OMUJ.html" rel="bookmark" title="java并发编程11-JUC">java并发编程11-JUC</a></li><li><a href="/shoka/Q8OMUY.html" rel="bookmark" title="java并发编程12-集合的线程安全类">java并发编程12-集合的线程安全类</a></li><li><a href="/shoka/Q8PM7R.html" rel="bookmark" title="Java并发编程13-并发总结">Java并发编程13-并发总结</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/Q8K2TR.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/Q8KXQL.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/" title="分类于 比赛">比赛</a>
+</div>
+
+    <span><a href="/shoka/QS4KZC.html" title="第45届ICPC亚洲赛区上海站">第45届ICPC亚洲赛区上海站</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+</div>
+
+    <span><a href="/shoka/QR767C.html" title="八股文">八股文</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QVZE5O.html" title="通过开源项目获取jetbrains全家桶License">通过开源项目获取jetbrains全家桶License</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+</div>
+
+    <span><a href="/shoka/QQL340.html" title="腾讯实习">腾讯实习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Database/" title="分类于 Database">Database</a>
+</div>
+
+    <span><a href="/shoka/QVAQR0.html" title="redis源码">redis源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E7%BC%96%E8%AF%91%E5%99%A8/" title="分类于 编译器">编译器</a>
+</div>
+
+    <span><a href="/shoka/QV7MPO.html" title="跟我一起自己写编译器-123.引言">跟我一起自己写编译器-123.引言</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/cf517D.html" title="cf517D">cf517D</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/" title="分类于 刷题实战">刷题实战</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/" title="分类于 hdu">hdu</a>
+</div>
+
+    <span><a href="/shoka/PXAESV.html" title="hdu6588">hdu6588</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/CPU/" title="分类于 CPU">CPU</a>
+</div>
+
+    <span><a href="/shoka/RF964O.html" title="CPU架构介绍">CPU架构介绍</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/AI/" title="分类于 AI">AI</a>
+</div>
+
+    <span><a href="/shoka/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'Q8K6JX.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="keywords" content="hexo,个人博客,blog" />
+  <meta name="description" content="某某的个人博客" />
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">
+  <link rel="dns-prefetch" href="https://at.alicdn.com">
+  
+  <link rel="dns-prefetch" href="https://widget.daovoice.io">
+  <link rel="dns-prefetch" href="https://widget-static-cdn.daovoice.io">
+  <link rel="dns-prefetch" href="https://im.daovoice.io">
+  
+  
+  <link rel="dns-prefetch" href="https://hm.baidu.com/">
+  
+  
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://api.github.com">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com">
+  
+  <link rel="stylesheet" type="text/css" href="/yearn/./style/main.css">
+	<link rel="shortcut icon" href="/favicon.ico" title="Favicon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+	<title>操作系统13-文件系统</title>
+  
+  <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?awwssw1snsnsnn1ndndnndnd99j";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+  </script>
+  
+  
+    <script>(function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/123456.js","daovoice");daovoice('init',{app_id: "123456"});daovoice('update');
+  </script>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <canvas id="pattern-placeholder" height="230"></canvas>
+<div class="navbar-header">
+  <a class="blog-title" href="/yearn/">Believe it</a>
+  <a class="face-img" href="/yearn/">
+    <img src="https://tva3.sinaimg.cn/crop.0.0.200.200.180/005Kc3C1jw8f2uep0hhkvj305k05k3yk.jpg">
+  </a>
+</div>
+<main>
+  <div class="article-title">
+    
+  
+  <h1 class="title">
+    操作系统13-文件系统
+  </h1>
+  
+
+
+    <ul class="article-info">
+      <li>
+        发布
+        <time datetime="2020-04-02T09:20:28.000Z" itemprop="datePublished">2020-04-02</time>
+      </li>
+      <li>
+        
+    更新 <time datetime="2020-04-02T09:20:28.000Z" itemprop="dateUpdated">2020-04-02</time>
+
+      </li>
+      <li id="busuanzi_container_page_pv">
+        阅读 <span id="busuanzi_value_page_pv"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="article">
+      <div class="content">
+        
+        <div><a href="/next/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q85LY4.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="文件系统和文件"><a href="#文件系统和文件" class="headerlink" title="文件系统和文件"></a>文件系统和文件</h1><p> 一种持久性存储的系统抽象。</p>
+<h1 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h1><p> 储存文件信息，保存文件属性，跟踪那一块储存块属于逻辑上文件结构的哪一个偏移。</p>
+<h1 id="需要哪些元数据来管理打开的文件"><a href="#需要哪些元数据来管理打开的文件" class="headerlink" title="需要哪些元数据来管理打开的文件"></a>需要哪些元数据来管理打开的文件</h1><p> 文件指针，文件打开计数，文件储存位置，访问权限</p>
+<h1 id="访问2-12字节的空间"><a href="#访问2-12字节的空间" class="headerlink" title="访问2-12字节的空间"></a>访问2-12字节的空间</h1><p> 读一个或者多个扇区，然后返回</p>
+<h1 id="访问方式"><a href="#访问方式" class="headerlink" title="访问方式"></a>访问方式</h1><p> 基于顺序一次读取，随机访问，基于内容查找的访问</p>
+<span id="more"></span>
+<h1 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h1><p> 操作系统不关心</p>
+<h1 id="文件的锁"><a href="#文件的锁" class="headerlink" title="文件的锁"></a>文件的锁</h1><p> 锁粒度？操作系统提供了不同的锁</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p> 目录是特殊的文件，每个目录都有一张表</p>
+<h1 id="目录如何存"><a href="#目录如何存" class="headerlink" title="目录如何存"></a>目录如何存</h1><p> 数组、链表、hash、其他数据结构都可以</p>
+<h1 id="名字解析"><a href="#名字解析" class="headerlink" title="名字解析"></a>名字解析</h1><p> 一层一层解析，为了提高效率，可以使用当前工作目录(缓冲)</p>
+<h1 id="文件系统挂载"><a href="#文件系统挂载" class="headerlink" title="文件系统挂载"></a>文件系统挂载</h1><p> mount和unmount</p>
+<h1 id="文件别名"><a href="#文件别名" class="headerlink" title="文件别名"></a>文件别名</h1><p> 硬链接: 多个文件项指向一个文件<br> 软链接: 存路径，</p>
+<h1 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h1><p> 引用计数 stat指令<br> 间接层，目录项数据结构存指针，根据指针来定位</p>
+<h1 id="如何避免目录死循环"><a href="#如何避免目录死循环" class="headerlink" title="如何避免目录死循环"></a>如何避免目录死循环</h1><p> 通过检测来避免死循环</p>
+<h1 id="文件系统的类别"><a href="#文件系统的类别" class="headerlink" title="文件系统的类别"></a>文件系统的类别</h1><p> 磁盘文件系统 FAT,NTFS,ext2&#x2F;3&#x2F;4,ISO9660等<br> 数据库文件系统 WinFs<br> 日志文件系统 journaling file system<br> 网络文件系统 NFS，SMB(局域网方便)，<br> 分布式文件系统 GFS(google的集群，高吞吐，容错，高可靠，大量数据，server，网络中心，数据中心，计算中心)，AFS<br> 虚拟文件系统 proc(内核信息通过文件的方式来展现)</p>
+<h1 id="分布式文件系统"><a href="#分布式文件系统" class="headerlink" title="分布式文件系统"></a>分布式文件系统</h1><p> 读写一致性，可靠性，安全性，访问延迟都要考虑，是当前研究的热点</p>
+<h1 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h1><p> 通过虚拟文件系统层屏蔽了底层不同的物理文件系统，<br> 卷 - 目录节点 - 文件节点</p>
+<h1 id="数据块缓存"><a href="#数据块缓存" class="headerlink" title="数据块缓存"></a>数据块缓存</h1><p> 将磁盘缓存到内存，可以按需读取，推迟写入，</p>
+<h1 id="打开文件的数据结构"><a href="#打开文件的数据结构" class="headerlink" title="打开文件的数据结构"></a>打开文件的数据结构</h1><p> 找到文件，放入文件表，通过index找到文件头，通过offset找到扇区，</p>
+<h1 id="文件大小"><a href="#文件大小" class="headerlink" title="文件大小"></a>文件大小</h1><p> 大部分文件小，少部分文件大，</p>
+<h1 id="文件的连续分配"><a href="#文件的连续分配" class="headerlink" title="文件的连续分配"></a>文件的连续分配</h1><p> 文件头指定起始块和长度，高效的顺序和随机访问，当文件增长的时候不好分配，可能需要预分配，<br> 分配策略有最先、最佳、最大分配方法</p>
+<h2 id="文件链式分配"><a href="#文件链式分配" class="headerlink" title="文件链式分配"></a>文件链式分配</h2><p> 用链表组织，创建增大缩小很容易，没有碎片，不可能实现高效的随机访问，不可靠，链断了以后很严重</p>
+<h2 id="文件索引分配"><a href="#文件索引分配" class="headerlink" title="文件索引分配"></a>文件索引分配</h2><p> 将索引放入文件头，创建增大缩小容易，没有碎片，可以直接访问，但是小文件的话索引开销太大。</p>
+<h2 id="多级索引块"><a href="#多级索引块" class="headerlink" title="多级索引块"></a>多级索引块</h2><p> 对索引分层，但是会引入更多的时间开销</p>
+<h1 id="空闲空间"><a href="#空闲空间" class="headerlink" title="空闲空间"></a>空闲空间</h1><p> 位图，如何解决一致性问题，先将bit设为1，然后分配，最后在内存中将bit设为1 ， 如果这里断电以后会导致那一部分磁盘空间无法使用</p>
+<h1 id="多磁盘管理"><a href="#多磁盘管理" class="headerlink" title="多磁盘管理"></a>多磁盘管理</h1><p> 用多个便宜的磁盘，通过并行来增加吞吐量和可靠性可用性，即冗余磁盘阵列，可以让硬件实现，也可以让软件实现。</p>
+<h1 id="奇偶校验磁盘"><a href="#奇偶校验磁盘" class="headerlink" title="奇偶校验磁盘"></a>奇偶校验磁盘</h1><p> 我们使用纠错码，将纠错码存到另一个磁盘里面，用于纠错，但是这就导致了奇偶校验磁盘的压力太大了，大家都要来访问他，我们其实可以让奇偶校验的块均匀分布到所有的阵列当中，就提高了效率</p>
+<h1 id="磁盘调度"><a href="#磁盘调度" class="headerlink" title="磁盘调度"></a>磁盘调度</h1><p> 先进先出，最少移动优先(导致饥饿)，磁壁仅向一个方向移动(到达最边缘的之后立刻反转)，磁盘分区(区内部使用单向移动，区之间使用先进先出)</p>
+
+      </div>
+        <div class="support-author">
+          <p>感谢您的阅读。 🙏
+          <a href="https://888.com/index.html" target="_blank">关于转载请看这里</a>
+            <!--<a class="btn-pay"  href="#pay-modal">¥ 打赏支持</a>-->
+          </p>
+        </div>
+        <!--
+            <div class="like ">
+              <div class="like-button">
+                <a id="like-note" href="">
+                  <i class="icon-heart"></i>喜欢
+                </a>
+              </div>
+              <span id="likes-count">256</span>
+            </div>
+        -->
+        <div class="otherLink">
+          <div class="previous">
+          </div>
+          <div class="next">
+          </div>
+        </div>
+        <div class="comments" id="comments">
+          
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+  const gitalk = new Gitalk({
+    clientID: '8888a8888',
+    clientSecret: '8888886666666',
+    repo: 'xxxx.github.io',
+    owner: 'admin',
+    admin: ['admin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false
+  })
+
+  gitalk.render('comments');
+</script>
+
+
+        </div>
+      </div>
+    </div>
+   </div>
+</main>
+<div class="footer">
+  <div class="info">
+    <p>
+    <a target="_blank" rel="noopener" href="https://hexo.io"> Hexo </a> 强力驱动 |
+      <a target="_blank" rel="noopener" href="https://github.com/Youthink/hexo-themes-yearn"> Yearn </a>
+      主题
+    </p>
+    <p>&copy;2013-2018 某某的博客 京ICP备xxxxxx号</p>
+  </div>
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script>//console
+  var consoleConfig = '\n欢迎访问 https://hufangyun.com ，围观小猿大圣的博客(づ｡◕‿‿◕｡)づ！\n,\n本博客使用 %cHexo%c 搭建，博客主题为小猿大圣开发的 %chexo-themes-yearn%c ~~~ 🎉🎉🎉 \n\n源码 https://github.com/Youthink/hexo-themes-yearn \n\n如果喜欢可以 star 支持一下 ❤️~\n,\n扫描下面的二维码，在手机上查看博客！\n,https://static.hufangyun.com/blog-url-qrcode-180-180.png,\n 想知道这个效果如何实现的？博客内搜索 console 彩蛋 🚀 ！\n'.split(',');
+  var canConsole = true;
+  var consoleInfo = (function(consoleConfig) {
+  if (!canConsole || !consoleConfig || consoleConfig.length < 1) {
+    return;
+  }
+  var consoleColor = '#6190e8';
+  var _console;
+  var backgroundTextStyle = 'padding: 1px 5px;color: #fff;background: ' + consoleColor + ';'
+  var textStyle = 'color: ' + consoleColor + ';';
+
+  consoleConfig.map(o => {
+    var num = (o.match(/%c/g) || []).length;
+    if(/^http(s)?:\/\//.test(o)) {
+      console.log('%c     ', 'background: url(' + o + ') no-repeat left center;font-size: 180px;');
+      return;
+    }
+    if (num > 0) {
+      var logArguments = [];
+      for (var i = 0; i < num; i++) {
+        if (i % 2 === 0) {
+          logArguments.push(backgroundTextStyle);
+        } else {
+          logArguments.push(textStyle);
+        }
+      }
+      (_console = console).log.apply(_console, ['%c' + o, textStyle].concat(logArguments));
+      return;
+    }
+    console.log('%c' + o, textStyle);
+  });
+}(consoleConfig));</script><script type="text/javascript" src="/yearn/./js/main.js"></script>
+
+  <script src="//at.alicdn.com/t/font_159214_mvtxvg9me9.js"></script>
+</body>
+</html>

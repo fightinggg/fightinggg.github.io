@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka时间轮">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/QR4S3C.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.50.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.51.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.47.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.53.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.53.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.54.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.56.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.56.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.57.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.57.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.03.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.04.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)">
+<meta property="article:published_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:modified_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-04-06.14.50.00.000.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Kafka时间轮</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/QR6OSO.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/QR12J0.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QR4S3C.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QR4S3C.html&text=Kafka时间轮"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QR4S3C.html&is_video=false&description=Kafka时间轮"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Kafka时间轮&body=Check out this article: http://fightinggg.github.io/cactus/QR4S3C.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QR4S3C.html&name=Kafka时间轮&description=&lt;div&gt;&lt;a href=&#34;/next/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844904110399946766&#34;&gt;原文链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;侵删&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#39;/image-2021-04-06.14.50.00.000.png&#39;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;h1 id=&#34;一张图理解Kafka时间轮-TimingWheel-看不懂算我输&#34;&gt;&lt;a href=&#34;#一张图理解Kafka时间轮-TimingWheel-看不懂算我输&#34; class=&#34;headerlink&#34; title=&#34;一张图理解Kafka时间轮(TimingWheel),看不懂算我输!&#34;&gt;&lt;/a&gt;一张图理解Kafka时间轮(TimingWheel),看不懂算我输!&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文是【字节可视化系列】Kafka专栏文章。&lt;/p&gt;
+&lt;p&gt;通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QR4S3C.html&t=Kafka时间轮"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%90%86%E8%A7%A3Kafka%E6%97%B6%E9%97%B4%E8%BD%AE-TimingWheel-%E7%9C%8B%E4%B8%8D%E6%87%82%E7%AE%97%E6%88%91%E8%BE%93"><span class="toc-number">1.</span> <span class="toc-text">一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E8%AE%BE%E8%AE%A1%E6%BA%90%E4%BA%8E%E7%94%9F%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">0 设计源于生活</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">1 时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.1.</span> <span class="toc-text">添加定时任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">2 “动态”时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E6%97%B6%E9%97%B4%E6%A0%BC"><span class="toc-number">4.1.</span> <span class="toc-text">复用时间格</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%97%B6%E9%97%B4%E8%BD%AE%E5%8D%87%E7%BA%A7"><span class="toc-number">5.</span> <span class="toc-text">3 时间轮升级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">4 层级时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-1"><span class="toc-number">6.1.</span> <span class="toc-text">添加定时任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">7.</span> <span class="toc-text">5 “动态”层级时间轮</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%97%B6%E9%97%B4%E8%BD%AE%E9%99%8D%E7%BA%A7"><span class="toc-number">8.</span> <span class="toc-text">6 时间轮降级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E6%97%B6%E9%97%B4%E8%BD%AE%E7%9A%84%E6%8E%A8%E8%BF%9B"><span class="toc-number">9.</span> <span class="toc-text">7 时间轮的推进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%80%E6%9C%9F%E5%9B%9E%E9%A1%BE"><span class="toc-number">10.</span> <span class="toc-text">往期回顾</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Kafka时间轮
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-04-06T07:14:00.000Z" class="dt-published" itemprop="datePublished">2021-04-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/%E9%98%9F%E5%88%97/">队列</a> › <a class="category-link" href="/cactus/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904110399946766">原文链接</a></p>
+<p><strong>侵删</strong></p>
+<p><img src='/image-2021-04-06.14.50.00.000.png'></img></p>
+<h1 id="一张图理解Kafka时间轮-TimingWheel-看不懂算我输"><a href="#一张图理解Kafka时间轮-TimingWheel-看不懂算我输" class="headerlink" title="一张图理解Kafka时间轮(TimingWheel),看不懂算我输!"></a>一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</h1><blockquote>
+<p>本文是【字节可视化系列】Kafka专栏文章。</p>
+<p>通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。</p>
+</blockquote>
+  <span id="more"></span>
+
+<p>时间轮，是一种实现延迟功能（定时器）的巧妙算法，在Netty，Zookeeper，Kafka等各种框架中，甚至Linux内核中都有用到。</p>
+<p>本文将参考Kafka的时间轮作为例子讲解。</p>
+<h1 id="0-设计源于生活"><a href="#0-设计源于生活" class="headerlink" title="0 设计源于生活"></a>0 设计源于生活</h1><p>开始之前给大家看块宝珀中华年历表。</p>
+<p><img src='/image-2021-04-06.14.51.00.000.png'></img></p>
+<p>图片来自宝珀官网  </p>
+<p>这款手表的表盘融合了中华历法中各种博大精深的计时元素。</p>
+<p>上方位置的小表盘显示时辰数字及字符,24小时一周期;年份视窗显示当年所属生肖,12年一周期;</p>
+<p>左边位置显示农历月,12个月一周期; 农历日, 30天一周期;</p>
+<p>右边位置显示五行元素和十天干,10年一周期;</p>
+<p>下方的表盘显示月相盈亏。</p>
+<p>至于价格…..这个话题略过。</p>
+<p>而时间轮，其设计正是来源于生活中的时钟。</p>
+<h1 id="1-时间轮"><a href="#1-时间轮" class="headerlink" title="1 时间轮"></a>1 时间轮</h1><p>如图就是一个简单的时间轮：  </p>
+<p><img src='/image-2021-04-06.14.47.00.000.png'></img></p>
+<p>图中大圆的圆心位置表示的是当前的时间，随着时间推移, 圆心处的时间也会不断跳动。</p>
+<p>下面我们对着这个图，来说说Kafka的时间轮TimingWheel。</p>
+<p>Kafka时间轮的底层就是一个环形数组，而数组中每个元素都存放一个双向链表TimerTaskList，链表中封装了很多延时任务。</p>
+<p>Kafka中一个时间轮TimingWheel是由20个时间格组成，wheelSize &#x3D; 20；每格的时间跨度是1ms，tickMs &#x3D; 1ms。参照Kafka，上图中也用了20个灰边小圆表示时间格，为了动画演示可以看得清楚，我们这里每个小圆的时间跨度是1s。</p>
+<p>所以现在整个时间轮的时间跨度就是 tickMs * wheelSize ，也就是 20s。从0s到19s，我们都分别有一个灰边小圆来承载。</p>
+<p>Kafka的时间轮还有一个表盘指针 currentTime，表示时间轮当前所处的时间。也就是图中用黑色粗线表示的圆，随着时间推移, 这个指针也会不断前进;</p>
+<p><img src='/image-2021-04-06.14.52.00.000.png'></img></p>
+<h2 id="添加定时任务"><a href="#添加定时任务" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>有了时间轮，现在可以往里面添加定时任务了。我们用一个粉红色的小圆来表示一个定时任务。</p>
+<p><img src='/image-2021-04-06.14.52.01.000.png'></img></p>
+<p>这里先讲一下设定，每一个定时任务都有延时时间<strong>delayTime</strong>，和过期时间<strong>ExpiredTime</strong>。</p>
+<p>比如当前时间是10s，我们添加了个延时时间为2s的任务，那么这个任务的过期时间就是12s，也就是当前时间10s再走两秒，变成了12s的时候，就到了触发这个定时任务的时间。</p>
+<p>而时间轮上代表时间格的灰边小圆上显示的数字，可以理解为任务的过期时间。  </p>
+<p><img src='/image-2021-04-06.14.52.02.000.png'></img></p>
+<p>讲清楚这些设定后，我们就开始添加定时任务吧。</p>
+<p>初始的时候, 时间轮的指针定格在0。此时添加一个超时时间为2s的任务, 那么这个任务将会插入到第二个时间格中。</p>
+<p><img src='/image-2021-04-06.14.53.00.000.png'></img></p>
+<p>当时间轮的指针到达第二个时间格时, 会处理该时间格上对应的任务。在动画上就是让红色的小圆消失!</p>
+<p><img src='/image-2021-04-06.14.53.01.000.png'></img></p>
+<p>如果这个时候又插入一个延时时间为8s的任务进来, 这个任务的过期时间就是在当前时间2s的基础上加8s, 也就是10s, 那么这个任务将会插入到过期时间为10s的时间格中。</p>
+<p><img src='/image-2021-04-06.14.54.00.000.png'></img></p>
+<h1 id="2-“动态”时间轮"><a href="#2-“动态”时间轮" class="headerlink" title="2 “动态”时间轮"></a>2 “动态”时间轮</h1><p>到目前为止，一切都很好理解。</p>
+<p>那么如果在当前时间是2s的时候, 插入一个延时时间为19s的任务时, 这个任务的过期时间就是在当前时间2s的基础上加19s, 也就是21s。  </p>
+<p>请看下图，当前的时间轮是没有过期时间为21s的时间格。这个任务将会插入到过期时间为1s的时间格中，这是怎么回事呢？</p>
+<p><img src='/image-2021-04-06.14.55.00.000.png'></img></p>
+<h2 id="复用时间格"><a href="#复用时间格" class="headerlink" title="复用时间格"></a>复用时间格</h2><p>为了解答上面的问题，我们先来点魔法， 让时间轮上的时间都动起来！  </p>
+<p><img src='/image-2021-04-06.14.55.01.000.png'></img></p>
+<p>其实呢，当指针定格在2s的位置时, 时间格0s, 1s和2s就已经是过期的时间格。  </p>
+<p>也就是说指针可以用来划分过期的时间格[0,2]和未来的时间格 [3,19]。而过期的时间格可以继续复用。比如过期的时间格0s就变成了20s, 存放过期时间为20s的任务。</p>
+<p>理解了时间格的复用之后，再看回刚刚的例子，当前时间是2s时，添加延时时间为19s的任务，那么这个任务就会插入到过期时间为21s的时间格中。  </p>
+<p><img src='/image-2021-04-06.14.55.02.000.png'></img></p>
+<h1 id="3-时间轮升级"><a href="#3-时间轮升级" class="headerlink" title="3 时间轮升级"></a>3 时间轮升级</h1><p>下面，新的问题来了，请坐好扶稳。</p>
+<p>如果在当前时间是2s的时候, 插入一个延时时间为22s的任务, 这个任务的过期时间就是在2s的基础上加22s，也就是24s。</p>
+<p><img src='/image-2021-04-06.14.56.00.000.png'></img></p>
+<p>显然当前时间轮是无法找到过期时间格为24秒的时间格，因为当前过期时间最大的时间格才到21s。而且我们也没办法像前面那样再复用时间格，因为除了过期时间为2s的时间格，其他的时间格都还没过期呢。当前时间轮无法承载这个定时任务, 那么应该怎么办呢?</p>
+<p>当然我们可以选择扩展时间轮上的时间格, 但是这样一来，时间轮就失去了意义。</p>
+<p>是时候要升级时间轮了！</p>
+<p>我们先来理解下多层时间轮之间的联系。</p>
+<h1 id="4-层级时间轮"><a href="#4-层级时间轮" class="headerlink" title="4 层级时间轮"></a>4 层级时间轮</h1><p>如图是一个两层的时间轮:</p>
+<p><img src='/image-2021-04-06.14.56.01.000.png'></img></p>
+<p>第二层时间轮也是由20个时间格组成, 每个时间格的跨度是20s。</p>
+<p>图中展示了每个时间格对应的过期时间范围, 我们可以清晰地看到, 第二层时间轮的第0个时间格的过期时间范围是 [0,19]。也就是说, 第二层时间轮的一个时间格就可以表示第一层时间轮的所有(20个)时间格;</p>
+<p>为了进一步理清第一层时间轮和第二层时间轮的关系, 我们拉着时间的小手, 一起观看下面的动图:</p>
+<p><img src='/image-2021-04-06.14.57.00.000.png'></img></p>
+<p>可以看到，第二层时间轮同样也有自己的指针, 每当第一层时间轮走完一个周期，第二层时间轮的指针就会推进一格。</p>
+<h2 id="添加定时任务-1"><a href="#添加定时任务-1" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>回到一开始的问题，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。</p>
+<p><img src='/image-2021-04-06.14.57.01.000.png'></img></p>
+<p>当第一层时间轮容纳不下时，进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>我们再来个例子，如果在当前时间是2s的时候, 插入一个延时时间为350s的任务, 这个任务的过期时间就是在2s的基础上加350s，也就是352s。</p>
+<p><img src='/image-2021-04-06.14.58.00.000.png'></img></p>
+<p>从图中可以看到，该任务插入到第二层时间轮过期时间为[340,359]s的时间格中，也就是第17格的位置。  </p>
+<h1 id="5-“动态”层级时间轮"><a href="#5-“动态”层级时间轮" class="headerlink" title="5 “动态”层级时间轮"></a>5 “动态”层级时间轮</h1><p>通常来说, 第二层时间轮的第0个时间格是用来表示第一层时间轮的, 这一格是存放不了任务的, 因为超时时间0-20s的任务, 第一层时间轮就可以处理了。</p>
+<p>但是! 事情往往没这么简单, 我们时间轮上的时间格都是可以复用的! 那么这在第二层时间轮上又是怎么体现的呢?</p>
+<p>下面是魔法时间， 我们让时间轮上的过期时间都动起来！</p>
+<p><img src='/image-2021-04-06.14.58.01.000.png'></img></p>
+<p>从图中可以看到，当第一层时间轮的指针定格在1s时，超时时间0s的时间格就过期了。而这个时候，第二层时间轮第0个时间格的时间范围就从[0,19]分为了过期的[0],和未过期的[1,19]。而过期的[0]就会被新的过期时间[400]复用。  </p>
+<p>第二层时间轮第0个时间格的过期时间范围演变如下：</p>
+<p>[0-19]</p>
+<p>[400][1,19]</p>
+<p>[400,401][2,19]</p>
+<p>……</p>
+<p>[400,419]</p>
+<p>所以，如果在当前时间是2s的时候, 插入一个延时时间为399s的任务, 这个任务的过期时间就是在2s的基础上加399s，也就是401s。如图，这个任务还是会插到第二层时间轮第0个时间格中去。  </p>
+<p><img src='/image-2021-04-06.14.58.02.000.png'></img></p>
+<h1 id="6-时间轮降级"><a href="#6-时间轮降级" class="headerlink" title="6 时间轮降级"></a>6 时间轮降级</h1><p>还是用回这个大家都已经耳熟能详的例子，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。最后进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>当二层时间轮上的定时任务到期后，时间轮是怎么做的呢？</p>
+<p><img src='/image-2021-04-06.14.58.03.000.png'></img></p>
+<p>从图中可以看到，随着当前时间从2s继续往前推进，一直到20s的时候，总共经过了18s。此时第二层时间轮中，超时时间为[20-39s]的时间格上的任务到期。</p>
+<p>原本超时时间为24s的任务会被取出来，重新加入时间轮。此时该定时任务的延时时间从原本的22s，到现在还剩下4s（22s-18s）。最后停留在第一层时间轮超时时间为24s的时间格，也就是第4个时间格。</p>
+<p>随着当前时间继续推进，再经过4s后，该定时任务到期被执行。</p>
+<p>从这里可以看出时间轮的巧妙之处，两层时间轮只用了40个数组元素，却可以承载[0-399s]的定时任务。而三层时间轮用60个数组元素，就可以承载[0-7999s]的定时任务！</p>
+<p><img src='/image-2021-04-06.14.58.04.000.png'></img></p>
+<h1 id="7-时间轮的推进"><a href="#7-时间轮的推进" class="headerlink" title="7 时间轮的推进"></a>7 时间轮的推进</h1><p>从动画中可以注意到, 随着时间推进, 时间轮的指针循环往复地定格在每一个时间格上, 每一次都要判断当前定格的时间格里是不是有任务存在;</p>
+<p>其中有很多时间格都是没有任务的, 指针定格在这种空的时间格中, 就是一次”空推进”;</p>
+<p>比如说, 插入一个延时时间400s的任务, 指针就要执行399次”空推进”, 这是一种浪费!</p>
+<p>那么Kafka是怎么解决这个问题的呢？这就要从延迟队列DelayQueue开始讲起了！</p>
+<p>时间轮搭配延迟队列DelayQueue，会发生什么化学反应呢？请关注公众号【字节武装】后续更新。  </p>
+<h1 id="往期回顾"><a href="#往期回顾" class="headerlink" title="往期回顾"></a>往期回顾</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247484068&idx=1&sn=8398823824f8511c69a652d1394a263f&chksm=cfc381cbf8b408dd6343218814b6633ee7fbdeb255f27439ab41462d2d7f29e34c605c6c24af&scene=21#wechat_redirect">图说堆排序</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483930&idx=1&sn=851e418f68e7efbbcf5acb43e7c9995a&chksm=cfc38175f8b4086394fd2ebe3d5f5acb16182633203464760c9aac7f254bdb5e872f1db66b6d&scene=21#wechat_redirect">TCP为啥要3次握手和4次挥手？这是一种沟通技巧</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483887&idx=1&sn=bbac015aeec266eb5e7346f43000cc48&chksm=cfc38280f8b40b9607199d324b82162160784979f8dca68edf39765ee1e7c2c5758ef9e4fa6d&scene=21#wechat_redirect">一张图搞懂归并排序</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483811&idx=1&sn=3e68d49a4429d492ff1ffb09a96208db&chksm=cfc382ccf8b40bda701cad9a37052b468f93c263fddef55fe899a1e3f6767737d4ff90825544&scene=21#wechat_redirect">Java线程池的故事, 四个花瓶</a></li>
+</ul>
+<p><img src='/user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) '></img></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E5%BC%A0%E5%9B%BE%E7%90%86%E8%A7%A3Kafka%E6%97%B6%E9%97%B4%E8%BD%AE-TimingWheel-%E7%9C%8B%E4%B8%8D%E6%87%82%E7%AE%97%E6%88%91%E8%BE%93"><span class="toc-number">1.</span> <span class="toc-text">一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E8%AE%BE%E8%AE%A1%E6%BA%90%E4%BA%8E%E7%94%9F%E6%B4%BB"><span class="toc-number">2.</span> <span class="toc-text">0 设计源于生活</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">1 时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.1.</span> <span class="toc-text">添加定时任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">2 “动态”时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E6%97%B6%E9%97%B4%E6%A0%BC"><span class="toc-number">4.1.</span> <span class="toc-text">复用时间格</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%97%B6%E9%97%B4%E8%BD%AE%E5%8D%87%E7%BA%A7"><span class="toc-number">5.</span> <span class="toc-text">3 时间轮升级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">4 层级时间轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-1"><span class="toc-number">6.1.</span> <span class="toc-text">添加定时任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E2%80%9C%E5%8A%A8%E6%80%81%E2%80%9D%E5%B1%82%E7%BA%A7%E6%97%B6%E9%97%B4%E8%BD%AE"><span class="toc-number">7.</span> <span class="toc-text">5 “动态”层级时间轮</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%97%B6%E9%97%B4%E8%BD%AE%E9%99%8D%E7%BA%A7"><span class="toc-number">8.</span> <span class="toc-text">6 时间轮降级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E6%97%B6%E9%97%B4%E8%BD%AE%E7%9A%84%E6%8E%A8%E8%BF%9B"><span class="toc-number">9.</span> <span class="toc-text">7 时间轮的推进</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%80%E6%9C%9F%E5%9B%9E%E9%A1%BE"><span class="toc-number">10.</span> <span class="toc-text">往期回顾</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QR4S3C.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QR4S3C.html&text=Kafka时间轮"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QR4S3C.html&is_video=false&description=Kafka时间轮"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Kafka时间轮&body=Check out this article: http://fightinggg.github.io/cactus/QR4S3C.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QR4S3C.html&title=Kafka时间轮"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QR4S3C.html&name=Kafka时间轮&description=&lt;div&gt;&lt;a href=&#34;/next/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QR4S3C.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;&lt;a href=&#34;https://juejin.cn/post/6844904110399946766&#34;&gt;原文链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;侵删&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#39;/image-2021-04-06.14.50.00.000.png&#39;&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;h1 id=&#34;一张图理解Kafka时间轮-TimingWheel-看不懂算我输&#34;&gt;&lt;a href=&#34;#一张图理解Kafka时间轮-TimingWheel-看不懂算我输&#34; class=&#34;headerlink&#34; title=&#34;一张图理解Kafka时间轮(TimingWheel),看不懂算我输!&#34;&gt;&lt;/a&gt;一张图理解Kafka时间轮(TimingWheel),看不懂算我输!&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文是【字节可视化系列】Kafka专栏文章。&lt;/p&gt;
+&lt;p&gt;通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QR4S3C.html&t=Kafka时间轮"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

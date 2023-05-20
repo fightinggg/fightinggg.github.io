@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 操作系统进程如何通信 · Believe it</title><meta name="description" content="操作系统进程如何通信 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">操作系统进程如何通信</h1><div class="post-info">2021年3月29日</div><div class="post-content"><div><a href="/next/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QQPI8C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="进程如何互相通信"><a href="#进程如何互相通信" class="headerlink" title="进程如何互相通信"></a>进程如何互相通信</h1><h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><p> 操作系统通过页表让不同的进程共享一个物理地址空间，他们对应的逻辑地址空间可能不同，但是物理地址空间是相同的。共享内存不提供同步机制，我们需要额外的手段来保证同步。</p>
+<!-- more --->
+
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>管道的参数如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pipe</span><span class="params">(<span class="type">int</span> pipefd[<span class="number">2</span>])</span>;</span><br></pre></td></tr></table></figure>
+
+<p>成功则返回0，否则返回-1，pipefd中会得到两个文件描述符，一个可读，一个可写，就实现了管道，一般用于父子进程通信，父进程可fork，然后写pipefd[1], 子进程即可读pipefd[0], 或者父进程fork两次</p>
+<h2 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker run --<span class="built_in">rm</span> -it centos:centos8 bash</span></span><br><span class="line">mkfifo mypipe</span><br><span class="line">for i in &#123;1..100&#125;; do echo $i&gt;mypipe; sleep 1s;  done &amp;</span><br><span class="line">for i in &#123;1..100&#125;; do echo $i&gt;mypipe; sleep 1s;  done &amp;</span><br><span class="line">for i in &#123;1..100&#125;; do echo $i&gt;mypipe; sleep 1s;  done &amp;</span><br><span class="line">tail -300f mypipe</span><br></pre></td></tr></table></figure>
+<p><img src='/image-2021-03-29-09.42.49.000.png'></img></p>
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>详见<a href="/QPI740.html#%E7%AC%AC31%E7%AB%A0-%E4%BF%A1%E5%8F%B7%E9%87%8F">link</a></p>
+<h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>消息队列是由消息的链表存放在内核并有消息队列标识符标识。消息队列克服了信号传递信息量少，管道只能承载无格式字节流以及缓冲区太小受限。</p>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><p>信号又被称为软件中断，一个有权限的进程可以向另一个进程发送信号，但发往进程的信号诸多都源于内核。</p>
+<blockquote>
+<p>有时需要确保一段代码不被传递来的信号中断，为了做到这点，可将信号添加到进程的信号掩码中——目前会阻塞该组信号的到达。如果所产生的信号属于阻塞之列，那么信号将保持等待状态，直至稍后对其解除阻塞</p>
+</blockquote>
+<h2 id="套接字"><a href="#套接字" class="headerlink" title="套接字"></a>套接字</h2><p> socket，不赘述了。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30600197/article/details/99061584">在操作系统中进程是如何通信的</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.zyiz.net/tech/detail-142992.html">计算机操作系统基础(十六)—进程同步之共享内存</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36829091/article/details/80138836">【操作系统原理】使用管道完成进程间通信（匿名管道pipe、命名管道fifo）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011389977/article/details/53189763">操作系统基本概念——信号（一）</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/QQPLTI.html" class="prev">PREV</a><a href="/apollo/QQOSZ9.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

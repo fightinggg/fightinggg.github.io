@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            从TCP看HTTP | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+以下我们演示一条HTTP请求指令
+123[root@11c749e93da4 /]# curl www.baidu.com&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;!--STATUS OK--&amp;gt;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;meta http-equiv=content-type content=text/html;charset=utf-8&amp;gt;&amp;lt;meta http-equiv=X-UA-Compatible content=IE=Edge&amp;gt;&amp;lt;meta content=always name=referrer&amp;gt;&amp;lt;link rel=stylesheet type=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&amp;gt;&amp;lt;title&amp;gt;百度一下，你就知道&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body link=#0000cc&amp;gt; &amp;lt;div id=wrapper&amp;gt; &amp;lt;div id=head&amp;gt; &amp;lt;div class=head_wrapper&amp;gt; &amp;lt;div class=s_form&amp;gt; &amp;lt;div class=s_form_wrapper&amp;gt; &amp;lt;div id=lg&amp;gt; &amp;lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;form id=form name=f action=//www.baidu.com/s class=fm&amp;gt; &amp;lt;input type=hidden name=bdorz_come value=1&amp;gt; &amp;lt;input type=hidden name=ie value=utf-8&amp;gt; &amp;lt;input type=hidden name=f value=8&amp;gt; &amp;lt;input type=hidden name=rsv_bp value=1&amp;gt; &amp;lt;input type=hidden name=rsv_idx value=1&amp;gt; &amp;lt;input type=hidden name=tn value=baidu&amp;gt;&amp;lt;span class=&amp;quot;bg s_ipt_wr&amp;quot;&amp;gt;&amp;lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;bg s_btn_wr&amp;quot;&amp;gt;&amp;lt;input type=submit id=su value=百度一下 class=&amp;quot;bg s_btn&amp;quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=u1&amp;gt; &amp;lt;a href=http://news.baidu.com name=tj_trnews class=mnav&amp;gt;新闻&amp;lt;/a&amp;gt; &amp;lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&amp;gt;hao123&amp;lt;/a&amp;gt; &amp;lt;a href=http://map.baidu.com name=tj_trmap class=mnav&amp;gt;地图&amp;lt;/a&amp;gt; &amp;lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&amp;gt;视频&amp;lt;/a&amp;gt; &amp;lt;a href=http://tieba.baidu.com name=tj_trtieba class=mnav&amp;gt;贴吧&amp;lt;/a&amp;gt; &amp;lt;noscript&amp;gt; &amp;lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;amp;tpl=mn&amp;amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&amp;gt;登录&amp;lt;/a&amp;gt; &amp;lt;/noscript&amp;gt; &amp;lt;script&amp;gt;document.write(&amp;#x27;&amp;lt;a href=&amp;quot;http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=&amp;#x27;+ encodeURIComponent(window.location.href+ (window.location.search === &amp;quot;&amp;quot; ? &amp;quot;?&amp;quot; : &amp;quot;&amp;amp;&amp;quot;)+ &amp;quot;bdorz_come=1&amp;quot;)+ &amp;#x27;&amp;quot; name=&amp;quot;tj_login&amp;quot; class=&amp;quot;lb&amp;quot;&amp;gt;登录&amp;lt;/a&amp;gt;&amp;#x27;);&amp;lt;/script&amp;gt; &amp;lt;a href=//www.baidu.com/more/ name=tj_briicon class=bri style=&amp;quot;display: block;&amp;quot;&amp;gt;更多产品&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=ftCon&amp;gt; &amp;lt;div id=ftConw&amp;gt; &amp;lt;p id=lh&amp;gt; &amp;lt;a href=http://home.baidu.com&amp;gt;关于百度&amp;lt;/a&amp;gt; &amp;lt;a href=http://ir.baidu.com&amp;gt;About Baidu&amp;lt;/a&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;p id=cp&amp;gt;&amp;amp;copy;2017&amp;amp;nbsp;Baidu&amp;amp;nbsp;&amp;lt;a href=http://www.baidu.com/duty/&amp;gt;使用百度前必读&amp;lt;/a&amp;gt;&amp;amp;nbsp; &amp;lt;a href=http://jianyi.baidu.com/ class=cp-feedback&amp;gt;意见反馈&amp;lt;/a&amp;gt;&amp;amp;nbsp;京ICP证030173号&amp;amp;nbsp; &amp;lt;img src=//www.baidu.com/img/gs.gif&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;
+
+接下来是这条指令涉及到的所有TCP以及UDP报文（这篇很难！胆小者勿看）">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/QR12J0.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/QR12J0.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="从TCP看HTTP | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+以下我们演示一条HTTP请求指令
+123[root@11c749e93da4 /]# curl www.baidu.com&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;!--STATUS OK--&amp;gt;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;meta http-equiv=content-type content=text/html;charset=utf-8&amp;gt;&amp;lt;meta http-equiv=X-UA-Compatible content=IE=Edge&amp;gt;&amp;lt;meta content=always name=referrer&amp;gt;&amp;lt;link rel=stylesheet type=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&amp;gt;&amp;lt;title&amp;gt;百度一下，你就知道&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body link=#0000cc&amp;gt; &amp;lt;div id=wrapper&amp;gt; &amp;lt;div id=head&amp;gt; &amp;lt;div class=head_wrapper&amp;gt; &amp;lt;div class=s_form&amp;gt; &amp;lt;div class=s_form_wrapper&amp;gt; &amp;lt;div id=lg&amp;gt; &amp;lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;form id=form name=f action=//www.baidu.com/s class=fm&amp;gt; &amp;lt;input type=hidden name=bdorz_come value=1&amp;gt; &amp;lt;input type=hidden name=ie value=utf-8&amp;gt; &amp;lt;input type=hidden name=f value=8&amp;gt; &amp;lt;input type=hidden name=rsv_bp value=1&amp;gt; &amp;lt;input type=hidden name=rsv_idx value=1&amp;gt; &amp;lt;input type=hidden name=tn value=baidu&amp;gt;&amp;lt;span class=&amp;quot;bg s_ipt_wr&amp;quot;&amp;gt;&amp;lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;bg s_btn_wr&amp;quot;&amp;gt;&amp;lt;input type=submit id=su value=百度一下 class=&amp;quot;bg s_btn&amp;quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=u1&amp;gt; &amp;lt;a href=http://news.baidu.com name=tj_trnews class=mnav&amp;gt;新闻&amp;lt;/a&amp;gt; &amp;lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&amp;gt;hao123&amp;lt;/a&amp;gt; &amp;lt;a href=http://map.baidu.com name=tj_trmap class=mnav&amp;gt;地图&amp;lt;/a&amp;gt; &amp;lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&amp;gt;视频&amp;lt;/a&amp;gt; &amp;lt;a href=http://tieba.baidu.com name=tj_trtieba class=mnav&amp;gt;贴吧&amp;lt;/a&amp;gt; &amp;lt;noscript&amp;gt; &amp;lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;amp;tpl=mn&amp;amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&amp;gt;登录&amp;lt;/a&amp;gt; &amp;lt;/noscript&amp;gt; &amp;lt;script&amp;gt;document.write(&amp;#x27;&amp;lt;a href=&amp;quot;http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=&amp;#x27;+ encodeURIComponent(window.location.href+ (window.location.search === &amp;quot;&amp;quot; ? &amp;quot;?&amp;quot; : &amp;quot;&amp;amp;&amp;quot;)+ &amp;quot;bdorz_come=1&amp;quot;)+ &amp;#x27;&amp;quot; name=&amp;quot;tj_login&amp;quot; class=&amp;quot;lb&amp;quot;&amp;gt;登录&amp;lt;/a&amp;gt;&amp;#x27;);&amp;lt;/script&amp;gt; &amp;lt;a href=//www.baidu.com/more/ name=tj_briicon class=bri style=&amp;quot;display: block;&amp;quot;&amp;gt;更多产品&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=ftCon&amp;gt; &amp;lt;div id=ftConw&amp;gt; &amp;lt;p id=lh&amp;gt; &amp;lt;a href=http://home.baidu.com&amp;gt;关于百度&amp;lt;/a&amp;gt; &amp;lt;a href=http://ir.baidu.com&amp;gt;About Baidu&amp;lt;/a&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;p id=cp&amp;gt;&amp;amp;copy;2017&amp;amp;nbsp;Baidu&amp;amp;nbsp;&amp;lt;a href=http://www.baidu.com/duty/&amp;gt;使用百度前必读&amp;lt;/a&amp;gt;&amp;amp;nbsp; &amp;lt;a href=http://jianyi.baidu.com/ class=cp-feedback&amp;gt;意见反馈&amp;lt;/a&amp;gt;&amp;amp;nbsp;京ICP证030173号&amp;amp;nbsp; &amp;lt;img src=//www.baidu.com/img/gs.gif&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;
+
+接下来是这条指令涉及到的所有TCP以及UDP报文（这篇很难！胆小者勿看）">
+    
+
+    
+        <meta property="article:published_time" content="Sun Apr 04 2021 15:09:00 GMT+0800">
+        <meta property="article:modified_time" content="Sun Apr 04 2021 15:00:00 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/QR12J0.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/QR12J0.html",
+    "headline": "从TCP看HTTP",
+    "datePublished": "Sun Apr 04 2021 15:09:00 GMT+0800",
+    "dateModified": "Sun Apr 04 2021 15:00:00 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": "",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+以下我们演示一条HTTP请求指令
+123[root@11c749e93da4 /]# curl www.baidu.com&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;!--STATUS OK--&amp;gt;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;meta http-equiv=content-type content=text/html;charset=utf-8&amp;gt;&amp;lt;meta http-equiv=X-UA-Compatible content=IE=Edge&amp;gt;&amp;lt;meta content=always name=referrer&amp;gt;&amp;lt;link rel=stylesheet type=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&amp;gt;&amp;lt;title&amp;gt;百度一下，你就知道&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body link=#0000cc&amp;gt; &amp;lt;div id=wrapper&amp;gt; &amp;lt;div id=head&amp;gt; &amp;lt;div class=head_wrapper&amp;gt; &amp;lt;div class=s_form&amp;gt; &amp;lt;div class=s_form_wrapper&amp;gt; &amp;lt;div id=lg&amp;gt; &amp;lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;form id=form name=f action=//www.baidu.com/s class=fm&amp;gt; &amp;lt;input type=hidden name=bdorz_come value=1&amp;gt; &amp;lt;input type=hidden name=ie value=utf-8&amp;gt; &amp;lt;input type=hidden name=f value=8&amp;gt; &amp;lt;input type=hidden name=rsv_bp value=1&amp;gt; &amp;lt;input type=hidden name=rsv_idx value=1&amp;gt; &amp;lt;input type=hidden name=tn value=baidu&amp;gt;&amp;lt;span class=&amp;quot;bg s_ipt_wr&amp;quot;&amp;gt;&amp;lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;bg s_btn_wr&amp;quot;&amp;gt;&amp;lt;input type=submit id=su value=百度一下 class=&amp;quot;bg s_btn&amp;quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=u1&amp;gt; &amp;lt;a href=http://news.baidu.com name=tj_trnews class=mnav&amp;gt;新闻&amp;lt;/a&amp;gt; &amp;lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&amp;gt;hao123&amp;lt;/a&amp;gt; &amp;lt;a href=http://map.baidu.com name=tj_trmap class=mnav&amp;gt;地图&amp;lt;/a&amp;gt; &amp;lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&amp;gt;视频&amp;lt;/a&amp;gt; &amp;lt;a href=http://tieba.baidu.com name=tj_trtieba class=mnav&amp;gt;贴吧&amp;lt;/a&amp;gt; &amp;lt;noscript&amp;gt; &amp;lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;amp;tpl=mn&amp;amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&amp;gt;登录&amp;lt;/a&amp;gt; &amp;lt;/noscript&amp;gt; &amp;lt;script&amp;gt;document.write(&amp;#x27;&amp;lt;a href=&amp;quot;http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=&amp;#x27;+ encodeURIComponent(window.location.href+ (window.location.search === &amp;quot;&amp;quot; ? &amp;quot;?&amp;quot; : &amp;quot;&amp;amp;&amp;quot;)+ &amp;quot;bdorz_come=1&amp;quot;)+ &amp;#x27;&amp;quot; name=&amp;quot;tj_login&amp;quot; class=&amp;quot;lb&amp;quot;&amp;gt;登录&amp;lt;/a&amp;gt;&amp;#x27;);&amp;lt;/script&amp;gt; &amp;lt;a href=//www.baidu.com/more/ name=tj_briicon class=bri style=&amp;quot;display: block;&amp;quot;&amp;gt;更多产品&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div id=ftCon&amp;gt; &amp;lt;div id=ftConw&amp;gt; &amp;lt;p id=lh&amp;gt; &amp;lt;a href=http://home.baidu.com&amp;gt;关于百度&amp;lt;/a&amp;gt; &amp;lt;a href=http://ir.baidu.com&amp;gt;About Baidu&amp;lt;/a&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;p id=cp&amp;gt;&amp;amp;copy;2017&amp;amp;nbsp;Baidu&amp;amp;nbsp;&amp;lt;a href=http://www.baidu.com/duty/&amp;gt;使用百度前必读&amp;lt;/a&amp;gt;&amp;amp;nbsp; &amp;lt;a href=http://jianyi.baidu.com/ class=cp-feedback&amp;gt;意见反馈&amp;lt;/a&amp;gt;&amp;amp;nbsp;京ICP证030173号&amp;amp;nbsp; &amp;lt;img src=//www.baidu.com/img/gs.gif&amp;gt; &amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;
+
+接下来是这条指令涉及到的所有TCP以及UDP报文（这篇很难！胆小者勿看）",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E4%BB%8EIP%E6%8A%A5%E6%96%87%E5%BC%80%E5%A7%8B%E8%AF%B4%E8%B5%B7"><span class="post-toc-number">1.</span> <span class="post-toc-text">从IP报文开始说起</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%A4%B1%E8%B4%A5%E7%9A%84UDP%E8%AF%B7%E6%B1%82"><span class="post-toc-number">2.</span> <span class="post-toc-text">失败的UDP请求</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UDP%E6%8A%A5%E6%96%87%E5%A4%8D%E4%B9%A0"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">UDP报文复习</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#DNS%E5%9B%9E%E5%BA%94"><span class="post-toc-number">3.</span> <span class="post-toc-text">DNS回应</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#PRT"><span class="post-toc-number">4.</span> <span class="post-toc-text">PRT</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#TCP%E5%BC%80%E5%A7%8B"><span class="post-toc-number">5.</span> <span class="post-toc-text">TCP开始</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">第一次握手</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">第二次握手</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">第三次握手</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%91%E8%B5%B7HTTP%E8%AF%B7%E6%B1%82"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">发起HTTP请求</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP%E5%9B%9E%E5%A4%8D"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">TCP回复</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HTTP%E5%9B%9E%E5%A4%8D"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">HTTP回复</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">最后的四次挥手</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                从TCP看HTTP
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>4月 04, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=从TCP看HTTP&url=http://fightinggg.github.io/material/material/QR12J0.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=从TCP看HTTP&url=http://fightinggg.github.io/material/material/QR12J0.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/QR12J0.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/QR12J0.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QR12J0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<p>以下我们演示一条HTTP请求指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@11c749e93da4 /]# curl www.baidu.com</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet type=text/css href=http://s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&quot;bg s_ipt_wr&quot;&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&gt;&lt;/span&gt;&lt;span class=&quot;bg s_btn_wr&quot;&gt;&lt;input type=submit id=su value=百度一下 class=&quot;bg s_btn&quot;&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻&lt;/a&gt; &lt;a href=http://www.hao123.com name=tj_trhao123 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地图&lt;/a&gt; &lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&gt;视频&lt;/a&gt; &lt;a href=http://tieba.baidu.com name=tj_trtieba class=mnav&gt;贴吧&lt;/a&gt; &lt;noscript&gt; &lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&gt;登录&lt;/a&gt; &lt;/noscript&gt; &lt;script&gt;document.write(&#x27;&lt;a href=&quot;http://www.baidu.com/bdorz/login.gif?login&amp;tpl=mn&amp;u=&#x27;+ encodeURIComponent(window.location.href+ (window.location.search === &quot;&quot; ? &quot;?&quot; : &quot;&amp;&quot;)+ &quot;bdorz_come=1&quot;)+ &#x27;&quot; name=&quot;tj_login&quot; class=&quot;lb&quot;&gt;登录&lt;/a&gt;&#x27;);&lt;/script&gt; &lt;a href=//www.baidu.com/more/ name=tj_briicon class=bri style=&quot;display: block;&quot;&gt;更多产品&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=ftCon&gt; &lt;div id=ftConw&gt; &lt;p id=lh&gt; &lt;a href=http://home.baidu.com&gt;关于百度&lt;/a&gt; &lt;a href=http://ir.baidu.com&gt;About Baidu&lt;/a&gt; &lt;/p&gt; &lt;p id=cp&gt;&amp;copy;2017&amp;nbsp;Baidu&amp;nbsp;&lt;a href=http://www.baidu.com/duty/&gt;使用百度前必读&lt;/a&gt;&amp;nbsp; &lt;a href=http://jianyi.baidu.com/ class=cp-feedback&gt;意见反馈&lt;/a&gt;&amp;nbsp;京ICP证030173号&amp;nbsp; &lt;img src=//www.baidu.com/img/gs.gif&gt; &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>接下来是这条指令涉及到的所有TCP以及UDP报文（这篇很难！胆小者勿看）</p>
+<span id="more"></span>
+
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br></pre></td><td class="code"><pre><span class="line">[root@11c749e93da4 /]# tcpdump -Xvv </span><br><span class="line">dropped privs to tcpdump</span><br><span class="line">tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">07:05:47.059101 IP (tos 0x0, ttl 64, id 10179, offset 0, flags [DF], proto UDP (17), length 59)</span><br><span class="line">    11c749e93da4.39962 &gt; 183.60.83.19.domain: [bad udp cksum 0xb69d -&gt; 0x7fa1!] 29001+ A? www.baidu.com. (31)</span><br><span class="line">    0x0000:  4500 003b 27c3 4000 4011 5c8a ac11 0004  E..;&#x27;.@.@.\.....</span><br><span class="line">    0x0010:  b73c 5313 9c1a 0035 0027 b69d 7149 0100  .&lt;S....5.&#x27;..qI..</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 0100 01              du.com.....</span><br><span class="line">07:05:47.059181 IP (tos 0x0, ttl 64, id 10180, offset 0, flags [DF], proto UDP (17), length 59)</span><br><span class="line">    11c749e93da4.39962 &gt; 183.60.83.19.domain: [bad udp cksum 0xb69d -&gt; 0x8397!] 21075+ AAAA? www.baidu.com. (31)</span><br><span class="line">    0x0000:  4500 003b 27c4 4000 4011 5c89 ac11 0004  E..;&#x27;.@.@.\.....</span><br><span class="line">    0x0010:  b73c 5313 9c1a 0035 0027 b69d 5253 0100  .&lt;S....5.&#x27;..RS..</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 1c00 01              du.com.....</span><br><span class="line">07:05:47.059442 IP (tos 0x0, ttl 60, id 50890, offset 0, flags [DF], proto UDP (17), length 144)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.39962: [udp sum ok] 29001 q: A? www.baidu.com. 4/0/0 www.baidu.com. CNAME www.a.shifen.com., www.a.shifen.com. CNAME www.wshifen.com., www.wshifen.com. A 119.63.197.139, www.wshifen.com. A 119.63.197.151 (116)</span><br><span class="line">    0x0000:  4500 0090 c6ca 4000 3c11 c12d b73c 5313  E.....@.&lt;..-.&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 9c1a 007c 7f99 7149 8180  .....5...|..qI..</span><br><span class="line">    0x0020:  0001 0004 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 0100 01c0 0c00 0500  du.com..........</span><br><span class="line">    0x0040:  0100 0002 c900 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">    0x0050:  6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">    0x0060:  000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br><span class="line">    0x0070:  c046 0001 0001 0000 0104 0004 773f c58b  .F..........w?..</span><br><span class="line">    0x0080:  c046 0001 0001 0000 0104 0004 773f c597  .F..........w?..</span><br><span class="line">07:05:47.059514 IP (tos 0x0, ttl 60, id 50891, offset 0, flags [DF], proto UDP (17), length 112)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.39962: [udp sum ok] 21075 q: AAAA? www.baidu.com. 2/0/0 www.baidu.com. CNAME www.a.shifen.com., www.a.shifen.com. CNAME www.wshifen.com. (84)</span><br><span class="line">    0x0000:  4500 0070 c6cb 4000 3c11 c14c b73c 5313  E..p..@.&lt;..L.&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 9c1a 005c c213 5253 8180  .....5...\..RS..</span><br><span class="line">    0x0020:  0001 0002 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 1c00 01c0 0c00 0500  du.com..........</span><br><span class="line">    0x0040:  0100 0004 8700 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">    0x0050:  6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">    0x0060:  000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br><span class="line">07:05:47.061686 IP (tos 0x0, ttl 64, id 38458, offset 0, flags [DF], proto TCP (6), length 60)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [S], cksum 0xe90e (incorrect -&gt; 0xaa0e), seq 4174926008, win 29200, options [mss 1460,sackOK,TS val 1805688806 ecr 0,nop,wscale 7], length 0</span><br><span class="line">    0x0000:  4500 003c 963a 4000 4006 bba1 ac11 0004  E..&lt;.:@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b8 0000 0000  w?.....P..P.....</span><br><span class="line">    0x0020:  a002 7210 e90e 0000 0204 05b4 0402 080a  ..r.............</span><br><span class="line">    0x0030:  6ba0 9fe6 0000 0000 0103 0307            k...........</span><br><span class="line">07:05:47.063170 IP (tos 0x0, ttl 64, id 10183, offset 0, flags [DF], proto UDP (17), length 71)</span><br><span class="line">    11c749e93da4.49216 &gt; 183.60.83.19.domain: [bad udp cksum 0xb6a9 -&gt; 0xef02!] 17086+ PTR? 19.83.60.183.in-addr.arpa. (43)</span><br><span class="line">    0x0000:  4500 0047 27c7 4000 4011 5c7a ac11 0004  E..G&#x27;.@.@.\z....</span><br><span class="line">    0x0010:  b73c 5313 c040 0035 0033 b6a9 42be 0100  .&lt;S..@.5.3..B...</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0231 3902 3833 0236  .........19.83.6</span><br><span class="line">    0x0030:  3003 3138 3307 696e 2d61 6464 7204 6172  0.183.in-addr.ar</span><br><span class="line">    0x0040:  7061 0000 0c00 01                        pa.....</span><br><span class="line">07:05:47.064077 IP (tos 0x0, ttl 57, id 29314, offset 0, flags [DF], proto UDP (17), length 135)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.49216: [udp sum ok] 17086 NXDomain q: PTR? 19.83.60.183.in-addr.arpa. 0/1/0 ns: 60.183.in-addr.arpa. SOA ns.guangzhou.gd.cn. dns-admin.guangzhou.gd.cn. 2020122301 10800 3600 604800 86400 (107)</span><br><span class="line">    0x0000:  4500 0087 7282 4000 3911 187f b73c 5313  E...r.@.9....&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 c040 0073 bbd3 42be 8183  .....5.@.s..B...</span><br><span class="line">    0x0020:  0001 0000 0001 0000 0231 3902 3833 0236  .........19.83.6</span><br><span class="line">    0x0030:  3003 3138 3307 696e 2d61 6464 7204 6172  0.183.in-addr.ar</span><br><span class="line">    0x0040:  7061 0000 0c00 01c0 1200 0600 0100 0000  pa..............</span><br><span class="line">    0x0050:  9500 3402 6e73 0967 7561 6e67 7a68 6f75  ..4.ns.guangzhou</span><br><span class="line">    0x0060:  0267 6402 636e 0009 646e 732d 6164 6d69  .gd.cn..dns-admi</span><br><span class="line">    0x0070:  6ec0 3a78 689e bd00 002a 3000 000e 1000  n.:xh....*0.....</span><br><span class="line">    0x0080:  093a 8000 0151 80                        .:...Q.</span><br><span class="line">07:05:47.070294 IP (tos 0x0, ttl 64, id 10187, offset 0, flags [DF], proto UDP (17), length 73)</span><br><span class="line">    11c749e93da4.51992 &gt; 183.60.83.19.domain: [bad udp cksum 0xb6ab -&gt; 0x2278!] 64519+ PTR? 139.197.63.119.in-addr.arpa. (45)</span><br><span class="line">    0x0000:  4500 0049 27cb 4000 4011 5c74 ac11 0004  E..I&#x27;.@.@.\t....</span><br><span class="line">    0x0010:  b73c 5313 cb18 0035 0035 b6ab fc07 0100  .&lt;S....5.5......</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0331 3339 0331 3937  .........139.197</span><br><span class="line">    0x0030:  0236 3303 3131 3907 696e 2d61 6464 7204  .63.119.in-addr.</span><br><span class="line">    0x0040:  6172 7061 0000 0c00 01                   arpa.....</span><br><span class="line">07:05:47.071163 IP (tos 0x0, ttl 251, id 16397, offset 0, flags [DF], proto UDP (17), length 161)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.51992: [udp sum ok] 64519 NXDomain q: PTR? 139.197.63.119.in-addr.arpa. 0/1/0 ns: 119.in-addr.arpa. SOA ns.apnic.net. read-txt-record-of-zone-first-dns-admin.apnic.net. 3006092649 7200 1800 604800 3600 (133)</span><br><span class="line">    0x0000:  4500 00a1 400d 4000 fb11 88d9 b73c 5313  E...@.@......&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 cb18 008d 397d fc07 8183  .....5....9&#125;....</span><br><span class="line">    0x0020:  0001 0000 0001 0000 0331 3339 0331 3937  .........139.197</span><br><span class="line">    0x0030:  0236 3303 3131 3907 696e 2d61 6464 7204  .63.119.in-addr.</span><br><span class="line">    0x0040:  6172 7061 0000 0c00 01c0 1700 0600 0100  arpa............</span><br><span class="line">    0x0050:  0006 fe00 4c02 6e73 0561 706e 6963 036e  ....L.ns.apnic.n</span><br><span class="line">    0x0060:  6574 0027 7265 6164 2d74 7874 2d72 6563  et.&#x27;read-txt-rec</span><br><span class="line">    0x0070:  6f72 642d 6f66 2d7a 6f6e 652d 6669 7273  ord-of-zone-firs</span><br><span class="line">    0x0080:  742d 646e 732d 6164 6d69 6ec0 3cb3 2d55  t-dns-admin.&lt;.-U</span><br><span class="line">    0x0090:  6900 001c 2000 0007 0800 093a 8000 000e  i..........:....</span><br><span class="line">    0x00a0:  10                                       .</span><br><span class="line">07:05:47.115732 IP (tos 0x0, ttl 50, id 38458, offset 0, flags [DF], proto TCP (6), length 60)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [S.], cksum 0x268b (correct), seq 1024829215, ack 4174926009, win 8192, options [mss 1424,sackOK,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,wscale 5], length 0</span><br><span class="line">    0x0000:  4500 003c 963a 4000 3206 c9a1 773f c58b  E..&lt;.:@.2...w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a71f f8d8 50b9  .....P..=.....P.</span><br><span class="line">    0x0020:  a012 2000 268b 0000 0204 0590 0402 0101  ....&amp;...........</span><br><span class="line">    0x0030:  0101 0101 0101 0101 0103 0305            ............</span><br><span class="line">07:05:47.115797 IP (tos 0x0, ttl 64, id 38459, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe8fa (incorrect -&gt; 0xaa5e), seq 1, ack 1, win 229, length 0</span><br><span class="line">    0x0000:  4500 0028 963b 4000 4006 bbb4 ac11 0004  E..(.;@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b9 3d15 a720  w?.....P..P.=...</span><br><span class="line">    0x0020:  5010 00e5 e8fa 0000                      P.......</span><br><span class="line">07:05:47.115913 IP (tos 0x0, ttl 64, id 38460, offset 0, flags [DF], proto TCP (6), length 117)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [P.], cksum 0xe947 (incorrect -&gt; 0x7519), seq 1:78, ack 1, win 229, length 77: HTTP, length: 77</span><br><span class="line">    GET / HTTP/1.1</span><br><span class="line">    Host: www.baidu.com</span><br><span class="line">    User-Agent: curl/7.61.1</span><br><span class="line">    Accept: */*</span><br><span class="line">    </span><br><span class="line">    0x0000:  4500 0075 963c 4000 4006 bb66 ac11 0004  E..u.&lt;@.@..f....</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b9 3d15 a720  w?.....P..P.=...</span><br><span class="line">    0x0020:  5018 00e5 e947 0000 4745 5420 2f20 4854  P....G..GET./.HT</span><br><span class="line">    0x0030:  5450 2f31 2e31 0d0a 486f 7374 3a20 7777  TP/1.1..Host:.ww</span><br><span class="line">    0x0040:  772e 6261 6964 752e 636f 6d0d 0a55 7365  w.baidu.com..Use</span><br><span class="line">    0x0050:  722d 4167 656e 743a 2063 7572 6c2f 372e  r-Agent:.curl/7.</span><br><span class="line">    0x0060:  3631 2e31 0d0a 4163 6365 7074 3a20 2a2f  61.1..Accept:.*/</span><br><span class="line">    0x0070:  2a0d 0a0d 0a                             *....</span><br><span class="line">07:05:47.170254 IP (tos 0x0, ttl 48, id 24974, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [.], cksum 0xa762 (correct), seq 1, ack 78, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 618e 4000 3006 0062 773f c58b  E..(a.@.0..bw?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a720 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5010 0394 a762 0000                      P....b..</span><br><span class="line">07:05:47.236240 IP (tos 0x0, ttl 48, id 24975, offset 0, flags [DF], proto TCP (6), length 1488)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [P.], cksum 0xeea2 (incorrect -&gt; 0x8779), seq 1:1449, ack 78, win 916, length 1448: HTTP, length: 1448</span><br><span class="line">    HTTP/1.1 200 OK</span><br><span class="line">    Accept-Ranges: bytes</span><br><span class="line">    Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">    Connection: keep-alive</span><br><span class="line">    Content-Length: 2381</span><br><span class="line">    Content-Type: text/html</span><br><span class="line">    Date: Sun, 04 Apr 2021 07:05:47 GMT</span><br><span class="line">    Etag: &quot;588604eb-94d&quot;</span><br><span class="line">    Last-Modified: Mon, 23 Jan 2017 13:28:11 GMT</span><br><span class="line">    Pragma: no-cache</span><br><span class="line">    Server: bfe/1.0.8.18</span><br><span class="line">    Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/</span><br><span class="line">    </span><br><span class="line">    &lt;!DOCTYPE html&gt;</span><br><span class="line">    0x0000:  4500 05d0 618f 4000 3006 fab8 773f c58b  E...a.@.0...w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a720 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5018 0394 eea2 0000 4854 5450 2f31 2e31  P.......HTTP/1.1</span><br><span class="line">    0x0030:  2032 3030 204f 4b0d 0a41 6363 6570 742d  .200.OK..Accept-</span><br><span class="line">    0x0040:  5261 6e67 6573 3a20 6279 7465 730d 0a43  Ranges:.bytes..C</span><br><span class="line">    0x0050:  6163 6865 2d43 6f6e 7472 6f6c 3a20 7072  ache-Control:.pr</span><br><span class="line">    0x0060:  6976 6174 652c 206e 6f2d 6361 6368 652c  ivate,.no-cache,</span><br><span class="line">    0x0070:  206e 6f2d 7374 6f72 652c 2070 726f 7879  .no-store,.proxy</span><br><span class="line">    0x0080:  2d72 6576 616c 6964 6174 652c 206e 6f2d  -revalidate,.no-</span><br><span class="line">    0x0090:  7472 616e 7366 6f72 6d0d 0a43 6f6e 6e65  transform..Conne</span><br><span class="line">    0x00a0:  6374 696f 6e3a 206b 6565 702d 616c 6976  ction:.keep-aliv</span><br><span class="line">    0x00b0:  650d 0a43 6f6e 7465 6e74 2d4c 656e 6774  e..Content-Lengt</span><br><span class="line">    0x00c0:  683a 2032 3338 310d 0a43 6f6e 7465 6e74  h:.2381..Content</span><br><span class="line">    0x00d0:  2d54 7970 653a 2074 6578 742f 6874 6d6c  -Type:.text/html</span><br><span class="line">    0x00e0:  0d0a 4461 7465 3a20 5375 6e2c 2030 3420  ..Date:.Sun,.04.</span><br><span class="line">    0x00f0:  4170 7220 3230 3231 2030 373a 3035 3a34  Apr.2021.07:05:4</span><br><span class="line">    0x0100:  3720 474d 540d 0a45 7461 673a 2022 3538  7.GMT..Etag:.&quot;58</span><br><span class="line">    0x0110:  3836 3034 6562 2d39 3464 220d 0a4c 6173  8604eb-94d&quot;..Las</span><br><span class="line">    0x0120:  742d 4d6f 6469 6669 6564 3a20 4d6f 6e2c  t-Modified:.Mon,</span><br><span class="line">    0x0130:  2032 3320 4a61 6e20 3230 3137 2031 333a  .23.Jan.2017.13:</span><br><span class="line">    0x0140:  3238 3a31 3120 474d 540d 0a50 7261 676d  28:11.GMT..Pragm</span><br><span class="line">    0x0150:  613a 206e 6f2d 6361 6368 650d 0a53 6572  a:.no-cache..Ser</span><br><span class="line">    0x0160:  7665 723a 2062 6665 2f31 2e30 2e38 2e31  ver:.bfe/1.0.8.1</span><br><span class="line">    0x0170:  380d 0a53 6574 2d43 6f6f 6b69 653a 2042  8..Set-Cookie:.B</span><br><span class="line">    0x0180:  444f 525a 3d32 3733 3135 3b20 6d61 782d  DORZ=27315;.max-</span><br><span class="line">    0x0190:  6167 653d 3836 3430 303b 2064 6f6d 6169  age=86400;.domai</span><br><span class="line">    0x01a0:  6e3d 2e62 6169 6475 2e63 6f6d 3b20 7061  n=.baidu.com;.pa</span><br><span class="line">    0x01b0:  7468 3d2f 0d0a 0d0a 3c21 444f 4354 5950  th=/....&lt;!DOCTYP</span><br><span class="line">    0x01c0:  4520 6874 6d6c 3e0d 0a3c 212d 2d53 5441  E.html&gt;..&lt;!--STA</span><br><span class="line">    0x01d0:  5455 5320 4f4b 2d2d 3e3c 6874 6d6c 3e20  TUS.OK--&gt;&lt;html&gt;.</span><br><span class="line">    0x01e0:  3c68 6561 643e 3c6d 6574 6120 6874 7470  &lt;head&gt;&lt;meta.http</span><br><span class="line">    0x01f0:  2d65 7175 6976 3d63 6f6e 7465 6e74 2d74  -equiv=content-t</span><br><span class="line">    0x0200:  7970 6520 636f 6e74 656e 743d 7465 7874  ype.content=text</span><br><span class="line">    0x0210:  2f68 746d 6c3b 6368 6172 7365 743d 7574  /html;charset=ut</span><br><span class="line">    0x0220:  662d 383e 3c6d 6574 6120 6874 7470 2d65  f-8&gt;&lt;meta.http-e</span><br><span class="line">    0x0230:  7175 6976 3d58 2d55 412d 436f 6d70 6174  quiv=X-UA-Compat</span><br><span class="line">    0x0240:  6962 6c65 2063 6f6e 7465 6e74 3d49 453d  ible.content=IE=</span><br><span class="line">    0x0250:  4564 6765 3e3c 6d65 7461 2063 6f6e 7465  Edge&gt;&lt;meta.conte</span><br><span class="line">    0x0260:  6e74 3d61 6c77 6179 7320 6e61 6d65 3d72  nt=always.name=r</span><br><span class="line">    0x0270:  6566 6572 7265 723e 3c6c 696e 6b20 7265  eferrer&gt;&lt;link.re</span><br><span class="line">    0x0280:  6c3d 7374 796c 6573 6865 6574 2074 7970  l=stylesheet.typ</span><br><span class="line">    0x0290:  653d 7465 7874 2f63 7373 2068 7265 663d  e=text/css.href=</span><br><span class="line">    0x02a0:  6874 7470 3a2f 2f73 312e 6264 7374 6174  http://s1.bdstat</span><br><span class="line">    0x02b0:  6963 2e63 6f6d 2f72 2f77 7777 2f63 6163  ic.com/r/www/cac</span><br><span class="line">    0x02c0:  6865 2f62 646f 727a 2f62 6169 6475 2e6d  he/bdorz/baidu.m</span><br><span class="line">    0x02d0:  696e 2e63 7373 3e3c 7469 746c 653e e799  in.css&gt;&lt;title&gt;..</span><br><span class="line">    0x02e0:  bee5 baa6 e4b8 80e4 b88b efbc 8ce4 bda0  ................</span><br><span class="line">    0x02f0:  e5b0 b1e7 9fa5 e981 933c 2f74 6974 6c65  .........&lt;/title</span><br><span class="line">    0x0300:  3e3c 2f68 6561 643e 203c 626f 6479 206c  &gt;&lt;/head&gt;.&lt;body.l</span><br><span class="line">    0x0310:  696e 6b3d 2330 3030 3063 633e 203c 6469  ink=#0000cc&gt;.&lt;di</span><br><span class="line">    0x0320:  7620 6964 3d77 7261 7070 6572 3e20 3c64  v.id=wrapper&gt;.&lt;d</span><br><span class="line">    0x0330:  6976 2069 643d 6865 6164 3e20 3c64 6976  iv.id=head&gt;.&lt;div</span><br><span class="line">    0x0340:  2063 6c61 7373 3d68 6561 645f 7772 6170  .class=head_wrap</span><br><span class="line">    0x0350:  7065 723e 203c 6469 7620 636c 6173 733d  per&gt;.&lt;div.class=</span><br><span class="line">    0x0360:  735f 666f 726d 3e20 3c64 6976 2063 6c61  s_form&gt;.&lt;div.cla</span><br><span class="line">    0x0370:  7373 3d73 5f66 6f72 6d5f 7772 6170 7065  ss=s_form_wrappe</span><br><span class="line">    0x0380:  723e 203c 6469 7620 6964 3d6c 673e 203c  r&gt;.&lt;div.id=lg&gt;.&lt;</span><br><span class="line">    0x0390:  696d 6720 6869 6465 666f 6375 733d 7472  img.hidefocus=tr</span><br><span class="line">    0x03a0:  7565 2073 7263 3d2f 2f77 7777 2e62 6169  ue.src=//www.bai</span><br><span class="line">    0x03b0:  6475 2e63 6f6d 2f69 6d67 2f62 645f 6c6f  du.com/img/bd_lo</span><br><span class="line">    0x03c0:  676f 312e 706e 6720 7769 6474 683d 3237  go1.png.width=27</span><br><span class="line">    0x03d0:  3020 6865 6967 6874 3d31 3239 3e20 3c2f  0.height=129&gt;.&lt;/</span><br><span class="line">    0x03e0:  6469 763e 203c 666f 726d 2069 643d 666f  div&gt;.&lt;form.id=fo</span><br><span class="line">    0x03f0:  726d 206e 616d 653d 6620 6163 7469 6f6e  rm.name=f.action</span><br><span class="line">    0x0400:  3d2f 2f77 7777 2e62 6169 6475 2e63 6f6d  =//www.baidu.com</span><br><span class="line">    0x0410:  2f73 2063 6c61 7373 3d66 6d3e 203c 696e  /s.class=fm&gt;.&lt;in</span><br><span class="line">    0x0420:  7075 7420 7479 7065 3d68 6964 6465 6e20  put.type=hidden.</span><br><span class="line">    0x0430:  6e61 6d65 3d62 646f 727a 5f63 6f6d 6520  name=bdorz_come.</span><br><span class="line">    0x0440:  7661 6c75 653d 313e 203c 696e 7075 7420  value=1&gt;.&lt;input.</span><br><span class="line">    0x0450:  7479 7065 3d68 6964 6465 6e20 6e61 6d65  type=hidden.name</span><br><span class="line">    0x0460:  3d69 6520 7661 6c75 653d 7574 662d 383e  =ie.value=utf-8&gt;</span><br><span class="line">    0x0470:  203c 696e 7075 7420 7479 7065 3d68 6964  .&lt;input.type=hid</span><br><span class="line">    0x0480:  6465 6e20 6e61 6d65 3d66 2076 616c 7565  den.name=f.value</span><br><span class="line">    0x0490:  3d38 3e20 3c69 6e70 7574 2074 7970 653d  =8&gt;.&lt;input.type=</span><br><span class="line">    0x04a0:  6869 6464 656e 206e 616d 653d 7273 765f  hidden.name=rsv_</span><br><span class="line">    0x04b0:  6270 2076 616c 7565 3d31 3e20 3c69 6e70  bp.value=1&gt;.&lt;inp</span><br><span class="line">    0x04c0:  7574 2074 7970 653d 6869 6464 656e 206e  ut.type=hidden.n</span><br><span class="line">    0x04d0:  616d 653d 7273 765f 6964 7820 7661 6c75  ame=rsv_idx.valu</span><br><span class="line">    0x04e0:  653d 313e 203c 696e 7075 7420 7479 7065  e=1&gt;.&lt;input.type</span><br><span class="line">    0x04f0:  3d68 6964 6465 6e20 6e61 6d65 3d74 6e20  =hidden.name=tn.</span><br><span class="line">    0x0500:  7661 6c75 653d 6261 6964 753e 3c73 7061  value=baidu&gt;&lt;spa</span><br><span class="line">    0x0510:  6e20 636c 6173 733d 2262 6720 735f 6970  n.class=&quot;bg.s_ip</span><br><span class="line">    0x0520:  745f 7772 223e 3c69 6e70 7574 2069 643d  t_wr&quot;&gt;&lt;input.id=</span><br><span class="line">    0x0530:  6b77 206e 616d 653d 7764 2063 6c61 7373  kw.name=wd.class</span><br><span class="line">    0x0540:  3d73 5f69 7074 2076 616c 7565 206d 6178  =s_ipt.value.max</span><br><span class="line">    0x0550:  6c65 6e67 7468 3d32 3535 2061 7574 6f63  length=255.autoc</span><br><span class="line">    0x0560:  6f6d 706c 6574 653d 6f66 6620 6175 746f  omplete=off.auto</span><br><span class="line">    0x0570:  666f 6375 733e 3c2f 7370 616e 3e3c 7370  focus&gt;&lt;/span&gt;&lt;sp</span><br><span class="line">    0x0580:  616e 2063 6c61 7373 3d22 6267 2073 5f62  an.class=&quot;bg.s_b</span><br><span class="line">    0x0590:  746e 5f77 7222 3e3c 696e 7075 7420 7479  tn_wr&quot;&gt;&lt;input.ty</span><br><span class="line">    0x05a0:  7065 3d73 7562 6d69 7420 6964 3d73 7520  pe=submit.id=su.</span><br><span class="line">    0x05b0:  7661 6c75 653d e799 bee5 baa6 e4b8 80e4  value=..........</span><br><span class="line">    0x05c0:  b88b 2063 6c61 7373 3d22 6267 2073 5f62  ...class=&quot;bg.s_b</span><br><span class="line">07:05:47.236264 IP (tos 0x0, ttl 64, id 38461, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe8fa (incorrect -&gt; 0xa453), seq 78, ack 1449, win 251, length 0</span><br><span class="line">    0x0000:  4500 0028 963d 4000 4006 bbb2 ac11 0004  E..(.=@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5106 3d15 acc8  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5010 00fb e8fa 0000                      P.......</span><br><span class="line">07:05:47.236270 IP (tos 0x0, ttl 48, id 24977, offset 0, flags [DF], proto TCP (6), length 1373)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [P.], cksum 0x5cf2 (correct), seq 1449:2782, ack 78, win 916, length 1333: HTTP</span><br><span class="line">    0x0000:  4500 055d 6191 4000 3006 fb29 773f c58b  E..]a.@.0..)w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 acc8 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5018 0394 5cf2 0000 746e 223e 3c2f 7370  P...\...tn&quot;&gt;&lt;/sp</span><br><span class="line">    0x0030:  616e 3e20 3c2f 666f 726d 3e20 3c2f 6469  an&gt;.&lt;/form&gt;.&lt;/di</span><br><span class="line">    0x0040:  763e 203c 2f64 6976 3e20 3c64 6976 2069  v&gt;.&lt;/div&gt;.&lt;div.i</span><br><span class="line">    0x0050:  643d 7531 3e20 3c61 2068 7265 663d 6874  d=u1&gt;.&lt;a.href=ht</span><br><span class="line">    0x0060:  7470 3a2f 2f6e 6577 732e 6261 6964 752e  tp://news.baidu.</span><br><span class="line">    0x0070:  636f 6d20 6e61 6d65 3d74 6a5f 7472 6e65  com.name=tj_trne</span><br><span class="line">    0x0080:  7773 2063 6c61 7373 3d6d 6e61 763e e696  ws.class=mnav&gt;..</span><br><span class="line">    0x0090:  b0e9 97bb 3c2f 613e 203c 6120 6872 6566  ....&lt;/a&gt;.&lt;a.href</span><br><span class="line">    0x00a0:  3d68 7474 703a 2f2f 7777 772e 6861 6f31  =http://www.hao1</span><br><span class="line">    0x00b0:  3233 2e63 6f6d 206e 616d 653d 746a 5f74  23.com.name=tj_t</span><br><span class="line">    0x00c0:  7268 616f 3132 3320 636c 6173 733d 6d6e  rhao123.class=mn</span><br><span class="line">    0x00d0:  6176 3e68 616f 3132 333c 2f61 3e20 3c61  av&gt;hao123&lt;/a&gt;.&lt;a</span><br><span class="line">    0x00e0:  2068 7265 663d 6874 7470 3a2f 2f6d 6170  .href=http://map</span><br><span class="line">    0x00f0:  2e62 6169 6475 2e63 6f6d 206e 616d 653d  .baidu.com.name=</span><br><span class="line">    0x0100:  746a 5f74 726d 6170 2063 6c61 7373 3d6d  tj_trmap.class=m</span><br><span class="line">    0x0110:  6e61 763e e59c b0e5 9bbe 3c2f 613e 203c  nav&gt;......&lt;/a&gt;.&lt;</span><br><span class="line">    0x0120:  6120 6872 6566 3d68 7474 703a 2f2f 762e  a.href=http://v.</span><br><span class="line">    0x0130:  6261 6964 752e 636f 6d20 6e61 6d65 3d74  baidu.com.name=t</span><br><span class="line">    0x0140:  6a5f 7472 7669 6465 6f20 636c 6173 733d  j_trvideo.class=</span><br><span class="line">    0x0150:  6d6e 6176 3ee8 a786 e9a2 913c 2f61 3e20  mnav&gt;......&lt;/a&gt;.</span><br><span class="line">    0x0160:  3c61 2068 7265 663d 6874 7470 3a2f 2f74  &lt;a.href=http://t</span><br><span class="line">    0x0170:  6965 6261 2e62 6169 6475 2e63 6f6d 206e  ieba.baidu.com.n</span><br><span class="line">    0x0180:  616d 653d 746a 5f74 7274 6965 6261 2063  ame=tj_trtieba.c</span><br><span class="line">    0x0190:  6c61 7373 3d6d 6e61 763e e8b4 b4e5 90a7  lass=mnav&gt;......</span><br><span class="line">    0x01a0:  3c2f 613e 203c 6e6f 7363 7269 7074 3e20  &lt;/a&gt;.&lt;noscript&gt;.</span><br><span class="line">    0x01b0:  3c61 2068 7265 663d 6874 7470 3a2f 2f77  &lt;a.href=http://w</span><br><span class="line">    0x01c0:  7777 2e62 6169 6475 2e63 6f6d 2f62 646f  ww.baidu.com/bdo</span><br><span class="line">    0x01d0:  727a 2f6c 6f67 696e 2e67 6966 3f6c 6f67  rz/login.gif?log</span><br><span class="line">    0x01e0:  696e 2661 6d70 3b74 706c 3d6d 6e26 616d  in&amp;amp;tpl=mn&amp;am</span><br><span class="line">    0x01f0:  703b 753d 6874 7470 2533 4125 3246 2532  p;u=http%3A%2F%2</span><br><span class="line">    0x0200:  4677 7777 2e62 6169 6475 2e63 6f6d 2532  Fwww.baidu.com%2</span><br><span class="line">    0x0210:  6625 3366 6264 6f72 7a5f 636f 6d65 2533  f%3fbdorz_come%3</span><br><span class="line">    0x0220:  6431 206e 616d 653d 746a 5f6c 6f67 696e  d1.name=tj_login</span><br><span class="line">    0x0230:  2063 6c61 7373 3d6c 623e e799 bbe5 bd95  .class=lb&gt;......</span><br><span class="line">    0x0240:  3c2f 613e 203c 2f6e 6f73 6372 6970 743e  &lt;/a&gt;.&lt;/noscript&gt;</span><br><span class="line">    0x0250:  203c 7363 7269 7074 3e64 6f63 756d 656e  .&lt;script&gt;documen</span><br><span class="line">    0x0260:  742e 7772 6974 6528 273c 6120 6872 6566  t.write(&#x27;&lt;a.href</span><br><span class="line">    0x0270:  3d22 6874 7470 3a2f 2f77 7777 2e62 6169  =&quot;http://www.bai</span><br><span class="line">    0x0280:  6475 2e63 6f6d 2f62 646f 727a 2f6c 6f67  du.com/bdorz/log</span><br><span class="line">    0x0290:  696e 2e67 6966 3f6c 6f67 696e 2674 706c  in.gif?login&amp;tpl</span><br><span class="line">    0x02a0:  3d6d 6e26 753d 272b 2065 6e63 6f64 6555  =mn&amp;u=&#x27;+.encodeU</span><br><span class="line">    0x02b0:  5249 436f 6d70 6f6e 656e 7428 7769 6e64  RIComponent(wind</span><br><span class="line">    0x02c0:  6f77 2e6c 6f63 6174 696f 6e2e 6872 6566  ow.location.href</span><br><span class="line">    0x02d0:  2b20 2877 696e 646f 772e 6c6f 6361 7469  +.(window.locati</span><br><span class="line">    0x02e0:  6f6e 2e73 6561 7263 6820 3d3d 3d20 2222  on.search.===.&quot;&quot;</span><br><span class="line">    0x02f0:  203f 2022 3f22 203a 2022 2622 292b 2022  .?.&quot;?&quot;.:.&quot;&amp;&quot;)+.&quot;</span><br><span class="line">    0x0300:  6264 6f72 7a5f 636f 6d65 3d31 2229 2b20  bdorz_come=1&quot;)+.</span><br><span class="line">    0x0310:  2722 206e 616d 653d 2274 6a5f 6c6f 6769  &#x27;&quot;.name=&quot;tj_logi</span><br><span class="line">    0x0320:  6e22 2063 6c61 7373 3d22 6c62 223e e799  n&quot;.class=&quot;lb&quot;&gt;..</span><br><span class="line">    0x0330:  bbe5 bd95 3c2f 613e 2729 3b3c 2f73 6372  ....&lt;/a&gt;&#x27;);&lt;/scr</span><br><span class="line">    0x0340:  6970 743e 203c 6120 6872 6566 3d2f 2f77  ipt&gt;.&lt;a.href=//w</span><br><span class="line">    0x0350:  7777 2e62 6169 6475 2e63 6f6d 2f6d 6f72  ww.baidu.com/mor</span><br><span class="line">    0x0360:  652f 206e 616d 653d 746a 5f62 7269 6963  e/.name=tj_briic</span><br><span class="line">    0x0370:  6f6e 2063 6c61 7373 3d62 7269 2073 7479  on.class=bri.sty</span><br><span class="line">    0x0380:  6c65 3d22 6469 7370 6c61 793a 2062 6c6f  le=&quot;display:.blo</span><br><span class="line">    0x0390:  636b 3b22 3ee6 9bb4 e5a4 9ae4 baa7 e593  ck;&quot;&gt;...........</span><br><span class="line">    0x03a0:  813c 2f61 3e20 3c2f 6469 763e 203c 2f64  .&lt;/a&gt;.&lt;/div&gt;.&lt;/d</span><br><span class="line">    0x03b0:  6976 3e20 3c2f 6469 763e 203c 6469 7620  iv&gt;.&lt;/div&gt;.&lt;div.</span><br><span class="line">    0x03c0:  6964 3d66 7443 6f6e 3e20 3c64 6976 2069  id=ftCon&gt;.&lt;div.i</span><br><span class="line">    0x03d0:  643d 6674 436f 6e77 3e20 3c70 2069 643d  d=ftConw&gt;.&lt;p.id=</span><br><span class="line">    0x03e0:  6c68 3e20 3c61 2068 7265 663d 6874 7470  lh&gt;.&lt;a.href=http</span><br><span class="line">    0x03f0:  3a2f 2f68 6f6d 652e 6261 6964 752e 636f  ://home.baidu.co</span><br><span class="line">    0x0400:  6d3e e585 b3e4 ba8e e799 bee5 baa6 3c2f  m&gt;............&lt;/</span><br><span class="line">    0x0410:  613e 203c 6120 6872 6566 3d68 7474 703a  a&gt;.&lt;a.href=http:</span><br><span class="line">    0x0420:  2f2f 6972 2e62 6169 6475 2e63 6f6d 3e41  //ir.baidu.com&gt;A</span><br><span class="line">    0x0430:  626f 7574 2042 6169 6475 3c2f 613e 203c  bout.Baidu&lt;/a&gt;.&lt;</span><br><span class="line">    0x0440:  2f70 3e20 3c70 2069 643d 6370 3e26 636f  /p&gt;.&lt;p.id=cp&gt;&amp;co</span><br><span class="line">    0x0450:  7079 3b32 3031 3726 6e62 7370 3b42 6169  py;2017&amp;nbsp;Bai</span><br><span class="line">    0x0460:  6475 266e 6273 703b 3c61 2068 7265 663d  du&amp;nbsp;&lt;a.href=</span><br><span class="line">    0x0470:  6874 7470 3a2f 2f77 7777 2e62 6169 6475  http://www.baidu</span><br><span class="line">    0x0480:  2e63 6f6d 2f64 7574 792f 3ee4 bdbf e794  .com/duty/&gt;.....</span><br><span class="line">    0x0490:  a8e7 99be e5ba a6e5 898d e5bf 85e8 afbb  ................</span><br><span class="line">    0x04a0:  3c2f 613e 266e 6273 703b 203c 6120 6872  &lt;/a&gt;&amp;nbsp;.&lt;a.hr</span><br><span class="line">    0x04b0:  6566 3d68 7474 703a 2f2f 6a69 616e 7969  ef=http://jianyi</span><br><span class="line">    0x04c0:  2e62 6169 6475 2e63 6f6d 2f20 636c 6173  .baidu.com/.clas</span><br><span class="line">    0x04d0:  733d 6370 2d66 6565 6462 6163 6b3e e684  s=cp-feedback&gt;..</span><br><span class="line">    0x04e0:  8fe8 a781 e58f 8de9 a688 3c2f 613e 266e  ..........&lt;/a&gt;&amp;n</span><br><span class="line">    0x04f0:  6273 703b e4ba ac49 4350 e8af 8130 3330  bsp;...ICP...030</span><br><span class="line">    0x0500:  3137 33e5 8fb7 266e 6273 703b 203c 696d  173...&amp;nbsp;.&lt;im</span><br><span class="line">    0x0510:  6720 7372 633d 2f2f 7777 772e 6261 6964  g.src=//www.baid</span><br><span class="line">    0x0520:  752e 636f 6d2f 696d 672f 6773 2e67 6966  u.com/img/gs.gif</span><br><span class="line">    0x0530:  3e20 3c2f 703e 203c 2f64 6976 3e20 3c2f  &gt;.&lt;/p&gt;.&lt;/div&gt;.&lt;/</span><br><span class="line">    0x0540:  6469 763e 203c 2f64 6976 3e20 3c2f 626f  div&gt;.&lt;/div&gt;.&lt;/bo</span><br><span class="line">    0x0550:  6479 3e20 3c2f 6874 6d6c 3e0d 0a         dy&gt;.&lt;/html&gt;..</span><br><span class="line">07:05:47.236276 IP (tos 0x0, ttl 64, id 38462, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe8fa (incorrect -&gt; 0x9f07), seq 78, ack 2782, win 274, length 0</span><br><span class="line">    0x0000:  4500 0028 963e 4000 4006 bbb1 ac11 0004  E..(.&gt;@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5106 3d15 b1fd  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5010 0112 e8fa 0000                      P.......</span><br><span class="line">07:05:47.236425 IP (tos 0x0, ttl 64, id 38463, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [F.], cksum 0xe8fa (incorrect -&gt; 0x9f06), seq 78, ack 2782, win 274, length 0</span><br><span class="line">    0x0000:  4500 0028 963f 4000 4006 bbb0 ac11 0004  E..(.?@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5106 3d15 b1fd  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5011 0112 e8fa 0000                      P.......</span><br><span class="line">07:05:47.245278 IP (tos 0x0, ttl 48, id 24978, offset 0, flags [DF], proto TCP (6), length 1373)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [P.], cksum 0x5cf2 (correct), seq 1449:2782, ack 78, win 916, length 1333: HTTP</span><br><span class="line">    0x0000:  4500 055d 6192 4000 3006 fb28 773f c58b  E..]a.@.0..(w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 acc8 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5018 0394 5cf2 0000 746e 223e 3c2f 7370  P...\...tn&quot;&gt;&lt;/sp</span><br><span class="line">    0x0030:  616e 3e20 3c2f 666f 726d 3e20 3c2f 6469  an&gt;.&lt;/form&gt;.&lt;/di</span><br><span class="line">    0x0040:  763e 203c 2f64 6976 3e20 3c64 6976 2069  v&gt;.&lt;/div&gt;.&lt;div.i</span><br><span class="line">    0x0050:  643d 7531 3e20 3c61 2068 7265 663d 6874  d=u1&gt;.&lt;a.href=ht</span><br><span class="line">    0x0060:  7470 3a2f 2f6e 6577 732e 6261 6964 752e  tp://news.baidu.</span><br><span class="line">    0x0070:  636f 6d20 6e61 6d65 3d74 6a5f 7472 6e65  com.name=tj_trne</span><br><span class="line">    0x0080:  7773 2063 6c61 7373 3d6d 6e61 763e e696  ws.class=mnav&gt;..</span><br><span class="line">    0x0090:  b0e9 97bb 3c2f 613e 203c 6120 6872 6566  ....&lt;/a&gt;.&lt;a.href</span><br><span class="line">    0x00a0:  3d68 7474 703a 2f2f 7777 772e 6861 6f31  =http://www.hao1</span><br><span class="line">    0x00b0:  3233 2e63 6f6d 206e 616d 653d 746a 5f74  23.com.name=tj_t</span><br><span class="line">    0x00c0:  7268 616f 3132 3320 636c 6173 733d 6d6e  rhao123.class=mn</span><br><span class="line">    0x00d0:  6176 3e68 616f 3132 333c 2f61 3e20 3c61  av&gt;hao123&lt;/a&gt;.&lt;a</span><br><span class="line">    0x00e0:  2068 7265 663d 6874 7470 3a2f 2f6d 6170  .href=http://map</span><br><span class="line">    0x00f0:  2e62 6169 6475 2e63 6f6d 206e 616d 653d  .baidu.com.name=</span><br><span class="line">    0x0100:  746a 5f74 726d 6170 2063 6c61 7373 3d6d  tj_trmap.class=m</span><br><span class="line">    0x0110:  6e61 763e e59c b0e5 9bbe 3c2f 613e 203c  nav&gt;......&lt;/a&gt;.&lt;</span><br><span class="line">    0x0120:  6120 6872 6566 3d68 7474 703a 2f2f 762e  a.href=http://v.</span><br><span class="line">    0x0130:  6261 6964 752e 636f 6d20 6e61 6d65 3d74  baidu.com.name=t</span><br><span class="line">    0x0140:  6a5f 7472 7669 6465 6f20 636c 6173 733d  j_trvideo.class=</span><br><span class="line">    0x0150:  6d6e 6176 3ee8 a786 e9a2 913c 2f61 3e20  mnav&gt;......&lt;/a&gt;.</span><br><span class="line">    0x0160:  3c61 2068 7265 663d 6874 7470 3a2f 2f74  &lt;a.href=http://t</span><br><span class="line">    0x0170:  6965 6261 2e62 6169 6475 2e63 6f6d 206e  ieba.baidu.com.n</span><br><span class="line">    0x0180:  616d 653d 746a 5f74 7274 6965 6261 2063  ame=tj_trtieba.c</span><br><span class="line">    0x0190:  6c61 7373 3d6d 6e61 763e e8b4 b4e5 90a7  lass=mnav&gt;......</span><br><span class="line">    0x01a0:  3c2f 613e 203c 6e6f 7363 7269 7074 3e20  &lt;/a&gt;.&lt;noscript&gt;.</span><br><span class="line">    0x01b0:  3c61 2068 7265 663d 6874 7470 3a2f 2f77  &lt;a.href=http://w</span><br><span class="line">    0x01c0:  7777 2e62 6169 6475 2e63 6f6d 2f62 646f  ww.baidu.com/bdo</span><br><span class="line">    0x01d0:  727a 2f6c 6f67 696e 2e67 6966 3f6c 6f67  rz/login.gif?log</span><br><span class="line">    0x01e0:  696e 2661 6d70 3b74 706c 3d6d 6e26 616d  in&amp;amp;tpl=mn&amp;am</span><br><span class="line">    0x01f0:  703b 753d 6874 7470 2533 4125 3246 2532  p;u=http%3A%2F%2</span><br><span class="line">    0x0200:  4677 7777 2e62 6169 6475 2e63 6f6d 2532  Fwww.baidu.com%2</span><br><span class="line">    0x0210:  6625 3366 6264 6f72 7a5f 636f 6d65 2533  f%3fbdorz_come%3</span><br><span class="line">    0x0220:  6431 206e 616d 653d 746a 5f6c 6f67 696e  d1.name=tj_login</span><br><span class="line">    0x0230:  2063 6c61 7373 3d6c 623e e799 bbe5 bd95  .class=lb&gt;......</span><br><span class="line">    0x0240:  3c2f 613e 203c 2f6e 6f73 6372 6970 743e  &lt;/a&gt;.&lt;/noscript&gt;</span><br><span class="line">    0x0250:  203c 7363 7269 7074 3e64 6f63 756d 656e  .&lt;script&gt;documen</span><br><span class="line">    0x0260:  742e 7772 6974 6528 273c 6120 6872 6566  t.write(&#x27;&lt;a.href</span><br><span class="line">    0x0270:  3d22 6874 7470 3a2f 2f77 7777 2e62 6169  =&quot;http://www.bai</span><br><span class="line">    0x0280:  6475 2e63 6f6d 2f62 646f 727a 2f6c 6f67  du.com/bdorz/log</span><br><span class="line">    0x0290:  696e 2e67 6966 3f6c 6f67 696e 2674 706c  in.gif?login&amp;tpl</span><br><span class="line">    0x02a0:  3d6d 6e26 753d 272b 2065 6e63 6f64 6555  =mn&amp;u=&#x27;+.encodeU</span><br><span class="line">    0x02b0:  5249 436f 6d70 6f6e 656e 7428 7769 6e64  RIComponent(wind</span><br><span class="line">    0x02c0:  6f77 2e6c 6f63 6174 696f 6e2e 6872 6566  ow.location.href</span><br><span class="line">    0x02d0:  2b20 2877 696e 646f 772e 6c6f 6361 7469  +.(window.locati</span><br><span class="line">    0x02e0:  6f6e 2e73 6561 7263 6820 3d3d 3d20 2222  on.search.===.&quot;&quot;</span><br><span class="line">    0x02f0:  203f 2022 3f22 203a 2022 2622 292b 2022  .?.&quot;?&quot;.:.&quot;&amp;&quot;)+.&quot;</span><br><span class="line">    0x0300:  6264 6f72 7a5f 636f 6d65 3d31 2229 2b20  bdorz_come=1&quot;)+.</span><br><span class="line">    0x0310:  2722 206e 616d 653d 2274 6a5f 6c6f 6769  &#x27;&quot;.name=&quot;tj_logi</span><br><span class="line">    0x0320:  6e22 2063 6c61 7373 3d22 6c62 223e e799  n&quot;.class=&quot;lb&quot;&gt;..</span><br><span class="line">    0x0330:  bbe5 bd95 3c2f 613e 2729 3b3c 2f73 6372  ....&lt;/a&gt;&#x27;);&lt;/scr</span><br><span class="line">    0x0340:  6970 743e 203c 6120 6872 6566 3d2f 2f77  ipt&gt;.&lt;a.href=//w</span><br><span class="line">    0x0350:  7777 2e62 6169 6475 2e63 6f6d 2f6d 6f72  ww.baidu.com/mor</span><br><span class="line">    0x0360:  652f 206e 616d 653d 746a 5f62 7269 6963  e/.name=tj_briic</span><br><span class="line">    0x0370:  6f6e 2063 6c61 7373 3d62 7269 2073 7479  on.class=bri.sty</span><br><span class="line">    0x0380:  6c65 3d22 6469 7370 6c61 793a 2062 6c6f  le=&quot;display:.blo</span><br><span class="line">    0x0390:  636b 3b22 3ee6 9bb4 e5a4 9ae4 baa7 e593  ck;&quot;&gt;...........</span><br><span class="line">    0x03a0:  813c 2f61 3e20 3c2f 6469 763e 203c 2f64  .&lt;/a&gt;.&lt;/div&gt;.&lt;/d</span><br><span class="line">    0x03b0:  6976 3e20 3c2f 6469 763e 203c 6469 7620  iv&gt;.&lt;/div&gt;.&lt;div.</span><br><span class="line">    0x03c0:  6964 3d66 7443 6f6e 3e20 3c64 6976 2069  id=ftCon&gt;.&lt;div.i</span><br><span class="line">    0x03d0:  643d 6674 436f 6e77 3e20 3c70 2069 643d  d=ftConw&gt;.&lt;p.id=</span><br><span class="line">    0x03e0:  6c68 3e20 3c61 2068 7265 663d 6874 7470  lh&gt;.&lt;a.href=http</span><br><span class="line">    0x03f0:  3a2f 2f68 6f6d 652e 6261 6964 752e 636f  ://home.baidu.co</span><br><span class="line">    0x0400:  6d3e e585 b3e4 ba8e e799 bee5 baa6 3c2f  m&gt;............&lt;/</span><br><span class="line">    0x0410:  613e 203c 6120 6872 6566 3d68 7474 703a  a&gt;.&lt;a.href=http:</span><br><span class="line">    0x0420:  2f2f 6972 2e62 6169 6475 2e63 6f6d 3e41  //ir.baidu.com&gt;A</span><br><span class="line">    0x0430:  626f 7574 2042 6169 6475 3c2f 613e 203c  bout.Baidu&lt;/a&gt;.&lt;</span><br><span class="line">    0x0440:  2f70 3e20 3c70 2069 643d 6370 3e26 636f  /p&gt;.&lt;p.id=cp&gt;&amp;co</span><br><span class="line">    0x0450:  7079 3b32 3031 3726 6e62 7370 3b42 6169  py;2017&amp;nbsp;Bai</span><br><span class="line">    0x0460:  6475 266e 6273 703b 3c61 2068 7265 663d  du&amp;nbsp;&lt;a.href=</span><br><span class="line">    0x0470:  6874 7470 3a2f 2f77 7777 2e62 6169 6475  http://www.baidu</span><br><span class="line">    0x0480:  2e63 6f6d 2f64 7574 792f 3ee4 bdbf e794  .com/duty/&gt;.....</span><br><span class="line">    0x0490:  a8e7 99be e5ba a6e5 898d e5bf 85e8 afbb  ................</span><br><span class="line">    0x04a0:  3c2f 613e 266e 6273 703b 203c 6120 6872  &lt;/a&gt;&amp;nbsp;.&lt;a.hr</span><br><span class="line">    0x04b0:  6566 3d68 7474 703a 2f2f 6a69 616e 7969  ef=http://jianyi</span><br><span class="line">    0x04c0:  2e62 6169 6475 2e63 6f6d 2f20 636c 6173  .baidu.com/.clas</span><br><span class="line">    0x04d0:  733d 6370 2d66 6565 6462 6163 6b3e e684  s=cp-feedback&gt;..</span><br><span class="line">    0x04e0:  8fe8 a781 e58f 8de9 a688 3c2f 613e 266e  ..........&lt;/a&gt;&amp;n</span><br><span class="line">    0x04f0:  6273 703b e4ba ac49 4350 e8af 8130 3330  bsp;...ICP...030</span><br><span class="line">    0x0500:  3137 33e5 8fb7 266e 6273 703b 203c 696d  173...&amp;nbsp;.&lt;im</span><br><span class="line">    0x0510:  6720 7372 633d 2f2f 7777 772e 6261 6964  g.src=//www.baid</span><br><span class="line">    0x0520:  752e 636f 6d2f 696d 672f 6773 2e67 6966  u.com/img/gs.gif</span><br><span class="line">    0x0530:  3e20 3c2f 703e 203c 2f64 6976 3e20 3c2f  &gt;.&lt;/p&gt;.&lt;/div&gt;.&lt;/</span><br><span class="line">    0x0540:  6469 763e 203c 2f64 6976 3e20 3c2f 626f  div&gt;.&lt;/div&gt;.&lt;/bo</span><br><span class="line">    0x0550:  6479 3e20 3c2f 6874 6d6c 3e0d 0a         dy&gt;.&lt;/html&gt;..</span><br><span class="line">07:05:47.245289 IP (tos 0x0, ttl 64, id 38464, offset 0, flags [DF], proto TCP (6), length 52)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe906 (incorrect -&gt; 0x8ffe), seq 79, ack 2782, win 274, options [nop,nop,sack 1 &#123;1449:2782&#125;], length 0</span><br><span class="line">    0x0000:  4500 0034 9640 4000 4006 bba3 ac11 0004  E..4.@@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5107 3d15 b1fd  w?.....P..Q.=...</span><br><span class="line">    0x0020:  8010 0112 e906 0000 0101 050a 3d15 acc8  ............=...</span><br><span class="line">    0x0030:  3d15 b1fd                                =...</span><br><span class="line">07:05:47.290600 IP (tos 0x0, ttl 48, id 24979, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [.], cksum 0x9c84 (correct), seq 2782, ack 79, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 6193 4000 3006 005d 773f c58b  E..(a.@.0..]w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 b1fd f8d8 5107  .....P..=.....Q.</span><br><span class="line">    0x0020:  5010 0394 9c84 0000                      P.......</span><br><span class="line">07:05:47.290677 IP (tos 0x0, ttl 48, id 24980, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [F.], cksum 0x9c83 (correct), seq 2782, ack 79, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 6194 4000 3006 005c 773f c58b  E..(a.@.0..\w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 b1fd f8d8 5107  .....P..=.....Q.</span><br><span class="line">    0x0020:  5011 0394 9c83 0000                      P.......</span><br><span class="line">07:05:47.290688 IP (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0x9f05 (correct), seq 79, ack 2783, win 274, length 0</span><br><span class="line">    0x0000:  4500 0028 0000 4000 4006 51f0 ac11 0004  E..(..@.@.Q.....</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5107 3d15 b1fe  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5010 0112 9f05 0000                      P.......</span><br><span class="line">07:05:52.563152 ARP, Ethernet (len 6), IPv4 (len 4), Request who-has _gateway tell 11c749e93da4, length 28</span><br><span class="line">    0x0000:  0001 0800 0604 0001 0242 ac11 0004 ac11  .........B......</span><br><span class="line">    0x0010:  0004 0000 0000 0000 ac11 0001            ............</span><br><span class="line">07:05:52.563261 IP (tos 0x0, ttl 64, id 11424, offset 0, flags [DF], proto UDP (17), length 69)</span><br><span class="line">    11c749e93da4.55957 &gt; 183.60.83.19.domain: [bad udp cksum 0xb6a7 -&gt; 0x168f!] 27628+ PTR? 1.0.17.172.in-addr.arpa. (41)</span><br><span class="line">    0x0000:  4500 0045 2ca0 4000 4011 57a3 ac11 0004  E..E,.@.@.W.....</span><br><span class="line">    0x0010:  b73c 5313 da95 0035 0031 b6a7 6bec 0100  .&lt;S....5.1..k...</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0131 0130 0231 3703  .........1.0.17.</span><br><span class="line">    0x0030:  3137 3207 696e 2d61 6464 7204 6172 7061  172.in-addr.arpa</span><br><span class="line">    0x0040:  0000 0c00 01                             .....</span><br><span class="line">07:05:52.563277 ARP, Ethernet (len 6), IPv4 (len 4), Request who-has 11c749e93da4 tell _gateway, length 28</span><br><span class="line">    0x0000:  0001 0800 0604 0001 0242 d8b4 5ac6 ac11  .........B..Z...</span><br><span class="line">    0x0010:  0001 0000 0000 0000 ac11 0004            ............</span><br><span class="line">07:05:52.563282 ARP, Ethernet (len 6), IPv4 (len 4), Reply 11c749e93da4 is-at 02:42:ac:11:00:04 (oui Unknown), length 28</span><br><span class="line">    0x0000:  0001 0800 0604 0002 0242 ac11 0004 ac11  .........B......</span><br><span class="line">    0x0010:  0004 0242 d8b4 5ac6 ac11 0001            ...B..Z.....</span><br><span class="line">07:05:52.563338 ARP, Ethernet (len 6), IPv4 (len 4), Reply _gateway is-at 02:42:d8:b4:5a:c6 (oui Unknown), length 28</span><br><span class="line">    0x0000:  0001 0800 0604 0002 0242 d8b4 5ac6 ac11  .........B..Z...</span><br><span class="line">    0x0010:  0001 0242 ac11 0004 ac11 0004            ...B........</span><br><span class="line">07:05:52.564181 IP (tos 0x0, ttl 251, id 25768, offset 0, flags [DF], proto UDP (17), length 128)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.55957: [udp sum ok] 27628 NXDomain q: PTR? 1.0.17.172.in-addr.arpa. 0/1/0 ns: 17.172.in-addr.arpa. SOA localhost. nobody.invalid. 1 3600 1200 604800 10800 (100)</span><br><span class="line">    0x0000:  4500 0080 64a8 4000 fb11 645f b73c 5313  E...d.@...d_.&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 da95 006c 3205 6bec 8183  .....5...l2.k...</span><br><span class="line">    0x0020:  0001 0000 0001 0000 0131 0130 0231 3703  .........1.0.17.</span><br><span class="line">    0x0030:  3137 3207 696e 2d61 6464 7204 6172 7061  172.in-addr.arpa</span><br><span class="line">    0x0040:  0000 0c00 01c0 1000 0600 0100 0028 7700  .............(w.</span><br><span class="line">    0x0050:  2f09 6c6f 6361 6c68 6f73 7400 066e 6f62  /.localhost..nob</span><br><span class="line">    0x0060:  6f64 7907 696e 7661 6c69 6400 0000 0001  ody.invalid.....</span><br><span class="line">    0x0070:  0000 0e10 0000 04b0 0009 3a80 0000 2a30  ..........:...*0</span><br><span class="line">07:06:22.259171 IP6 (hlim 255, next-header ICMPv6 (58) payload length: 16) fe80::783e:2cff:fe82:366e &gt; ip6-allrouters: [icmp6 sum ok] ICMP6, router solicitation, length 16</span><br><span class="line">      source link-address option (1), length 8 (1): 7a:3e:2c:82:36:6e</span><br><span class="line">        0x0000:  7a3e 2c82 366e</span><br><span class="line">    0x0000:  6000 0000 0010 3aff fe80 0000 0000 0000  `.....:.........</span><br><span class="line">    0x0010:  783e 2cff fe82 366e ff02 0000 0000 0000  x&gt;,...6n........</span><br><span class="line">    0x0020:  0000 0000 0000 0002 8500 c4d0 0000 0000  ................</span><br><span class="line">    0x0030:  0101 7a3e 2c82 366e                      ..z&gt;,.6n</span><br><span class="line">07:06:22.259342 IP (tos 0x0, ttl 64, id 31879, offset 0, flags [DF], proto UDP (17), length 118)</span><br><span class="line">    11c749e93da4.41853 &gt; 183.60.83.19.domain: [bad udp cksum 0xb6d8 -&gt; 0x897b!] 42755+ PTR? e.6.6.3.2.8.e.f.f.f.c.2.e.3.8.7.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. (90)</span><br><span class="line">    0x0000:  4500 0076 7c87 4000 4011 078b ac11 0004  E..v|.@.@.......</span><br><span class="line">    0x0010:  b73c 5313 a37d 0035 0062 b6d8 a703 0100  .&lt;S..&#125;.5.b......</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0165 0136 0136 0133  .........e.6.6.3</span><br><span class="line">    0x0030:  0132 0138 0165 0166 0166 0166 0163 0132  .2.8.e.f.f.f.c.2</span><br><span class="line">    0x0040:  0165 0133 0138 0137 0130 0130 0130 0130  .e.3.8.7.0.0.0.0</span><br><span class="line">    0x0050:  0130 0130 0130 0130 0130 0130 0130 0130  .0.0.0.0.0.0.0.0</span><br><span class="line">    0x0060:  0130 0138 0165 0166 0369 7036 0461 7270  .0.8.e.f.ip6.arp</span><br><span class="line">    0x0070:  6100 000c 0001                           a.....</span><br><span class="line">07:06:22.260457 IP (tos 0x0, ttl 251, id 8652, offset 0, flags [DF], proto UDP (17), length 177)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.41853: [udp sum ok] 42755 NXDomain* q: PTR? e.6.6.3.2.8.e.f.f.f.c.2.e.3.8.7.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. 0/1/0 ns: 8.e.f.ip6.arpa. SOA localhost. nobody.invalid. 1 3600 1200 604800 10800 (149)</span><br><span class="line">    0x0000:  4500 00b1 21cc 4000 fb11 a70a b73c 5313  E...!.@......&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 a37d 009d 732e a703 8583  .....5.&#125;..s.....</span><br><span class="line">    0x0020:  0001 0000 0001 0000 0165 0136 0136 0133  .........e.6.6.3</span><br><span class="line">    0x0030:  0132 0138 0165 0166 0166 0166 0163 0132  .2.8.e.f.f.f.c.2</span><br><span class="line">    0x0040:  0165 0133 0138 0137 0130 0130 0130 0130  .e.3.8.7.0.0.0.0</span><br><span class="line">    0x0050:  0130 0130 0130 0130 0130 0130 0130 0130  .0.0.0.0.0.0.0.0</span><br><span class="line">    0x0060:  0130 0138 0165 0166 0369 7036 0461 7270  .0.8.e.f.ip6.arp</span><br><span class="line">    0x0070:  6100 000c 0001 c046 0006 0001 0000 2a30  a......F......*0</span><br><span class="line">    0x0080:  002f 096c 6f63 616c 686f 7374 0006 6e6f  ./.localhost..no</span><br><span class="line">    0x0090:  626f 6479 0769 6e76 616c 6964 0000 0000  body.invalid....</span><br><span class="line">    0x00a0:  0100 000e 1000 0004 b000 093a 8000 002a  ...........:...*</span><br><span class="line">    0x00b0:  30                                       0</span><br><span class="line">07:10:28.019149 IP6 (hlim 255, next-header ICMPv6 (58) payload length: 16) fe80::783e:2cff:fe82:366e &gt; ip6-allrouters: [icmp6 sum ok] ICMP6, router solicitation, length 16</span><br><span class="line">      source link-address option (1), length 8 (1): 7a:3e:2c:82:36:6e</span><br><span class="line">        0x0000:  7a3e 2c82 366e</span><br><span class="line">    0x0000:  6000 0000 0010 3aff fe80 0000 0000 0000  `.....:.........</span><br><span class="line">    0x0010:  783e 2cff fe82 366e ff02 0000 0000 0000  x&gt;,...6n........</span><br><span class="line">    0x0020:  0000 0000 0000 0002 8500 c4d0 0000 0000  ................</span><br><span class="line">    0x0030:  0101 7a3e 2c82 366e                      ..z&gt;,.6n</span><br></pre></td></tr></table></figure>
+
+<h1 id="从IP报文开始说起"><a href="#从IP报文开始说起" class="headerlink" title="从IP报文开始说起"></a>从IP报文开始说起</h1><p>先回顾<a href="/QQTKJ0.html#IPv4">IPv4报文</a>, 然后回顾<a href="/QQWYM0.html#IP%E6%8A%A5%E6%96%87">报文细节</a></p>
+<p><img src='/image-2021-04-01-10.26.02.931.png'></img></p>
+<p>一般情况下，IPv4头为20字节，</p>
+<p>更一般地，版本为4，首部长度为5（5*4&#x3D;20字节），服务类型为00（代表常规），数据报长度未知，取决于数据，所以前4个字节一般为 <code>4500 xxxx</code></p>
+<p>16位比特标识对于每一个主机发送的IP报文，其数值是递增的，对于IP报文都最后一个分片标志为1，其他分片标志为0，如果路由器不涉及分片，则13位的偏移也为0，故而这四个字节一般为 <code>xxxx,xxxx,xxxx,xxxx 0010 0000,0000,0000</code>, 也即<code>xxxx 4000</code></p>
+<p>对于8位的寿命，这个是未知的，对于上层协议，UDP为17，TCP为6，故而为<code>11</code>或者<code>06</code>,对于首部校验和，这个未知，故而这4个字节一般为 <code>xx11 xxxx</code> 或者 <code>xx06 xxxx</code></p>
+<p>总体上来看:</p>
+<p>UDP报文的IP头为 <code>4500 xxxx xxxx 4000 xx11 xxxx xxxx xxxx xxxx xxxx</code></p>
+<p>TCP报文的IP头为 <code>4500 xxxx xxxx 4000 xx06 xxxx xxxx xxxx xxxx xxxx</code></p>
+<h1 id="失败的UDP请求"><a href="#失败的UDP请求" class="headerlink" title="失败的UDP请求"></a>失败的UDP请求</h1><p>我们发现前两条中出现了两个UDP报文,这里前10个字节很明显能看到是属于UDP报文被IP封包了。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.059101 IP (tos 0x0, ttl 64, id 10179, offset 0, flags [DF], proto UDP (17), length 59)</span><br><span class="line">    11c749e93da4.39962 &gt; 183.60.83.19.domain: [bad udp cksum 0xb69d -&gt; 0x7fa1!] 29001+ A? www.baidu.com. (31)</span><br><span class="line">    0x0000:  4500 003b 27c3 4000 4011 5c8a ac11 0004  E..;&#x27;.@.@.\.....</span><br><span class="line">    0x0010:  b73c 5313 9c1a 0035 0027 b69d 7149 0100  .&lt;S....5.&#x27;..qI..</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 0100 01              du.com.....</span><br><span class="line">07:05:47.059181 IP (tos 0x0, ttl 64, id 10180, offset 0, flags [DF], proto UDP (17), length 59)</span><br><span class="line">    11c749e93da4.39962 &gt; 183.60.83.19.domain: [bad udp cksum 0xb69d -&gt; 0x8397!] 21075+ AAAA? www.baidu.com. (31)</span><br><span class="line">    0x0000:  4500 003b 27c4 4000 4011 5c89 ac11 0004  E..;&#x27;.@.@.\.....</span><br><span class="line">    0x0010:  b73c 5313 9c1a 0035 0027 b69d 5253 0100  .&lt;S....5.&#x27;..RS..</span><br><span class="line">    0x0020:  0001 0000 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 1c00 01              du.com.....</span><br></pre></td></tr></table></figure>
+
+<p>咱们先不管这两个报文是干什么的,不难出现了一个<code>[bad udp cksum 0xb69d -&gt; 0x7fa1!]</code>,这个意思很明显了,原来这是两个坏的UDP包。我们回顾<a href="/QQTKJ0.html#UDP%E6%8A%A5%E6%96%87">UDP报文</a>，然后对着两个包进行分析</p>
+<h2 id="UDP报文复习"><a href="#UDP报文复习" class="headerlink" title="UDP报文复习"></a>UDP报文复习</h2><p><img src='/image-2021-03-31-19.09.46.059.png'></img></p>
+<p>对于第一个报文，我们对他进行如下分解， 其中的<code> [bad udp cksum 0xb69d -&gt; 0x7fa1!]</code>指的就是数据部分的校验和不等于b69d所以这个包是一个发生了错误的包，</p>
+<p>另一方面我们还能得到一些信息，<code>11c749e93da4.39962 &gt; 183.60.83.19.domain: </code>代表这个包由11c749e93da4发往183.60.83.19:53， 53是DNS服务器的端口，所以我们猜测这是一个DNS请求</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">IP 头</span><br><span class="line">4500 003b 27c3 4000 4011 5c8a ac11 0004 b73c 5313</span><br><span class="line">UDP 头</span><br><span class="line">9c1a 0035 0027 b69d </span><br><span class="line">数据</span><br><span class="line">7149 0100 0001 0000 0000 0000 0377 7777 0562 6169</span><br><span class="line">6475 0363 6f6d 0000 0100 01  </span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>虽然域名能解析但出现了一些bad udp之类的数据包，很奇怪，后来深入了解了一下网卡的checksum offloading 机制，它是负责计算需要发送或者接收到的TCP&#x2F;UDP消息的校验和，从而节省CPU的计算开销的一种机制，CheckSum Offload实际上是将传输层的一部分工作交给了硬件完成，以节约系统的CPU资源。微软的测试表明它可以最多节约30%的CPU资源。<br>————————————————<br>版权声明：本文为CSDN博主「u010278923」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u010278923/article/details/81697553">https://blog.csdn.net/u010278923/article/details/81697553</a></p>
+</blockquote>
+<p>然后后面并没有看到正确的DNS请求报文，笔者还暂未弄清原因</p>
+<h1 id="DNS回应"><a href="#DNS回应" class="headerlink" title="DNS回应"></a>DNS回应</h1><p>先复习一下<a href="/QQWYM0.html#DNS%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F">DNS协议</a></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.059442 IP (tos 0x0, ttl 60, id 50890, offset 0, flags [DF], proto UDP (17), length 144)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.39962: [udp sum ok] 29001 q: A? www.baidu.com. 4/0/0 www.baidu.com. CNAME www.a.shifen.com., www.a.shifen.com. CNAME www.wshifen.com., www.wshifen.com. A 119.63.197.139, www.wshifen.com. A 119.63.197.151 (116)</span><br><span class="line">    0x0000:  4500 0090 c6ca 4000 3c11 c12d b73c 5313  E.....@.&lt;..-.&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 9c1a 007c 7f99 7149 8180  .....5...|..qI..</span><br><span class="line">    0x0020:  0001 0004 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 0100 01c0 0c00 0500  du.com..........</span><br><span class="line">    0x0040:  0100 0002 c900 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">    0x0050:  6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">    0x0060:  000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br><span class="line">    0x0070:  c046 0001 0001 0000 0104 0004 773f c58b  .F..........w?..</span><br><span class="line">    0x0080:  c046 0001 0001 0000 0104 0004 773f c597  .F..........w?..</span><br><span class="line">07:05:47.059514 IP (tos 0x0, ttl 60, id 50891, offset 0, flags [DF], proto UDP (17), length 112)</span><br><span class="line">    183.60.83.19.domain &gt; 11c749e93da4.39962: [udp sum ok] 21075 q: AAAA? www.baidu.com. 2/0/0 www.baidu.com. CNAME www.a.shifen.com., www.a.shifen.com. CNAME www.wshifen.com. (84)</span><br><span class="line">    0x0000:  4500 0070 c6cb 4000 3c11 c14c b73c 5313  E..p..@.&lt;..L.&lt;S.</span><br><span class="line">    0x0010:  ac11 0004 0035 9c1a 005c c213 5253 8180  .....5...\..RS..</span><br><span class="line">    0x0020:  0001 0002 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">    0x0030:  6475 0363 6f6d 0000 1c00 01c0 0c00 0500  du.com..........</span><br><span class="line">    0x0040:  0100 0004 8700 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">    0x0050:  6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">    0x0060:  000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br></pre></td></tr></table></figure>
+
+<p><img src='/image-2021-04-04-16.30.13.746.png'></img></p>
+<p>我们提取DNS回应中第一个UDP报文的数据段</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                              7149 8180              qI..</span><br><span class="line">0001 0004 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">6475 0363 6f6d 0000 0100 01c0 0c00 0500  du.com..........</span><br><span class="line">0100 0002 c900 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br><span class="line">c046 0001 0001 0000 0104 0004 773f c58b  .F..........w?..</span><br><span class="line">c046 0001 0001 0000 0104 0004 773f c597  .F..........w?..</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">事务id: 7149</span><br><span class="line">分解: 8180 -&gt; 1000, 0001, 1000, 0000 -&gt; 1, 0000, 0, 0, 1, 1, 0, 0, 0, 0000</span><br><span class="line">QR: 1 -&gt; 查询</span><br><span class="line">OpCode: 0000 -&gt; 查询</span><br><span class="line">AA: 0 -&gt; 未授权</span><br><span class="line">TC: 0 -&gt; 未截断</span><br><span class="line">RD: 1 -&gt; 期望递归</span><br><span class="line">RA: 1 -&gt; 支持递归</span><br><span class="line">Z: 0 -&gt; 保留位</span><br><span class="line">AD: 0 -&gt; 授权</span><br><span class="line">CD: 0 -&gt; 不禁止安全检查</span><br><span class="line">RCODE: 0000 -&gt; 无错误</span><br><span class="line">查询数/区域数: 0001 -&gt; 一个查询</span><br><span class="line">回答数/先决条件数: 0004 -&gt; 4个回答</span><br><span class="line">授权记录数/更新数: 0000</span><br><span class="line">额外信息数: 0000</span><br><span class="line"></span><br><span class="line">查询: 0377 7777 0562 6169 6475 0363 6f6d -&gt; .www.baidu.com</span><br><span class="line">回答: </span><br><span class="line">00 00 01 00 01 </span><br><span class="line"></span><br><span class="line">c0 0c</span><br><span class="line">00 05 00 01 00 00 02 c9 00 0f 03 77 77 77 01 61 06 73 68 69 66 65 6e c0 16 </span><br><span class="line"></span><br><span class="line">c0 2b </span><br><span class="line">00 05 00 01 00 00 01 03 00 0e 03 77 77 77 07 77 73 68 69 66 65 6e c0 16 </span><br><span class="line"></span><br><span class="line">c0 46 </span><br><span class="line">00 01 00 01 00 00 01 04 00 04 77 3f c5 8b </span><br><span class="line"></span><br><span class="line">c0 46 </span><br><span class="line">00 01 00 01 00 00 01 04 00 04 77 3f c5 97</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">回答1</span><br><span class="line">  -&gt; c0 0c</span><br><span class="line">  -&gt; 00 05 00 01 00 00 02 c9 00 0f 03 77 77 77 01 61 06 73 68 69 66 65 6e c0 16 </span><br><span class="line">  名称: c00c</span><br><span class="line">  类型: 0005 -&gt; CNAME</span><br><span class="line">  类： 0001 -&gt; 互联网</span><br><span class="line">  TTL: 0000 02c9 -&gt; 缓存</span><br><span class="line">  RDLENGTH: 000f -&gt; 15 -&gt; RDATA有15字节</span><br><span class="line">  RDATA: 03 77 77 77 01 61 06 73 68 69 66 65 6e c0 16  .www.a.shifen..</span><br><span class="line"></span><br><span class="line">回答2</span><br><span class="line">  -&gt; c0 2b </span><br><span class="line">  -&gt; 00 05 00 01 00 00 01 03 00 0e 03 77 77 77 07 77 73 68 69 66 65 6e c0 16 </span><br><span class="line">  名称: c02b</span><br><span class="line">  类型: 0005 -&gt; CNAME</span><br><span class="line">  类： 0001 -&gt; 互联网</span><br><span class="line">  TTL: 0000 0103 -&gt; 缓存</span><br><span class="line">  RDLENGTH: 000e -&gt; 14 -&gt; RDATA有14字节</span><br><span class="line">  RDATA: 03 77 77 77 07 77 73 68 69 66 65 6e c0 16 .www.wshifen..</span><br><span class="line">  </span><br><span class="line"> 回答3</span><br><span class="line">  -&gt; c0 46 </span><br><span class="line">  -&gt; 00 01 00 01 00 00 01 04 00 04 77 3f c5 8b </span><br><span class="line">  名称: c046</span><br><span class="line">  类型: 0001 -&gt; A</span><br><span class="line">  类： 0001 -&gt; 互联网</span><br><span class="line">  TTL: 0000 0104 -&gt; 缓存</span><br><span class="line">  RDLENGTH: 0004 -&gt; 4 -&gt; RDATA有4字节</span><br><span class="line">  RDATA: 77 3f c5 8b -&gt; 119.63.197.139</span><br><span class="line">  </span><br><span class="line">   回答4</span><br><span class="line">  -&gt; c0 46 </span><br><span class="line">  -&gt; 00 01 00 01 00 00 01 04 00 04 77 3f c5 97</span><br><span class="line">  名称: c046</span><br><span class="line">  类型: 0001 -&gt; A</span><br><span class="line">  类： 0001 -&gt; 互联网</span><br><span class="line">  TTL: 0000 0104 -&gt; 缓存</span><br><span class="line">  RDLENGTH: 0004 -&gt; 4 -&gt; RDATA有4字节</span><br><span class="line">  RDATA: 77 3f c5 97 -&gt; 119.63.197.151</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                              7149 8180              qI..</span><br><span class="line">0001 0004 0000 0000 0377 7777 0562 6169  .........www.bai</span><br><span class="line">6475 0363 6f6d 0000 0100 01c0 0c00 0500  du.com..........</span><br><span class="line">0100 0002 c900 0f03 7777 7701 6106 7368  ........www.a.sh</span><br><span class="line">6966 656e c016 c02b 0005 0001 0000 0103  ifen...+........</span><br><span class="line">000e 0377 7777 0777 7368 6966 656e c016  ...www.wshifen..</span><br><span class="line">c046 0001 0001 0000 0104 0004 773f c58b  .F..........w?..</span><br><span class="line">c046 0001 0001 0000 0104 0004 773f c597  .F..........w?..</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>最后，我们发现这就是<code>q: A? www.baidu.com. 4/0/0 www.baidu.com. CNAME www.a.shifen.com., www.a.shifen.com. CNAME www.wshifen.com., www.wshifen.com. A 119.63.197.139, www.wshifen.com. A 119.63.197.151 (116)</code></p>
+<h1 id="PRT"><a href="#PRT" class="headerlink" title="PRT"></a>PRT</h1><p>紧接着是一个PRT， IP到域名的逆向查询，这个不知道是干什么的</p>
+<h1 id="TCP开始"><a href="#TCP开始" class="headerlink" title="TCP开始"></a>TCP开始</h1><p>TCP报文<a href="/QQTKJ0.html#TCP">复习</a></p>
+<p><img src='/image-2021-03-31-20.10.47.283.png'></img></p>
+<h2 id="第一次握手"><a href="#第一次握手" class="headerlink" title="第一次握手"></a>第一次握手</h2><p>我们的主机发送了第一个TCP链接，(三次握手第一步)</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.061686 IP (tos 0x0, ttl 64, id 38458, offset 0, flags [DF], proto TCP (6), length 60)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [S], cksum 0xe90e (incorrect -&gt; 0xaa0e), seq 4174926008, win 29200, options [mss 1460,sackOK,TS val 1805688806 ecr 0,nop,wscale 7], length 0</span><br><span class="line">    0x0000:  4500 003c 963a 4000 4006 bba1 ac11 0004  E..&lt;.:@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b8 0000 0000  w?.....P..P.....</span><br><span class="line">    0x0020:  a002 7210 e90e 0000 0204 05b4 0402 080a  ..r.............</span><br><span class="line">    0x0030:  6ba0 9fe6 0000 0000 0103 0307            k...........</span><br></pre></td></tr></table></figure>
+
+<p>我们提取TCP报文</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">          ed98 0050 f8d8 50b8 0000 0000</span><br><span class="line">a002 7210 e90e 0000 0204 05b4 0402 080a</span><br><span class="line">6ba0 9fe6 0000 0000 0103 0307</span><br></pre></td></tr></table></figure>
+
+
+
+<p>提取TCP报文头部</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TCP头</span><br><span class="line">ed98 0050 f8d8 50b8 0000 0000 a002 7210 e90e 0000 0204 05b4 0402 080a 6ba0 9fe6 0000 0000 0103 0307</span><br></pre></td></tr></table></figure>
+
+
+
+<p>解析TCP头</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">源端口: ed98 -&gt; 60824</span><br><span class="line">目标端口: 0050 -&gt; 80</span><br><span class="line">序列号: f8d8 50b8 -&gt; 4174926008</span><br><span class="line">确认号: 0000 0000 -&gt; 0</span><br><span class="line">a002 -&gt; 1010 0000 0000 0010</span><br><span class="line">首部长度: 0xa -&gt; 10</span><br><span class="line">保留: 0x0 -&gt; 0</span><br><span class="line">CWR: 0</span><br><span class="line">ECE: 0</span><br><span class="line">URG: 0</span><br><span class="line">ACK: 0</span><br><span class="line">PSH: 0</span><br><span class="line">RST: 0</span><br><span class="line">SYN: 1</span><br><span class="line">FIN: 0</span><br><span class="line">接收窗口: 7210 -&gt; 29200</span><br><span class="line">校验和: e90e</span><br><span class="line">紧急数据指针: 0000</span><br><span class="line">选项1: 0204 05b4  -&gt; mss = 0x05b4 = 1460</span><br><span class="line">选项2: 0402 -&gt; sackOk</span><br><span class="line">选项3: 080a 6ba0 9fe6 0000 0000  -&gt; TS val 1805688806 ecr 0</span><br><span class="line">选项4: 01 -&gt; 填充</span><br><span class="line">选项5: 03 0307 -&gt; 窗口缩放因子 = 7</span><br></pre></td></tr></table></figure>
+
+<h2 id="第二次握手"><a href="#第二次握手" class="headerlink" title="第二次握手"></a>第二次握手</h2><p>百度给我们回应了一个TCP报文(三次握手第二步)</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.115732 IP (tos 0x0, ttl 50, id 38458, offset 0, flags [DF], proto TCP (6), length 60)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [S.], cksum 0x268b (correct), seq 1024829215, ack 4174926009, win 8192, options [mss 1424,sackOK,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,wscale 5], length 0</span><br><span class="line">    0x0000:  4500 003c 963a 4000 3206 c9a1 773f c58b  E..&lt;.:@.2...w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a71f f8d8 50b9  .....P..=.....P.</span><br><span class="line">    0x0020:  a012 2000 268b 0000 0204 0590 0402 0101  ....&amp;...........</span><br><span class="line">    0x0030:  0101 0101 0101 0101 0103 0305            ............</span><br></pre></td></tr></table></figure>
+
+<p>提取TCP报文</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">          0050 ed98 3d15 a71f f8d8 50b9  .....P..=.....P.</span><br><span class="line">a012 2000 268b 0000 0204 0590 0402 0101  ....&amp;...........</span><br><span class="line">0101 0101 0101 0101 0103 0305</span><br></pre></td></tr></table></figure>
+
+
+
+<p>TCP头部</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0050 ed98 3d15 a71f f8d8 50b9 a012 2000 268b 0000 0204 0590 0402 0101 0101 0101 0101 0101 0103 0305</span><br></pre></td></tr></table></figure>
+
+
+
+<p>解析TCP头部</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">源端口: 0050 -&gt; 80</span><br><span class="line">目标端口: ed98 -&gt; 60824</span><br><span class="line">序列号: 3d15 a71f -&gt; 1024829215</span><br><span class="line">确认号: f8d8 50b9 -&gt; 4174926009(还真是收到的包号+1)</span><br><span class="line">a012 -&gt; 1010 0000 0001 0010</span><br><span class="line">首部长度: 0xa -&gt; 10</span><br><span class="line">保留: 0x0 -&gt; 0</span><br><span class="line">CWR: 0</span><br><span class="line">ECE: 0</span><br><span class="line">URG: 0</span><br><span class="line">ACK: 1</span><br><span class="line">PSH: 0</span><br><span class="line">RST: 0</span><br><span class="line">SYN: 1</span><br><span class="line">FIN: 0</span><br><span class="line">接收窗口: 2000 -&gt; 8192</span><br><span class="line">校验和: 268b</span><br><span class="line">紧急数据指针: 0000</span><br><span class="line">选项1: 0204 0590  -&gt; mss = 0x0590 = 1424</span><br><span class="line">选项2: 0402 -&gt; sackOk</span><br><span class="line">选项3-13: 01 01 01 ... -&gt; 填充</span><br><span class="line">选项14: 03 0305 -&gt; 窗口缩放因子 = 5</span><br></pre></td></tr></table></figure>
+
+<h2 id="第三次握手"><a href="#第三次握手" class="headerlink" title="第三次握手"></a>第三次握手</h2><p>我们给百度回复一个TCP报文(三次握手完成)</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.115797 IP (tos 0x0, ttl 64, id 38459, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe8fa (incorrect -&gt; 0xaa5e), seq 1, ack 1, win 229, length 0</span><br><span class="line">    0x0000:  4500 0028 963b 4000 4006 bbb4 ac11 0004  E..(.;@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b9 3d15 a720  w?.....P..P.=...</span><br><span class="line">    0x0020:  5010 00e5 e8fa 0000                      P.......</span><br></pre></td></tr></table></figure>
+
+<p>提取TCP报文</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">          ed98 0050 f8d8 50b9 3d15 a720  w?.....P..P.=...</span><br><span class="line">5010 00e5 e8fa 0000                      P.......</span><br></pre></td></tr></table></figure>
+
+
+
+<p>TCP 头</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ed98 0050 f8d8 50b9 3d15 a720 5010 00e5 e8fa 0000</span><br></pre></td></tr></table></figure>
+
+<p>解析TCP头</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">源端口: ed98 -&gt; 60824</span><br><span class="line">目标端口: 0050 -&gt; 80</span><br><span class="line">序列号: f8d8 50b9 -&gt; 4174926009(相对值为1)</span><br><span class="line">确认号: 3d15 a720 -&gt; 1024829216(相对值为1)</span><br><span class="line">5010 -&gt; 1010 0000 0001 0000</span><br><span class="line">首部长度: 0x5 -&gt; 5</span><br><span class="line">保留: 0x0 -&gt; 0</span><br><span class="line">CWR: 0</span><br><span class="line">ECE: 0</span><br><span class="line">URG: 0</span><br><span class="line">ACK: 1</span><br><span class="line">PSH: 0</span><br><span class="line">RST: 0</span><br><span class="line">SYN: 0</span><br><span class="line">FIN: 0</span><br><span class="line">接收窗口: 00e5 -&gt; 229</span><br><span class="line">校验和: e8fa</span><br><span class="line">紧急数据指针: 0000</span><br></pre></td></tr></table></figure>
+
+<h2 id="发起HTTP请求"><a href="#发起HTTP请求" class="headerlink" title="发起HTTP请求"></a>发起HTTP请求</h2><p>紧接着我们发起了一个HTTP请求,这是一个TCP包，包含了我们的整个请求</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.115913 IP (tos 0x0, ttl 64, id 38460, offset 0, flags [DF], proto TCP (6), length 117)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [P.], cksum 0xe947 (incorrect -&gt; 0x7519), seq 1:78, ack 1, win 229, length 77: HTTP, length: 77</span><br><span class="line">    GET / HTTP/1.1</span><br><span class="line">    Host: www.baidu.com</span><br><span class="line">    User-Agent: curl/7.61.1</span><br><span class="line">    Accept: */*</span><br><span class="line">    </span><br><span class="line">    0x0000:  4500 0075 963c 4000 4006 bb66 ac11 0004  E..u.&lt;@.@..f....</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 50b9 3d15 a720  w?.....P..P.=...</span><br><span class="line">    0x0020:  5018 00e5 e947 0000 4745 5420 2f20 4854  P....G..GET./.HT</span><br><span class="line">    0x0030:  5450 2f31 2e31 0d0a 486f 7374 3a20 7777  TP/1.1..Host:.ww</span><br><span class="line">    0x0040:  772e 6261 6964 752e 636f 6d0d 0a55 7365  w.baidu.com..Use</span><br><span class="line">    0x0050:  722d 4167 656e 743a 2063 7572 6c2f 372e  r-Agent:.curl/7.</span><br><span class="line">    0x0060:  3631 2e31 0d0a 4163 6365 7074 3a20 2a2f  61.1..Accept:.*/</span><br><span class="line">    0x0070:  2a0d 0a0d 0a                             *....</span><br></pre></td></tr></table></figure>
+
+<h2 id="TCP回复"><a href="#TCP回复" class="headerlink" title="TCP回复"></a>TCP回复</h2><p>百度对我们的HTTP请求包进行了TCP回复，表示他收到了我们的请求</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.170254 IP (tos 0x0, ttl 48, id 24974, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [.], cksum 0xa762 (correct), seq 1, ack 78, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 618e 4000 3006 0062 773f c58b  E..(a.@.0..bw?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a720 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5010 0394 a762 0000                      P....b..</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="HTTP回复"><a href="#HTTP回复" class="headerlink" title="HTTP回复"></a>HTTP回复</h2><p>紧接着就是百度对我们的HTTP回复，以及我们对HTTP回复的TCP回复,并不断重复，直到接受完所有HTTP报文</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.236240 IP (tos 0x0, ttl 48, id 24975, offset 0, flags [DF], proto TCP (6), length 1488)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [P.], cksum 0xeea2 (incorrect -&gt; 0x8779), seq 1:1449, ack 78, win 916, length 1448: HTTP, length: 1448</span><br><span class="line">    HTTP/1.1 200 OK</span><br><span class="line">    Accept-Ranges: bytes</span><br><span class="line">    Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">    Connection: keep-alive</span><br><span class="line">    Content-Length: 2381</span><br><span class="line">    Content-Type: text/html</span><br><span class="line">    Date: Sun, 04 Apr 2021 07:05:47 GMT</span><br><span class="line">    Etag: &quot;588604eb-94d&quot;</span><br><span class="line">    Last-Modified: Mon, 23 Jan 2017 13:28:11 GMT</span><br><span class="line">    Pragma: no-cache</span><br><span class="line">    Server: bfe/1.0.8.18</span><br><span class="line">    Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/</span><br><span class="line">    </span><br><span class="line">    &lt;!DOCTYPE html&gt;</span><br><span class="line">    0x0000:  4500 05d0 618f 4000 3006 fab8 773f c58b  E...a.@.0...w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 a720 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5018 0394 eea2 0000 4854 5450 2f31 2e31  P.......HTTP/1.1</span><br><span class="line">    0x0030:  2032 3030 204f 4b0d 0a41 6363 6570 742d  .200.OK..Accept-</span><br><span class="line">    0x0040:  5261 6e67 6573 3a20 6279 7465 730d 0a43  Ranges:.bytes..C</span><br><span class="line">    0x0050:  6163 6865 2d43 6f6e 7472 6f6c 3a20 7072  ache-Control:.pr</span><br><span class="line">    ...</span><br><span class="line">07:05:47.236264 IP (tos 0x0, ttl 64, id 38461, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe8fa (incorrect -&gt; 0xa453), seq 78, ack 1449, win 251, length 0</span><br><span class="line">    0x0000:  4500 0028 963d 4000 4006 bbb2 ac11 0004  E..(.=@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5106 3d15 acc8  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5010 00fb e8fa 0000                      P.......</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="最后的四次挥手"><a href="#最后的四次挥手" class="headerlink" title="最后的四次挥手"></a>最后的四次挥手</h2><p>我们观察最后的六个TCP报文</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">07:05:47.236425 IP (tos 0x0, ttl 64, id 38463, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [F.], cksum 0xe8fa (incorrect -&gt; 0x9f06), seq 78, ack 2782, win 274, length 0</span><br><span class="line">    0x0000:  4500 0028 963f 4000 4006 bbb0 ac11 0004  E..(.?@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5106 3d15 b1fd  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5011 0112 e8fa 0000                      P.......</span><br><span class="line">07:05:47.245278 IP (tos 0x0, ttl 48, id 24978, offset 0, flags [DF], proto TCP (6), length 1373)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [P.], cksum 0x5cf2 (correct), seq 1449:2782, ack 78, win 916, length 1333: HTTP</span><br><span class="line">    0x0000:  4500 055d 6192 4000 3006 fb28 773f c58b  E..]a.@.0..(w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 acc8 f8d8 5106  .....P..=.....Q.</span><br><span class="line">    0x0020:  5018 0394 5cf2 0000 746e 223e 3c2f 7370  P...\...tn&quot;&gt;&lt;/sp</span><br><span class="line">    0x0030:  616e 3e20 3c2f 666f 726d 3e20 3c2f 6469  an&gt;.&lt;/form&gt;.&lt;/di</span><br><span class="line">    ......</span><br><span class="line">07:05:47.245289 IP (tos 0x0, ttl 64, id 38464, offset 0, flags [DF], proto TCP (6), length 52)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0xe906 (incorrect -&gt; 0x8ffe), seq 79, ack 2782, win 274, options [nop,nop,sack 1 &#123;1449:2782&#125;], length 0</span><br><span class="line">    0x0000:  4500 0034 9640 4000 4006 bba3 ac11 0004  E..4.@@.@.......</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5107 3d15 b1fd  w?.....P..Q.=...</span><br><span class="line">    0x0020:  8010 0112 e906 0000 0101 050a 3d15 acc8  ............=...</span><br><span class="line">    0x0030:  3d15 b1fd                                =...</span><br><span class="line">07:05:47.290600 IP (tos 0x0, ttl 48, id 24979, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [.], cksum 0x9c84 (correct), seq 2782, ack 79, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 6193 4000 3006 005d 773f c58b  E..(a.@.0..]w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 b1fd f8d8 5107  .....P..=.....Q.</span><br><span class="line">    0x0020:  5010 0394 9c84 0000                      P.......</span><br><span class="line">07:05:47.290677 IP (tos 0x0, ttl 48, id 24980, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    119.63.197.139.http &gt; 11c749e93da4.60824: Flags [F.], cksum 0x9c83 (correct), seq 2782, ack 79, win 916, length 0</span><br><span class="line">    0x0000:  4500 0028 6194 4000 3006 005c 773f c58b  E..(a.@.0..\w?..</span><br><span class="line">    0x0010:  ac11 0004 0050 ed98 3d15 b1fd f8d8 5107  .....P..=.....Q.</span><br><span class="line">    0x0020:  5011 0394 9c83 0000                      P.......</span><br><span class="line">07:05:47.290688 IP (tos 0x0, ttl 64, id 0, offset 0, flags [DF], proto TCP (6), length 40)</span><br><span class="line">    11c749e93da4.60824 &gt; 119.63.197.139.http: Flags [.], cksum 0x9f05 (correct), seq 79, ack 2783, win 274, length 0</span><br><span class="line">    0x0000:  4500 0028 0000 4000 4006 51f0 ac11 0004  E..(..@.@.Q.....</span><br><span class="line">    0x0010:  773f c58b ed98 0050 f8d8 5107 3d15 b1fe  w?.....P..Q.=...</span><br><span class="line">    0x0020:  5010 0112 9f05 0000                      P.......</span><br></pre></td></tr></table></figure>
+
+<p>稍作人性化处理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">  我们 -&gt;&gt; 百度: 0x11(ACK,FIN)</span><br><span class="line">  百度 -&gt;&gt; 我们: 0x18(ACK,PSH)</span><br><span class="line">  我们 --&gt;&gt; 百度: 0x10(ACK)</span><br><span class="line">  百度 --&gt;&gt; 我们: 0x10(ACK)</span><br><span class="line">  百度 -&gt;&gt; 我们: 0x11(ACK,FIN)</span><br><span class="line">  我们 -&gt;&gt; 百度: 0x10(ACK)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/QR12J0.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/QR12J0.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/QR4S3C.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/QQZ90O.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

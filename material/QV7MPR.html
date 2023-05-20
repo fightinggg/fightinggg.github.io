@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://.disqus.com"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            跟我一起自己写编译器-5.语法分析 | 
+        
+        Believe it
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/material/img/favicon.svg">
+    <link rel="icon" href="/material/img/favicon.svg">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+5. 语法分析5.1. 文法文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。
+5.1.1. 正则文法这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。
+5.1.2. 上下文无关文法上下文无关文法涉及到4个定义
+
+终结符： 文法的基本单元，词
+非终结符： 文法的中间变量，一些词按顺序排列构成的符号
+产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符
+开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法
+
+例子
+12345加法：  终结符: number, +  非终结符: SUM  产生式： SUM -&amp;gt; number + number | SUM + number  开始： SUM
+
+上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+
+由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。">
+    <meta name="keywords" content=",读书,跟我一起写编译器">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/material/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/material/css/style.min.css?NKhlKQkXw/c66TR5p4wO+w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/material/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/material/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Believe it">
+    <meta name="msapplication-starturl" content="http://fightinggg.github.io/material/material/QV7MPR.html">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Believe it">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/material/img/favicon.svg">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://fightinggg.github.io/material/material/QV7MPR.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="跟我一起自己写编译器-5.语法分析 | Believe it">
+    <meta property="og:image" content="/material/img/favicon.svg">
+    <meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+5. 语法分析5.1. 文法文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。
+5.1.1. 正则文法这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。
+5.1.2. 上下文无关文法上下文无关文法涉及到4个定义
+
+终结符： 文法的基本单元，词
+非终结符： 文法的中间变量，一些词按顺序排列构成的符号
+产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符
+开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法
+
+例子
+12345加法：  终结符: number, +  非终结符: SUM  产生式： SUM -&amp;gt; number + number | SUM + number  开始： SUM
+
+上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+
+由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。">
+    <meta property="og:article:tag" content="读书"> <meta property="og:article:tag" content="跟我一起写编译器"> 
+
+    
+        <meta property="article:published_time" content="Thu Jun 24 2021 22:25:03 GMT+0800">
+        <meta property="article:modified_time" content="Sun Aug 29 2021 09:41:03 GMT+0000">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://fightinggg.github.io/material/material/QV7MPR.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://fightinggg.github.io/material/material/QV7MPR.html",
+    "headline": "跟我一起自己写编译器-5.语法分析",
+    "datePublished": "Thu Jun 24 2021 22:25:03 GMT+0800",
+    "dateModified": "Sun Aug 29 2021 09:41:03 GMT+0000",
+    "author": {
+        "@type": "Person",
+        "name": "fightinggg",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Believe it",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.svg"
+        }
+    },
+    "keywords": ",读书,跟我一起写编译器",
+    "description": "nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial
+
+5. 语法分析5.1. 文法文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。
+5.1.1. 正则文法这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。
+5.1.2. 上下文无关文法上下文无关文法涉及到4个定义
+
+终结符： 文法的基本单元，词
+非终结符： 文法的中间变量，一些词按顺序排列构成的符号
+产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符
+开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法
+
+例子
+12345加法：  终结符: number, +  非终结符: SUM  产生式： SUM -&amp;gt; number + number | SUM + number  开始： SUM
+
+上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+
+由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="post-toc-number">1.</span> <span class="post-toc-text">5. 语法分析</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-1-%E6%96%87%E6%B3%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">5.1. 文法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-1-1-%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">5.1.1. 正则文法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">5.1.2. 上下文无关文法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-1-3-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%9C%89%E5%85%B3%E6%96%87%E6%B3%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">5.1.3. 上下文有关文法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-2-%E6%9C%80%E5%B7%A6%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D"><span class="post-toc-number">3.</span> <span class="post-toc-text">5.2. 最左递归下降</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-3-%E5%B7%A6%E9%80%92%E5%BD%92%E6%96%87%E6%B3%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">5.3. 左递归文法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-4-%E4%BA%8C%E4%B9%89%E6%80%A7%E6%96%87%E6%B3%95"><span class="post-toc-number">5.</span> <span class="post-toc-text">5.4. 二义性文法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-5-%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E8%8C%83%E5%BC%8F"><span class="post-toc-number">6.</span> <span class="post-toc-text">5.5. 乔姆斯基范式</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-6-CYK%E7%AE%97%E6%B3%95"><span class="post-toc-number">7.</span> <span class="post-toc-text">5.6. CYK算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-7-FIRST%E9%9B%86"><span class="post-toc-number">8.</span> <span class="post-toc-text">5.7. FIRST集</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-1-%E4%BE%8B%E5%AD%901"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">5.7.1. 例子1</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-2-%E4%BE%8B%E5%AD%902"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">5.7.2. 例子2</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-3-FIRST%E9%9B%86%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95%EF%BC%88%E7%AE%80%E5%8D%95%E7%89%88%EF%BC%89"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">5.7.3. FIRST集计算算法（简单版）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-4-%E5%A4%8D%E6%9D%82%E4%B8%80%E7%82%B9%E7%9A%84FIRST%E9%9B%86%E4%BE%8B%E5%AD%90"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">5.7.4. 复杂一点的FIRST集例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-5-FIRST%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%EF%BC%88%E6%9C%80%E7%BB%88%E7%89%88%EF%BC%89"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">5.7.5. FIRST计算方法（最终版）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-6-%E5%8F%AF%E8%BE%BE%E9%97%AD%E5%8C%85%E4%B9%8BSPFA%E7%AE%97%E6%B3%95"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">5.7.6.  可达闭包之SPFA算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-7-%E5%8F%AF%E8%BE%BE%E9%97%AD%E5%8C%85%E4%B9%8BTarjan%E7%AE%97%E6%B3%95"><span class="post-toc-number">8.7.</span> <span class="post-toc-text">5.7.7. 可达闭包之Tarjan算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-7-8-%E6%80%BB%E7%BB%93"><span class="post-toc-number">8.8.</span> <span class="post-toc-text">5.7.8. 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-8-FOLLOW%E9%9B%86%E8%AE%A1%E7%AE%97"><span class="post-toc-number">9.</span> <span class="post-toc-text">5.8. FOLLOW集计算</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-8-1-%E4%BE%8B%E5%AD%90"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">5.8.1. 例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-8-2-%E4%BE%8B%E5%AD%90"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">5.8.2. 例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-8-3-%E7%AE%97%E6%B3%95"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">5.8.3 算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5-9-LL%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="post-toc-number">10.</span> <span class="post-toc-text">5.9. LL语法分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-9-1-%E4%BE%8B%E5%AD%90"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">5.9.1 例子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-9-2-%E6%80%BB%E7%BB%93"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">5.9.2 总结</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/material/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                跟我一起自己写编译器-5.语法分析
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/material/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>fightinggg</strong>
+        <span>6月 24, 2021</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/material/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/material/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=跟我一起自己写编译器-5.语法分析&url=http://fightinggg.github.io/material/material/QV7MPR.html&pic=http://fightinggg.github.io/material/img/favicon.svg&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=跟我一起自己写编译器-5.语法分析&url=http://fightinggg.github.io/material/material/QV7MPR.html&via=fightinggg" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/material/material/QV7MPR.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://fightinggg.github.io/material/material/QV7MPR.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <div><a href="/next/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="5-语法分析"><a href="#5-语法分析" class="headerlink" title="5. 语法分析"></a>5. 语法分析</h1><h1 id="5-1-文法"><a href="#5-1-文法" class="headerlink" title="5.1. 文法"></a>5.1. 文法</h1><p>文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。</p>
+<h2 id="5-1-1-正则文法"><a href="#5-1-1-正则文法" class="headerlink" title="5.1.1. 正则文法"></a>5.1.1. 正则文法</h2><p>这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。</p>
+<h2 id="5-1-2-上下文无关文法"><a href="#5-1-2-上下文无关文法" class="headerlink" title="5.1.2. 上下文无关文法"></a>5.1.2. 上下文无关文法</h2><p>上下文无关文法涉及到4个定义</p>
+<ul>
+<li>终结符： 文法的基本单元，词</li>
+<li>非终结符： 文法的中间变量，一些词按顺序排列构成的符号</li>
+<li>产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符</li>
+<li>开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法</li>
+</ul>
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式： SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+</p>
+<p>由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。</p>
+<span id="more"></span>
+
+<h2 id="5-1-3-上下文有关文法"><a href="#5-1-3-上下文有关文法" class="headerlink" title="5.1.3. 上下文有关文法"></a>5.1.3. 上下文有关文法</h2><p>在上下文无关文法中，产生式左部都是单个非终结符，如果放开这个限制，那么就成了上下文有关文法。这里不是重点，直接跳过，有兴趣的读者可以自行<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%9C%89%E5%85%B3%E6%96%87%E6%B3%95">学习</a>。</p>
+<h1 id="5-2-最左递归下降"><a href="#5-2-最左递归下降" class="headerlink" title="5.2. 最左递归下降"></a>5.2. 最左递归下降</h1><p>递归下降算法可以解析一部分上下文无关文法，递归下降其实就是枚举，他是一种自顶向下的算法，从文法的<code>开始</code>开始， 逐渐替换最左侧的非终结符为新的符号列表，直到匹配成功,其代码为:</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">匹配(参数1： deque, 参数2： 当前匹配的下标i)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是终结符</span><br><span class="line">        从双端队列deque[terminalSymbol,e2,e3,e4...]取出并删除最左侧的终结符terminalSymbol</span><br><span class="line">           如果 terminalSymbol和当前第i个token不相等， 返回失败</span><br><span class="line">           否则 返回 继续匹配(deque,i+1)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是非终结符</span><br><span class="line">           从双端队列deque[noTerminalSymbol,e2,e3,e4...]取出并删除最左侧的非终结符noTerminalSymbol</span><br><span class="line">           枚举以非终结符noTerminalSymbol为左部的产生式production</span><br><span class="line">           将production右部的所有符号[s1,s2,s3...]顺序不变放在deque[e1,e2,e3...]左侧得到[s1,s2,s3...e1,e2,e3...]</span><br><span class="line">           如果 继续匹配(deque,i) 成功 返回成功</span><br><span class="line">        返回失败</span><br></pre></td></tr></table></figure>
+
+<p>这样的一个算法，</p>
+<p>第一，他的时间复杂度是指数的，非常慢</p>
+<p>第二，如果文法存在左递归，则算法死循环</p>
+<p>第三，如果文法二义，则算法输出的语法树不确定</p>
+<h1 id="5-3-左递归文法"><a href="#5-3-左递归文法" class="headerlink" title="5.3. 左递归文法"></a>5.3. 左递归文法</h1><p>如果一个文法中存在产生式<code>A -&gt; A * * *</code>则这个文法为直接左递归文法，比如下面这个文法为左递归文法, 因为<code>SUM -&gt; SUM + number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>如果一个文法在经过有限次产生式替换以后，出现了<code>A -&gt; A * * *</code>则这个文法为间接左递归文法。如下面的文法, 因为<code>SUM -&gt; S + S -&gt; SUM + S</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, S</span><br><span class="line">  产生式:  SUM -&gt; S + S</span><br><span class="line">            S -&gt; SUM | number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>当文法中存在左递归时，将最左侧的非终结符替换为符号数组将导致无穷无尽的循环、</p>
+<h1 id="5-4-二义性文法"><a href="#5-4-二义性文法" class="headerlink" title="5.4. 二义性文法"></a>5.4. 二义性文法</h1><p>如果一个token流，对应于一个文法存在不止一棵语法树，则该文法为二义性文法，下面的文法为二义性文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ifelse:</span><br><span class="line">  终结符: if, else, condition, block</span><br><span class="line">  非终结符: target</span><br><span class="line">  产生式: target -&gt; block | if condition target | if condition target else target</span><br><span class="line">  开始： target</span><br></pre></td></tr></table></figure>
+
+<p>考虑<code>if condition if condition block else block</code>他有两颗语法树</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target&quot;]  &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] </span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="5-5-乔姆斯基范式"><a href="#5-5-乔姆斯基范式" class="headerlink" title="5.5. 乔姆斯基范式"></a>5.5. 乔姆斯基范式</h1><blockquote>
+<p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6">计算机科学</a>中，一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BD%A2%E5%BC%8F%E6%96%87%E6%B3%95">形式文法</a>是 <strong>Chomsky 范式</strong>的，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BD%93%E4%B8%94%E4%BB%85%E5%BD%93">当且仅当</a>所有产生规则都有如下形式：</p>
+<p><em>A</em> → <em>BC</em> 或</p>
+<p><em>A</em> → α 或</p>
+<p><em>S</em> → ε</p>
+<p>这里的 <em>A</em>, <em>B</em> 和 <em>C</em> 是非终结符，α 是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BB%88%E7%BB%93%E7%AC%A6">终结符</a>（表示常量值的符号），<em>S</em> 是开始符号，而 ε 是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%A9%BA%E5%AD%97%E5%85%83%E4%B8%B2">空串</a>。还有，<em>B</em> 和 <em>C</em> 都不可以是开始符号。</p>
+<p>所有的 Chomsky 范式的文法都是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95">上下文无关</a>，反过来，所有上下文无关文法都可以有效的变换成等价的 Chomsky 范式的文法。</p>
+<p>引用： <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E8%8C%83%E5%BC%8F">乔姆斯基范式</a></p>
+</blockquote>
+<p>将一个上下文无关文法转化为乔姆斯基范式也非常简单，这不做赘述。</p>
+<h1 id="5-6-CYK算法"><a href="#5-6-CYK算法" class="headerlink" title="5.6. CYK算法"></a>5.6. CYK算法</h1><blockquote>
+<p><strong>CYK算法</strong>（<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%8B%B1%E8%AF%AD/109997">英语</a>：Cocke–Younger–Kasami algorithm，缩写为CYK algorithm）是由<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BA%A6%E7%BF%B0%C2%B7%E7%A7%91%E5%85%8B/7868274">约翰·科克</a>，Younger和嵩忠雄共同研究出来大约发表于1965年的一个算法，它是一个用来判定任意给定的字符串 是否属于一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95/2001908">上下文无关文法</a>的算法。</p>
+<p>引用： <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/CYK%E7%AE%97%E6%B3%95/15817539">CYK算法</a></p>
+</blockquote>
+<p>这是一种<code>dp</code>算法，基于乔姆斯基范式，<code>dp[i,j]</code>代表<code>子串(i:j)</code>能被识别为哪些非终结符，这是只需要在<code>i</code>和<code>j</code>中间枚举<code>k</code>, 由<code>dp[i,k]</code> 和<code>dp[k+1,j]</code>转移即可。</p>
+<h1 id="5-7-FIRST集"><a href="#5-7-FIRST集" class="headerlink" title="5.7. FIRST集"></a>5.7. FIRST集</h1><p>每个非终结符都能够识别一些文本，这些文本的第一个字符就是这个非终结符的FIRST集的一员。</p>
+<p>换句话说，非终结符的FIRST集就是该非终结符经过产生式转换以后形成的序列的第一个元素（该元素必须为终结符）</p>
+<h2 id="5-7-1-例子1"><a href="#5-7-1-例子1" class="headerlink" title="5.7.1. 例子1"></a>5.7.1. 例子1</h2><p>先给出文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>该文法有非终结符SUM，根据产生式<code>SUM-&gt;number+number</code>，得出<code>number</code>在SUM的FIRST集中，根据产生式<code>SUM-&gt;SUM+number</code>我们无法得出任何信息。</p>
+<p>综上，SUM的FIRST集为<code>&#123;number&#125;</code></p>
+<h2 id="5-7-2-例子2"><a href="#5-7-2-例子2" class="headerlink" title="5.7.2. 例子2"></a>5.7.2. 例子2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>根据产生式<code>SUM -&gt; PRODUCTION + PRODUCTION</code>推断出PRODUCTION的FIRST集都在SUM的FIRST集中</p>
+<p>根据产生式<code>MUL -&gt; PRODUCTION * PRODUCTION</code>推断出PRODUCTION的FIRST集都在MUL的FIRST集中</p>
+<p>根据产生式<code>PRODUCTION -&gt; number | SUM | MUL</code>推断出number在PRODUCTION的FIRST集中，SUM的FIRST集和MUL的FIRST集在PRODUCTION的FIRST集中。</p>
+<p>根据上面三个结论，我们可以构造一个图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    PRODUCTION --&gt;|包含| number &amp; SUM &amp; MUL</span><br><span class="line">    SUM --&gt;|包含| PRODUCTION</span><br><span class="line">    MUL --&gt;|包含| PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>聪明的读者可以直接看出，其实他们三个非终结符的FIRST集都是<code>&#123;number&#125;</code>.</p>
+<h2 id="5-7-3-FIRST集计算算法（简单版）"><a href="#5-7-3-FIRST集计算算法（简单版）" class="headerlink" title="5.7.3. FIRST集计算算法（简单版）"></a>5.7.3. FIRST集计算算法（简单版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;B...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-4-复杂一点的FIRST集例子"><a href="#5-7-4-复杂一点的FIRST集例子" class="headerlink" title="5.7.4. 复杂一点的FIRST集例子"></a>5.7.4. 复杂一点的FIRST集例子</h2><p><code>ε</code>代表可以为空，即什么也没有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">变量声明：</span><br><span class="line">  终结符: type, symbol, visibility, staticable</span><br><span class="line">  非终结符: staticableOPT, visibilityOPT, TARGET</span><br><span class="line">  产生式: TARGET -&gt; visibilityOPT staticableOPT type symbol</span><br><span class="line">           visibilityOPT -&gt; visibility | ε</span><br><span class="line">           staticableOPT -&gt; staticable | ε</span><br><span class="line">  开始： TARGET</span><br></pre></td></tr></table></figure>
+
+<p>根据<code>TARGET -&gt; visibilityOPT staticableOPT type symbol</code>得出visibilityOPT的FIRST集在TARGET的FIRST集中，考虑到visibilityOPT可以为空，所以当visibilityOPT为空时，staticableOPT的FIRST集在TARGET的FIRST集中，同理，type也在TARGET的FIRST集中。</p>
+<p>visibilityOPT的first集为<code>&#123;visibility&#125;</code></p>
+<p>staticableOPT的first集为<code>&#123;staticable&#125;</code></p>
+<p>最终<code>TARGET</code>的first集为<code>&#123;visibility,staticable,type&#125;</code></p>
+<h2 id="5-7-5-FIRST计算方法（最终版）"><a href="#5-7-5-FIRST计算方法（最终版）" class="headerlink" title="5.7.5. FIRST计算方法（最终版）"></a>5.7.5. FIRST计算方法（最终版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;BCDE...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，然后根据B能否为空判断C</p>
+<p>若B可为空，则C的first集都在A的first集中，然后根据C能否为空判断D，依次递推</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-6-可达闭包之SPFA算法"><a href="#5-7-6-可达闭包之SPFA算法" class="headerlink" title="5.7.6.  可达闭包之SPFA算法"></a>5.7.6.  可达闭包之SPFA算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将所有的有向边(from,to)入队queue，</span><br><span class="line">只要queue非空:</span><br><span class="line">    取出并删除queue队首top</span><br><span class="line">    用top.to的可达集合合并到top.from的可达集合中，如果此过程对top.from的可达集合造成了修改:</span><br><span class="line">        将所有以top.from为有向边终点的边edge入队queue</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(VE)</code>, (V为顶点数，E为边数)</p>
+<h2 id="5-7-7-可达闭包之Tarjan算法"><a href="#5-7-7-可达闭包之Tarjan算法" class="headerlink" title="5.7.7. 可达闭包之Tarjan算法"></a>5.7.7. 可达闭包之Tarjan算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">首先使用Tarjan三大算法中的有向图强连通缩图，在同一个强连通分量的点，他们的可达集合相同</span><br><span class="line">缩图以后得到的是DAG有向无环图，在有向无环图上按照拓扑序进行DP，计算所有结果</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(V+V)</code> (V为顶点数，E为边数)</p>
+<h2 id="5-7-8-总结"><a href="#5-7-8-总结" class="headerlink" title="5.7.8. 总结"></a>5.7.8. 总结</h2><p>实际上，一般的文法都不会很复杂，其依赖图的顶点数不会超过200，边数不会超过1000，所以SPFA算法足以解决问题。 </p>
+<h1 id="5-8-FOLLOW集计算"><a href="#5-8-FOLLOW集计算" class="headerlink" title="5.8. FOLLOW集计算"></a>5.8. FOLLOW集计算</h1><p>在产生式中，经过一定次数的替换以后，如果某个终结符出现在了某个非终结符的后面，则这个终结符被计入这个非终结符的FOLLOW集。</p>
+<h2 id="5-8-1-例子"><a href="#5-8-1-例子" class="headerlink" title="5.8.1. 例子"></a>5.8.1. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>我们发现SUM的后面可以跟上<code>+</code>，所以SUM的FOLLOW集就是<code>+</code></p>
+<h2 id="5-8-2-例子"><a href="#5-8-2-例子" class="headerlink" title="5.8.2. 例子"></a>5.8.2. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p><code>SUM -&gt; PRODUCTION + PRODUCTION</code>可以得到<code>PRODUCTION </code>的FOLLOW集中有<code>+</code>,同理<code>MUL -&gt; PRODUCTION * PRODUCTION</code>得出有<code>*</code></p>
+<p><code>SUM</code>的FOLLOW集中有<code>*</code>和<code>+</code>,因为<code>SUM -&gt; PRODUCTION + PRODUCTION</code>，即PRODUCTION的FOLLOW集都在SUM中。</p>
+<p>同理<code>MUL</code>的FOLLOW集中有<code>*</code>和<code>+</code></p>
+<h2 id="5-8-3-算法"><a href="#5-8-3-算法" class="headerlink" title="5.8.3 算法"></a>5.8.3 算法</h2><p>考虑非终极符<code>A</code>, 如果存在产生式<code>S-&gt;*AB**</code>,则<code>B</code>的FIRST集在<code>A</code>的FOLLOW集中</p>
+<p>若B可为空，则看B后的下一个符号，其FIRST集在A的FOLLOW集中</p>
+<p>如果存在产生式<code>S-&gt;**A</code>，则S的FOLLOW集都在A的FOLLOW集中。</p>
+<p>如此构成了依赖图，又是可达闭包计算。计算步骤参见<code>FIRST</code>集算法。</p>
+<h1 id="5-9-LL语法分析"><a href="#5-9-LL语法分析" class="headerlink" title="5.9. LL语法分析"></a>5.9. LL语法分析</h1><p>LL语法分析指的是从左向右最左推导，是一种自顶向下的算法，实际上，所有的自顶向下算法都无法解决左递归文法。进行LL分析，需要提前计算FIRST集和FOLLOW集。</p>
+<p>LL算法进行自顶向下分析，自顶向下分析的核心步骤有两个，一个是匹配，另一个是展开。</p>
+<p>当从左到右自顶向下分析时，如果当前的符号为终结符，此时只能走匹配，而且当前符号必须和输入的符号匹配。</p>
+<p>如果当前符号为非终结符，此时只能 展开，但是用哪个产生式展开，往往不好选择，LL算法则根据FIRST集和FOLLOW集来进行选择。</p>
+<h2 id="5-9-1-例子"><a href="#5-9-1-例子" class="headerlink" title="5.9.1 例子"></a>5.9.1 例子</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>待识别字符串1+2+3+4</p>
+<p>第一步计算FIRST集，SUM的FIRST集为： <code>number</code></p>
+<p>ADD的FIRST集为<code>+</code></p>
+<p>第二步计算FOLLOW集，SUM的FOLLOW集为： <code>$,+</code></p>
+<p>ADD的FOLLOW集为    <code>$</code></p>
+<p>最开始的时候，有一个队列，其中包含一个开始的符号<code>SUM</code></p>
+<p>然后我们进行输入，输入字符<code>1</code>,这是一个number，number和SUM无法匹配，所以必须把SUM用产生式替换，SUM只有一个产生式，于是SUM被换成了<code>number ADD</code>,此时的队列的操作就是从左边 弹出SUM，再放入<code>number ADD</code></p>
+<p>替换以后，字符1就可以和number匹配了，于是输入字符成功，队列弹出<code>number</code></p>
+<p>紧接着，输入字符<code>+</code>, 这时候队列中只有一个<code>ADD</code>,<code>ADD</code>和<code>+</code>无法匹配，于是需要用产生式替换，用哪个换呢？显然用<code>+ SUM</code>换，因为<code>ε</code>的FIRST集为空，所以此时替换以后，队列变为<code>+ SUM</code></p>
+<p>替换以后，字符<code>+</code>就可以和队列的队首匹配，输入成功….</p>
+<p>然后算法不断迭代，直到完成输入。</p>
+<h2 id="5-9-2-总结"><a href="#5-9-2-总结" class="headerlink" title="5.9.2 总结"></a>5.9.2 总结</h2><p>其实LL语法分析就是前面介绍的最左递归下降算法的特殊情况，当文法没有二义性，文法不能在进行合并公因式，文法没有左递归时，文法就不需要递归分解了。</p>
+<p>LL语法分析有很多局限性，他能解决的文法少的可怜，虽然后面有办法通过文法的等价转化，把一个左递归文法转化为非左递归，提取公因式，消除二义性，但是这样做的代价非常大，这样的工作往往会导致文法变得特别复杂，特别不好理解，就问下吗这两个文法你喜欢哪一个？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number | SUM + SUM</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 DISQUS -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://fightinggg.github.io/material/QV7MPR.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://fightinggg.github.io/material/QV7MPR.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+<script type="text/ls-javascript" id="disqus-thread-script">
+    queue.offer(function() {
+            (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document;
+                var s = d.createElement('script');
+                s.src = '//.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', + new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        });
+</script>
+
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/material/QV7MPS.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/material/QV7MPQ.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/material/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/material/img/avatar.png" alt="fightinggg's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/material/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/material/archives/2023/05/">五月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/03/">三月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2023/02/">二月 2023<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/07/">七月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/02/">二月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2022/01/">一月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/10/">十月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/09/">九月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/08/">八月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/07/">七月 2021<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/06/">六月 2021<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/05/">五月 2021<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/04/">四月 2021<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/03/">三月 2021<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2021/01/">一月 2021<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/12/">十二月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/10/">十月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/09/">九月 2020<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/08/">八月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/06/">六月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/05/">五月 2020<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/04/">四月 2020<span class="sidebar_archives-count">80</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/03/">三月 2020<span class="sidebar_archives-count">43</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2020/02/">二月 2020<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/12/">十二月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/09/">九月 2019<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/08/">八月 2019<span class="sidebar_archives-count">140</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/07/">七月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/06/">六月 2019<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/05/">五月 2019<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/04/">四月 2019<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/03/">三月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2019/01/">一月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/12/">十二月 2018<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/11/">十一月 2018<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/10/">十月 2018<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/material/archives/2018/03/">三月 2018<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/bollnh/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-facebook">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-gplus">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;Believe it
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/bollnh/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/material/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/material/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/material/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+   <!-- 使用 DISQUS js 代码 -->
+<script id="dsq-count-scr" src="//.disqus.com/count.js" async></script>
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<!-- <script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('
+<link rel="stylesheet" href="/material/css/uc.css">
+');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script> -->
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 0000;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.6 | https://github.com/bollnh/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

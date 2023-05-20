@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  5. 词法分析词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。  5.1. 举个例子比如我们有一个代码,这个代码和c&#x2F;c++很">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我一起自己写编译器-4.词法分析">
+<meta property="og:url" content="http://fightinggg.github.io/cactus/QV7MPQ.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  5. 词法分析词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。  5.1. 举个例子比如我们有一个代码,这个代码和c&#x2F;c++很">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-08-22-17.27.00.000.svg">
+<meta property="article:published_time" content="2021-06-24T14:25:02.000Z">
+<meta property="article:modified_time" content="2021-08-29T09:41:02.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="读书">
+<meta property="article:tag" content="跟我一起写编译器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-08-22-17.27.00.000.svg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>跟我一起自己写编译器-4.词法分析</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/cactus/QV7MPR.html"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/cactus/QV7MPO.html"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QV7MPQ.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QV7MPQ.html&text=跟我一起自己写编译器-4.词法分析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QV7MPQ.html&is_video=false&description=跟我一起自己写编译器-4.词法分析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=跟我一起自己写编译器-4.词法分析&body=Check out this article: http://fightinggg.github.io/cactus/QV7MPQ.html"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QV7MPQ.html&name=跟我一起自己写编译器-4.词法分析&description=&lt;div&gt;&lt;a href=&#34;/next/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;5-词法分析&#34;&gt;&lt;a href=&#34;#5-词法分析&#34; class=&#34;headerlink&#34; title=&#34;5. 词法分析&#34;&gt;&lt;/a&gt;5. 词法分析&lt;/h1&gt;&lt;p&gt;词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。 &lt;/p&gt;
+&lt;h1 id=&#34;5-1-举个例子&#34;&gt;&lt;a href=&#34;#5-1-举个例子&#34; class=&#34;headerlink&#34; title=&#34;5.1. 举个例子&#34;&gt;&lt;/a&gt;5.1. 举个例子&lt;/h1&gt;&lt;p&gt;比如我们有一个代码,这个代码和c&amp;#x2F;c++很相似（但是这个是pava代码，读者目前可以理解为c代码），这是一个计算斐波那契数列的代码，他的词法分析结果是什么呢？&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;fib&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; x)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;(x&amp;lt;&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;) &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(x&lt;span class=&#34;number&#34;&gt;-1&lt;/span&gt;) + &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(x&lt;span class=&#34;number&#34;&gt;-2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a = &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(&lt;span class=&#34;number&#34;&gt;5&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; a;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;下文的代码就是词法分析结果, 词法分析器从源文件依次读取，然后分割出最小的词法单元，&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QV7MPQ.html&t=跟我一起自己写编译器-4.词法分析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">5. 词法分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">5.1. 举个例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-%E8%AF%86%E5%88%AB%E8%AF%8D%E6%B3%95%E5%8D%95%E5%85%83"><span class="toc-number">3.</span> <span class="toc-text">5.2. 识别词法单元</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3-%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">4.</span> <span class="toc-text">5.3. 确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-%E9%9D%9E%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">5.</span> <span class="toc-text">5.4. 非确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-5-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%86%E5%88%AB%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">4.5. 正则表达式识别原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-1-%E6%AD%A3%E5%88%99%E4%BE%8B1"><span class="toc-number">6.1.</span> <span class="toc-text">4.5.1. 正则例1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-2-%E6%AD%A3%E5%88%99%E4%BE%8B2"><span class="toc-number">6.2.</span> <span class="toc-text">4.5.2. 正则例2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-3-%E6%AD%A3%E5%88%99%E4%BE%8B3"><span class="toc-number">6.3.</span> <span class="toc-text">4.5.3. 正则例3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-4-%E6%AD%A3%E5%88%99%E4%BE%8B4"><span class="toc-number">6.4.</span> <span class="toc-text">4.5.4. 正则例4</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-6-NFA%E8%BD%ACDFA"><span class="toc-number">7.</span> <span class="toc-text">4.6. NFA转DFA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-7-DFA%E8%AF%86%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">4.7. DFA识别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-8-%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-number">9.</span> <span class="toc-text">4.8. 效果展示</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        跟我一起自己写编译器-4.词法分析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">fightinggg</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-06-24T14:25:02.000Z" class="dt-published" itemprop="datePublished">2021-06-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/cactus/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a>, <a class="p-category" href="/cactus/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <div><a href="/next/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPQ.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="5-词法分析"><a href="#5-词法分析" class="headerlink" title="5. 词法分析"></a>5. 词法分析</h1><p>词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。 </p>
+<h1 id="5-1-举个例子"><a href="#5-1-举个例子" class="headerlink" title="5.1. 举个例子"></a>5.1. 举个例子</h1><p>比如我们有一个代码,这个代码和c&#x2F;c++很相似（但是这个是pava代码，读者目前可以理解为c代码），这是一个计算斐波那契数列的代码，他的词法分析结果是什么呢？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fib</span>(x<span class="number">-1</span>) + <span class="built_in">fib</span>(x<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="built_in">fib</span>(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下文的代码就是词法分析结果, 词法分析器从源文件依次读取，然后分割出最小的词法单元，</p>
+<span id="more"></span>
+
+<p>最开始词法分析器读到了字符<code>i</code>，然后读到了字符<code>n</code>，然后读到了字符<code>t</code>,紧接着读到了空格字符<code> </code>，这时候词法分析器发力，进行分割，将前三个字符<code>int</code>划为最小词法单元<code>符号</code>。</p>
+<p>紧接着继续读取<code>f</code>,当他读入<code>f</code>这个字符的时候，词法分析器发力，将第四个字符<code> </code>(空格字符)划为词法单元<code>empty</code>,当然在下文中无法找到<code>emtpy</code>这个token，因为<code>empty</code>代表空字符，可有可无。</p>
+<p>然后词法分析器继续分析，不断地解析，一直解析出<code>fib(符号)</code>， <code>((左括号)</code>， <code>int(符号)</code>,<code>x(符号)</code>,<code>)(右括号)</code></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;&#123;&quot;(leftCurlyBracket)</span><br><span class="line">&quot;if&quot;(if)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;&lt;&quot;(lt)</span><br><span class="line">&quot;2&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;1&quot;(number)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;-&quot;(sub)</span><br><span class="line">&quot;1&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;+&quot;(add)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;x&quot;(symbol)</span><br><span class="line">&quot;-&quot;(sub)</span><br><span class="line">&quot;2&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;&#125;&quot;(rightCurlyBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;main&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;&#123;&quot;(leftCurlyBracket)</span><br><span class="line">&quot;int&quot;(symbol)</span><br><span class="line">&quot;a&quot;(symbol)</span><br><span class="line">&quot;=&quot;(eq)</span><br><span class="line">&quot;fib&quot;(symbol)</span><br><span class="line">&quot;(&quot;(leftBracket)</span><br><span class="line">&quot;5&quot;(number)</span><br><span class="line">&quot;)&quot;(rightBracket)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;return&quot;(return)</span><br><span class="line">&quot;a&quot;(symbol)</span><br><span class="line">&quot;;&quot;(semicolon)</span><br><span class="line">&quot;&#125;&quot;(rightCurlyBracket)</span><br><span class="line">&quot;$END&quot;($END)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5-2-识别词法单元"><a href="#5-2-识别词法单元" class="headerlink" title="5.2. 识别词法单元"></a>5.2. 识别词法单元</h1><p>编译器的第一步就是词法分析，他需要从待分析的文本中，逐字符读取，并分割词法单元。一种高效而有简单的方式就是使用正则表达式构建NFA模型，然后优化为DFA，此后对文本进行分割。</p>
+<p>这里可能有一些抽象，突然来了这么多概念，下面一个一个来解释。</p>
+<h1 id="5-3-确定有限状态自动机"><a href="#5-3-确定有限状态自动机" class="headerlink" title="5.3. 确定有限状态自动机"></a>5.3. 确定有限状态自动机</h1><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA">确定有限状态自动机</a> 被称为DFA</p>
+<blockquote>
+<p>确定有限状态自动机${\displaystyle {\mathcal {A}}}$是由</p>
+<ul>
+<li>一个非空有限的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%8A%B6%E6%80%81">状态</a>集合${\displaystyle Q}$</li>
+<li>一个输入<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%AD%97%E6%AF%8D%E8%A1%A8_(%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6)">字母表</a>${\displaystyle \Sigma }$（非空有限的字符集合)</li>
+<li>一个转移<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%87%BD%E6%95%B0">函数</a>${\displaystyle \delta :Q\times \Sigma \rightarrow Q}$（例如：${\displaystyle \delta \left(q,\sigma \right)&#x3D;p,\left(p,q\in Q,\sigma \in \Sigma \right)}$)</li>
+<li>一个开始状态${\displaystyle s\in Q}$</li>
+<li>一个接受状态的集合${\displaystyle F\subseteq Q}$</li>
+</ul>
+<p>所组成的5-<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%9A%E5%85%83%E7%BB%84">元组</a>。因此一个DFA可以写成这样的形式：${\displaystyle {\mathcal {A}}&#x3D;\left(Q,\Sigma ,\delta ,s,F\right)}$。</p>
+</blockquote>
+<h1 id="5-4-非确定有限状态自动机"><a href="#5-4-非确定有限状态自动机" class="headerlink" title="5.4. 非确定有限状态自动机"></a>5.4. 非确定有限状态自动机</h1><p>非确定有限状态自动机又被称为NFA，与DFA不同的是他的转移是不确定的，他的转移不唯一。</p>
+<h1 id="4-5-正则表达式识别原理"><a href="#4-5-正则表达式识别原理" class="headerlink" title="4.5. 正则表达式识别原理"></a>4.5. 正则表达式识别原理</h1><h2 id="4-5-1-正则例1"><a href="#4-5-1-正则例1" class="headerlink" title="4.5.1. 正则例1"></a>4.5.1. 正则例1</h2><p>首先给出一个正则表达式<code>a</code>， 这个正则表达式能识别，且仅能识别字符串<code>a</code>，那么如何来表示呢?下图是这个正则表达式所对应的nfa，最开始我们在状态<code>start</code>， 当我们读取字符a以后，会转移到<code>end</code>，当我们到达end的时候如果输入结束，自动机就输出匹配成功。所以该自动机能使被字符串<code>a</code>，如果输入为<code>b</code>， 自动机在start时，会因为没有<code>b</code>这个转移而直接输出匹配失败，如果输入为<code>ab</code>自动机会因为在end处无法找到转移<code>b</code>而输出匹配失败.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-5-2-正则例2"><a href="#4-5-2-正则例2" class="headerlink" title="4.5.2. 正则例2"></a>4.5.2. 正则例2</h2><p>考虑串联，来正则表达式<code>ab</code>， 这里如何构建呢，首先我们分别构建两个自动机。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1终结)</span><br><span class="line">    start2[start2起点] --&gt;|b| ed2(end2终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>然后将他们组装在一起， 注意到这里出现了一个<code>空</code>，这就意味着，当我们处于状态<code>end1</code>的时候可以不输入任何字符，直接转移到状态<code>start2</code> ，于是这个自动机最开始在<code>start1</code> 处，当他输入字符<code>a</code>，他会转移到<code>end1</code> 以及<code>start2</code>，当继续输入字符<code>b</code>，会转移到<code>end2</code>（end1无法转移,start2可转移）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1)</span><br><span class="line">    ed1 --&gt;|空| start2</span><br><span class="line">    start2[start2] --&gt;|b| ed2(end2终结)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-5-3-正则例3"><a href="#4-5-3-正则例3" class="headerlink" title="4.5.3. 正则例3"></a>4.5.3. 正则例3</h2><p>考虑并联,来正则表达式<code>a|b</code>， 这里如何构建? 依然构建两个自动机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1起点] --&gt;|a| ed1(end1终结)</span><br><span class="line">    start2[start2起点] --&gt;|b| ed2(end2终结)</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>然后串联， 这里不用再解释了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start1[start1] --&gt;|a| ed1(end1)</span><br><span class="line">    start2[start2] --&gt;|b| ed2(end2)</span><br><span class="line">    start[start起点] --&gt;|空| start1 &amp; start2</span><br><span class="line">      ed1 &amp; ed2 --&gt;|空| ed[end终结]</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-5-4-正则例4"><a href="#4-5-4-正则例4" class="headerlink" title="4.5.4. 正则例4"></a>4.5.4. 正则例4</h2><p>考虑自循环， 来正则表达式<code>a+</code>, 加号表示出现最少一次,可以为多次, 只需要引一条从end到start的边即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">     start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">      ed --&gt;|空| start</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>至此我们已经分析完了所有的正则单元，复杂的正则表达式均可由此合并而成。</p>
+<h1 id="4-6-NFA转DFA"><a href="#4-6-NFA转DFA" class="headerlink" title="4.6. NFA转DFA"></a>4.6. NFA转DFA</h1><p>nfa转dfa算法涉及到一个闭包，我们直接对这个nfa来计算闭包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">     start[start起点] --&gt;|a| ed(end终结)</span><br><span class="line">      ed --&gt;|空| start</span><br></pre></td></tr></table></figure>
+
+<p>最开始位于状态<code>start</code>， 当输入a以后，进入状态<code>end</code>， 计算end的空闭包<code>[start,end]</code>，当从状态<code>[start,end]</code>输入a以后，进入状态<code>end</code>，也就是<code>[start,end]</code>, 于是最终我们得到了这个dfa</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    start[start] --&gt;|a| ed([start,end])</span><br><span class="line">      ed --&gt;|a| ed</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-7-DFA识别"><a href="#4-7-DFA识别" class="headerlink" title="4.7. DFA识别"></a>4.7. DFA识别</h1><p>如何为一门语言设计他的dfa呢？实际上一门语言涉及到多个token，每个token都会由一个正则，那么就会出现正则冲突，即一个字符串可以被识别为多种token，这时候就定义优先级即可。</p>
+<p>另一种情况，即是否贪婪，如果一个字符串的前缀可以被识别为一个token，即字符串<code>ifhaha</code>的前缀<code>if</code>可以被识别为token<code>if</code> ,而他自身可以被识别为token<code>symbol</code>，这时候，我们需要选择最长的那个，即最长匹配即可。</p>
+<h1 id="4-8-效果展示"><a href="#4-8-效果展示" class="headerlink" title="4.8. 效果展示"></a>4.8. 效果展示</h1><p>笔者的项目中又涉及到一款c类语言(pava语言)的token配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;tokens&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;number&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0|[123456789]\\d*&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;doubleQuotes&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;blank&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\s+&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftCurlyBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\&#123;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightCurlyBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\&#125;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;string&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;[\\s\\w\\d]*\&quot;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;include&quot;</span><span class="punctuation">:</span> <span class="string">&quot;#include&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;while&quot;</span><span class="punctuation">:</span> <span class="string">&quot;while&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;if&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;for&quot;</span><span class="punctuation">:</span> <span class="string">&quot;for&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="string">&quot;return&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;break&quot;</span><span class="punctuation">:</span> <span class="string">&quot;break&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;continue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;continue&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;do&quot;</span><span class="punctuation">:</span> <span class="string">&quot;do&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;goto&quot;</span><span class="punctuation">:</span> <span class="string">&quot;goto&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;else&quot;</span><span class="punctuation">:</span> <span class="string">&quot;else&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;comma&quot;</span><span class="punctuation">:</span> <span class="string">&quot;,&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\(&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightBracket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\)&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;add&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\+&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;sub&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\-&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;mul&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\\*&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;div&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;mod&quot;</span><span class="punctuation">:</span> <span class="string">&quot;%&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;doubleEq&quot;</span><span class="punctuation">:</span> <span class="string">&quot;==&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;eq&quot;</span><span class="punctuation">:</span> <span class="string">&quot;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;ne&quot;</span><span class="punctuation">:</span> <span class="string">&quot;!=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;leftShift&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;&lt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;rightShift&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;&gt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;be&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;le&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;=&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;bt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;lt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;semicolon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;;&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;symbol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[_\\w][_\\w\\d]*&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>该配置在经过自动构建工具<a target="_blank" rel="noopener" href="https://github.com/fightinggg/compiler/blob/master/main/src/main/java/com/example/lang/reg/Reg.java">compiler&#x2F;Reg.java at master · fightinggg&#x2F;compiler · GitHub</a>构建以后得到了下图的nfa, 如果此图太小，读者可以右键点击到新页面查看，此处不对此工具进行解释，因为它涉及到更深层次的内容，笔者将在后面的章节中予适当的时候对此工具进行描述，另一方面由于此dfa也不是很大，人工绘制也不是不可能，综上此处不做解析了。</p>
+<p><img src='/image-2021-08-22-17.27.00.000.svg'></img></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/cactus/">首页</a></li>
+        
+          <li><a href="/cactus/about/">关于</a></li>
+        
+          <li><a href="/cactus/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">5. 词法分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">5.1. 举个例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-%E8%AF%86%E5%88%AB%E8%AF%8D%E6%B3%95%E5%8D%95%E5%85%83"><span class="toc-number">3.</span> <span class="toc-text">5.2. 识别词法单元</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3-%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">4.</span> <span class="toc-text">5.3. 确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-%E9%9D%9E%E7%A1%AE%E5%AE%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="toc-number">5.</span> <span class="toc-text">5.4. 非确定有限状态自动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-5-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%86%E5%88%AB%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">4.5. 正则表达式识别原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-1-%E6%AD%A3%E5%88%99%E4%BE%8B1"><span class="toc-number">6.1.</span> <span class="toc-text">4.5.1. 正则例1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-2-%E6%AD%A3%E5%88%99%E4%BE%8B2"><span class="toc-number">6.2.</span> <span class="toc-text">4.5.2. 正则例2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-3-%E6%AD%A3%E5%88%99%E4%BE%8B3"><span class="toc-number">6.3.</span> <span class="toc-text">4.5.3. 正则例3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-4-%E6%AD%A3%E5%88%99%E4%BE%8B4"><span class="toc-number">6.4.</span> <span class="toc-text">4.5.4. 正则例4</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-6-NFA%E8%BD%ACDFA"><span class="toc-number">7.</span> <span class="toc-text">4.6. NFA转DFA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-7-DFA%E8%AF%86%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">4.7. DFA识别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-8-%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-number">9.</span> <span class="toc-text">4.8. 效果展示</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://fightinggg.github.io/cactus/QV7MPQ.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://fightinggg.github.io/cactus/QV7MPQ.html&text=跟我一起自己写编译器-4.词法分析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://fightinggg.github.io/cactus/QV7MPQ.html&is_video=false&description=跟我一起自己写编译器-4.词法分析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=跟我一起自己写编译器-4.词法分析&body=Check out this article: http://fightinggg.github.io/cactus/QV7MPQ.html"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://fightinggg.github.io/cactus/QV7MPQ.html&title=跟我一起自己写编译器-4.词法分析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://fightinggg.github.io/cactus/QV7MPQ.html&name=跟我一起自己写编译器-4.词法分析&description=&lt;div&gt;&lt;a href=&#34;/next/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;next&lt;/a&gt;&lt;a href=&#34;/hexonext/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;hexonext&lt;/a&gt;&lt;a href=&#34;/butterfly/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;butterfly&lt;/a&gt;&lt;a href=&#34;/volantis/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;volantis&lt;/a&gt;&lt;a href=&#34;/yearn/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yearn&lt;/a&gt;&lt;a href=&#34;/yilia/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;yilia&lt;/a&gt;&lt;a href=&#34;/shoka/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;shoka&lt;/a&gt;&lt;a href=&#34;/indigo/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;indigo&lt;/a&gt;&lt;a href=&#34;/apollo/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;apollo&lt;/a&gt;&lt;a href=&#34;/landscape/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;landscape&lt;/a&gt;&lt;a href=&#34;/cactus/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;cactus&lt;/a&gt;&lt;a href=&#34;/matery/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;matery&lt;/a&gt;&lt;a href=&#34;/icarus/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;icarus&lt;/a&gt;&lt;a href=&#34;/fluid/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;fluid&lt;/a&gt;&lt;a href=&#34;/material/QV7MPQ.html&#34; style=&#34;border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            &#34;&gt;material&lt;/a&gt;&lt;div style=&#34;clear: both;&#34;&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&#34;5-词法分析&#34;&gt;&lt;a href=&#34;#5-词法分析&#34; class=&#34;headerlink&#34; title=&#34;5. 词法分析&#34;&gt;&lt;/a&gt;5. 词法分析&lt;/h1&gt;&lt;p&gt;词法分析，如其名，只分析词语，即token，词是一个文法的最小单元。至于什么是文法，后面会介绍，这里不需要过多忧虑。 &lt;/p&gt;
+&lt;h1 id=&#34;5-1-举个例子&#34;&gt;&lt;a href=&#34;#5-1-举个例子&#34; class=&#34;headerlink&#34; title=&#34;5.1. 举个例子&#34;&gt;&lt;/a&gt;5.1. 举个例子&lt;/h1&gt;&lt;p&gt;比如我们有一个代码,这个代码和c&amp;#x2F;c++很相似（但是这个是pava代码，读者目前可以理解为c代码），这是一个计算斐波那契数列的代码，他的词法分析结果是什么呢？&lt;/p&gt;
+&lt;figure class=&#34;highlight c++&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;fib&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;(&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; x)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;(x&amp;lt;&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;) &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(x&lt;span class=&#34;number&#34;&gt;-1&lt;/span&gt;) + &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(x&lt;span class=&#34;number&#34;&gt;-2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;function&#34;&gt;&lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;title&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;params&#34;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;type&#34;&gt;int&lt;/span&gt; a = &lt;span class=&#34;built_in&#34;&gt;fib&lt;/span&gt;(&lt;span class=&#34;number&#34;&gt;5&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; a;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;下文的代码就是词法分析结果, 词法分析器从源文件依次读取，然后分割出最小的词法单元，&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://fightinggg.github.io/cactus/QV7MPQ.html&t=跟我一起自己写编译器-4.词法分析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    fightinggg
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">首页</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

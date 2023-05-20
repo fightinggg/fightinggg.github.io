@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> java并发编程5-Java内存 · Believe it</title><meta name="description" content="java并发编程5-Java内存 - fightinggg"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/apollo/favicon.png"><link rel="stylesheet" href="/apollo/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://fightinggg.github.io/apollo/atom.xml" title="Believe it"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/apollo/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/apollo/" class="logo-link"><img src="/apollo/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/apollo/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/apollo/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/apollo/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">java并发编程5-Java内存</h1><div class="post-info">2020年4月11日</div><div class="post-content"><div><a href="/next/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8LY8O.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h1><p> Java Memory Model</p>
+<ul>
+<li>原子性: 保证指令不会收到线程上下文切换的影响</li>
+<li>可见性: 保证指令不会受到cpu缓存的影响</li>
+<li>有序性: 保证指令不会受到cpu指令并行优化的影响</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h1><p> java线程都有自己的高速缓存区，是内存的一个子集，下面的测试，不会停止运行,尝试使用volatile解决,当然加入synchronized罩住他也可以。System.out.println也可以</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test8</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(ThreadTest.class);</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">while</span> (flag) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">    &#125;, <span class="string">&quot;t1&quot;</span>);</span><br><span class="line">    thread.start();</span><br><span class="line"></span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">    flag = <span class="literal">false</span>;</span><br><span class="line">    logger.debug(<span class="string">&quot;end&quot;</span>);</span><br><span class="line">    thread.join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="两阶段终止"><a href="#两阶段终止" class="headerlink" title="两阶段终止"></a>两阶段终止</h1><p> 用volatile来实现可见性，一个负责读，另一个负责写。</p>
+<h1 id="balking"><a href="#balking" class="headerlink" title="balking"></a>balking</h1><p> 犹豫<br> 参见多线程实现的单例模式，双重检查锁，指令重排发生在构造函数和对内存赋值之间。</p>
+<h1 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h1><p> 为了提高CPU吞吐率，我们会做指令重排,下面的f2中，一旦发生指令重拍，r就可能变为0</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">ready</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"><span class="type">int</span> r;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (ready) r = num + num;</span><br><span class="line">    <span class="keyword">else</span> r = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f2</span><span class="params">()</span> &#123;</span><br><span class="line">    num = <span class="number">2</span>;</span><br><span class="line">    ready = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h1><p> JCstress, 用大量的线程并发模拟</p>
+<h1 id="禁止指令重排"><a href="#禁止指令重排" class="headerlink" title="禁止指令重排"></a>禁止指令重排</h1><p> volatile 可以实现</p>
+<h1 id="volatile原理"><a href="#volatile原理" class="headerlink" title="volatile原理"></a>volatile原理</h1><h2 id="写屏障"><a href="#写屏障" class="headerlink" title="写屏障"></a>写屏障</h2><p> 在该屏障之前的改动，都将被同步到主存当中</p>
+<h2 id="读屏障"><a href="#读屏障" class="headerlink" title="读屏障"></a>读屏障</h2><p> 保证该屏障以后的读取，都要加载主存中最新的数据</p>
+<h1 id="单例操作volatile"><a href="#单例操作volatile" class="headerlink" title="单例操作volatile"></a>单例操作volatile</h1><p> 因为volatile加入了写屏障，构造方法不会被排到对内存赋值之后</p>
+<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><p> happens-before 规定了对共享变量的写操作对其他线程的读操作可见。线程解锁m前对变量的写，对于接来下对m加锁的其他线程可见，对volatile的写对其他线程的读可见，start之前对变量的写，对其可见，线程结束前对变量的写，对其他线程得知他结束后可见，线程t1打断t2前对变量的写，对于其他线程得知t2被打断后对变量的读可见,对变量的默认值的写，对其他线程可见，还有屏障也能保证</p>
+</div></article></div></main><footer><div class="paginator"><a href="/apollo/Q8M6IO.html" class="prev">PREV</a><a href="/apollo/Q8KXQL.html" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2023 <a href="http://fightinggg.github.io/apollo">fightinggg</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

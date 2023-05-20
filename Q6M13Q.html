@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     总览 这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆 注意 全部代码单对象测试通过，部分代码未实现拷贝构造函数达到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="heap">
+<meta property="og:url" content="https://fightinggg.github.io/Q6M13Q.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     总览 这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆 注意 全部代码单对象测试通过，部分代码未实现拷贝构造函数达到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightinggg.github.io/image-2020-03-03-17.02.14.000.png">
+<meta property="article:published_time" content="2020-03-03T09:02:14.000Z">
+<meta property="article:modified_time" content="2020-03-03T09:02:14.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="构造">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="STL">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="tree">
+<meta property="article:tag" content="heap">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightinggg.github.io/image-2020-03-03-17.02.14.000.png">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/Q6M13Q.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/Q6M13Q.html","path":"Q6M13Q.html","title":"heap"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>heap | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-text">总览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-text">注意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#heap"><span class="nav-text">heap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80"><span class="nav-text">项目地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-text">前置条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="nav-text">基类设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#binary-heap"><span class="nav-text">binary heap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#push"><span class="nav-text">push</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop"><span class="nav-text">pop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top"><span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B"><span class="nav-text">代码如下:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#binomial-heap"><span class="nav-text">binomial heap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E7%9A%84%E5%85%B7%E4%BD%93%E5%BD%A2%E7%8A%B6"><span class="nav-text">堆的具体形状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#merge"><span class="nav-text">merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#push-1"><span class="nav-text">push</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop-1"><span class="nav-text">pop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top-1"><span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-text">程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fibonacci-heap"><span class="nav-text">fibonacci heap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#potential-method"><span class="nav-text">potential method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#push-2"><span class="nav-text">push</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#merge-1"><span class="nav-text">merge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#top-2"><span class="nav-text">top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#decrease"><span class="nav-text">decrease</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#erase"><span class="nav-text">erase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop-2"><span class="nav-text">pop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dh"><span class="nav-text">D(H)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E6%96%90%E6%B3%A2%E6%8B%89%E5%A5%91%E6%95%B0%E6%9B%B4%E5%A4%A7"><span class="nav-text">比斐波拉契数更大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E9%BB%84%E9%87%91%E5%88%86%E5%89%B2%E5%80%BC%E7%9A%84%E5%B9%82%E6%9B%B4%E5%A4%A7"><span class="nav-text">比黄金分割值的幂更大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E5%B0%BE"><span class="nav-text">结尾</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pairing-heap"><span class="nav-text">pairing heap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-1"><span class="nav-text">程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#leftist-heap"><span class="nav-text">leftist heap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#skew-heap"><span class="nav-text">skew heap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bordal-heap"><span class="nav-text">bordal heap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#b-heap"><span class="nav-text">B heap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wiki%E4%B8%8A%E8%BF%98%E6%9C%89%E6%95%B0%E4%B8%8D%E6%B8%85%E7%9A%84%E5%A0%86%E5%AD%A6%E5%88%B0%E8%BF%99%E9%87%8C%E6%9A%82%E5%81%9C%E4%B8%80%E4%B8%8B"><span class="nav-text">wiki上还有数不清的堆，学到这里暂停一下</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/Q6M13Q.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="heap | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          heap<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/heap/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-03-03 17:02:14" itemprop="dateCreated datePublished" datetime="2020-03-03T17:02:14+08:00">2020-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q6M13Q.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h1 id="总览">总览</h1>
+<p>这篇博客将用于整理各种堆的数据结构代码以及复杂度证明: 二叉堆、二项堆、斐波拉契堆、配对堆、左偏树、斜堆、bordal队列、B堆</p>
+<h1 id="注意">注意</h1>
+<p>全部代码单对象测试通过，部分代码未实现拷贝构造函数达到深拷贝。</p>
+<h1 id="heap">heap</h1>
+<p>堆是一种非常重要的数据结构，在计算机科学中，堆一般指堆是根节点比子孙后代都要大(小)的一种数据结构。</p>
+<h1 id="项目地址">项目地址</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/fightinggg/fightinggg.github.io/tree/master/cpp/perfect">链接</a></p>
+<h1 id="前置条件">前置条件</h1>
+<p>基本数据结构：变长数组、栈、队列、字符串的实现(此时暂未实现，使用STL代替，后面有时间会自己实现) 内存池机制 { post_link 势能分析}</p>
+<!---more-->
+<h1 id="基类设计">基类设计</h1>
+在这里我们暂且只设置三个接口，如果不够，我们再补充。
+<details>
+<summary>
+heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>heap</span><a href="/cpp/perfect/data_structure/heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">heap</span> {</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>= <span class="number">0</span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">virtual</span> ~<span class="built_in">heap</span>() {}</span><br><span class="line">};</span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="binary-heap">binary heap</h1>
+<p>二叉堆，就是我们常见的堆，也是大多数人常用的堆，二叉堆是一个完全二叉树，满足根节点的值大于（小于）子孙的值。我们设计他的时候，采取下标从1开始的数组来直接模拟，使用i,2i,2i+1之间的关系来完成边的构建。</p>
+<h2 id="push">push</h2>
+<p>我们将数放入数组尾部，并不断上浮即可。细节稍微推一下就出来了。每个元素最多上浮堆的高度次，复杂度<span class="math inline">\(O(lgn)\)</span></p>
+<h2 id="pop">pop</h2>
+<p>我们直接删掉第一个元素，并让最后一个元素顶替他，然后下沉即可。这里个细节也是稍微推一下就出来了。每个元素最多下沉堆的高度次,复杂度<span class="math inline">\(O(lgn)\)</span></p>
+<h2 id="top">top</h2>
+<p>就是第一个元素,复杂度<span class="math inline">\(O(1)\)</span></p>
+<h2 id="代码如下">代码如下:</h2>
+<details>
+<summary>
+binary heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>binary heap</span><a href="/cpp/perfect/data_structure/binary_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../algorithm/general.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;vector.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">binary_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  vector&lt;T&gt; data;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">binary_heap</span>() { data.<span class="built_in">push_back</span>(<span class="built_in">T</span>()); }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    data.<span class="built_in">push_back</span>(w);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = data.<span class="built_in">size</span>() - <span class="number">1</span>; i != <span class="number">1</span> &amp;&amp; data[i &gt;&gt; <span class="number">1</span>] &lt; data[i]; i &gt;&gt;= <span class="number">1</span>) {</span><br><span class="line">      algorithm::<span class="built_in">swap</span>(data[i], data[i &gt;&gt; <span class="number">1</span>]);</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="built_in">size</span>() &gt; <span class="number">1</span>) {</span><br><span class="line">      data[<span class="number">1</span>] = data.<span class="built_in">back</span>();</span><br><span class="line">      data.<span class="built_in">pop_back</span>();</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; (i &lt;&lt; <span class="number">1</span>) &lt; data.<span class="built_in">size</span>();) {</span><br><span class="line">        <span class="type">int</span> son = (i &lt;&lt; <span class="number">1</span> | <span class="number">1</span>) &lt; data.<span class="built_in">size</span>() &amp;&amp; data[i &lt;&lt; <span class="number">1</span> | <span class="number">1</span>] &gt; data[i &lt;&lt; <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (data[i] &lt; data[i &lt;&lt; <span class="number">1</span> | son])</span><br><span class="line">          algorithm::<span class="built_in">swap</span>(data[i], data[i &lt;&lt; <span class="number">1</span> | son]);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        i = i &lt;&lt; <span class="number">1</span> | son;</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> data[<span class="number">1</span>]; }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(binary_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; rhs.data.<span class="built_in">size</span>(); i++) <span class="built_in">push</span>(rhs.data[i]);</span><br><span class="line">    rhs.data.<span class="built_in">clear</span>();</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="binomial-heap">binomial heap</h1>
+<p>二项堆，是一个堆森林，其中每个堆以及各自的子堆的元素个数都是2的幂，并且森林中没有两个堆元素个数相同的堆。举个简单的例子，一个包含了6个元素的二项堆，这个堆森林中一定是两个堆组成，因为6=2+4，他不能是6=2+2+2由三个堆组成，因为森林中不允许出现元素相同的堆。</p>
+<h2 id="堆的具体形状">堆的具体形状</h2>
+<p>*** 图片源于wiki*** <img data-src='/image-2020-03-03-17.02.14.000.png'></img></p>
+<h2 id="merge">merge</h2>
+<p>二项堆天然支持合并，即可并堆，当合并的时候，我们很容易发现，只要将森林合并即可,而对于哪些出现的元素个数相同的堆，我们可以两两合并，让其中一个作为另一个的根的直接儿子即可。每次合并的时候，两两合并的复杂度是<span class="math inline">\(O(1)\)</span>,最多合并的次数等于森林中元素的个数减1，而森林中堆的个数等于二进制中1的个数，这个是O(lgn)级别的，所以总体复杂度O(lgn)</p>
+<h2 id="push-1">push</h2>
+<p>可以看作与一个只包含了一个元素的堆合并,每次push，最坏的情况下时间复杂度为<span class="math inline">\(O(lgn)\)</span>,但是多次连续的push，均摊时间复杂度就不一样了，我们来分析一下n次连续push的情况，森林中的堆两两合并的次数等于时间复杂度，定义函数<span class="math inline">\(f(x)\)</span>,表示在森林中所有堆中的元素个数的总和为<span class="math inline">\(x\)</span>的情况下，push一个值以后，堆中合并发生的次数，显然<span class="math inline">\(f(x)=\)</span>x的二进制表示中末尾连续的1的个数，不难发现 <span class="math inline">\(f(x)&gt;=1\)</span>的时候<span class="math inline">\(x\%2=1\)</span>, <span class="math inline">\(f(x)&gt;=2\)</span>的时候<span class="math inline">\(x\%4=3\)</span>, <span class="math inline">\(f(x)&gt;=3\)</span>的时候<span class="math inline">\(x\%8=7\)</span> 这里我们通过计数原理推算出 <span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^n{f(i)}=\lfloor\frac{x+1}{2}\rfloor+\lfloor\frac{x+1}{4}\rfloor+\lfloor\frac{x+1}{8}\rfloor+...+\lt x+1 
+\end{aligned}
+\]</span> 所以在大量连续的push过程中，均摊时间复杂度为O(1)</p>
+<h2 id="pop-1">pop</h2>
+<p>先遍历各个根，找出最值，不难发现，森林中，任意一个堆去掉根以后，恰好也是一个满足条件森林，这里也可以用合并处理,时间复杂度<span class="math inline">\(O(lgn)\)</span></p>
+<h2 id="top-1">top</h2>
+<p>遍历所有堆即可，时间复杂度O(lgn)</p>
+<h2 id="程序设计">程序设计</h2>
+<p>很多人说用链表实现链接，这确实是一个好方法，但是如果用单链表或循环链表或双向链表实现，则有很多局限性，下面代码中也提及了。我这里采取的是使用数组存森林，使用左儿子右兄弟的手段，将多叉树用二叉树来表示。这个方法非常棒。</p>
+<h2 id="代码">代码</h2>
+<details>
+<summary>
+binary heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>binary heap</span><a href="/cpp/perfect/data_structure/binomial_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../algorithm/general.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../memery_management/memery_pool.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;vector.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">binomial_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">node</span> {</span><br><span class="line">    T value;</span><br><span class="line">    node *r, *son;</span><br><span class="line">  };</span><br><span class="line">  memery_pool&lt;node&gt; pool;</span><br><span class="line">  vector&lt;node*&gt; root;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 这里如果使用单链表的话，在我们的merge(node*,node*)中，我们只能实现为头插法，这导致了deg必须为递减序列</span></span><br><span class="line">  <span class="comment">// 这导致我们在插入的时候，必须定位到链表的尾部,这会耗很多常数时间</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// 如果使用双链表，常数更大，每次更改都是几倍的常数</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// 这里我们还是考虑使用数组直接映射，而不是链表,</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="function">node* <span class="title">merge</span><span class="params">(node* a, node* b)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> b;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">nullptr</span>) <span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">if</span> (a-&gt;value &lt; b-&gt;value) algorithm::<span class="built_in">swap</span>(a, b);</span><br><span class="line">    b-&gt;r = a-&gt;son;</span><br><span class="line">    a-&gt;son = b;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(node* nd, <span class="type">int</span> place)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (nd == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">while</span> (root.<span class="built_in">size</span>() - <span class="number">1</span> &lt; place || root.<span class="built_in">back</span>() != <span class="literal">nullptr</span>)</span><br><span class="line">      root.<span class="built_in">push_back</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    <span class="keyword">while</span> (root[place] != <span class="literal">nullptr</span>) {</span><br><span class="line">      nd = <span class="built_in">merge</span>(nd, root[place]);</span><br><span class="line">      root[place++] = <span class="literal">nullptr</span>;</span><br><span class="line">    }</span><br><span class="line">    root[place] = nd;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">get_max_node</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">int</span> t = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; root.<span class="built_in">size</span>(); i++) {</span><br><span class="line">      <span class="keyword">if</span> (root[i] == <span class="literal">nullptr</span>) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">if</span> (root[t] == <span class="literal">nullptr</span> || root[t]-&gt;value &lt; root[i]-&gt;value) {</span><br><span class="line">        t = i;</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(binomial_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; rhs.root.<span class="built_in">size</span>(); i++) <span class="built_in">push</span>(rhs.root[i], i);</span><br><span class="line">    rhs.root.<span class="built_in">clear</span>();</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    node* t = pool.<span class="built_in">get</span>();</span><br><span class="line">    t-&gt;son = t-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    t-&gt;value = w;</span><br><span class="line">    <span class="built_in">push</span>(t, <span class="number">0</span>);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">int</span> t = <span class="built_in">get_max_node</span>();</span><br><span class="line">    node* mx = root[t]-&gt;son;</span><br><span class="line">    pool.<span class="built_in">erase</span>(root[t]);</span><br><span class="line">    root[t] = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">while</span> (mx != <span class="literal">nullptr</span>) {</span><br><span class="line">      node* nex = mx-&gt;r;</span><br><span class="line">      mx-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="built_in">push</span>(mx, --t);</span><br><span class="line">      mx = nex;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> root[<span class="built_in">get_max_node</span>()]-&gt;value; }</span><br><span class="line">};</span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="fibonacci-heap">fibonacci heap</h1>
+<p>斐波拉契堆，是目前理论上最强大的堆，他和二项堆很长得很相似。和二项堆一样，斐波拉契堆也是一个堆森林，斐波拉契堆简化了几乎所有的堆操作为懒惰性操作，这极大的提升了很多操作的时间复杂度。</p>
+<h2 id="potential-method">potential method</h2>
+<p>对于一个斐波拉契堆<span class="math inline">\(H\)</span>,我们定义势能函数为<span class="math inline">\(\Phi(H) = t(H) + 2m(H)\)</span>, 其中<span class="math inline">\(t(H)\)</span>是斐波拉契堆<span class="math inline">\(H\)</span>的森林中堆的个数,<span class="math inline">\(m(H)\)</span>是斐波拉契堆中被标记的点的数量。</p>
+<h2 id="push-2">push</h2>
+<p>当我们向一个斐波拉契堆中添加元素的时候，我们会选择将这个元素做成一个堆，然后链入森林的根集和，常常选择链表维护根集合，同时更新斐波拉契堆中最小值的指针，实际时间复杂度显然是<span class="math inline">\(O(1)\)</span>，势能变化为1，因为堆的个数变大了1，均摊复杂度为<span class="math inline">\(O(1)+1=O(1)\)</span></p>
+<h2 id="merge-1">merge</h2>
+<p>当我们合并两个斐波拉契堆的时候，我们是懒惰操作，直接将这两个堆森林的根集合并为一个根集，常常选择链表来维护根集合,同时更新新的最小值指针，实际实际复杂度为<span class="math inline">\(O(1)\)</span>,势能无变化，均摊复杂度为<span class="math inline">\(O(1)\)</span></p>
+<h2 id="top-2">top</h2>
+<p><span class="math inline">\(O(1)\)</span></p>
+<h2 id="decrease">decrease</h2>
+<p>当我们想要减小一个节点的值堆时候，我们直接将他和父亲断开，然后将他链入森林并减小值，然后标记父亲，如果父亲被标记过一次，则将父亲和爷爷也断开并链入森林，并清除标记，一直递归下去，这里我们不要太认真，加上这条路上一个有<span class="math inline">\(c\)</span>个，则我们一共断开了c次，实际复杂度为<span class="math inline">\(O(c)\)</span>,势能的第一项变为了<span class="math inline">\(t(H)+c\)</span>，第二项变为了<span class="math inline">\(2(m(H)-c)\)</span>,于是势能的变化为<span class="math inline">\(c-2c=-c\)</span>,于是均摊复杂度为<span class="math inline">\(O(c)-c\)</span>,这里本来并不等于<span class="math inline">\(O(1)\)</span>,但是我们可以增大势的单位到和这里的<span class="math inline">\(O(c)\)</span>同级，这样就得到了<span class="math inline">\(O(1)\)</span></p>
+<h2 id="erase">erase</h2>
+<p>当我们想要删除一个节点的时候,先将其设为无穷小，然后在调用pop</p>
+<h2 id="pop-2">pop</h2>
+<p>前面偷了很多懒，导致除了erase以外，其他操作的均摊复杂度均为<span class="math inline">\(O(1)\)</span>,这里就要好好地操作了，我们是这样来操作的，删掉最小值以后，将他的儿子都链入森林，这里花费了<span class="math inline">\(O(D(H))\)</span>的实际代价，这里的<span class="math inline">\(D(H)\)</span>指的是斐波拉契堆<span class="math inline">\(H\)</span>中堆的最大度数。然后我们更新top的时候，不得不遍历所有的根，这时候我们就顺便调整一下堆。我们遍历所有的根，依次对森林中所有的堆进行合并，直到没有任意两个堆的度数相同，假设最后我们得到了数据结构<span class="math inline">\(H&#39;\)</span>，那么这个过程是<span class="math inline">\(O(t(H)-t(H&#39;))\)</span>的，于是时间复杂度为<span class="math inline">\(O(t(H)-t(H&#39;))+O(D(H))\)</span>,然后我们观察堆的势能变化，显然第一项的变化量为<span class="math inline">\(t(H&#39;)-t(H)\)</span>,第二项无变化，即势能总变化为<span class="math inline">\(t(H&#39;)-t(H)\)</span>,则均摊复杂度为<span class="math inline">\(O(t(H)-t(H&#39;))+O(D(H))+(t(H&#39;)-t(H))\)</span>,这里依然不一定等于<span class="math inline">\(O(D(H))\)</span>,但是我们依然可以增大势的单位到能够和<span class="math inline">\(O(t(H)-t(H&#39;))\)</span>抵消，最终，均摊复杂度成了<span class="math inline">\(O(D(H))\)</span></p>
+<h2 id="dh">D(H)</h2>
+<p>现在我们进入最高潮的地方。我们考虑斐波拉契堆中一个度数为k的堆，若不考虑丢失儿子这种情况发生，我们对他的儿子按照儿子的度数进行排序，显然第i个儿子的度数为i-1,<span class="math inline">\(i=1,2,3...k\)</span>,此时考虑儿子们会丢掉自己的儿子，则有第i个儿子的度数<span class="math inline">\(\ge i-2\)</span>,在考虑他自己也会丢失儿子，但这不会影响到第i个儿子的度数<span class="math inline">\(\ge i-2\)</span>这个结论。 ### 斐波拉契数列 <span class="math display">\[
+\begin{aligned}
+F_i = 
+\left\{
+\begin{aligned}
+&amp;0&amp;i=0\\
+&amp;1&amp;i=1\\
+&amp;F_{i-2}+F_{i-1]}&amp;i\ge 2\\
+\end{aligned}
+\right.
+\end{aligned}
+\]</span> ### 斐波拉契数列的两个结论 <span class="math inline">\(F_{n+2}=1+\sum_{i=1}^nF_i\)</span> <span class="math inline">\(F_{n+2}\ge \phi^n,\phi^2=\phi+1,\phi大约取1.618\)</span></p>
+<h3 id="比斐波拉契数更大">比斐波拉契数更大</h3>
+<p>容易用数学归纳法证明对于一个度数为k的堆，他里面的节点的个数<span class="math inline">\(\ge F_{k+2}\)</span>,这里<span class="math inline">\(F_{i}\)</span>是斐波拉契数列的第i项。 当k=0的时候，节点数数目为1，大于等于1 当k=1的时候，节点数数目至少为2，大于等于2 若<span class="math inline">\(k\le k_0\)</span>的时候成立， 则当<span class="math inline">\(k=k_0+1\)</span>的时候，节点数目至少为<span class="math inline">\(1+F_1+F_2+...+F_{k_0+1}=F_{k_0+3}=F_{k+2}\)</span></p>
+<h3 id="比黄金分割值的幂更大">比黄金分割值的幂更大</h3>
+<p>现在我们就能够得到一个结果了，一个度数为k的堆，他的节点个数至少为<span class="math inline">\(\Phi^k\)</span>,这里我们很容易就能得到这样一个结果，<span class="math inline">\(D(H)\le \log_\Phi 最大的堆内元素的个数\)</span></p>
+<h3 id="结尾">结尾</h3>
+至此我们已经全部证明完成，读者也应该知道为什么斐波拉契堆要叫这个名字。 ## fibonacci heap 代码
+<details>
+<summary>
+fibonacci heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>fibonacci heap</span><a href="/cpp/perfect/data_structure/fibonacci_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../algorithm/general.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../memery_management/memery_pool.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;vector.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">fibonacci_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">node</span> {</span><br><span class="line">    T value;  <span class="comment">// 我们暂时不支持erase和decrease</span></span><br><span class="line">    <span class="type">int</span> deg;</span><br><span class="line">    node *r, *son;  <span class="comment">// 作循环链表不做双向循环</span></span><br><span class="line">  };</span><br><span class="line">  memery_pool&lt;node&gt; pool;</span><br><span class="line">  node *root, *tail, *minp;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">delete_self</span><span class="params">(node*&amp; p)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="built_in">delete_self</span>(p-&gt;r);</span><br><span class="line">    <span class="built_in">delete_self</span>(p-&gt;son);</span><br><span class="line">    pool.<span class="built_in">erase</span>(p);</span><br><span class="line">    p = <span class="literal">nullptr</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">copy_self</span><span class="params">(node*&amp; p, node* p2)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (p2 == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">    p = pool.<span class="built_in">get</span>();</span><br><span class="line">    *p = *p2;  <span class="comment">// 浅拷贝</span></span><br><span class="line">    <span class="built_in">copy_self</span>(p-&gt;r, p2-&gt;r);</span><br><span class="line">    <span class="built_in">copy_self</span>(p-&gt;son, p2-&gt;son);</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 把一个堆放入森林</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push_one_heap</span><span class="params">(node* p)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) {</span><br><span class="line">      root = tail = minp = p;</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">      tail-&gt;r = p;</span><br><span class="line">      tail = tail-&gt;r;</span><br><span class="line">      <span class="keyword">if</span> (minp-&gt;value &lt; tail-&gt;value) minp = tail;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  <span class="comment">// pop的调整，包含了合并</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop_adjust</span><span class="params">(vector&lt;node*&gt;&amp; vec, node* p)</span> </span>{</span><br><span class="line">    <span class="keyword">while</span> (vec.<span class="built_in">size</span>() - <span class="number">1</span> &lt; p-&gt;deg || vec.<span class="built_in">back</span>() != <span class="literal">nullptr</span>)</span><br><span class="line">      vec.<span class="built_in">push_back</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    <span class="keyword">while</span> (vec[p-&gt;deg] != <span class="literal">nullptr</span>) {</span><br><span class="line">      node* p2 = vec[p-&gt;deg];</span><br><span class="line">      vec[p-&gt;deg] = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="keyword">if</span> (p-&gt;value &lt; p2-&gt;value) algorithm::<span class="built_in">swap</span>(p, p2);</span><br><span class="line">      p2-&gt;r = p-&gt;son;</span><br><span class="line">      p-&gt;son = p2;</span><br><span class="line">      p-&gt;deg++;</span><br><span class="line">    }</span><br><span class="line">    vec[p-&gt;deg] = p;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// 复制构造函数、析构函数、赋值函数</span></span><br><span class="line">  <span class="built_in">fibonacci_heap</span>() { root = tail = minp = <span class="literal">nullptr</span>; }</span><br><span class="line">  <span class="built_in">fibonacci_heap</span>(<span class="type">const</span> fibonacci_heap&lt;T&gt;&amp; rhs) { *<span class="keyword">this</span> = rhs; }  <span class="comment">// 深复制</span></span><br><span class="line">  ~<span class="built_in">fibonacci_heap</span>() { <span class="built_in">delete_self</span>(root); }</span><br><span class="line">  fibonacci_heap&lt;T&gt; <span class="keyword">operator</span>=(<span class="type">const</span> fibonacci_heap&lt;T&gt;&amp; rhs) {</span><br><span class="line">    <span class="built_in">delete_self</span>(root);</span><br><span class="line">    <span class="built_in">copy_self</span>(root, rhs.root);</span><br><span class="line">    tail = minp = root;</span><br><span class="line">    <span class="keyword">while</span> (tail-&gt;r != <span class="literal">nullptr</span>) {</span><br><span class="line">      tail = tail-&gt;r;</span><br><span class="line">      <span class="keyword">if</span> (minp-&gt;value &lt; tail-&gt;value) minp = tail;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 其他操作</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(fibonacci_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) {</span><br><span class="line">      root = rhs.root;</span><br><span class="line">      tail = rhs.tail;</span><br><span class="line">      minp = rhs.minp;</span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> (rhs.root != <span class="literal">nullptr</span>) {</span><br><span class="line">      tail-&gt;r = rhs.root;</span><br><span class="line">      tail = rhs.tail;</span><br><span class="line">      <span class="keyword">if</span> (minp-&gt;value &lt; rhs.minp-&gt;value) minp = rhs.minp;</span><br><span class="line">    }</span><br><span class="line">    rhs.root = rhs.tail = rhs.minp = <span class="literal">nullptr</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    node* t = pool.<span class="built_in">get</span>();</span><br><span class="line">    t-&gt;son = t-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    t-&gt;deg = <span class="number">0</span>;</span><br><span class="line">    t-&gt;value = w;</span><br><span class="line">    <span class="built_in">push_one_heap</span>(t);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> minp-&gt;value; }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="function">vector&lt;node*&gt; <span class="title">vec</span><span class="params">(<span class="number">5</span>, <span class="literal">nullptr</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span> (node *p = root, *nex = p; p != <span class="literal">nullptr</span>; p = nex) {</span><br><span class="line">      nex = p-&gt;r;</span><br><span class="line">      p-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="keyword">if</span> (p != minp) <span class="built_in">pop_adjust</span>(vec, p);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">for</span> (node *p = minp-&gt;son, *nex = p; p != <span class="literal">nullptr</span>; p = nex) {</span><br><span class="line">      nex = p-&gt;r;</span><br><span class="line">      p-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="built_in">pop_adjust</span>(vec, p);</span><br><span class="line">    }</span><br><span class="line">    pool.<span class="built_in">erase</span>(minp);</span><br><span class="line">    root = tail = minp = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">for</span> (node* p : vec) {</span><br><span class="line">      <span class="comment">// p-&gt;r=nullptr;</span></span><br><span class="line">      <span class="keyword">if</span> (p != <span class="literal">nullptr</span>) <span class="built_in">push_one_heap</span>(p);</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="pairing-heap">pairing heap</h1>
+<p>配对堆，名字来源于其中的一个匹配操作。很有趣，他的定义就是一个普通多叉堆，但使用特殊的删除方式来避免复杂度退化。是继Michael L. Fredman和Robert E.Tarjan发明斐波拉契堆以后，由于该数据结构实现难度高以及不如理论上那么有效率，Fredma、Sedgewick、Sleator和Tarjan一起发明的。 ## potential method 我们有一个配对堆<span class="math inline">\(H\)</span>,其中有n节点<span class="math inline">\(node\)</span>,<span class="math inline">\(node_i\)</span>有<span class="math inline">\(d_i\)</span>个儿子, 则有 <span class="math inline">\(F(H) = \sum F(node)\)</span>, <span class="math inline">\(F(node_i)=1-min(d_i,\sqrt{n})\)</span> 复杂度证明方面，等我把论文看完再来整这个，感觉证明比斐波拉契堆更复杂。 ## merge 合并的时候，让次大堆做最大堆的儿子,显然时间复杂度<span class="math inline">\(O(1)\)</span> ## push 插入的时候，看作与只包含了一个元素的堆合并,所以<span class="math inline">\(O(1)\)</span> ## top 就是根 <span class="math inline">\(O(1)\)</span> ## pop 当我们删除根以后，会形成一个堆森林，这时我们从左到右，每两个连续的堆配对合并一次，然后从右到左依次合并。比方说有这样一个情况AABBCCDDEEFFGGH,我们先将其从左到右合并AA-&gt;A,BB-&gt;B...得到ABCDEFG，-&gt;ABCDEH -&gt; ABCDI -&gt; ABCJ -&gt; ABK -&gt; AL -&gt; M</p>
+<h2 id="程序设计-1">程序设计</h2>
+<p>同样的左儿子右兄弟</p>
+<h2 id="代码-1">代码</h2>
+<details>
+<summary>
+pairing heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>pairing heap</span><a href="/cpp/perfect/data_structure/pairing_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../memery_management/memery_pool.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;vector.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">pairing_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">node</span> {</span><br><span class="line">    T value;</span><br><span class="line">    node *r, *son;</span><br><span class="line">  };</span><br><span class="line">  memery_pool&lt;node&gt; pool;</span><br><span class="line">  node* root = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">node* <span class="title">merge</span><span class="params">(node* a, node* b)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> b;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">nullptr</span>) <span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">if</span> (a-&gt;value &lt; b-&gt;value) algorithm::<span class="built_in">swap</span>(a, b);</span><br><span class="line">    b-&gt;r = a-&gt;son;</span><br><span class="line">    a-&gt;son = b;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  }</span><br><span class="line">  <span class="function">node* <span class="title">merges</span><span class="params">(node* a)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    node* b = a-&gt;r;</span><br><span class="line">    a-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">nullptr</span>) <span class="keyword">return</span> a;</span><br><span class="line">    node* c = b-&gt;r;</span><br><span class="line">    b-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">merge</span>(<span class="built_in">merge</span>(a, b), <span class="built_in">merges</span>(c));</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// 构造函数待实现</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(pairing_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    root = <span class="built_in">merge</span>(root, rhs.root);</span><br><span class="line">    rhs.root = <span class="literal">nullptr</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    node* t = pool.<span class="built_in">get</span>();</span><br><span class="line">    t-&gt;son = t-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    t-&gt;value = w;</span><br><span class="line">    root = <span class="built_in">merge</span>(root, t);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    node* old = root;</span><br><span class="line">    root = <span class="built_in">merges</span>(root-&gt;son);</span><br><span class="line">    pool.<span class="built_in">erase</span>(old);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> root-&gt;value; }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="leftist-heap">leftist heap</h1>
+左偏树、左式堆、左翼堆是一个堆，除此以外，他定义了距离，没有右子节点的节点的距离为0，其他节点的距离为右子节点的距离加1，在这个定义下，左偏树的左偏体现着每个节点的左子节点的距离不小于右子节点的距离。 ## push 为新节点建立堆，然后与堆合并 <span class="math inline">\(O(lgn)\)</span> ## pop 删除根节点，合并左右子树 <span class="math inline">\(O(lgn)\)</span> ## top 根节点 <span class="math inline">\(O(1)\)</span> ## merge <span class="math inline">\(O(lgn)\)</span>, 当我们合并两个堆<span class="math inline">\(H1,H2\)</span>的时候，我们只需要比较这两个堆顶的大小，不妨设H1小，并设H3、H4为H1的左右儿子，则我们可以这样来看待，我们将H3,H4从H1中断开，递归合并H4和H2位H5，这时候我们还剩下H3、H5以及H1的堆顶，我们根据左偏树的定义，选择H3、H5分别作为左右或右左儿子即可， ### 复杂度证明 算法中每次均选择右儿子递归向下，这导致时间复杂度与右儿子的右儿子的右儿子的...有关，这里不难发现递归的次数就是节点的距离。根据左距离不小于右距离，我们很容易就能得到这个距离是<span class="math inline">\(O(lgn)\)</span>级别的。 ## leftist heap 代码
+<details>
+<summary>
+leftist heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>leftist heap</span><a href="/cpp/perfect/data_structure/leftist_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../algorithm/general.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../memery_management/memery_pool.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">leftist_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">node</span> {</span><br><span class="line">    T value;</span><br><span class="line">    <span class="type">int</span> dist;</span><br><span class="line">    node *l, *r;</span><br><span class="line">  };</span><br><span class="line">  memery_pool&lt;node&gt; pool;</span><br><span class="line">  node* root = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">get_dist</span><span class="params">(node* a)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;dist;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function">node* <span class="title">merge</span><span class="params">(node* a, node* b)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> b;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">nullptr</span>) <span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">if</span> (a-&gt;value &lt; b-&gt;value) algorithm::<span class="built_in">swap</span>(a, b);</span><br><span class="line">    a-&gt;r = <span class="built_in">merge</span>(a-&gt;r, b);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">get_dist</span>(a-&gt;l) &lt; <span class="built_in">get_dist</span>(a-&gt;r)) algorithm::<span class="built_in">swap</span>(a-&gt;l, a-&gt;r);</span><br><span class="line">    a-&gt;dist = <span class="built_in">get_dist</span>(a-&gt;r) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// 构造函数未实现</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(leftist_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    root = <span class="built_in">merge</span>(root, rhs.root);</span><br><span class="line">    rhs.root = <span class="literal">nullptr</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    node* t = pool.<span class="built_in">get</span>();</span><br><span class="line">    t-&gt;l = t-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    t-&gt;dist = <span class="number">0</span>;</span><br><span class="line">    t-&gt;value = w;</span><br><span class="line">    root = <span class="built_in">merge</span>(root, t);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    node* old = root;</span><br><span class="line">    root = <span class="built_in">merge</span>(root-&gt;l, root-&gt;r);</span><br><span class="line">    pool.<span class="built_in">erase</span>(old);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> root-&gt;value; }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="skew-heap">skew heap</h1>
+我们的左偏树不记录距离，并且每次递归的时候无条件交换左右儿子，则成了斜堆。 ## 复杂度证明 ### potential method 定义斜堆中的右子树距离比左子树大的节点为重节点，否则为轻节点。 定义势能函数为重节点的个数。 ### merge 当我们合并两个斜堆<span class="math inline">\(H_1,H_2\)</span>的时候，不妨设他们的右子节点链中的轻重儿子为<span class="math inline">\(l_1,h_1,l_2,h_2\)</span>,则时间时间复杂度为<span class="math inline">\(O(l_1+h_1+l_2+h_2)\)</span>,经过交换以后，链上的重节点一定会变成轻节点,轻节点可能会变为重节点，我们取最坏的情况，即轻节点全部变为重节点，这时势能的变化量为<span class="math inline">\(l_1+l_2-h_1-h_2\)</span>,最后我们的均摊复杂度为<span class="math inline">\(O(l_1+h_1+l_2+h_2)+l_1+l_2-h_1-h_2\)</span>，我们依然可以增大势的单位，直到足以抵消所有的h，最终均摊复杂度为<span class="math inline">\(O(l_1+l_2)\)</span>,这里不难证明，一条右儿子构成的链上，轻节点的个数是对数级别。 ## skew heap代码
+<details>
+<summary>
+skew heap代码
+</summary>
+<figure class="highlight cpp"><figcaption><span>skew heap</span><a href="/cpp/perfect/data_structure/skew_heap.h">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../algorithm/general.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;../memery_management/memery_pool.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;heap.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> data_structure {</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">skew_heap</span> : <span class="keyword">public</span> heap&lt;T&gt; {</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">node</span> {</span><br><span class="line">    T value;</span><br><span class="line">    node *l, *r;</span><br><span class="line">  };</span><br><span class="line">  memery_pool&lt;node&gt; pool;</span><br><span class="line">  node* root = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">node* <span class="title">merge</span><span class="params">(node* a, node* b)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="literal">nullptr</span>) <span class="keyword">return</span> b;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">nullptr</span>) <span class="keyword">return</span> a;</span><br><span class="line">    <span class="keyword">if</span> (a-&gt;value &lt; b-&gt;value) algorithm::<span class="built_in">swap</span>(a, b);</span><br><span class="line">    a-&gt;r = <span class="built_in">merge</span>(a-&gt;r, b);</span><br><span class="line">    algorithm::<span class="built_in">swap</span>(a-&gt;l, a-&gt;r);</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// 构造函数未实现</span></span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(skew_heap&lt;T&gt;&amp; rhs)</span> </span>{</span><br><span class="line">    root = <span class="built_in">merge</span>(root, rhs.root);</span><br><span class="line">    rhs.root = <span class="literal">nullptr</span>;</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; w)</span> </span>{</span><br><span class="line">    node* t = pool.<span class="built_in">get</span>();</span><br><span class="line">    t-&gt;l = t-&gt;r = <span class="literal">nullptr</span>;</span><br><span class="line">    t-&gt;value = w;</span><br><span class="line">    root = <span class="built_in">merge</span>(root, t);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">()</span> </span>{</span><br><span class="line">    node* old = root;</span><br><span class="line">    root = <span class="built_in">merge</span>(root-&gt;l, root-&gt;r);</span><br><span class="line">    pool.<span class="built_in">erase</span>(old);</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="type">const</span> T&amp; <span class="title">top</span><span class="params">()</span> </span>{ <span class="keyword">return</span> root-&gt;value; }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">}  <span class="comment">// namespace data_structure</span></span><br></pre></td></tr></table></figure>
+</details>
+<h1 id="bordal-heap">bordal heap</h1>
+<p>这里已经涉及到一些冷门的东西了。暂时先放一下</p>
+<h1 id="b-heap">B heap</h1>
+<p>是一种和B树一样利用内存页的东西。冷门，先放一下</p>
+<h1 id="wiki上还有数不清的堆学到这里暂停一下">wiki上还有数不清的堆，学到这里暂停一下</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/Q6M13Q.html" title="heap">https://fightinggg.github.io/Q6M13Q.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%84%E9%80%A0/" rel="tag"><i class="fa fa-tag"></i> 构造</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 并发</a>
+              <a href="/tags/STL/" rel="tag"><i class="fa fa-tag"></i> STL</a>
+              <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+              <a href="/tags/tree/" rel="tag"><i class="fa fa-tag"></i> tree</a>
+              <a href="/tags/heap/" rel="tag"><i class="fa fa-tag"></i> heap</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Q6GPQN.html" rel="prev" title="势能分析">
+                  <i class="fa fa-chevron-left"></i> 势能分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Q6T33K.html" rel="next" title="vim入门教程">
+                  vim入门教程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/Q6M13Q.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"6186bac69190ff9f71404f650b0596dd"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     TCP-IP详解  慎重 这是一本工具书！！！！！！！！！！ 这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充  21&#x2F;4&#x2F;2 新建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP-IP详解-卷一-协议">
+<meta property="og:url" content="https://fightinggg.github.io/QQWYM0.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     TCP-IP详解  慎重 这是一本工具书！！！！！！！！！！ 这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充  21&#x2F;4&#x2F;2 新建">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-09.54.31.819.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-15.25.19.774.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-15.42.14.432.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-15.48.40.652.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-15.53.58.647.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-15.56.20.879.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-17.19.33.021.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-20.34.34.322.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-21.06.01.187.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-15.42.49.478.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-15.43.06.771.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-16.04.21.511.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-21.07.00.677.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-02-21.11.29.802.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-16.30.13.746.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-16.46.16.701.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-16.52.33.035.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-16.55.10.956.png">
+<meta property="og:image" content="https://fightinggg.github.io/image-2021-04-04-17.21.58.318.png">
+<meta property="article:published_time" content="2021-04-02T01:54:00.000Z">
+<meta property="article:modified_time" content="2021-04-04T08:30:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="读书">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightinggg.github.io/image-2021-04-02-09.54.31.819.png">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/QQWYM0.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/QQWYM0.html","path":"QQWYM0.html","title":"TCP-IP详解-卷一-协议"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TCP-IP详解-卷一-协议 | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tcp-ip%E8%AF%A6%E8%A7%A3"><span class="nav-text">TCP-IP详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%85%8E%E9%87%8D"><span class="nav-text">慎重</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-internet-%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84"><span class="nav-text">第二章 Internet 地址结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv6"><span class="nav-text">IPv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv4%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="nav-text">IPv4地址分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cidr"><span class="nav-text">CIDR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E5%90%88"><span class="nav-text">聚合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E7%94%A8%E9%80%94%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-text">特殊用途的地址</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="nav-text">第四章： 地址解析协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86arp"><span class="nav-text">代理ARP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%8D%E8%B4%B9arp"><span class="nav-text">免费ARP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0internet%E5%8D%8F%E8%AE%AE"><span class="nav-text">第五章：Internet协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ip%E6%8A%A5%E6%96%87"><span class="nav-text">IP报文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipv6%E5%A4%B4%E9%83%A8"><span class="nav-text">IPv6头部</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC11%E7%AB%A0-%E5%90%8D%E7%A7%B0%E8%A7%A3%E6%9E%90%E5%92%8C%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="nav-text">第11章 名称解析和域名系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dns%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="nav-text">DNS消息格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rcode"><span class="nav-text">RCODE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdcountzocount"><span class="nav-text">QDCOUNT&#x2F;ZOCOUNT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E7%AD%94%E6%8E%88%E6%9D%83%E9%A2%9D%E5%A4%96%E4%BF%A1%E6%81%AF"><span class="nav-text">回答，授权，额外信息</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/QQWYM0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="TCP-IP详解-卷一-协议 | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TCP-IP详解-卷一-协议<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP-IP%E8%AF%A6%E8%A7%A3-%E5%8D%B7%E4%B8%80-%E5%8D%8F%E8%AE%AE/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-02 09:54:00" itemprop="dateCreated datePublished" datetime="2021-04-02T09:54:00+08:00">2021-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-04-04 16:30:00" itemprop="dateModified" datetime="2021-04-04T16:30:00+08:00">2021-04-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h1 id="tcp-ip详解">TCP-IP详解</h1>
+<p><img data-src='/image-2021-04-02-09.54.31.819.png'></img></p>
+<h1 id="慎重">慎重</h1>
+<p>这是一本工具书！！！！！！！！！！</p>
+<p>这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充</p>
+<ul>
+<li><p>21/4/2 新建 ARP协议、IP协议</p></li>
+<li><p>21/4/4 补充 DNS协议</p></li>
+</ul>
+<span id="more"></span>
+<h1 id="第二章-internet-地址结构">第二章 Internet 地址结构</h1>
+<blockquote>
+<p>当一台设备连接到全球性的 Internet时,为它们分配地址就必须经过协调,这样就不会重复使用网络中的其他地址。对于专用网络,使用的IP地址必须经过协调,以避免在专用网络中出现类似的重复。成组的IP地址被分配给用户和组织。这些地址的拥有者再将它们分配给设备,这通常根据某些“编号方案”进行。对于全球性的 Internet地址,一个分层结构管理实体帮助用户和服务提供商分配地址。个人用户通常由 Internet服务提供商(ISP)分配地址,通过支付费用来获得地址和执行路由。</p>
+<p>Page: 31</p>
+</blockquote>
+<h2 id="ipv6">IPv6</h2>
+<blockquote>
+<p>在IPv6中,地址的长度是128位,是IPv4地址长度的4倍。一般来说,大多数用户对它不太熟悉。IPv6地址的传统表示方法是采用称为块或字段的四个十六进制数,这些被称为块或字段的数由冒号分隔。例如,一个包含8个块的IPv6地址可写为5m05:2000:80ad:5800:0058:0800:2023:1d71。虽然不像用户熟悉的十进制数,但将十六进制数转换为二进制更容易。另外,一些已取得共识的IPv6地址简化表示法已被标准化[RFC42911]: 1.一个块中前导的零不必书写。在前面的例子中,地址可写为5f05:200080ad:5800:58:800:2023:1d7l 2.全零的块可以省略,并用符号::代替。例如,IPv6地址0:0:0:0:0:0:0:1可简写为::1同样,地址2001:0db8:0:0:0:0:0:2可简写为2001:db8::2。为了避免出现歧义,一个IPv6地址中符号::只能使用一次。</p>
+</blockquote>
+<p>在某些情况下，可以使用[]来包裹IPv6，比如url:</p>
+<p>http://[2001:0db8:85a3:08d3:1319:8a2e:0370:7344]:443/</p>
+<h2 id="ipv4地址分类">IPv4地址分类</h2>
+<p>在最初，IPv4被分为这5类</p>
+<p><img data-src='/image-2021-04-02-15.25.19.774.png'></img></p>
+<p>20世纪90年代以后，Internet遇到了新的问题：</p>
+<blockquote>
+<p>1.到1994年,一半以上的B类地址已被分配。预计,B类地址空间大约在1995年将被用尽。</p>
+<p>2.32位的IPv4地址被认为不足以应付 Internet在21世纪初的预期规模。</p>
+<p>3.全球性路由表的条目数(每个网络号对应一条),1995年大约为65000个条目,目前仍在增长中。随着越来越多A类、B类和C类路由条目的出现,路由性能将受到影响。</p>
+<p>Page: 46</p>
+</blockquote>
+<h2 id="cidr">CIDR</h2>
+<p>无类别域间路由，使用CIDR，任何位定义的地址范围都可以作为一个类的一部分，但是需要提供子网掩码（IP前缀长度）</p>
+<p><img data-src='/image-2021-04-02-15.42.14.432.png'></img></p>
+<p>无类别域间路由解决了问题1，IPv6解决了问题2，问题3没办法了。</p>
+<h2 id="聚合">聚合</h2>
+<p>Kleinrock和Kamoun提出使用分层路由，树形拓扑网络</p>
+<p>如果我们按照地址对IP进行聚合，就能让路由表中的条目变少，下图左中的路由表有9个条目，右中的路由器只有三个条目且不随树的生长变化。</p>
+<p><img data-src='/image-2021-04-02-15.48.40.652.png'></img></p>
+<h2 id="特殊用途的地址">特殊用途的地址</h2>
+<p><img data-src='/image-2021-04-02-15.53.58.647.png'></img></p>
+<p><img data-src='/image-2021-04-02-15.56.20.879.png'></img></p>
+<h1 id="第四章-地址解析协议">第四章： 地址解析协议</h1>
+<p>arp协议能够把IP地址转换为物理地址。在linux上执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp</span><br></pre></td></tr></table></figure>
+<p><img data-src='/image-2021-04-02-17.19.33.021.png'></img></p>
+<p>我们可以看到这里有5列，第一列Address即IP地址，HWtype是硬件类型，HWaddress是硬件地址，Flags是标志，包括C、M、P，C代表由arp协议动态学习，M为手动输入，P是发布（主机对ARP请求的应答），Iface是本地网络接口（网卡）</p>
+<p>我们使用docker启动一个centos8容器，安装好需要的网络工具，然后执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -vve</span><br></pre></td></tr></table></figure>
+<p>然后对这个容器再启动一个bash执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet fightinggg.top 80</span><br></pre></td></tr></table></figure>
+<p><img data-src='/image-2021-04-02-20.34.34.322.png'></img></p>
+<p>注意到有着两行出现</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">12:29:47.647126 02:42:ac:11:00:03 (oui Unknown) &gt; Broadcast, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Request who-has _gateway tell 8d32dcd79d6c, length 28</span><br><span class="line">12:29:47.647154 02:42:6b:57:92:7d (oui Unknown) &gt; 02:42:ac:11:00:03 (oui Unknown), ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply _gateway is-at 02:42:6b:57:92:7d (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+<p>第一行的意思是mac为02:42:ac:11:00:03的主机发布了一个广播：谁知道_gateway的mac地址，请告诉8d32dcd79d6c(docker 容器的host)</p>
+<p>第二行的意思是mac为02:42:6b:57:92:7d的主机向02:42:ac:11:00:03发送了单播：_gateway的mac地址为02:42:6b:57:92:7d</p>
+<h2 id="代理arp">代理ARP</h2>
+<blockquote>
+<p>代理ARP[RFC1027使一个系统(通常是一台专门配置的路由器)可回答不同主机的ARP请求。它使ARP请求的发送者认为做出响应的系统就是目的主机,但实际上目的主机可能在其他地方(或不存在)。ARP代理并不常见,通常应尽量避免使用它。</p>
+</blockquote>
+<h2 id="免费arp">免费ARP</h2>
+<p>当一台主机启动的时候，他会发送一个ARP请求，寻找自己的地址，通常他不期待得到回答。</p>
+<p>这样做有两个好处：</p>
+<ol type="1">
+<li>确定网络中不存在另一台主机和自己的IP地址相同</li>
+<li>如果主机已经改变了自己的MAC地址，这个ARP报文会让其他主机更新这台主机的MAC地址</li>
+</ol>
+<h1 id="第五章internet协议">第五章：Internet协议</h1>
+<h2 id="ip报文">IP报文</h2>
+<p><img data-src='/image-2021-04-02-21.06.01.187.png'></img></p>
+<p>细节参考<a href="/QQTKJ0.html#IPv4">这里</a></p>
+<p>DS字段细节</p>
+<p><img data-src='/image-2021-04-04-15.42.49.478.png'></img></p>
+<p><img data-src='/image-2021-04-04-15.43.06.771.png'></img></p>
+<p>协议详见</p>
+<p><img data-src='/image-2021-04-04-16.04.21.511.png'></img></p>
+<h2 id="ipv6头部">IPv6头部</h2>
+<p><img data-src='/image-2021-04-02-21.07.00.677.png'></img></p>
+<p>下一个头部具体的情况</p>
+<p><img data-src='/image-2021-04-02-21.11.29.802.png'></img></p>
+<h1 id="第11章-名称解析和域名系统">第11章 名称解析和域名系统</h1>
+<h2 id="dns消息格式">DNS消息格式</h2>
+<p><img data-src='/image-2021-04-04-16.30.13.746.png'></img></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">备注</th>
+<th>位数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">事务ID</td>
+<td style="text-align: left;">客户端设置，服务器返回</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">QR</td>
+<td style="text-align: left;">决定是响应还是回复</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OpCode</td>
+<td style="text-align: left;">0正常查询<br />4通知<br />5更细<br />1-3弃用</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AA（authoritative anwer）</td>
+<td style="text-align: left;">授权回答，与缓存回答相对</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TC（truncated）</td>
+<td style="text-align: left;">可截断，在UDP中标识是否截断</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RD（recursion desired）</td>
+<td style="text-align: left;">期望递归，参考<a href="/Q7EBAW.html#%E9%80%92%E5%BD%92%E8%BF%98%E6%98%AF%E9%9D%9E%E9%80%92%E5%BD%92">递归DNS</a> 如果回答是，则服务器会返回递归的DNS地址</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RA（递归可用）</td>
+<td style="text-align: left;">表明该服务器是否支持递归，根服务器不支持RA</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Z</td>
+<td style="text-align: left;">保留，一定是0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AD</td>
+<td style="text-align: left;">是否授权</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CD</td>
+<td style="text-align: left;">是否禁用安全检查（随缘补充这部分）</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RCODE</td>
+<td style="text-align: left;">见👇</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">QDCOUNT/ZOCOUNT</td>
+<td style="text-align: left;">查询数/区域数👇</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ANCOUNT/PRCOUNT</td>
+<td style="text-align: left;">回答数/先决条件数👇</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NSCOUNT/UPCOUNT</td>
+<td style="text-align: left;">授权记录数/更新数👇</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARCOUNT/ADCOUNT</td>
+<td style="text-align: left;">额外信息数👇</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rcode">RCODE</h3>
+<p><img data-src='/image-2021-04-04-16.46.16.701.png'></img></p>
+<h3 id="qdcountzocount">QDCOUNT/ZOCOUNT</h3>
+<p>查询类16位， 1代表互联网类， 254代表没有类， 255代表所有类</p>
+<p>查询类型16位， 一般为A（IPv6为AAAA）</p>
+<p><img data-src='/image-2021-04-04-16.52.33.035.png'></img></p>
+<h3 id="回答授权额外信息">回答，授权，额外信息</h3>
+<p><img data-src='/image-2021-04-04-16.55.10.956.png'></img></p>
+<p><img data-src='/image-2021-04-04-17.21.58.318.png'></img></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/QQWYM0.html" title="TCP-IP详解-卷一-协议">https://fightinggg.github.io/QQWYM0.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag"><i class="fa fa-tag"></i> 读书</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/QQTKJ0.html" rel="prev" title="计算机网络-自顶向下方法">
+                  <i class="fa fa-chevron-left"></i> 计算机网络-自顶向下方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/QQZ90O.html" rel="next" title="HTTP权威指南">
+                  HTTP权威指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/QQWYM0.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"56eddff72297ca545ef3e0e901710950"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

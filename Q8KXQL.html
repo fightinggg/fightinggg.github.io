@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fightinggg.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac","show_result":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk | disqus","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     synchronized 锁住对象，放在静态方法前为锁类，放在普通方法前为锁类的对像。使用管程实现 线程安全类 String, Integer, StringBuffer,Random,Vecto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程4-同步与互斥">
+<meta property="og:url" content="https://fightinggg.github.io/Q8KXQL.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial     synchronized 锁住对象，放在静态方法前为锁类，放在普通方法前为锁类的对像。使用管程实现 线程安全类 String, Integer, StringBuffer,Random,Vecto">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-10T15:59:09.000Z">
+<meta property="article:modified_time" content="2020-04-10T15:59:09.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="hash">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fightinggg.github.io/Q8KXQL.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fightinggg.github.io/Q8KXQL.html","path":"Q8KXQL.html","title":"java并发编程4-同步与互斥"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>java并发编程4-同步与互斥 | Believe it</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Believe it</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相信不屈不挠的努力,相信战胜死亡的年轻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/fightinggg/README.html" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">107</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">356</span></a></li><li class="menu-item menu-item-友链"><a href="/link/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-读书"><a href="/tags/%E8%AF%BB%E4%B9%A6/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%B1%BB"><span class="nav-text">线程安全类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A0%E9%94%81"><span class="nav-text">加锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E4%BC%98%E5%8C%96"><span class="nav-text">自旋优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%8F%E5%90%91%E9%94%81"><span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A6%81%E7%94%A8%E5%81%8F%E5%90%91%E9%94%81"><span class="nav-text">禁用偏向锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hashcode"><span class="nav-text">hashcode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#waitnotify"><span class="nav-text">wait&#x2F;notify</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E9%87%8D%E5%81%8F%E5%90%91"><span class="nav-text">批量重偏向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%92%A4%E9%94%80"><span class="nav-text">批量撤销</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%81%E6%B6%88%E9%99%A4"><span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%9A%82%E5%81%9Cguardobject"><span class="nav-text">保护性暂停GuardObject</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#park%E5%92%8Cunpark"><span class="nav-text">park和unpark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2"><span class="nav-text">线程状态转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#start"><span class="nav-text">start</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E6%AD%BB%E9%94%81"><span class="nav-text">定位死锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B4%BB%E9%94%81"><span class="nav-text">活锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A5%A5%E9%A5%BF"><span class="nav-text">饥饿</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reentrantlock"><span class="nav-text">ReentrantLock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5"><span class="nav-text">同步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%88%86%E5%88%AB%E8%BE%93%E5%87%BAabc-%E8%A6%81%E7%9C%8B%E5%88%B0abcabcabcabcabc"><span class="nav-text">3个线程分别输出a,b,c, 要看到abcabcabcabcabc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0waitnotifyall"><span class="nav-text">一个整数+wait&#x2F;notifyAll</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="fightinggg"
+      src="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+  <p class="site-author-name" itemprop="name">fightinggg</p>
+  <div class="site-description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">356</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fightinggg" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fightinggg" rel="noopener me" target="_blank"><i class="fab fa-custom-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_41157212" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41157212" rel="noopener me" target="_blank"><i class="fab fa-custom-csdn fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.gitbook.io/" title="GitBook → https:&#x2F;&#x2F;fightinggg.gitbook.io" rel="noopener me" target="_blank"><i class="fas fa-custom-gitbook fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://jianshu.com/u/50c6008eb350" title="简书 → https:&#x2F;&#x2F;jianshu.com&#x2F;u&#x2F;50c6008eb350" rel="noopener me" target="_blank"><i class="fas fa-custom-jianshu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://zhihu.com/people/fightinggg-94" title="知乎 → https:&#x2F;&#x2F;zhihu.com&#x2F;people&#x2F;fightinggg-94" rel="noopener me" target="_blank"><i class="fab fa-custom-zhihu fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/ACM" title="ACM-BLOG → &#x2F;ACM" rel="noopener me"><i class="fas fa-custom-icpc fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://fightinggg.top/" title="主站 → http:&#x2F;&#x2F;fightinggg.top" rel="noopener me" target="_blank"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fightinggg.github.io/" title="Github镜像 → https:&#x2F;&#x2F;fightinggg.github.io" rel="noopener me"><i class="fas fa-custom-myblog fa-fw"></i></a>
+      </span>
+  </div>
+<span class="links-of-author-item">
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=246553278&site=qq&menu=yes" rel="noopener" target="_blank">
+        <i class="fab fa-custom-qq fa-fw"></i> 来QQ和我撕逼(秒回)
+    </a>
+</span>
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fightinggg.github.io/Q8KXQL.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&nk=246553278&s=640">
+      <meta itemprop="name" content="fightinggg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Believe it">
+      <meta itemprop="description" content="O ever youthful, O ever weeping">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="java并发编程4-同步与互斥 | Believe it">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java并发编程4-同步与互斥<a href="https://github.com/fightinggg/hexo-blog/tree/master/blog/Language/Java/Java%E5%B9%B6%E5%8F%91/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B4-%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5/index.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-10 23:59:09" itemprop="dateCreated datePublished" datetime="2020-04-10T23:59:09+08:00">2020-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/" itemprop="url" rel="index"><span itemprop="name">Language</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Java并发</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div>
+<a href="/next/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/Q8KXQL.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a>
+<div style="clear: both;">
+
+</div>
+</div>
+<h1 id="synchronized">synchronized</h1>
+<p>锁住对象，放在静态方法前为锁类，放在普通方法前为锁类的对像。使用管程实现</p>
+<h1 id="线程安全类">线程安全类</h1>
+<p>String, Integer, StringBuffer,Random,Vector,Hashtable,juc;</p>
+<h1 id="加锁">加锁</h1>
+<p>把对象头的hash、Age和对象的指针放进自己的栈中，让对象头的hash、Age,位置指向自己的栈， 这时候来了另一个线程也想拿到锁，但是他肯定会失败，失败以后他就申请重量级锁，让对象头再次改变为指向管程， 当原来当线程想要释放锁的时候，依然使用cas，但是肯定失败，他发现现在的锁已经变成了重量级锁了。</p>
+<span id="more"></span>
+<h1 id="自旋优化">自旋优化</h1>
+<p>不阻塞，使用自旋，如果自旋多次失败就阻塞了</p>
+<h1 id="偏向锁">偏向锁</h1>
+<p>可以在对象头中加入线程的ID，然后对象的锁就被这个线程所持有了。程序启动3秒以后启动偏向锁，可以通过VM参数来改变</p>
+<h1 id="禁用偏向锁">禁用偏向锁</h1>
+<p>-XX: -UseBiasedLocking</p>
+<h1 id="hashcode">hashcode</h1>
+<p>轻量级锁和重量级锁都不会因为调用hashcode而撤销锁状态，但是偏向锁会，因为他没有地方储存hashcode，所以调用hashcode以后，偏向锁会被撤销</p>
+<h1 id="waitnotify">wait/notify</h1>
+<p>这个是只有重量级锁才有的东西，所以也会撤销轻量锁</p>
+<h1 id="批量重偏向">批量重偏向</h1>
+<p>如果连续撤销锁超过20次，jvm会批量的让类的所有对象都偏向于另一个线程</p>
+<h1 id="批量撤销">批量撤销</h1>
+<p>如果撤销次数超过40次，jvm会撤销这个类的所有对象的偏向锁，甚至新建的对象也不会有偏向锁</p>
+<h1 id="锁消除">锁消除</h1>
+<p>JIT即时编译器会优化热点代码，如果分析出某个锁不会逃离方法，则进行锁消除</p>
+<h1 id="保护性暂停guardobject">保护性暂停GuardObject</h1>
+<p>用一个中间对象把线程连接起来，注意虚假唤醒的情况发生。我们用时间相减来避免产生等待时间错误的情况</p>
+<h1 id="park和unpark">park和unpark</h1>
+<p>他们就像PV操作一样，但是信号量不能叠加 park和unpark实现的时候有三部分,_mutex,_condition,_counter,这里的_counter最多只能是 调用park : 检查_counter，如果为0，就获得_mutex锁，然后该线程进入_condition开始阻塞,如果为1，就把它设为0，然后继续执行线程 调用unpark, 把counter设为1，然后唤醒_condition中的线程</p>
+<h1 id="线程状态转换">线程状态转换</h1>
+<h2 id="start">start</h2>
+<ul>
+<li>NEW -&gt; RUNNABLE 调用start() ## 对象锁</li>
+<li>RUNNABLE -&gt; WAITING 获得对象锁后wait()</li>
+<li>WAITING -&gt; RUNNABLE notify(),notifyAll(),interrupt()且竞争成功</li>
+<li>WAITING -&gt; BLOCKED notify(),notifyAll(),interrupt()且竞争失败</li>
+<li>BLOCKED -&gt; WAITING 当持有锁的线程执行完毕会唤醒其他BLOCKED的线程 ## join</li>
+<li>RUNNABLE -&gt; WAITING 调用join()</li>
+<li>WAITING -&gt; RUNNABLE join的线程执行完成或者当前线程被interrupt() ## park和unpark</li>
+<li>RUNNABLE -&gt; WAITING 调用park()</li>
+<li>WAITING -&gt; RUNNABLE 调用unpark()或者interrupt() ## wait(long t)</li>
+<li>RUNNABLE -&gt; TIMED_WAITING 获得对象锁后wait(long)</li>
+<li>TIMED_WAITING -&gt; RUNNABLE 超时，notify(),notifyAll(),interrupt()且竞争成功</li>
+<li>TIMED_WAITING -&gt; BLOCKED 超时，notify(),notifyAll(),interrupt()且竞争失败 ## join(long t)</li>
+<li>RUNNABLE -&gt; TIMED_WAITING 调用join(long)</li>
+<li>TIMED_WAITING -&gt; 超时，RUNNABLE join的线程执行完成或者当前线程被interrupt() ## sleep(long)</li>
+<li>RUNNABLE -&gt; TIMED_WAITING 调用sleep(long)</li>
+<li>TIMED_WAITING -&gt; 超时，RUNNABLE sleep的线程执行完成或者当前线程被interrupt() ## parkNanos和parkUntil ## 终止</li>
+<li>RUNNABLE -&gt; TERMINATED 当线程执行完毕</li>
+</ul>
+<h1 id="死锁">死锁</h1>
+<h2 id="定位死锁">定位死锁</h2>
+<p>jconsole，jps都可以 ## jps 如果死锁，会提示Found One Java-level deadlock,在里面找去 ## jconsole 选择线程，点检测死锁，就能看到了</p>
+<h1 id="活锁">活锁</h1>
+<p>一个线程i++，另一个i--,难以结束了,原因是改变了互相的结束条件</p>
+<h1 id="饥饿">饥饿</h1>
+<p>可以通过顺序加锁来避免死锁，但是这又会导致饥饿发生</p>
+<h1 id="reentrantlock">ReentrantLock</h1>
+<p>可中断，可设置超时时间，可设置公平锁，支持多个条件变量，可重入 ## 用法 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">reentrantLock.lock();</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  reentrantLock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> ## 可打断 没有竞争就能得到锁，如果进入了阻塞队列，可以被其他线程用interruput打断。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  reentrantLock.lockInterruptibly();</span><br><span class="line">&#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="comment">//....</span></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">  reentrantLock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> ## 非阻塞 tryLock() ## 超时机制 tryLock(1,TimeUnit.SECONDS)</p>
+<h2 id="条件变量">条件变量</h2>
+<p>ReentrantLock支持多个条件变量 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Condition</span> <span class="variable">c1</span> <span class="operator">=</span> reentrantLock.newCondition()</span><br><span class="line"><span class="type">Condition</span> <span class="variable">c2</span> <span class="operator">=</span> reentrantLock.newCondition()</span><br><span class="line"><span class="comment">// 获得锁之后</span></span><br><span class="line">c1.await();</span><br></pre></td></tr></table></figure> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1.signal();</span><br></pre></td></tr></table></figure></p>
+<h1 id="同步">同步</h1>
+<p>await和signal,park和unpark,wati和notify，</p>
+<h1 id="个线程分别输出abc-要看到abcabcabcabcabc">3个线程分别输出a,b,c, 要看到abcabcabcabcabc</h1>
+<h2 id="一个整数waitnotifyall">一个整数+wait/notifyAll</h2>
+<p>轮换，1则a输出，2则b输出，3则c输出，如果不是自己的就wait，是的话就输出然后notifyAll ## 使用信号量+await/signal 设置3个信号量，一个线程用一个，然后a唤醒b，b唤醒c，c唤醒a ## park和unpark a unpark b, b unpark c, c unpark a; <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="literal">null</span>, t2 = <span class="literal">null</span>, t3 = <span class="literal">null</span>;</span><br><span class="line"> <span class="keyword">void</span> <span class="title function_">show</span><span class="params">(String string, Thread thread)</span> &#123;</span><br><span class="line">     <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">         LockSupport.park();</span><br><span class="line">         System.out.print(string);</span><br><span class="line">         LockSupport.unpark(thread);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="meta">@Test</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test7</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">     t1 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;a&quot;</span>, t2));</span><br><span class="line">     t2 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;b&quot;</span>, t3));</span><br><span class="line">     t3 = <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; show(<span class="string">&quot;c&quot;</span>, t1));</span><br><span class="line">     t1.start();</span><br><span class="line">     t2.start();</span><br><span class="line">     t3.start();</span><br><span class="line">     LockSupport.unpark(t1);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div>
+    <div>
+    <br/>
+        <div style="text-align:center;color: #ccc;font-size:14px;">-----------------------<span style="margin: 0 10px;">本文结束</span><i class="fa fa-paw"></i><span style="margin: 0 10px;">感谢您的阅读</span>-----------------------</div>
+    <br/>
+    </div>
+</div>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>fightinggg
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://fightinggg.github.io/Q8KXQL.html" title="java并发编程4-同步与互斥">https://fightinggg.github.io/Q8KXQL.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/hash/" rel="tag"><i class="fa fa-tag"></i> hash</a>
+              <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Q8K6JX.html" rel="prev" title="java并发编程3-线程运行原理">
+                  <i class="fa fa-chevron-left"></i> java并发编程3-线程运行原理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Q8LY8O.html" rel="next" title="java并发编程5-Java内存">
+                  java并发编程5-Java内存 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fightinggg</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">123.87万字</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><span id="timeDate">载入...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/06/2019 00:00:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        // snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已运行 "+dnum+" 天 "+hnum + " 小时 " + mnum + " 分 ";// + snum + " 秒"; 
+    } 
+createtime();
+setInterval("createtime()",1000*60);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/fightinggg" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/lib/jquery/dist/jquery.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="/lib/@fancyapps/fancybox/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="/lib/lozad/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"/lib/pdfobject/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"/lib/mathjax/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+  <script src="/lib/quicklink/dist/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":false,"delay":true,"timeout":3000,"priority":true,"ignores":null,"url":"https://fightinggg.github.io/Q8KXQL.html"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="/lib/gitalk/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"fightinggg","repo":"fightinggg.github.io","client_id":"309dbdc0e1928fcdab0c","client_secret":"963f51f5577a4ce1bbfdb632e1779fb5ed6808bb","admin_user":"fightinggg","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"/lib/gitalk/dist/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"f5d219596290c7c3ef658710d938ea03"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

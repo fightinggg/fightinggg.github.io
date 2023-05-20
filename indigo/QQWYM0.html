@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>TCP-IP详解-卷一-协议 | Believe it | 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="读书">
+    <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    TCP-IP详解 慎重这是一本工具书！！！！！！！！！！ 这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充  21&#x2F;4&amp;#x2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP-IP详解-卷一-协议">
+<meta property="og:url" content="http://fightinggg.github.io/indigo/QQWYM0.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    TCP-IP详解 慎重这是一本工具书！！！！！！！！！！ 这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充  21&#x2F;4&amp;#x2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-09.54.31.819.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-15.25.19.774.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-15.42.14.432.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-15.48.40.652.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-15.53.58.647.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-15.56.20.879.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-17.19.33.021.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-20.34.34.322.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-21.06.01.187.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-15.42.49.478.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-15.43.06.771.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-16.04.21.511.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-21.07.00.677.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-02-21.11.29.802.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-16.30.13.746.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-16.46.16.701.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-16.52.33.035.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-16.55.10.956.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-04-17.21.58.318.png">
+<meta property="article:published_time" content="2021-04-02T01:54:00.000Z">
+<meta property="article:modified_time" content="2021-04-04T08:30:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="读书">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-04-02-09.54.31.819.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Believe it" href="/indigo/atom.xml">
+    
+    <link rel="shortcut icon" href="/indigo/favicon.ico">
+    <link rel="stylesheet" href="/indigo/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/indigo/img/brand.jpg)">
+      <div class="brand">
+        <a href="/indigo/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/indigo/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">fightinggg</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/indigo/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">TCP-IP详解-卷一-协议</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">TCP-IP详解-卷一-协议</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-04-02T01:54:00.000Z" itemprop="datePublished" class="page-time">
+  2021-04-02
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#TCP-IP%E8%AF%A6%E8%A7%A3"><span class="post-toc-number">1.</span> <span class="post-toc-text">TCP-IP详解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%85%8E%E9%87%8D"><span class="post-toc-number">2.</span> <span class="post-toc-text">慎重</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-Internet-%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84"><span class="post-toc-number">3.</span> <span class="post-toc-text">第二章 Internet 地址结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IPv6"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">IPv6</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IPv4%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">IPv4地址分类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CIDR"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">CIDR</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%81%9A%E5%90%88"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">聚合</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%89%B9%E6%AE%8A%E7%94%A8%E9%80%94%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">特殊用途的地址</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A-%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">4.</span> <span class="post-toc-text">第四章： 地址解析协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%A3%E7%90%86ARP"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">代理ARP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%8D%E8%B4%B9ARP"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">免费ARP</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9AInternet%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">5.</span> <span class="post-toc-text">第五章：Internet协议</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IP%E6%8A%A5%E6%96%87"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">IP报文</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IPv6%E5%A4%B4%E9%83%A8"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">IPv6头部</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AC%AC11%E7%AB%A0-%E5%90%8D%E7%A7%B0%E8%A7%A3%E6%9E%90%E5%92%8C%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="post-toc-number">6.</span> <span class="post-toc-text">第11章 名称解析和域名系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DNS%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">DNS消息格式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RCODE"><span class="post-toc-number">6.1.1.</span> <span class="post-toc-text">RCODE</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#QDCOUNT-x2F-ZOCOUNT"><span class="post-toc-number">6.1.2.</span> <span class="post-toc-text">QDCOUNT&#x2F;ZOCOUNT</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9B%9E%E7%AD%94%EF%BC%8C%E6%8E%88%E6%9D%83%EF%BC%8C%E9%A2%9D%E5%A4%96%E4%BF%A1%E6%81%AF"><span class="post-toc-number">6.1.3.</span> <span class="post-toc-text">回答，授权，额外信息</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-计算机网络/TCP-IP详解-卷一-协议/index"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">TCP-IP详解-卷一-协议</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-04-02 09:54:00" datetime="2021-04-02T01:54:00.000Z"  itemprop="datePublished">2021-04-02</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/indigo/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div><a href="/next/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="TCP-IP详解"><a href="#TCP-IP详解" class="headerlink" title="TCP-IP详解"></a>TCP-IP详解</h1><p><img src='/image-2021-04-02-09.54.31.819.png'></img></p>
+<h1 id="慎重"><a href="#慎重" class="headerlink" title="慎重"></a>慎重</h1><p>这是一本工具书！！！！！！！！！！</p>
+<p>这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充</p>
+<ul>
+<li><p>21&#x2F;4&#x2F;2 新建 ARP协议、IP协议</p>
+</li>
+<li><p>21&#x2F;4&#x2F;4 补充 DNS协议</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="第二章-Internet-地址结构"><a href="#第二章-Internet-地址结构" class="headerlink" title="第二章 Internet 地址结构"></a>第二章 Internet 地址结构</h1><blockquote>
+<p>当一台设备连接到全球性的 Internet时,为它们分配地址就必须经过协调,这样就不会重复使用网络中的其他地址。对于专用网络,使用的IP地址必须经过协调,以避免在专用网络中出现类似的重复。成组的IP地址被分配给用户和组织。这些地址的拥有者再将它们分配给设备,这通常根据某些“编号方案”进行。对于全球性的 Internet地址,一个分层结构管理实体帮助用户和服务提供商分配地址。个人用户通常由 Internet服务提供商(ISP)分配地址,通过支付费用来获得地址和执行路由。</p>
+<p>Page: 31</p>
+</blockquote>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><blockquote>
+<p>在IPv6中,地址的长度是128位,是IPv4地址长度的4倍。一般来说,大多数用户对它不太熟悉。IPv6地址的传统表示方法是采用称为块或字段的四个十六进制数,这些被称为块或字段的数由冒号分隔。例如,一个包含8个块的IPv6地址可写为5m05:2000:80ad:5800:0058:0800:2023:1d71。虽然不像用户熟悉的十进制数,但将十六进制数转换为二进制更容易。另外,一些已取得共识的IPv6地址简化表示法已被标准化[RFC42911]:<br>1.一个块中前导的零不必书写。在前面的例子中,地址可写为5f05:200080ad:5800:58:800:2023:1d7l<br>2.全零的块可以省略,并用符号::代替。例如,IPv6地址0:0:0:0:0:0:0:1可简写为::1同样,地址2001:0db8:0:0:0:0:0:2可简写为2001:db8::2。为了避免出现歧义,一个IPv6地址中符号::只能使用一次。</p>
+</blockquote>
+<p>在某些情况下，可以使用[]来包裹IPv6，比如url:</p>
+<p>http:&#x2F;&#x2F;[2001:0db8:85a3:08d3:1319:8a2e:0370:7344]:443&#x2F;</p>
+<h2 id="IPv4地址分类"><a href="#IPv4地址分类" class="headerlink" title="IPv4地址分类"></a>IPv4地址分类</h2><p>在最初，IPv4被分为这5类</p>
+<p><img src='/image-2021-04-02-15.25.19.774.png'></img></p>
+<p>20世纪90年代以后，Internet遇到了新的问题：</p>
+<blockquote>
+<p>1.到1994年,一半以上的B类地址已被分配。预计,B类地址空间大约在1995年将被用尽。</p>
+<p>2.32位的IPv4地址被认为不足以应付 Internet在21世纪初的预期规模。</p>
+<p>3.全球性路由表的条目数(每个网络号对应一条),1995年大约为65000个条目,目前仍在增长中。随着越来越多A类、B类和C类路由条目的出现,路由性能将受到影响。</p>
+<p>Page: 46</p>
+</blockquote>
+<h2 id="CIDR"><a href="#CIDR" class="headerlink" title="CIDR"></a>CIDR</h2><p>无类别域间路由，使用CIDR，任何位定义的地址范围都可以作为一个类的一部分，但是需要提供子网掩码（IP前缀长度）</p>
+<p><img src='/image-2021-04-02-15.42.14.432.png'></img></p>
+<p>无类别域间路由解决了问题1，IPv6解决了问题2，问题3没办法了。</p>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><p>Kleinrock和Kamoun提出使用分层路由，树形拓扑网络</p>
+<p>如果我们按照地址对IP进行聚合，就能让路由表中的条目变少，下图左中的路由表有9个条目，右中的路由器只有三个条目且不随树的生长变化。</p>
+<p><img src='/image-2021-04-02-15.48.40.652.png'></img></p>
+<h2 id="特殊用途的地址"><a href="#特殊用途的地址" class="headerlink" title="特殊用途的地址"></a>特殊用途的地址</h2><p><img src='/image-2021-04-02-15.53.58.647.png'></img></p>
+<p><img src='/image-2021-04-02-15.56.20.879.png'></img></p>
+<h1 id="第四章：-地址解析协议"><a href="#第四章：-地址解析协议" class="headerlink" title="第四章： 地址解析协议"></a>第四章： 地址解析协议</h1><p>arp协议能够把IP地址转换为物理地址。在linux上执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp</span><br></pre></td></tr></table></figure>
+
+<p><img src='/image-2021-04-02-17.19.33.021.png'></img></p>
+<p>我们可以看到这里有5列，第一列Address即IP地址，HWtype是硬件类型，HWaddress是硬件地址，Flags是标志，包括C、M、P，C代表由arp协议动态学习，M为手动输入，P是发布（主机对ARP请求的应答），Iface是本地网络接口（网卡）</p>
+<p>我们使用docker启动一个centos8容器，安装好需要的网络工具，然后执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -vve</span><br></pre></td></tr></table></figure>
+
+<p>然后对这个容器再启动一个bash执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet fightinggg.top 80</span><br></pre></td></tr></table></figure>
+
+<p><img src='/image-2021-04-02-20.34.34.322.png'></img></p>
+<p>注意到有着两行出现</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">12:29:47.647126 02:42:ac:11:00:03 (oui Unknown) &gt; Broadcast, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Request who-has _gateway tell 8d32dcd79d6c, length 28</span><br><span class="line">12:29:47.647154 02:42:6b:57:92:7d (oui Unknown) &gt; 02:42:ac:11:00:03 (oui Unknown), ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply _gateway is-at 02:42:6b:57:92:7d (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+
+<p>第一行的意思是mac为02:42:ac:11:00:03的主机发布了一个广播：谁知道_gateway的mac地址，请告诉8d32dcd79d6c(docker 容器的host)</p>
+<p>第二行的意思是mac为02:42:6b:57:92:7d的主机向02:42:ac:11:00:03发送了单播：_gateway的mac地址为02:42:6b:57:92:7d</p>
+<h2 id="代理ARP"><a href="#代理ARP" class="headerlink" title="代理ARP"></a>代理ARP</h2><blockquote>
+<p>代理ARP[RFC1027使一个系统(通常是一台专门配置的路由器)可回答不同主机的ARP请求。它使ARP请求的发送者认为做出响应的系统就是目的主机,但实际上目的主机可能在其他地方(或不存在)。ARP代理并不常见,通常应尽量避免使用它。</p>
+</blockquote>
+<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>当一台主机启动的时候，他会发送一个ARP请求，寻找自己的地址，通常他不期待得到回答。</p>
+<p>这样做有两个好处：</p>
+<ol>
+<li>确定网络中不存在另一台主机和自己的IP地址相同</li>
+<li>如果主机已经改变了自己的MAC地址，这个ARP报文会让其他主机更新这台主机的MAC地址</li>
+</ol>
+<h1 id="第五章：Internet协议"><a href="#第五章：Internet协议" class="headerlink" title="第五章：Internet协议"></a>第五章：Internet协议</h1><h2 id="IP报文"><a href="#IP报文" class="headerlink" title="IP报文"></a>IP报文</h2><p><img src='/image-2021-04-02-21.06.01.187.png'></img></p>
+<p>细节参考<a href="/QQTKJ0.html#IPv4">这里</a></p>
+<p>DS字段细节</p>
+<p><img src='/image-2021-04-04-15.42.49.478.png'></img></p>
+<p><img src='/image-2021-04-04-15.43.06.771.png'></img></p>
+<p>协议详见</p>
+<p><img src='/image-2021-04-04-16.04.21.511.png'></img></p>
+<h2 id="IPv6头部"><a href="#IPv6头部" class="headerlink" title="IPv6头部"></a>IPv6头部</h2><p><img src='/image-2021-04-02-21.07.00.677.png'></img></p>
+<p>下一个头部具体的情况</p>
+<p><img src='/image-2021-04-02-21.11.29.802.png'></img></p>
+<h1 id="第11章-名称解析和域名系统"><a href="#第11章-名称解析和域名系统" class="headerlink" title="第11章 名称解析和域名系统"></a>第11章 名称解析和域名系统</h1><h2 id="DNS消息格式"><a href="#DNS消息格式" class="headerlink" title="DNS消息格式"></a>DNS消息格式</h2><p><img src='/image-2021-04-04-16.30.13.746.png'></img></p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">备注</th>
+<th>位数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">事务ID</td>
+<td align="left">客户端设置，服务器返回</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">QR</td>
+<td align="left">决定是响应还是回复</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">OpCode</td>
+<td align="left">0正常查询<br />4通知<br />5更细<br />1-3弃用</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">AA（authoritative anwer）</td>
+<td align="left">授权回答，与缓存回答相对</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">TC（truncated）</td>
+<td align="left">可截断，在UDP中标识是否截断</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RD（recursion desired）</td>
+<td align="left">期望递归，参考<a href="/Q7EBAW.html#%E9%80%92%E5%BD%92%E8%BF%98%E6%98%AF%E9%9D%9E%E9%80%92%E5%BD%92">递归DNS</a> 如果回答是，则服务器会返回递归的DNS地址</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RA（递归可用）</td>
+<td align="left">表明该服务器是否支持递归，根服务器不支持RA</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="left">保留，一定是0</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">AD</td>
+<td align="left">是否授权</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">CD</td>
+<td align="left">是否禁用安全检查（随缘补充这部分）</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RCODE</td>
+<td align="left">见👇</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">QDCOUNT&#x2F;ZOCOUNT</td>
+<td align="left">查询数&#x2F;区域数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">ANCOUNT&#x2F;PRCOUNT</td>
+<td align="left">回答数&#x2F;先决条件数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">NSCOUNT&#x2F;UPCOUNT</td>
+<td align="left">授权记录数&#x2F;更新数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">ARCOUNT&#x2F;ADCOUNT</td>
+<td align="left">额外信息数👇</td>
+<td>16</td>
+</tr>
+</tbody></table>
+<h3 id="RCODE"><a href="#RCODE" class="headerlink" title="RCODE"></a>RCODE</h3><p><img src='/image-2021-04-04-16.46.16.701.png'></img></p>
+<h3 id="QDCOUNT-x2F-ZOCOUNT"><a href="#QDCOUNT-x2F-ZOCOUNT" class="headerlink" title="QDCOUNT&#x2F;ZOCOUNT"></a>QDCOUNT&#x2F;ZOCOUNT</h3><p>查询类16位， 1代表互联网类， 254代表没有类， 255代表所有类</p>
+<p>查询类型16位， 一般为A（IPv6为AAAA）</p>
+<p><img src='/image-2021-04-04-16.52.33.035.png'></img></p>
+<h3 id="回答，授权，额外信息"><a href="#回答，授权，额外信息" class="headerlink" title="回答，授权，额外信息"></a>回答，授权，额外信息</h3><p><img src='/image-2021-04-04-16.55.10.956.png'></img></p>
+<p><img src='/image-2021-04-04-17.21.58.318.png'></img></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-04-04T08:30:00.000Z" itemprop="dateUpdated">2021-04-04 16:30:00</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://fightinggg.github.io/indigo">
+            <img src="/indigo/img/avatar.jpg" alt="fightinggg">
+            fightinggg
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/indigo/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/QQWYM0.html&title=《TCP-IP详解-卷一-协议》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/QQWYM0.html&title=《TCP-IP详解-卷一-协议》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/QQWYM0.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《TCP-IP详解-卷一-协议》 — Believe it&url=http://fightinggg.github.io/indigo/QQWYM0.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/QQWYM0.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/indigo/QQZ90O.html" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">HTTP权威指南</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/indigo/QQTKJ0.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">计算机网络-自顶向下方法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/indigo/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/indigo/img/wechat.jpg" data-alipay="/indigo/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/indigo/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>fightinggg &copy; 2015 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://fightinggg.github.io/indigo/QQWYM0.html&title=《TCP-IP详解-卷一-协议》 — Believe it&pic=http://fightinggg.github.io/indigo/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://fightinggg.github.io/indigo/QQWYM0.html&title=《TCP-IP详解-卷一-协议》 — Believe it&source=nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmatery..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://fightinggg.github.io/indigo/QQWYM0.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《TCP-IP详解-卷一-协议》 — Believe it&url=http://fightinggg.github.io/indigo/QQWYM0.html&via=http://fightinggg.github.io/indigo" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://fightinggg.github.io/indigo/QQWYM0.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aS27DMAwFwNz/0ukBAsePpFLA0nhVFI7N8YLgR69XfL2D6/PO/JnV3zYvDAyMxzKqwX2+phr01ROS915SMTAwDmBcvTj5O7lz/q6b52BgYGB8vSfBfL+n914MDAyMJHX2Em7eAGNgYGBUm9hkZDYpMZNkvaAXx8DAeCAjn7r//98/2W9gYGA8ivEuXr0yMf9P78LAwNibMV9AVovCVQkXAwPjHEZvSZmnzskTkt+Odq0YGBhbMCbj/slKsnx0AwMD40hGdd1YPWwxSdOFWSAGBsYWjMkxrJydpOAqr1AgYmBgbMSoJtYE1isce8c+MDAwdmUkwfVWBfmnSdL3TQWIgYFxAKMXVi9l946d3TwTAwNja0bvjGh1VFddi/bWDxgYGCcz5i1o9dPkoz0MDIwTGJPGsjrVq6bs0WELDAyMjRh5iJPDFpNUnre+GBgYuzJ6y4B8TNZrPsvDOwwMjK0Z+cpwsmLMC9B8bIeBgXEaozcgm5SDvWR9w8bAwDiM0WtoJ6P/HLagC8fAwHgsIx919ZLjsnMf1Q4bAwPj4Yxeep2UfdWk/JOiEAMD41GMXk6rJtBeUm4WiBgYGJsyqm1qNYjeojSJAQMD4zTGqmY1KSsLm9U4KgwMDIxqoHlxGYWYNLEYGBgYrfFZobALFhU3HwUDA+MARtLE9lJwNR1XD6hhYGCcwFh1IKM6sMs/WR4VBgbGdow/pLbwLpc7868AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/indigo/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/indigo/js/main.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/indigo/js/search.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Kafka时间轮 | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka时间轮">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/QR4S3C.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial    原文链接 侵删  一张图理解Kafka时间轮(TimingWheel),看不懂算我输! 本文是【字节可视化系列】Kafka专栏文章。 通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.50.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.51.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.47.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.52.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.53.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.53.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.54.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.55.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.56.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.56.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.57.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.57.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.00.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.01.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.02.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.03.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/image-2021-04-06.14.58.04.000.png">
+<meta property="og:image" content="http://fightinggg.github.io/user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)">
+<meta property="article:published_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:modified_time" content="2021-04-06T07:14:00.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fightinggg.github.io/image-2021-04-06.14.50.00.000.png">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-队列/Kafka/Kafka时间轮/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/QR4S3C.html" class="article-date">
+  <time class="dt-published" datetime="2021-04-06T07:14:00.000Z" itemprop="datePublished">2021-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a>►<a class="article-category-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Kafka时间轮
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QR4S3C.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904110399946766">原文链接</a></p>
+<p><strong>侵删</strong></p>
+<p><img src='/image-2021-04-06.14.50.00.000.png'></img></p>
+<h1 id="一张图理解Kafka时间轮-TimingWheel-看不懂算我输"><a href="#一张图理解Kafka时间轮-TimingWheel-看不懂算我输" class="headerlink" title="一张图理解Kafka时间轮(TimingWheel),看不懂算我输!"></a>一张图理解Kafka时间轮(TimingWheel),看不懂算我输!</h1><blockquote>
+<p>本文是【字节可视化系列】Kafka专栏文章。</p>
+<p>通过本文你将了解到时间轮算法思想，层级时间轮，时间轮的升级和降级。</p>
+</blockquote>
+  <span id="more"></span>
+
+<p>时间轮，是一种实现延迟功能（定时器）的巧妙算法，在Netty，Zookeeper，Kafka等各种框架中，甚至Linux内核中都有用到。</p>
+<p>本文将参考Kafka的时间轮作为例子讲解。</p>
+<h1 id="0-设计源于生活"><a href="#0-设计源于生活" class="headerlink" title="0 设计源于生活"></a>0 设计源于生活</h1><p>开始之前给大家看块宝珀中华年历表。</p>
+<p><img src='/image-2021-04-06.14.51.00.000.png'></img></p>
+<p>图片来自宝珀官网  </p>
+<p>这款手表的表盘融合了中华历法中各种博大精深的计时元素。</p>
+<p>上方位置的小表盘显示时辰数字及字符,24小时一周期;年份视窗显示当年所属生肖,12年一周期;</p>
+<p>左边位置显示农历月,12个月一周期; 农历日, 30天一周期;</p>
+<p>右边位置显示五行元素和十天干,10年一周期;</p>
+<p>下方的表盘显示月相盈亏。</p>
+<p>至于价格…..这个话题略过。</p>
+<p>而时间轮，其设计正是来源于生活中的时钟。</p>
+<h1 id="1-时间轮"><a href="#1-时间轮" class="headerlink" title="1 时间轮"></a>1 时间轮</h1><p>如图就是一个简单的时间轮：  </p>
+<p><img src='/image-2021-04-06.14.47.00.000.png'></img></p>
+<p>图中大圆的圆心位置表示的是当前的时间，随着时间推移, 圆心处的时间也会不断跳动。</p>
+<p>下面我们对着这个图，来说说Kafka的时间轮TimingWheel。</p>
+<p>Kafka时间轮的底层就是一个环形数组，而数组中每个元素都存放一个双向链表TimerTaskList，链表中封装了很多延时任务。</p>
+<p>Kafka中一个时间轮TimingWheel是由20个时间格组成，wheelSize &#x3D; 20；每格的时间跨度是1ms，tickMs &#x3D; 1ms。参照Kafka，上图中也用了20个灰边小圆表示时间格，为了动画演示可以看得清楚，我们这里每个小圆的时间跨度是1s。</p>
+<p>所以现在整个时间轮的时间跨度就是 tickMs * wheelSize ，也就是 20s。从0s到19s，我们都分别有一个灰边小圆来承载。</p>
+<p>Kafka的时间轮还有一个表盘指针 currentTime，表示时间轮当前所处的时间。也就是图中用黑色粗线表示的圆，随着时间推移, 这个指针也会不断前进;</p>
+<p><img src='/image-2021-04-06.14.52.00.000.png'></img></p>
+<h2 id="添加定时任务"><a href="#添加定时任务" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>有了时间轮，现在可以往里面添加定时任务了。我们用一个粉红色的小圆来表示一个定时任务。</p>
+<p><img src='/image-2021-04-06.14.52.01.000.png'></img></p>
+<p>这里先讲一下设定，每一个定时任务都有延时时间<strong>delayTime</strong>，和过期时间<strong>ExpiredTime</strong>。</p>
+<p>比如当前时间是10s，我们添加了个延时时间为2s的任务，那么这个任务的过期时间就是12s，也就是当前时间10s再走两秒，变成了12s的时候，就到了触发这个定时任务的时间。</p>
+<p>而时间轮上代表时间格的灰边小圆上显示的数字，可以理解为任务的过期时间。  </p>
+<p><img src='/image-2021-04-06.14.52.02.000.png'></img></p>
+<p>讲清楚这些设定后，我们就开始添加定时任务吧。</p>
+<p>初始的时候, 时间轮的指针定格在0。此时添加一个超时时间为2s的任务, 那么这个任务将会插入到第二个时间格中。</p>
+<p><img src='/image-2021-04-06.14.53.00.000.png'></img></p>
+<p>当时间轮的指针到达第二个时间格时, 会处理该时间格上对应的任务。在动画上就是让红色的小圆消失!</p>
+<p><img src='/image-2021-04-06.14.53.01.000.png'></img></p>
+<p>如果这个时候又插入一个延时时间为8s的任务进来, 这个任务的过期时间就是在当前时间2s的基础上加8s, 也就是10s, 那么这个任务将会插入到过期时间为10s的时间格中。</p>
+<p><img src='/image-2021-04-06.14.54.00.000.png'></img></p>
+<h1 id="2-“动态”时间轮"><a href="#2-“动态”时间轮" class="headerlink" title="2 “动态”时间轮"></a>2 “动态”时间轮</h1><p>到目前为止，一切都很好理解。</p>
+<p>那么如果在当前时间是2s的时候, 插入一个延时时间为19s的任务时, 这个任务的过期时间就是在当前时间2s的基础上加19s, 也就是21s。  </p>
+<p>请看下图，当前的时间轮是没有过期时间为21s的时间格。这个任务将会插入到过期时间为1s的时间格中，这是怎么回事呢？</p>
+<p><img src='/image-2021-04-06.14.55.00.000.png'></img></p>
+<h2 id="复用时间格"><a href="#复用时间格" class="headerlink" title="复用时间格"></a>复用时间格</h2><p>为了解答上面的问题，我们先来点魔法， 让时间轮上的时间都动起来！  </p>
+<p><img src='/image-2021-04-06.14.55.01.000.png'></img></p>
+<p>其实呢，当指针定格在2s的位置时, 时间格0s, 1s和2s就已经是过期的时间格。  </p>
+<p>也就是说指针可以用来划分过期的时间格[0,2]和未来的时间格 [3,19]。而过期的时间格可以继续复用。比如过期的时间格0s就变成了20s, 存放过期时间为20s的任务。</p>
+<p>理解了时间格的复用之后，再看回刚刚的例子，当前时间是2s时，添加延时时间为19s的任务，那么这个任务就会插入到过期时间为21s的时间格中。  </p>
+<p><img src='/image-2021-04-06.14.55.02.000.png'></img></p>
+<h1 id="3-时间轮升级"><a href="#3-时间轮升级" class="headerlink" title="3 时间轮升级"></a>3 时间轮升级</h1><p>下面，新的问题来了，请坐好扶稳。</p>
+<p>如果在当前时间是2s的时候, 插入一个延时时间为22s的任务, 这个任务的过期时间就是在2s的基础上加22s，也就是24s。</p>
+<p><img src='/image-2021-04-06.14.56.00.000.png'></img></p>
+<p>显然当前时间轮是无法找到过期时间格为24秒的时间格，因为当前过期时间最大的时间格才到21s。而且我们也没办法像前面那样再复用时间格，因为除了过期时间为2s的时间格，其他的时间格都还没过期呢。当前时间轮无法承载这个定时任务, 那么应该怎么办呢?</p>
+<p>当然我们可以选择扩展时间轮上的时间格, 但是这样一来，时间轮就失去了意义。</p>
+<p>是时候要升级时间轮了！</p>
+<p>我们先来理解下多层时间轮之间的联系。</p>
+<h1 id="4-层级时间轮"><a href="#4-层级时间轮" class="headerlink" title="4 层级时间轮"></a>4 层级时间轮</h1><p>如图是一个两层的时间轮:</p>
+<p><img src='/image-2021-04-06.14.56.01.000.png'></img></p>
+<p>第二层时间轮也是由20个时间格组成, 每个时间格的跨度是20s。</p>
+<p>图中展示了每个时间格对应的过期时间范围, 我们可以清晰地看到, 第二层时间轮的第0个时间格的过期时间范围是 [0,19]。也就是说, 第二层时间轮的一个时间格就可以表示第一层时间轮的所有(20个)时间格;</p>
+<p>为了进一步理清第一层时间轮和第二层时间轮的关系, 我们拉着时间的小手, 一起观看下面的动图:</p>
+<p><img src='/image-2021-04-06.14.57.00.000.png'></img></p>
+<p>可以看到，第二层时间轮同样也有自己的指针, 每当第一层时间轮走完一个周期，第二层时间轮的指针就会推进一格。</p>
+<h2 id="添加定时任务-1"><a href="#添加定时任务-1" class="headerlink" title="添加定时任务"></a>添加定时任务</h2><p>回到一开始的问题，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。</p>
+<p><img src='/image-2021-04-06.14.57.01.000.png'></img></p>
+<p>当第一层时间轮容纳不下时，进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>我们再来个例子，如果在当前时间是2s的时候, 插入一个延时时间为350s的任务, 这个任务的过期时间就是在2s的基础上加350s，也就是352s。</p>
+<p><img src='/image-2021-04-06.14.58.00.000.png'></img></p>
+<p>从图中可以看到，该任务插入到第二层时间轮过期时间为[340,359]s的时间格中，也就是第17格的位置。  </p>
+<h1 id="5-“动态”层级时间轮"><a href="#5-“动态”层级时间轮" class="headerlink" title="5 “动态”层级时间轮"></a>5 “动态”层级时间轮</h1><p>通常来说, 第二层时间轮的第0个时间格是用来表示第一层时间轮的, 这一格是存放不了任务的, 因为超时时间0-20s的任务, 第一层时间轮就可以处理了。</p>
+<p>但是! 事情往往没这么简单, 我们时间轮上的时间格都是可以复用的! 那么这在第二层时间轮上又是怎么体现的呢?</p>
+<p>下面是魔法时间， 我们让时间轮上的过期时间都动起来！</p>
+<p><img src='/image-2021-04-06.14.58.01.000.png'></img></p>
+<p>从图中可以看到，当第一层时间轮的指针定格在1s时，超时时间0s的时间格就过期了。而这个时候，第二层时间轮第0个时间格的时间范围就从[0,19]分为了过期的[0],和未过期的[1,19]。而过期的[0]就会被新的过期时间[400]复用。  </p>
+<p>第二层时间轮第0个时间格的过期时间范围演变如下：</p>
+<p>[0-19]</p>
+<p>[400][1,19]</p>
+<p>[400,401][2,19]</p>
+<p>……</p>
+<p>[400,419]</p>
+<p>所以，如果在当前时间是2s的时候, 插入一个延时时间为399s的任务, 这个任务的过期时间就是在2s的基础上加399s，也就是401s。如图，这个任务还是会插到第二层时间轮第0个时间格中去。  </p>
+<p><img src='/image-2021-04-06.14.58.02.000.png'></img></p>
+<h1 id="6-时间轮降级"><a href="#6-时间轮降级" class="headerlink" title="6 时间轮降级"></a>6 时间轮降级</h1><p>还是用回这个大家都已经耳熟能详的例子，在当前时间是2s的时候, 插入一个延时时间为22s的任务，该任务过期时间为24s。最后进入第二层时间轮，并插入到过期时间为[20,39]的时间格中。  </p>
+<p>当二层时间轮上的定时任务到期后，时间轮是怎么做的呢？</p>
+<p><img src='/image-2021-04-06.14.58.03.000.png'></img></p>
+<p>从图中可以看到，随着当前时间从2s继续往前推进，一直到20s的时候，总共经过了18s。此时第二层时间轮中，超时时间为[20-39s]的时间格上的任务到期。</p>
+<p>原本超时时间为24s的任务会被取出来，重新加入时间轮。此时该定时任务的延时时间从原本的22s，到现在还剩下4s（22s-18s）。最后停留在第一层时间轮超时时间为24s的时间格，也就是第4个时间格。</p>
+<p>随着当前时间继续推进，再经过4s后，该定时任务到期被执行。</p>
+<p>从这里可以看出时间轮的巧妙之处，两层时间轮只用了40个数组元素，却可以承载[0-399s]的定时任务。而三层时间轮用60个数组元素，就可以承载[0-7999s]的定时任务！</p>
+<p><img src='/image-2021-04-06.14.58.04.000.png'></img></p>
+<h1 id="7-时间轮的推进"><a href="#7-时间轮的推进" class="headerlink" title="7 时间轮的推进"></a>7 时间轮的推进</h1><p>从动画中可以注意到, 随着时间推进, 时间轮的指针循环往复地定格在每一个时间格上, 每一次都要判断当前定格的时间格里是不是有任务存在;</p>
+<p>其中有很多时间格都是没有任务的, 指针定格在这种空的时间格中, 就是一次”空推进”;</p>
+<p>比如说, 插入一个延时时间400s的任务, 指针就要执行399次”空推进”, 这是一种浪费!</p>
+<p>那么Kafka是怎么解决这个问题的呢？这就要从延迟队列DelayQueue开始讲起了！</p>
+<p>时间轮搭配延迟队列DelayQueue，会发生什么化学反应呢？请关注公众号【字节武装】后续更新。  </p>
+<h1 id="往期回顾"><a href="#往期回顾" class="headerlink" title="往期回顾"></a>往期回顾</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247484068&idx=1&sn=8398823824f8511c69a652d1394a263f&chksm=cfc381cbf8b408dd6343218814b6633ee7fbdeb255f27439ab41462d2d7f29e34c605c6c24af&scene=21#wechat_redirect">图说堆排序</a>  </li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483930&idx=1&sn=851e418f68e7efbbcf5acb43e7c9995a&chksm=cfc38175f8b4086394fd2ebe3d5f5acb16182633203464760c9aac7f254bdb5e872f1db66b6d&scene=21#wechat_redirect">TCP为啥要3次握手和4次挥手？这是一种沟通技巧</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483887&idx=1&sn=bbac015aeec266eb5e7346f43000cc48&chksm=cfc38280f8b40b9607199d324b82162160784979f8dca68edf39765ee1e7c2c5758ef9e4fa6d&scene=21#wechat_redirect">一张图搞懂归并排序</a></li>
+<li><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg5MjEzMDgxNg==&mid=2247483811&idx=1&sn=3e68d49a4429d492ff1ffb09a96208db&chksm=cfc382ccf8b40bda701cad9a37052b468f93c263fddef55fe899a1e3f6767737d4ff90825544&scene=21#wechat_redirect">Java线程池的故事, 四个花瓶</a></li>
+</ul>
+<p><img src='/user-gold-cdn.xitu.io/2020/3/31/1712e51be5497745?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) '></img></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/QR4S3C.html" data-id="clhvp2d4i007kzimcd11egwob" data-title="Kafka时间轮" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/QR6OSO.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Kafka权威指南
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/QR12J0.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">从TCP看HTTP</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

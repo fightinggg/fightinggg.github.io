@@ -1,0 +1,814 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="读书" />
+
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QQWYM0.html">
+
+
+
+  <title>
+TCP-IP详解-卷一-协议 - 计算机网络 |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">TCP-IP详解-卷一-协议
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-04-02 09:54:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-04-02T09:54:00+08:00">2021-04-02</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciusoyjnj219g0u0x56.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclimtf7dj20zk0m8qav.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipew28b65j20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciuv0socj20zk0m8qes.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljitigmj20zk0m87fp.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="item" rel="index" title="分类于 计算机网络"><span itemprop="name">计算机网络</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QQWYM0.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QQWYM0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="TCP-IP详解"><a href="#TCP-IP详解" class="headerlink" title="TCP-IP详解"></a>TCP-IP详解</h1><p><img data-src='/image-2021-04-02-09.54.31.819.png'></img></p>
+<h1 id="慎重"><a href="#慎重" class="headerlink" title="慎重"></a>慎重</h1><p>这是一本工具书！！！！！！！！！！</p>
+<p>这本书和我想象中的不太一样，他不偏向于技术，他更加注重细节，更像是一本工具书，先到这里了，不细看了，有需要再补充</p>
+<ul>
+<li><p>21&#x2F;4&#x2F;2 新建 ARP协议、IP协议</p>
+</li>
+<li><p>21&#x2F;4&#x2F;4 补充 DNS协议</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="第二章-Internet-地址结构"><a href="#第二章-Internet-地址结构" class="headerlink" title="第二章 Internet 地址结构"></a>第二章 Internet 地址结构</h1><blockquote>
+<p>当一台设备连接到全球性的 Internet时,为它们分配地址就必须经过协调,这样就不会重复使用网络中的其他地址。对于专用网络,使用的IP地址必须经过协调,以避免在专用网络中出现类似的重复。成组的IP地址被分配给用户和组织。这些地址的拥有者再将它们分配给设备,这通常根据某些“编号方案”进行。对于全球性的 Internet地址,一个分层结构管理实体帮助用户和服务提供商分配地址。个人用户通常由 Internet服务提供商(ISP)分配地址,通过支付费用来获得地址和执行路由。</p>
+<p>Page: 31</p>
+</blockquote>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><blockquote>
+<p>在IPv6中,地址的长度是128位,是IPv4地址长度的4倍。一般来说,大多数用户对它不太熟悉。IPv6地址的传统表示方法是采用称为块或字段的四个十六进制数,这些被称为块或字段的数由冒号分隔。例如,一个包含8个块的IPv6地址可写为5m05:2000:80ad:5800:0058:0800:2023:1d71。虽然不像用户熟悉的十进制数,但将十六进制数转换为二进制更容易。另外,一些已取得共识的IPv6地址简化表示法已被标准化[RFC42911]:<br>1.一个块中前导的零不必书写。在前面的例子中,地址可写为5f05:200080ad:5800:58:800:2023:1d7l<br>2.全零的块可以省略,并用符号::代替。例如,IPv6地址0:0:0:0:0:0:0:1可简写为::1同样,地址2001:0db8:0:0:0:0:0:2可简写为2001:db8::2。为了避免出现歧义,一个IPv6地址中符号::只能使用一次。</p>
+</blockquote>
+<p>在某些情况下，可以使用[]来包裹IPv6，比如url:</p>
+<p>http:&#x2F;&#x2F;[2001:0db8:85a3:08d3:1319:8a2e:0370:7344]:443&#x2F;</p>
+<h2 id="IPv4地址分类"><a href="#IPv4地址分类" class="headerlink" title="IPv4地址分类"></a>IPv4地址分类</h2><p>在最初，IPv4被分为这5类</p>
+<p><img data-src='/image-2021-04-02-15.25.19.774.png'></img></p>
+<p>20世纪90年代以后，Internet遇到了新的问题：</p>
+<blockquote>
+<p>1.到1994年,一半以上的B类地址已被分配。预计,B类地址空间大约在1995年将被用尽。</p>
+<p>2.32位的IPv4地址被认为不足以应付 Internet在21世纪初的预期规模。</p>
+<p>3.全球性路由表的条目数(每个网络号对应一条),1995年大约为65000个条目,目前仍在增长中。随着越来越多A类、B类和C类路由条目的出现,路由性能将受到影响。</p>
+<p>Page: 46</p>
+</blockquote>
+<h2 id="CIDR"><a href="#CIDR" class="headerlink" title="CIDR"></a>CIDR</h2><p>无类别域间路由，使用CIDR，任何位定义的地址范围都可以作为一个类的一部分，但是需要提供子网掩码（IP前缀长度）</p>
+<p><img data-src='/image-2021-04-02-15.42.14.432.png'></img></p>
+<p>无类别域间路由解决了问题1，IPv6解决了问题2，问题3没办法了。</p>
+<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><p>Kleinrock和Kamoun提出使用分层路由，树形拓扑网络</p>
+<p>如果我们按照地址对IP进行聚合，就能让路由表中的条目变少，下图左中的路由表有9个条目，右中的路由器只有三个条目且不随树的生长变化。</p>
+<p><img data-src='/image-2021-04-02-15.48.40.652.png'></img></p>
+<h2 id="特殊用途的地址"><a href="#特殊用途的地址" class="headerlink" title="特殊用途的地址"></a>特殊用途的地址</h2><p><img data-src='/image-2021-04-02-15.53.58.647.png'></img></p>
+<p><img data-src='/image-2021-04-02-15.56.20.879.png'></img></p>
+<h1 id="第四章：-地址解析协议"><a href="#第四章：-地址解析协议" class="headerlink" title="第四章： 地址解析协议"></a>第四章： 地址解析协议</h1><p>arp协议能够把IP地址转换为物理地址。在linux上执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp</span><br></pre></td></tr></table></figure>
+
+<p><img data-src='/image-2021-04-02-17.19.33.021.png'></img></p>
+<p>我们可以看到这里有5列，第一列Address即IP地址，HWtype是硬件类型，HWaddress是硬件地址，Flags是标志，包括C、M、P，C代表由arp协议动态学习，M为手动输入，P是发布（主机对ARP请求的应答），Iface是本地网络接口（网卡）</p>
+<p>我们使用docker启动一个centos8容器，安装好需要的网络工具，然后执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -vve</span><br></pre></td></tr></table></figure>
+
+<p>然后对这个容器再启动一个bash执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet fightinggg.top 80</span><br></pre></td></tr></table></figure>
+
+<p><img data-src='/image-2021-04-02-20.34.34.322.png'></img></p>
+<p>注意到有着两行出现</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">12:29:47.647126 02:42:ac:11:00:03 (oui Unknown) &gt; Broadcast, ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Request who-has _gateway tell 8d32dcd79d6c, length 28</span><br><span class="line">12:29:47.647154 02:42:6b:57:92:7d (oui Unknown) &gt; 02:42:ac:11:00:03 (oui Unknown), ethertype ARP (0x0806), length 42: Ethernet (len 6), IPv4 (len 4), Reply _gateway is-at 02:42:6b:57:92:7d (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+
+<p>第一行的意思是mac为02:42:ac:11:00:03的主机发布了一个广播：谁知道_gateway的mac地址，请告诉8d32dcd79d6c(docker 容器的host)</p>
+<p>第二行的意思是mac为02:42:6b:57:92:7d的主机向02:42:ac:11:00:03发送了单播：_gateway的mac地址为02:42:6b:57:92:7d</p>
+<h2 id="代理ARP"><a href="#代理ARP" class="headerlink" title="代理ARP"></a>代理ARP</h2><blockquote>
+<p>代理ARP[RFC1027使一个系统(通常是一台专门配置的路由器)可回答不同主机的ARP请求。它使ARP请求的发送者认为做出响应的系统就是目的主机,但实际上目的主机可能在其他地方(或不存在)。ARP代理并不常见,通常应尽量避免使用它。</p>
+</blockquote>
+<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>当一台主机启动的时候，他会发送一个ARP请求，寻找自己的地址，通常他不期待得到回答。</p>
+<p>这样做有两个好处：</p>
+<ol>
+<li>确定网络中不存在另一台主机和自己的IP地址相同</li>
+<li>如果主机已经改变了自己的MAC地址，这个ARP报文会让其他主机更新这台主机的MAC地址</li>
+</ol>
+<h1 id="第五章：Internet协议"><a href="#第五章：Internet协议" class="headerlink" title="第五章：Internet协议"></a>第五章：Internet协议</h1><h2 id="IP报文"><a href="#IP报文" class="headerlink" title="IP报文"></a>IP报文</h2><p><img data-src='/image-2021-04-02-21.06.01.187.png'></img></p>
+<p>细节参考<a href="/QQTKJ0.html#IPv4">这里</a></p>
+<p>DS字段细节</p>
+<p><img data-src='/image-2021-04-04-15.42.49.478.png'></img></p>
+<p><img data-src='/image-2021-04-04-15.43.06.771.png'></img></p>
+<p>协议详见</p>
+<p><img data-src='/image-2021-04-04-16.04.21.511.png'></img></p>
+<h2 id="IPv6头部"><a href="#IPv6头部" class="headerlink" title="IPv6头部"></a>IPv6头部</h2><p><img data-src='/image-2021-04-02-21.07.00.677.png'></img></p>
+<p>下一个头部具体的情况</p>
+<p><img data-src='/image-2021-04-02-21.11.29.802.png'></img></p>
+<h1 id="第11章-名称解析和域名系统"><a href="#第11章-名称解析和域名系统" class="headerlink" title="第11章 名称解析和域名系统"></a>第11章 名称解析和域名系统</h1><h2 id="DNS消息格式"><a href="#DNS消息格式" class="headerlink" title="DNS消息格式"></a>DNS消息格式</h2><p><img data-src='/image-2021-04-04-16.30.13.746.png'></img></p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">备注</th>
+<th>位数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">事务ID</td>
+<td align="left">客户端设置，服务器返回</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">QR</td>
+<td align="left">决定是响应还是回复</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">OpCode</td>
+<td align="left">0正常查询<br />4通知<br />5更细<br />1-3弃用</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">AA（authoritative anwer）</td>
+<td align="left">授权回答，与缓存回答相对</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">TC（truncated）</td>
+<td align="left">可截断，在UDP中标识是否截断</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RD（recursion desired）</td>
+<td align="left">期望递归，参考<a href="/Q7EBAW.html#%E9%80%92%E5%BD%92%E8%BF%98%E6%98%AF%E9%9D%9E%E9%80%92%E5%BD%92">递归DNS</a> 如果回答是，则服务器会返回递归的DNS地址</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RA（递归可用）</td>
+<td align="left">表明该服务器是否支持递归，根服务器不支持RA</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="left">保留，一定是0</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">AD</td>
+<td align="left">是否授权</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">CD</td>
+<td align="left">是否禁用安全检查（随缘补充这部分）</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="left">RCODE</td>
+<td align="left">见👇</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="left">QDCOUNT&#x2F;ZOCOUNT</td>
+<td align="left">查询数&#x2F;区域数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">ANCOUNT&#x2F;PRCOUNT</td>
+<td align="left">回答数&#x2F;先决条件数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">NSCOUNT&#x2F;UPCOUNT</td>
+<td align="left">授权记录数&#x2F;更新数👇</td>
+<td>16</td>
+</tr>
+<tr>
+<td align="left">ARCOUNT&#x2F;ADCOUNT</td>
+<td align="left">额外信息数👇</td>
+<td>16</td>
+</tr>
+</tbody></table>
+<h3 id="RCODE"><a href="#RCODE" class="headerlink" title="RCODE"></a>RCODE</h3><p><img data-src='/image-2021-04-04-16.46.16.701.png'></img></p>
+<h3 id="QDCOUNT-x2F-ZOCOUNT"><a href="#QDCOUNT-x2F-ZOCOUNT" class="headerlink" title="QDCOUNT&#x2F;ZOCOUNT"></a>QDCOUNT&#x2F;ZOCOUNT</h3><p>查询类16位， 1代表互联网类， 254代表没有类， 255代表所有类</p>
+<p>查询类型16位， 一般为A（IPv6为AAAA）</p>
+<p><img data-src='/image-2021-04-04-16.52.33.035.png'></img></p>
+<h3 id="回答，授权，额外信息"><a href="#回答，授权，额外信息" class="headerlink" title="回答，授权，额外信息"></a>回答，授权，额外信息</h3><p><img data-src='/image-2021-04-04-16.55.10.956.png'></img></p>
+<p><img data-src='/image-2021-04-04-17.21.58.318.png'></img></p>
+
+      <div class="tags">
+          <a href="/shoka/tags/%E8%AF%BB%E4%B9%A6/" rel="tag"><i class="ic i-tag"></i> 读书</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2021-04-04 16:30:00" itemprop="dateModified" datetime="2021-04-04T16:30:00+08:00">2021-04-04</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QQWYM0.html" title="TCP-IP详解-卷一-协议">http://fightinggg.github.io/shoka/QQWYM0.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QQTKJ0.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclx29mstj20zk0m8hdt.jpg" title="计算机网络-自顶向下方法">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 计算机网络</span>
+  <h3>计算机网络-自顶向下方法</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QQZ90O.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipesng5oej20zk0m87d4.jpg" title="HTTP权威指南">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 计算机网络</span>
+  <h3>HTTP权威指南</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP-IP%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">TCP-IP详解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%85%8E%E9%87%8D"><span class="toc-number">2.</span> <span class="toc-text">慎重</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-Internet-%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">第二章 Internet 地址结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6"><span class="toc-number">3.1.</span> <span class="toc-text">IPv6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv4%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="toc-number">3.2.</span> <span class="toc-text">IPv4地址分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CIDR"><span class="toc-number">3.3.</span> <span class="toc-text">CIDR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88"><span class="toc-number">3.4.</span> <span class="toc-text">聚合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E7%94%A8%E9%80%94%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">3.5.</span> <span class="toc-text">特殊用途的地址</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A-%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">第四章： 地址解析协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86ARP"><span class="toc-number">4.1.</span> <span class="toc-text">代理ARP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8D%E8%B4%B9ARP"><span class="toc-number">4.2.</span> <span class="toc-text">免费ARP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9AInternet%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.</span> <span class="toc-text">第五章：Internet协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E6%8A%A5%E6%96%87"><span class="toc-number">5.1.</span> <span class="toc-text">IP报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6%E5%A4%B4%E9%83%A8"><span class="toc-number">5.2.</span> <span class="toc-text">IPv6头部</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC11%E7%AB%A0-%E5%90%8D%E7%A7%B0%E8%A7%A3%E6%9E%90%E5%92%8C%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="toc-number">6.</span> <span class="toc-text">第11章 名称解析和域名系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-number">6.1.</span> <span class="toc-text">DNS消息格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RCODE"><span class="toc-number">6.1.1.</span> <span class="toc-text">RCODE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QDCOUNT-x2F-ZOCOUNT"><span class="toc-number">6.1.2.</span> <span class="toc-text">QDCOUNT&#x2F;ZOCOUNT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E7%AD%94%EF%BC%8C%E6%8E%88%E6%9D%83%EF%BC%8C%E9%A2%9D%E5%A4%96%E4%BF%A1%E6%81%AF"><span class="toc-number">6.1.3.</span> <span class="toc-text">回答，授权，额外信息</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q9A3PJ.html" rel="bookmark" title="内网穿透">内网穿透</a></li><li><a href="/shoka/QI78G0.html" rel="bookmark" title="深入浅出HTTPS从原理到实战">深入浅出HTTPS从原理到实战</a></li><li><a href="/shoka/QQPLTI.html" rel="bookmark" title="ARP协议">ARP协议</a></li><li><a href="/shoka/QQPNNQ.html" rel="bookmark" title="PING的时候发生了什么">PING的时候发生了什么</a></li><li><a href="/shoka/QQTKJ0.html" rel="bookmark" title="计算机网络-自顶向下方法">计算机网络-自顶向下方法</a></li><li class="active"><a href="/shoka/QQWYM0.html" rel="bookmark" title="TCP-IP详解-卷一-协议">TCP-IP详解-卷一-协议</a></li><li><a href="/shoka/QQZ90O.html" rel="bookmark" title="HTTP权威指南">HTTP权威指南</a></li><li><a href="/shoka/QR12J0.html" rel="bookmark" title="从TCP看HTTP">从TCP看HTTP</a></li><li><a href="/shoka/QZ0M0C.html" rel="bookmark" title="破坏之王：DDOS攻击与防范深度剖析">破坏之王：DDOS攻击与防范深度剖析</a></li><li><a href="/shoka/QZ4DM0.html" rel="bookmark" title="计算机网络-法律篇">计算机网络-法律篇</a></li><li><a href="/shoka/QZIIYO.html" rel="bookmark" title="计算机病毒揭秘与对抗">计算机病毒揭秘与对抗</a></li><li><a href="/shoka/RCFBSC.html" rel="bookmark" title="白帽子讲Web安全">白帽子讲Web安全</a></li><li><a href="/shoka/RFJ220.html" rel="bookmark" title="VPN与代理那些事">VPN与代理那些事</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QQTKJ0.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QQZ90O.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/" title="分类于 数学">数学</a>
+</div>
+
+    <span><a href="/shoka/PSZ23L.html" title="bsgs算法">bsgs算法</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="分类于 学习笔记">学习笔记</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/" title="分类于 图论">图论</a>
+</div>
+
+    <span><a href="/shoka/PUKAKX.html" title="树的最小路径覆盖">树的最小路径覆盖</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/QI78G0.html" title="深入浅出HTTPS从原理到实战">深入浅出HTTPS从原理到实战</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/bzoj2006.html" title="bzoj2006">bzoj2006</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Others/" title="分类于 Others">Others</a>
+</div>
+
+    <span><a href="/shoka/QMQ740.html" title="Nginx">Nginx</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/" title="分类于 problem">problem</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/" title="分类于 computational_geonetry">computational_geonetry</a>
+</div>
+
+    <span><a href="/shoka/about_sqrt_and_acos.html" title="about_sqrt_and_acos">about_sqrt_and_acos</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8TZMI.html" title="SpringBoot2-配置">SpringBoot2-配置</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/" title="分类于 stencil">stencil</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/" title="分类于 data_struct">data_struct</a>
+</div>
+
+    <span><a href="/shoka/splay.html" title="splay">splay</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Docker/" title="分类于 Docker">Docker</a>
+</div>
+
+    <span><a href="/shoka/QHOPS0.html" title="docker">docker</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E9%98%9F%E5%88%97/" title="分类于 队列">队列</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E9%98%9F%E5%88%97/Kafka/" title="分类于 Kafka">Kafka</a>
+</div>
+
+    <span><a href="/shoka/QR4S3C.html" title="Kafka时间轮">Kafka时间轮</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QQWYM0.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>跟我一起自己写编译器-5.语法分析 | Believe it</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  5. 语法分析5.1. 文法文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。 5.1.1. 正则文法这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。 5.1.2. 上下文无关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我一起自己写编译器-5.语法分析">
+<meta property="og:url" content="http://fightinggg.github.io/landscape/QV7MPR.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  5. 语法分析5.1. 文法文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。 5.1.1. 正则文法这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。 5.1.2. 上下文无关">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-24T14:25:03.000Z">
+<meta property="article:modified_time" content="2021-08-29T09:41:03.000Z">
+<meta property="article:author" content="fightinggg">
+<meta property="article:tag" content="读书">
+<meta property="article:tag" content="跟我一起写编译器">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/landscape/atom.xml" title="Believe it" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/landscape/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/landscape/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/landscape/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/landscape/" id="logo">Believe it</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/landscape/" id="subtitle">相信不屈不挠的努力,相信战胜死亡的年轻</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/landscape/">Home</a>
+        
+          <a class="main-nav-link" href="/landscape/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/landscape/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://fightinggg.github.io/landscape"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-编译器/跟我一起自己写编译器-5.语法分析/index" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/landscape/QV7MPR.html" class="article-date">
+  <time class="dt-published" datetime="2021-06-24T14:25:03.000Z" itemprop="datePublished">2021-06-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      跟我一起自己写编译器-5.语法分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div><a href="/next/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QV7MPR.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="5-语法分析"><a href="#5-语法分析" class="headerlink" title="5. 语法分析"></a>5. 语法分析</h1><h1 id="5-1-文法"><a href="#5-1-文法" class="headerlink" title="5.1. 文法"></a>5.1. 文法</h1><p>文法的种类有很多，正则文法，上下文无关文法，上下文有关文法。</p>
+<h2 id="5-1-1-正则文法"><a href="#5-1-1-正则文法" class="headerlink" title="5.1.1. 正则文法"></a>5.1.1. 正则文法</h2><p>这一块内容就是我们平时所用到的正则表达式的文法，他的词是各个字符。</p>
+<h2 id="5-1-2-上下文无关文法"><a href="#5-1-2-上下文无关文法" class="headerlink" title="5.1.2. 上下文无关文法"></a>5.1.2. 上下文无关文法</h2><p>上下文无关文法涉及到4个定义</p>
+<ul>
+<li>终结符： 文法的基本单元，词</li>
+<li>非终结符： 文法的中间变量，一些词按顺序排列构成的符号</li>
+<li>产生式： 连接非终结符和终结符的等式，产生式表明了一些终结符和非终结符如何排列可以得到新的非终结符</li>
+<li>开始： 文法开始的非终结符，他表明了什么样的非终结符满足当前文法</li>
+</ul>
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式： SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>上诉文法可以接受 1+2， 我们只需要把1和2视为number，即可，此时的词法单元就是1，2，+</p>
+<p>由于高级程序设计语言基本可以被视为上下文无关文法，文法的语法分析有很多算法，后面会依次对他们进行介绍。</p>
+<span id="more"></span>
+
+<h2 id="5-1-3-上下文有关文法"><a href="#5-1-3-上下文有关文法" class="headerlink" title="5.1.3. 上下文有关文法"></a>5.1.3. 上下文有关文法</h2><p>在上下文无关文法中，产生式左部都是单个非终结符，如果放开这个限制，那么就成了上下文有关文法。这里不是重点，直接跳过，有兴趣的读者可以自行<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%9C%89%E5%85%B3%E6%96%87%E6%B3%95">学习</a>。</p>
+<h1 id="5-2-最左递归下降"><a href="#5-2-最左递归下降" class="headerlink" title="5.2. 最左递归下降"></a>5.2. 最左递归下降</h1><p>递归下降算法可以解析一部分上下文无关文法，递归下降其实就是枚举，他是一种自顶向下的算法，从文法的<code>开始</code>开始， 逐渐替换最左侧的非终结符为新的符号列表，直到匹配成功,其代码为:</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">匹配(参数1： deque, 参数2： 当前匹配的下标i)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是终结符</span><br><span class="line">        从双端队列deque[terminalSymbol,e2,e3,e4...]取出并删除最左侧的终结符terminalSymbol</span><br><span class="line">           如果 terminalSymbol和当前第i个token不相等， 返回失败</span><br><span class="line">           否则 返回 继续匹配(deque,i+1)</span><br><span class="line">    如果双端队列deque[e1,e2,e3...]的最左侧e1是非终结符</span><br><span class="line">           从双端队列deque[noTerminalSymbol,e2,e3,e4...]取出并删除最左侧的非终结符noTerminalSymbol</span><br><span class="line">           枚举以非终结符noTerminalSymbol为左部的产生式production</span><br><span class="line">           将production右部的所有符号[s1,s2,s3...]顺序不变放在deque[e1,e2,e3...]左侧得到[s1,s2,s3...e1,e2,e3...]</span><br><span class="line">           如果 继续匹配(deque,i) 成功 返回成功</span><br><span class="line">        返回失败</span><br></pre></td></tr></table></figure>
+
+<p>这样的一个算法，</p>
+<p>第一，他的时间复杂度是指数的，非常慢</p>
+<p>第二，如果文法存在左递归，则算法死循环</p>
+<p>第三，如果文法二义，则算法输出的语法树不确定</p>
+<h1 id="5-3-左递归文法"><a href="#5-3-左递归文法" class="headerlink" title="5.3. 左递归文法"></a>5.3. 左递归文法</h1><p>如果一个文法中存在产生式<code>A -&gt; A * * *</code>则这个文法为直接左递归文法，比如下面这个文法为左递归文法, 因为<code>SUM -&gt; SUM + number</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>如果一个文法在经过有限次产生式替换以后，出现了<code>A -&gt; A * * *</code>则这个文法为间接左递归文法。如下面的文法, 因为<code>SUM -&gt; S + S -&gt; SUM + S</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, S</span><br><span class="line">  产生式:  SUM -&gt; S + S</span><br><span class="line">            S -&gt; SUM | number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>当文法中存在左递归时，将最左侧的非终结符替换为符号数组将导致无穷无尽的循环、</p>
+<h1 id="5-4-二义性文法"><a href="#5-4-二义性文法" class="headerlink" title="5.4. 二义性文法"></a>5.4. 二义性文法</h1><p>如果一个token流，对应于一个文法存在不止一棵语法树，则该文法为二义性文法，下面的文法为二义性文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ifelse:</span><br><span class="line">  终结符: if, else, condition, block</span><br><span class="line">  非终结符: target</span><br><span class="line">  产生式: target -&gt; block | if condition target | if condition target else target</span><br><span class="line">  开始： target</span><br></pre></td></tr></table></figure>
+
+<p>考虑<code>if condition if condition block else block</code>他有两颗语法树</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    t1[&quot;target&quot;] --&gt; ict[&quot;target -&gt; if condition target else target&quot;]</span><br><span class="line">      ict --&gt; i1[&quot;if&quot;] &amp; c1[&quot;condition&quot;] &amp; t2[&quot;target -&gt; if condition target&quot;]  &amp; else &amp; t4[&quot;target -&gt; block&quot;]</span><br><span class="line">      t2 --&gt; i2[&quot;if&quot;] &amp; c2[&quot;condition&quot;]  &amp; t3[&quot;target -&gt; block&quot;] </span><br><span class="line">      t3 --&gt; b1[&quot;block&quot;]</span><br><span class="line">      t4 --&gt; b2[&quot;block&quot;]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="5-5-乔姆斯基范式"><a href="#5-5-乔姆斯基范式" class="headerlink" title="5.5. 乔姆斯基范式"></a>5.5. 乔姆斯基范式</h1><blockquote>
+<p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6">计算机科学</a>中，一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BD%A2%E5%BC%8F%E6%96%87%E6%B3%95">形式文法</a>是 <strong>Chomsky 范式</strong>的，<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BD%93%E4%B8%94%E4%BB%85%E5%BD%93">当且仅当</a>所有产生规则都有如下形式：</p>
+<p><em>A</em> → <em>BC</em> 或</p>
+<p><em>A</em> → α 或</p>
+<p><em>S</em> → ε</p>
+<p>这里的 <em>A</em>, <em>B</em> 和 <em>C</em> 是非终结符，α 是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BB%88%E7%BB%93%E7%AC%A6">终结符</a>（表示常量值的符号），<em>S</em> 是开始符号，而 ε 是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%A9%BA%E5%AD%97%E5%85%83%E4%B8%B2">空串</a>。还有，<em>B</em> 和 <em>C</em> 都不可以是开始符号。</p>
+<p>所有的 Chomsky 范式的文法都是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95">上下文无关</a>，反过来，所有上下文无关文法都可以有效的变换成等价的 Chomsky 范式的文法。</p>
+<p>引用： <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B9%94%E5%A7%86%E6%96%AF%E5%9F%BA%E8%8C%83%E5%BC%8F">乔姆斯基范式</a></p>
+</blockquote>
+<p>将一个上下文无关文法转化为乔姆斯基范式也非常简单，这不做赘述。</p>
+<h1 id="5-6-CYK算法"><a href="#5-6-CYK算法" class="headerlink" title="5.6. CYK算法"></a>5.6. CYK算法</h1><blockquote>
+<p><strong>CYK算法</strong>（<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%8B%B1%E8%AF%AD/109997">英语</a>：Cocke–Younger–Kasami algorithm，缩写为CYK algorithm）是由<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BA%A6%E7%BF%B0%C2%B7%E7%A7%91%E5%85%8B/7868274">约翰·科克</a>，Younger和嵩忠雄共同研究出来大约发表于1965年的一个算法，它是一个用来判定任意给定的字符串 是否属于一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%8A%E4%B8%8B%E6%96%87%E6%97%A0%E5%85%B3%E6%96%87%E6%B3%95/2001908">上下文无关文法</a>的算法。</p>
+<p>引用： <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/CYK%E7%AE%97%E6%B3%95/15817539">CYK算法</a></p>
+</blockquote>
+<p>这是一种<code>dp</code>算法，基于乔姆斯基范式，<code>dp[i,j]</code>代表<code>子串(i:j)</code>能被识别为哪些非终结符，这是只需要在<code>i</code>和<code>j</code>中间枚举<code>k</code>, 由<code>dp[i,k]</code> 和<code>dp[k+1,j]</code>转移即可。</p>
+<h1 id="5-7-FIRST集"><a href="#5-7-FIRST集" class="headerlink" title="5.7. FIRST集"></a>5.7. FIRST集</h1><p>每个非终结符都能够识别一些文本，这些文本的第一个字符就是这个非终结符的FIRST集的一员。</p>
+<p>换句话说，非终结符的FIRST集就是该非终结符经过产生式转换以后形成的序列的第一个元素（该元素必须为终结符）</p>
+<h2 id="5-7-1-例子1"><a href="#5-7-1-例子1" class="headerlink" title="5.7.1. 例子1"></a>5.7.1. 例子1</h2><p>先给出文法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>该文法有非终结符SUM，根据产生式<code>SUM-&gt;number+number</code>，得出<code>number</code>在SUM的FIRST集中，根据产生式<code>SUM-&gt;SUM+number</code>我们无法得出任何信息。</p>
+<p>综上，SUM的FIRST集为<code>&#123;number&#125;</code></p>
+<h2 id="5-7-2-例子2"><a href="#5-7-2-例子2" class="headerlink" title="5.7.2. 例子2"></a>5.7.2. 例子2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>根据产生式<code>SUM -&gt; PRODUCTION + PRODUCTION</code>推断出PRODUCTION的FIRST集都在SUM的FIRST集中</p>
+<p>根据产生式<code>MUL -&gt; PRODUCTION * PRODUCTION</code>推断出PRODUCTION的FIRST集都在MUL的FIRST集中</p>
+<p>根据产生式<code>PRODUCTION -&gt; number | SUM | MUL</code>推断出number在PRODUCTION的FIRST集中，SUM的FIRST集和MUL的FIRST集在PRODUCTION的FIRST集中。</p>
+<p>根据上面三个结论，我们可以构造一个图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    PRODUCTION --&gt;|包含| number &amp; SUM &amp; MUL</span><br><span class="line">    SUM --&gt;|包含| PRODUCTION</span><br><span class="line">    MUL --&gt;|包含| PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p>聪明的读者可以直接看出，其实他们三个非终结符的FIRST集都是<code>&#123;number&#125;</code>.</p>
+<h2 id="5-7-3-FIRST集计算算法（简单版）"><a href="#5-7-3-FIRST集计算算法（简单版）" class="headerlink" title="5.7.3. FIRST集计算算法（简单版）"></a>5.7.3. FIRST集计算算法（简单版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;B...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-4-复杂一点的FIRST集例子"><a href="#5-7-4-复杂一点的FIRST集例子" class="headerlink" title="5.7.4. 复杂一点的FIRST集例子"></a>5.7.4. 复杂一点的FIRST集例子</h2><p><code>ε</code>代表可以为空，即什么也没有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">变量声明：</span><br><span class="line">  终结符: type, symbol, visibility, staticable</span><br><span class="line">  非终结符: staticableOPT, visibilityOPT, TARGET</span><br><span class="line">  产生式: TARGET -&gt; visibilityOPT staticableOPT type symbol</span><br><span class="line">           visibilityOPT -&gt; visibility | ε</span><br><span class="line">           staticableOPT -&gt; staticable | ε</span><br><span class="line">  开始： TARGET</span><br></pre></td></tr></table></figure>
+
+<p>根据<code>TARGET -&gt; visibilityOPT staticableOPT type symbol</code>得出visibilityOPT的FIRST集在TARGET的FIRST集中，考虑到visibilityOPT可以为空，所以当visibilityOPT为空时，staticableOPT的FIRST集在TARGET的FIRST集中，同理，type也在TARGET的FIRST集中。</p>
+<p>visibilityOPT的first集为<code>&#123;visibility&#125;</code></p>
+<p>staticableOPT的first集为<code>&#123;staticable&#125;</code></p>
+<p>最终<code>TARGET</code>的first集为<code>&#123;visibility,staticable,type&#125;</code></p>
+<h2 id="5-7-5-FIRST计算方法（最终版）"><a href="#5-7-5-FIRST计算方法（最终版）" class="headerlink" title="5.7.5. FIRST计算方法（最终版）"></a>5.7.5. FIRST计算方法（最终版）</h2><p>如何计算FIRST集？我们直接考虑产生式 <code>A--&gt;BCDE...</code>， 显然A一定是非终结符，</p>
+<p>如果B也是非终结符，则B的first集都在A的first集中，然后根据B能否为空判断C</p>
+<p>若B可为空，则C的first集都在A的first集中，然后根据C能否为空判断D，依次递推</p>
+<p>如果B是终结符，则B在A的first集中。</p>
+<p>借此，我们可以构造出一个有向图，该图上每个节点按照有向边能到达的终结符，就是该节点所代表的非终结符的FIRST集的一员。其实这本质上是一个有向图闭包问题。</p>
+<h2 id="5-7-6-可达闭包之SPFA算法"><a href="#5-7-6-可达闭包之SPFA算法" class="headerlink" title="5.7.6.  可达闭包之SPFA算法"></a>5.7.6.  可达闭包之SPFA算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将所有的有向边(from,to)入队queue，</span><br><span class="line">只要queue非空:</span><br><span class="line">    取出并删除queue队首top</span><br><span class="line">    用top.to的可达集合合并到top.from的可达集合中，如果此过程对top.from的可达集合造成了修改:</span><br><span class="line">        将所有以top.from为有向边终点的边edge入队queue</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(VE)</code>, (V为顶点数，E为边数)</p>
+<h2 id="5-7-7-可达闭包之Tarjan算法"><a href="#5-7-7-可达闭包之Tarjan算法" class="headerlink" title="5.7.7. 可达闭包之Tarjan算法"></a>5.7.7. 可达闭包之Tarjan算法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">首先使用Tarjan三大算法中的有向图强连通缩图，在同一个强连通分量的点，他们的可达集合相同</span><br><span class="line">缩图以后得到的是DAG有向无环图，在有向无环图上按照拓扑序进行DP，计算所有结果</span><br></pre></td></tr></table></figure>
+
+<p>该算法时间复杂度为<code>O(V+V)</code> (V为顶点数，E为边数)</p>
+<h2 id="5-7-8-总结"><a href="#5-7-8-总结" class="headerlink" title="5.7.8. 总结"></a>5.7.8. 总结</h2><p>实际上，一般的文法都不会很复杂，其依赖图的顶点数不会超过200，边数不会超过1000，所以SPFA算法足以解决问题。 </p>
+<h1 id="5-8-FOLLOW集计算"><a href="#5-8-FOLLOW集计算" class="headerlink" title="5.8. FOLLOW集计算"></a>5.8. FOLLOW集计算</h1><p>在产生式中，经过一定次数的替换以后，如果某个终结符出现在了某个非终结符的后面，则这个终结符被计入这个非终结符的FOLLOW集。</p>
+<h2 id="5-8-1-例子"><a href="#5-8-1-例子" class="headerlink" title="5.8.1. 例子"></a>5.8.1. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number + number | SUM + number</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>我们发现SUM的后面可以跟上<code>+</code>，所以SUM的FOLLOW集就是<code>+</code></p>
+<h2 id="5-8-2-例子"><a href="#5-8-2-例子" class="headerlink" title="5.8.2. 例子"></a>5.8.2. 例子</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">加法和乘法：</span><br><span class="line">  终结符: number, +, *</span><br><span class="line">  非终结符: SUM, MUL, PRODUCTION</span><br><span class="line">  产生式: SUM -&gt; PRODUCTION + PRODUCTION</span><br><span class="line">           MUL -&gt; PRODUCTION * PRODUCTION</span><br><span class="line">           PRODUCTION -&gt; number | SUM | MUL</span><br><span class="line">  开始： PRODUCTION</span><br></pre></td></tr></table></figure>
+
+<p><code>SUM -&gt; PRODUCTION + PRODUCTION</code>可以得到<code>PRODUCTION </code>的FOLLOW集中有<code>+</code>,同理<code>MUL -&gt; PRODUCTION * PRODUCTION</code>得出有<code>*</code></p>
+<p><code>SUM</code>的FOLLOW集中有<code>*</code>和<code>+</code>,因为<code>SUM -&gt; PRODUCTION + PRODUCTION</code>，即PRODUCTION的FOLLOW集都在SUM中。</p>
+<p>同理<code>MUL</code>的FOLLOW集中有<code>*</code>和<code>+</code></p>
+<h2 id="5-8-3-算法"><a href="#5-8-3-算法" class="headerlink" title="5.8.3 算法"></a>5.8.3 算法</h2><p>考虑非终极符<code>A</code>, 如果存在产生式<code>S-&gt;*AB**</code>,则<code>B</code>的FIRST集在<code>A</code>的FOLLOW集中</p>
+<p>若B可为空，则看B后的下一个符号，其FIRST集在A的FOLLOW集中</p>
+<p>如果存在产生式<code>S-&gt;**A</code>，则S的FOLLOW集都在A的FOLLOW集中。</p>
+<p>如此构成了依赖图，又是可达闭包计算。计算步骤参见<code>FIRST</code>集算法。</p>
+<h1 id="5-9-LL语法分析"><a href="#5-9-LL语法分析" class="headerlink" title="5.9. LL语法分析"></a>5.9. LL语法分析</h1><p>LL语法分析指的是从左向右最左推导，是一种自顶向下的算法，实际上，所有的自顶向下算法都无法解决左递归文法。进行LL分析，需要提前计算FIRST集和FOLLOW集。</p>
+<p>LL算法进行自顶向下分析，自顶向下分析的核心步骤有两个，一个是匹配，另一个是展开。</p>
+<p>当从左到右自顶向下分析时，如果当前的符号为终结符，此时只能走匹配，而且当前符号必须和输入的符号匹配。</p>
+<p>如果当前符号为非终结符，此时只能 展开，但是用哪个产生式展开，往往不好选择，LL算法则根据FIRST集和FOLLOW集来进行选择。</p>
+<h2 id="5-9-1-例子"><a href="#5-9-1-例子" class="headerlink" title="5.9.1 例子"></a>5.9.1 例子</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<p>待识别字符串1+2+3+4</p>
+<p>第一步计算FIRST集，SUM的FIRST集为： <code>number</code></p>
+<p>ADD的FIRST集为<code>+</code></p>
+<p>第二步计算FOLLOW集，SUM的FOLLOW集为： <code>$,+</code></p>
+<p>ADD的FOLLOW集为    <code>$</code></p>
+<p>最开始的时候，有一个队列，其中包含一个开始的符号<code>SUM</code></p>
+<p>然后我们进行输入，输入字符<code>1</code>,这是一个number，number和SUM无法匹配，所以必须把SUM用产生式替换，SUM只有一个产生式，于是SUM被换成了<code>number ADD</code>,此时的队列的操作就是从左边 弹出SUM，再放入<code>number ADD</code></p>
+<p>替换以后，字符1就可以和number匹配了，于是输入字符成功，队列弹出<code>number</code></p>
+<p>紧接着，输入字符<code>+</code>, 这时候队列中只有一个<code>ADD</code>,<code>ADD</code>和<code>+</code>无法匹配，于是需要用产生式替换，用哪个换呢？显然用<code>+ SUM</code>换，因为<code>ε</code>的FIRST集为空，所以此时替换以后，队列变为<code>+ SUM</code></p>
+<p>替换以后，字符<code>+</code>就可以和队列的队首匹配，输入成功….</p>
+<p>然后算法不断迭代，直到完成输入。</p>
+<h2 id="5-9-2-总结"><a href="#5-9-2-总结" class="headerlink" title="5.9.2 总结"></a>5.9.2 总结</h2><p>其实LL语法分析就是前面介绍的最左递归下降算法的特殊情况，当文法没有二义性，文法不能在进行合并公因式，文法没有左递归时，文法就不需要递归分解了。</p>
+<p>LL语法分析有很多局限性，他能解决的文法少的可怜，虽然后面有办法通过文法的等价转化，把一个左递归文法转化为非左递归，提取公因式，消除二义性，但是这样做的代价非常大，这样的工作往往会导致文法变得特别复杂，特别不好理解，就问下吗这两个文法你喜欢哪一个？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">加法：（注意这里的产生式被我换成了右结合，且提取了公因式）</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM, ADD</span><br><span class="line">  产生式: SUM -&gt; number ADD</span><br><span class="line">         ADD -&gt; + SUM | ε</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">加法：</span><br><span class="line">  终结符: number, +</span><br><span class="line">  非终结符: SUM</span><br><span class="line">  产生式: SUM -&gt; number | SUM + SUM</span><br><span class="line">  开始： SUM</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fightinggg.github.io/landscape/QV7MPR.html" data-id="clhvp2d1a002ozimc3gfn2dun" data-title="跟我一起自己写编译器-5.语法分析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/landscape/QV7MPS.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          跟我一起自己写编译器-5.10.LR语法分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/landscape/QV7MPQ.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">跟我一起自己写编译器-4.词法分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/">ACM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/">刷题实战</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/CodeForces/">CodeForces</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/bzoj/">bzoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/hdu/">hdu</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/uoj/">uoj</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%AF%94%E8%B5%9B/">比赛</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E6%B4%9B%E8%B0%B7/">洛谷</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%88%B7%E9%A2%98%E5%AE%9E%E6%88%98/%E7%89%9B%E5%AE%A2/">牛客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/DP/">DP</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%80%9D%E7%BB%B4/">思维</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%95%B0%E5%AD%A6/">数学</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%A0%91/">树</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E9%BB%91%E7%A7%91%E6%8A%80/">黑科技</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/">老Blog迁移</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/">blog</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/blog/span/">span</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/">problem</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/computational-geonetry/">computational_geonetry</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/data-struct/">data_struct</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/dp/">dp</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/graph-theory/">graph_theory</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/math/">math</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/problem/thinging/">thinging</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/">reading_problem</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/">stencil</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/stencil/data-struct/">data_struct</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/%E6%80%BB%E7%BB%93/">总结</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/">AI</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/AI/GPT/">GPT</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/CPU/">CPU</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/DataMining/">DataMining</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Docker/K8s/">K8s</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/">Language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/">Java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Grava/">Grava</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Java%E5%B9%B6%E5%8F%91/">Java并发</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/MyBatis/">MyBatis</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Java/SpringMVC/">SpringMVC</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Language/Python/">Python</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Math/Matrix/">Matrix</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Others/">Others</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Test/">Test</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/UML/">UML</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/Zookeeper/">Zookeeper</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%90%8E%E5%8F%B0%E6%8A%80%E6%9C%AF/">后台技术</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/ES/">ES</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/">实习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/">笔试</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/OS/">OS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E7%BC%96%E8%AF%91%E5%99%A8/">编译器</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/">队列</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/landscape/categories/%E9%98%9F%E5%88%97/Kafka/">Kafka</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/AspectJ/" rel="tag">AspectJ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Proxy/" rel="tag">Proxy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" rel="tag">SpringFox使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/Transformer/" rel="tag">Transformer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/VPN/" rel="tag">VPN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/flag/" rel="tag">flag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" rel="tag">linux指令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" rel="tag">结构体中的引用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" rel="tag">读书,HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">跟我一起写编译器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/landscape/tags/AI/" style="font-size: 13.33px;">AI</a> <a href="/landscape/tags/AspectJ/" style="font-size: 10px;">AspectJ</a> <a href="/landscape/tags/CPU/" style="font-size: 10px;">CPU</a> <a href="/landscape/tags/GPT/" style="font-size: 10px;">GPT</a> <a href="/landscape/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/landscape/tags/SpringFox%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">SpringFox使用</a> <a href="/landscape/tags/Transformer/" style="font-size: 10px;">Transformer</a> <a href="/landscape/tags/VPN/" style="font-size: 10px;">VPN</a> <a href="/landscape/tags/docker/" style="font-size: 10px;">docker</a> <a href="/landscape/tags/flag/" style="font-size: 10px;">flag</a> <a href="/landscape/tags/linux%E6%8C%87%E4%BB%A4/" style="font-size: 13.33px;">linux指令</a> <a href="/landscape/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/landscape/tags/%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/" style="font-size: 10px;">结构体中的引用</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6/" style="font-size: 20px;">读书</a> <a href="/landscape/tags/%E8%AF%BB%E4%B9%A6-HTTP/" style="font-size: 10px;">读书,HTTP</a> <a href="/landscape/tags/%E8%B7%9F%E6%88%91%E4%B8%80%E8%B5%B7%E5%86%99%E7%BC%96%E8%AF%91%E5%99%A8/" style="font-size: 16.67px;">跟我一起写编译器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/03/">三月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/12/">十二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/landscape/archives/2018/03/">三月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/landscape/RUSDW0.html">智慧的疆界：从图灵机到人工智能</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RS7SSC.html">Transformer</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RPN780.html">2023你好</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RFJ220.html">VPN与代理那些事</a>
+          </li>
+        
+          <li>
+            <a href="/landscape/RF964O.html">CPU架构介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 fightinggg<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/landscape/" class="mobile-nav-link">Home</a>
+  
+    <a href="/landscape/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/landscape/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/landscape/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/landscape/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

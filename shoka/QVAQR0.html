@@ -1,0 +1,864 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/shoka/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/shoka/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Believe it" href="http://fightinggg.github.io/shoka/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Believe it" href="http://fightinggg.github.io/shoka/atom.xml" />
+<link rel="alternate" type="application/json" title="Believe it" href="http://fightinggg.github.io/shoka/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/shoka/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://fightinggg.github.io/shoka/QVAQR0.html">
+
+
+
+  <title>
+redis源码 - Database |
+Yume Shoka = Believe it = 相信不屈不挠的努力,相信战胜死亡的年轻</title>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">redis源码
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2021-06-26 14:45:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2021-06-26T14:45:00+08:00">2021-06-26</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/shoka/" rel="start">Yume Shoka</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclimtf7dj20zk0m8qav.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4baakhj20zk0m8h5q.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitspjpbj20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicljgocqbj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclfb3vzhj20zk0m8wny.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/shoka/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/shoka/categories/Database/" itemprop="item" rel="index" title="分类于 Database"><span itemprop="name">Database</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://fightinggg.github.io/shoka/QVAQR0.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/shoka/images/avatar.jpg">
+    <meta itemprop="name" content="fightinggg">
+    <meta itemprop="description" content="相信不屈不挠的努力,相信战胜死亡的年轻, O ever youthful, O ever weeping">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Believe it">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <div><a href="/next/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/QVAQR0.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+
+
+<h1 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h1><p>使用6.2.4</p>
+<h1 id="sds-h-sds-c"><a href="#sds-h-sds-c" class="headerlink" title="sds.h sds.c"></a>sds.h sds.c</h1><h2 id="内存对齐"><a href="#内存对齐" class="headerlink" title="内存对齐"></a>内存对齐</h2><p><code>__attribute__((__packed__))</code>可以让编译器对结构体不进行内存对齐，<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1eGluZzI2amlheW91L2FydGljbGUvZGV0YWlscy83OTYwOTAyNQ==">详细参考</span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span>((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="type">uint64_t</span> len;        <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint64_t</span> alloc;      <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="type">uint64_t</span> len;        <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint64_t</span> alloc;      <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;packed: %d\n&quot;</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sdshdr64));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;nopacked: %d\n&quot;</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> _sdshdr64));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">gcc a.c -o a &amp;&amp; ./a</span></span><br><span class="line"><span class="comment">packed: 17</span></span><br><span class="line"><span class="comment">nopacked: 24</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="宏"><a href="#宏" class="headerlink" title="宏##"></a>宏##</h2><p>##后标识的字符串会被替换，然后其左右的内容加上自己会被合并到一起，编译器将其视为标识符进行解析，<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21pdHU0MDU2ODc5MDgvYXJ0aWNsZS9kZXRhaWxzLzUxMDg0NDQxP3V0bV9tZWRpdW09ZGlzdHJpYnV0ZS5wY19yZWxldmFudC5ub25lLXRhc2stYmxvZy0yfmRlZmF1bHR+QmxvZ0NvbW1lbmRGcm9tTWFjaGluZUxlYXJuUGFpMn5kZWZhdWx0LTIuY29udHJvbCZkZXB0aF8xLXV0bV9zb3VyY2U9ZGlzdHJpYnV0ZS5wY19yZWxldmFudC5ub25lLXRhc2stYmxvZy0yfmRlZmF1bHR+QmxvZ0NvbW1lbmRGcm9tTWFjaGluZUxlYXJuUGFpMn5kZWZhdWx0LTIuY29udHJvbA==">详细参考</span></p>
+<span id="more"></span>
+
+<h2 id="sds-h-源码"><a href="#sds-h-源码" class="headerlink" title="sds.h 源码"></a>sds.h 源码</h2><p><code>sds</code> 可以被简单的认为是一个 <code>char*</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> *sds;</span><br></pre></td></tr></table></figure>
+
+<p>接下来是5种 <code>sds</code> 他们是<code>sdshdr5</code>, <code>sdshdr8</code>, <code>sdshdr16</code>, <code>sdshdr32</code>, <code>sdshdr64</code>, 分别可以储存长度为$2^5$, $2^8$, $2^{16}$, $2^{32}$, $2^{64}$ 的字符串。</p>
+<p><code>__attribute__ ((__packed__))</code>是编译器指令，可以取消内存对齐，让内存紧凑排列，这部分首先看后四个结构体，他们的内存结构定义几乎一摸一样。</p>
+<ul>
+<li><p>len: 字符串的长度</p>
+</li>
+<li><p>alloc： 分配的空间大小</p>
+</li>
+<li><p>flags： 字符串的类型（5种），所以只有最低的三位有意义，高5位不做使用。</p>
+</li>
+<li><p>buf： 字符串的实际内容</p>
+</li>
+</ul>
+<p>对于<code>sdshdr5</code>,他比较特殊，实际上他的len和alloc一定相等，并储存于flags的高5位上，借此实现了内存压缩。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span></span><br><span class="line"><span class="comment"> * However is here to document the layout of type 5 SDS strings. */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr5</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, and 5 msb of string length */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr8</span> &#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint8_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr16</span> &#123;</span></span><br><span class="line">    <span class="type">uint16_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint16_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr32</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint32_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span> ((__<span class="title">packed__</span>)) <span class="title">sdshdr64</span> &#123;</span></span><br><span class="line">    <span class="type">uint64_t</span> len; <span class="comment">/* used */</span></span><br><span class="line">    <span class="type">uint64_t</span> alloc; <span class="comment">/* excluding the header and null terminator */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> flags; <span class="comment">/* 3 lsb of type, 5 unused bits */</span></span><br><span class="line">    <span class="type">char</span> buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>sds 把字符串的内容，以及他的元信息（字符串类型、字符串长度、字符串分配的空间）储存在了一起，让内存排列更加紧致。</p>
+<h1 id="adlist-c-adlist-h"><a href="#adlist-c-adlist-h" class="headerlink" title="adlist.c adlist.h"></a>adlist.c adlist.h</h1><p>很普通的链表，并没有什么很特殊的地方，注意<code>listIter</code>的<code>direction</code>是迭代器的方向。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">prev</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">listNode</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="type">void</span> *value;</span><br><span class="line">&#125; listNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">listIter</span> &#123;</span></span><br><span class="line">    listNode *next;</span><br><span class="line">    <span class="type">int</span> direction;</span><br><span class="line">&#125; listIter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span> &#123;</span></span><br><span class="line">    listNode *head;</span><br><span class="line">    listNode *tail;</span><br><span class="line">    <span class="type">void</span> *(*dup)(<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="type">void</span> (*<span class="built_in">free</span>)(<span class="type">void</span> *ptr);</span><br><span class="line">    <span class="type">int</span> (*match)(<span class="type">void</span> *ptr, <span class="type">void</span> *key);</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> len;</span><br><span class="line">&#125; <span class="built_in">list</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="mt19937-64-c-mt19937-64-h"><a href="#mt19937-64-c-mt19937-64-h" class="headerlink" title="mt19937-64.c mt19937-64.h"></a>mt19937-64.c mt19937-64.h</h1><h2 id="梅森素数"><a href="#梅森素数" class="headerlink" title="梅森素数"></a>梅森素数</h2><p>在OEIS上，梅森素数有<span class="exturl" data-url="aHR0cHM6Ly9vZWlzLm9yZy9BMDAwMDQzL2xpc3Q=">这些</span>, 维基百科上也有<span class="exturl" data-url="aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvJUU2JUEyJTg1JUU2JUEzJUFFJUU3JUI0JUEwJUU2JTk1JUIwIyVFNiVBMiU4NSVFNiVBMyVBRSVFNyVCNCVBMCVFNiU5NSVCMCVFNSU4OCU5NyVFOCVBMSVBOA==">说明</span>, 我们需要注意到的是$2^{19937}-1$是一个梅森素数</p>
+<h2 id="线性反馈移位寄存器"><a href="#线性反馈移位寄存器" class="headerlink" title="线性反馈移位寄存器"></a>线性反馈移位寄存器</h2><p>线性反馈移位寄存器（Linear Feedback Shifting Register，简称 LFSR）</p>
+<p>假设你有一个寄存器，寄存器中储存着一些二进制位，寄存器中有几个位被标记了，接下来会有无限轮操作，每轮操作如下</p>
+<ul>
+<li>寄存器输出最低位x（x&#x3D;0或1）。</li>
+<li>寄存器选择被标记的位和x，取出其值，放到一起进行异或，得到y（y&#x3D;0或1）。</li>
+<li>寄存器把自己右移1位，然后把值y放入最高位。</li>
+</ul>
+<p>具体来说，你有一个$8$位寄存器，初始储存着$00001111$，其中$3$,$5$,$7$位被标记了，于是开始操作。</p>
+<p>第一轮输出$x&#x3D;1$，然后从低位到高位选择了$1$,$0$,$0$, 最后$y&#x3D;1 \oplus1 \oplus 0 \oplus 0&#x3D;0$，寄存器变成了$00000111$</p>
+<p>第二轮输出$x&#x3D;1$，然后从低位到高位选择了$1$,$0$,$0$, 最后$y&#x3D;1 \oplus1 \oplus 0 \oplus 0&#x3D;0$，寄存器变成了$00000011$</p>
+<p>第三轮输出$x&#x3D;1$，然后从低位到高位选择了$0$,$0$,$0$, 最后$y&#x3D;1 \oplus 0 \oplus 0 \oplus 0&#x3D;1$，寄存器变成了$10000001$</p>
+<p>第四轮输出$x&#x3D;1$，然后从低位到高位选择了$0$,$0$,$0$, 最后$y&#x3D;1 \oplus 0 \oplus 0 \oplus 0&#x3D;1$，寄存器变成了$11000000$</p>
+<p>第五轮输出$x&#x3D;0$，然后从低位到高位选择了$0$,$0$,$1$, 最后$y&#x3D;0 \oplus 0 \oplus 0 \oplus 1&#x3D;1$，寄存器变成了$11100000$</p>
+<p>……</p>
+<h2 id="梅森旋转算法"><a href="#梅森旋转算法" class="headerlink" title="梅森旋转算法"></a>梅森旋转算法</h2><p>这是一个随机数生成算法，这里有一篇有趣的<span class="exturl" data-url="aHR0cHM6Ly9saWFtLnBhZ2UvMjAxOC8wMS8xMi9NZXJzZW5uZS10d2lzdGVyLw==">Blog</span>，有兴趣可以读一下。这里引用一些主要内容。</p>
+<p>梅森旋转算法（Mersenne Twister Algorithm，简称 MT）</p>
+<blockquote>
+<p>$32$ 位的梅森旋转算法能够产生周期为 $P$ 的 $w$-比特的随机数序列${\vec x_i}$；其中 $w&#x3D;32$。这也就是说，每一个$\vec x$ 是一个长度为 $32$ 的行向量，并且其中的每一个元素都是二元数域$\mathbb{F}_2 \overset{\text{def}}{&#x3D;} {0, 1}$中的元素。现在，我们定义如下一些记号，来描述梅森旋转算法是如何进行旋转（线性移位）的。</p>
+<ul>
+<li>$n$：参与梅森旋转的随机数个数；</li>
+<li>$r$：$[0, w)$ 之间的整数；</li>
+<li>$m$：$(0, n]$之间的整数；</li>
+<li>$\mathbf{A}$：$w \times w$ 的常矩阵；</li>
+<li>$\vec x^{(u)}$：$\vec x$的最高 $w - r$ 比特组成的数（低位补零）；</li>
+<li>$\vec x^{(l)}$：$\vec x$的最低 r 比特组成的数（高位补零）。</li>
+</ul>
+<p>梅森旋转算法，首先需要根据随机数种子初始化$ n $个行向量：<br>$$<br>\vec x_0, \vec x_1, \ldots, \vec x_{n - 1}.<br>$$<br>而后根据下式，从$ k&#x3D;0$ 开始依次计算 $\vec x_{n}$：<br>$$<br>\begin{equation}\vec x_{k + n} \overset{\text{def}}{&#x3D;} \vec x_{k + m}\oplus \bigl(\vec x_{k}^{(u)}\mid \vec x_{k + 1}^{(l)}\bigr)\mathbf{A}.\label{eq:twister}\end{equation}<br>$$</p>
+<p>其中，$\vec x\mid \vec x’$表示两个二进制数按位或；$\vec x\oplus \vec x’$表示两个二进制数按位半加（不进位，也就是按位异或）；$\vec x\mathbf A$ 则表示按位半加的矩阵乘法。在 MT 中，$\mathbf A$ 被定义为<br>$$<br>\begin{pmatrix}<br>&amp; 1 \<br>&amp; &amp; 1 \<br>&amp; &amp; &amp; \ddots \<br>&amp; &amp; &amp; &amp; 1 \<br>a_{w - 1} &amp; a_{w - 2} &amp; a_{w - 3} &amp; \cdots &amp; a_0<br>\end{pmatrix}<br>$$</p>
+</blockquote>
+<p>我们现在看看这个计算和旋转有什么关系。首先不考虑矩阵$\mathbf A$.</p>
+<p>则有$\vec x_{k + n} \overset{\text{def}}{&#x3D;} \vec x_{k + m}\oplus \bigl(\vec x_{k}^{(u)}\mid \vec x_{k + 1}^{(l)}\bigr)$, 这个式子笔者看了很久才明白他就是$w$轮线性反馈移位寄存器变换。下图是计算$x_n$的时候的异或情况， 可以看到$x_n$的每一个位都是独立的异或</p>
+<p><img data-src='/https://raw.githubusercontent.com/fightinggg/drawio-data/master/redis-src/redis-src-mt19937.svg'></img></p>
+<blockquote>
+<p>回过头来看 2 式，不难发现，这其实相当于一个 $nw - r$ 级的线性反馈移位寄存器（取 $\vec x_k^{(u)}$的最高 $w−r$ 位与 $\vec x_{k + 1}^{(l)}$的最低 $r $位进行迭代异或，再经过一个不影响周期的线性变换 $\mathbf A$）。只不过，2 式每一次运算，相当于 $LFSR$ 进行了 $w$ 轮计算。若 $w$ 与 $nw−r$ 互素，那么这一微小的改变是不会影响 $LFSR$ 的周期的。考虑到 $LFSR$ 的计算过程像是在「旋转」，这即是「梅森『旋转』」名字的来由。</p>
+</blockquote>
+<h2 id="mt19937源码"><a href="#mt19937源码" class="headerlink" title="mt19937源码"></a>mt19937源码</h2><p>主要的计算都在这里</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="title function_">genrand64_int64</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;NN-MM;i++) &#123;</span><br><span class="line">        x = (mt[i]&amp;UM)|(mt[i+<span class="number">1</span>]&amp;LM);</span><br><span class="line">        mt[i] = mt[i+MM] ^ (x&gt;&gt;<span class="number">1</span>) ^ mag01[(<span class="type">int</span>)(x&amp;<span class="number">1ULL</span>)];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (;i&lt;NN<span class="number">-1</span>;i++) &#123;</span><br><span class="line">        x = (mt[i]&amp;UM)|(mt[i+<span class="number">1</span>]&amp;LM);</span><br><span class="line">        mt[i] = mt[i+(MM-NN)] ^ (x&gt;&gt;<span class="number">1</span>) ^ mag01[(<span class="type">int</span>)(x&amp;<span class="number">1ULL</span>)];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后是<code>63</code>位生成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* generates a random number on [0, 2^63-1]-interval */</span></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> <span class="title function_">genrand64_int63</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="type">long</span> <span class="type">long</span>)(genrand64_int64() &gt;&gt; <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实数的生成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* generates a random number on [0,1]-real-interval */</span></span><br><span class="line"><span class="type">double</span> <span class="title function_">genrand64_real1</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (genrand64_int64() &gt;&gt; <span class="number">11</span>) * (<span class="number">1.0</span>/<span class="number">9007199254740991.0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* generates a random number on [0,1)-real-interval */</span></span><br><span class="line"><span class="type">double</span> <span class="title function_">genrand64_real2</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (genrand64_int64() &gt;&gt; <span class="number">11</span>) * (<span class="number">1.0</span>/<span class="number">9007199254740992.0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* generates a random number on (0,1)-real-interval */</span></span><br><span class="line"><span class="type">double</span> <span class="title function_">genrand64_real3</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> ((genrand64_int64() &gt;&gt; <span class="number">12</span>) + <span class="number">0.5</span>) * (<span class="number">1.0</span>/<span class="number">4503599627370496.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="dict-c-dict-h"><a href="#dict-c-dict-h" class="headerlink" title="dict.c dict.h"></a>dict.c dict.h</h1><h2 id="字典源码"><a href="#字典源码" class="headerlink" title="字典源码"></a>字典源码</h2><p>字典结构体定义，需要注意这里有两个dictht，即两个字典，这涉及到了一个重hash问题，redis使用了渐进式rehash算法，即把重hash分布到各个地方(插入、查询等)，使得重hash的复杂度降低为$O1$，</p>
+<p>redis是单线程，绝对不能出现过于耗时的操作，否则影响redis延时</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dict</span> &#123;</span></span><br><span class="line">    dictType *type;</span><br><span class="line">    <span class="type">void</span> *privdata;</span><br><span class="line">    dictht ht[<span class="number">2</span>];</span><br><span class="line">    <span class="type">long</span> rehashidx; <span class="comment">/* rehashing not in progress if rehashidx == -1 */</span></span><br><span class="line">    <span class="type">int16_t</span> pauserehash; <span class="comment">/* If &gt;0 rehashing is paused (&lt;0 indicates coding error) */</span></span><br><span class="line">&#125; dict;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="server-h-server-c-1-跳表"><a href="#server-h-server-c-1-跳表" class="headerlink" title="server.h server.c-1-跳表"></a>server.h server.c-1-跳表</h1><p>跳表定义在这里</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ZSETs use a specialized version of Skiplists */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> &#123;</span></span><br><span class="line">    sds ele;</span><br><span class="line">    <span class="type">double</span> score;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">backward</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistLevel</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">forward</span>;</span></span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> span;</span><br><span class="line">    &#125; level[];</span><br><span class="line">&#125; zskiplistNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplist</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">header</span>, *<span class="title">tail</span>;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> length;</span><br><span class="line">    <span class="type">int</span> level;</span><br><span class="line">&#125; zskiplist;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="intset-c-intset-h"><a href="#intset-c-intset-h" class="headerlink" title="intset.c intset.h"></a>intset.c intset.h</h1><p>整数集合，这里可以储存整数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span> encoding;</span><br><span class="line">    <span class="type">uint32_t</span> length;</span><br><span class="line">    <span class="type">int8_t</span> contents[];</span><br><span class="line">&#125; intset;</span><br><span class="line"></span><br><span class="line">intset *<span class="title function_">intsetNew</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line">intset *<span class="title function_">intsetAdd</span><span class="params">(intset *is, <span class="type">int64_t</span> value, <span class="type">uint8_t</span> *success)</span>;</span><br><span class="line">intset *<span class="title function_">intsetRemove</span><span class="params">(intset *is, <span class="type">int64_t</span> value, <span class="type">int</span> *success)</span>;</span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">intsetFind</span><span class="params">(intset *is, <span class="type">int64_t</span> value)</span>;</span><br><span class="line"><span class="type">int64_t</span> <span class="title function_">intsetRandom</span><span class="params">(intset *is)</span>;</span><br><span class="line"><span class="type">uint8_t</span> <span class="title function_">intsetGet</span><span class="params">(intset *is, <span class="type">uint32_t</span> pos, <span class="type">int64_t</span> *value)</span>;</span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">intsetLen</span><span class="params">(<span class="type">const</span> intset *is)</span>;</span><br><span class="line"><span class="type">size_t</span> <span class="title function_">intsetBlobLen</span><span class="params">(intset *is)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">intsetValidateIntegrity</span><span class="params">(<span class="type">const</span> <span class="type">unsigned</span> <span class="type">char</span> *is, <span class="type">size_t</span> size, <span class="type">int</span> deep)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>encoding是编码方式，指的是contents中的数据如何储存，编码方式分为三种</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Note that these encodings are ordered, so:</span></span><br><span class="line"><span class="comment"> * INTSET_ENC_INT16 &lt; INTSET_ENC_INT32 &lt; INTSET_ENC_INT64. */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INTSET_ENC_INT16 (sizeof(int16_t))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INTSET_ENC_INT32 (sizeof(int32_t))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INTSET_ENC_INT64 (sizeof(int64_t))</span></span><br></pre></td></tr></table></figure>
+
+<p>length是数字的个数</p>
+<p>contents是内容，但是他不一定是8位的整数，取决于encoding的值。</p>
+<h2 id="整数集合升级"><a href="#整数集合升级" class="headerlink" title="整数集合升级"></a>整数集合升级</h2><p>由于整数集合初始情况储存的是INTSET_ENC_INT16，当你插入一个32位的数字以后，会出现溢出，这时候就需要进行升级，就直接开辟新的空间然后拷贝过去，复杂的$O(N)$</p>
+<p>不支持降级</p>
+<h1 id="ziplist-c-ziplist-h"><a href="#ziplist-c-ziplist-h" class="headerlink" title="ziplist.c ziplist.h"></a>ziplist.c ziplist.h</h1><p>压缩列表</p>
+<h1 id="server-h-server-c-2-对象"><a href="#server-h-server-c-2-对象" class="headerlink" title="server.h server.c-2-对象"></a>server.h server.c-2-对象</h1><p>redis对象都在这里统一起来</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> type:<span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> encoding:<span class="number">4</span>;</span><br><span class="line">    <span class="type">unsigned</span> lru:LRU_BITS; <span class="comment">/* LRU time (relative to global lru_clock) or</span></span><br><span class="line"><span class="comment">                            * LFU data (least significant 8 bits frequency</span></span><br><span class="line"><span class="comment">                            * and most significant 16 bits access time). */</span></span><br><span class="line">    <span class="type">int</span> refcount;</span><br><span class="line">    <span class="type">void</span> *ptr;</span><br><span class="line">&#125; robj;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="server-h-3-db"><a href="#server-h-3-db" class="headerlink" title="server.h-3-db"></a>server.h-3-db</h1><p>这次主要关注redisServer，这个结构体有460行，笔者省去了一些,可以砍刀redisDb是一个数组，dbnum记录他的数量，一般情况下，dbnum为6</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">redisServer</span> &#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    redisDb *db;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="type">int</span> dbnum;                      <span class="comment">/* Total number of configured DBs */</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后是客户端这边, 注意到client,. 这里也有一个指针，当然他指向的就是当前使用的db，而不是数组。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">client</span> &#123;</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    redisDb *db;            <span class="comment">/* Pointer to currently SELECTed DB. */</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; client;</span><br></pre></td></tr></table></figure>
+
+<p>看完服务器和客户端，然后看db</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Redis database representation. There are multiple databases identified</span></span><br><span class="line"><span class="comment"> * by integers from 0 (the default database) up to the max configured</span></span><br><span class="line"><span class="comment"> * database. The database number is the &#x27;id&#x27; field in the structure. */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisDb</span> &#123;</span></span><br><span class="line">    dict *dict;                 <span class="comment">/* The keyspace for this DB */</span></span><br><span class="line">    dict *expires;              <span class="comment">/* Timeout of keys with a timeout set */</span></span><br><span class="line">    dict *blocking_keys;        <span class="comment">/* Keys with clients waiting for data (BLPOP)*/</span></span><br><span class="line">    dict *ready_keys;           <span class="comment">/* Blocked keys that received a PUSH */</span></span><br><span class="line">    dict *watched_keys;         <span class="comment">/* WATCHED keys for MULTI/EXEC CAS */</span></span><br><span class="line">    <span class="type">int</span> id;                     <span class="comment">/* Database ID */</span></span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> avg_ttl;          <span class="comment">/* Average TTL, just for stats */</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> expires_cursor; <span class="comment">/* Cursor of the active expire cycle. */</span></span><br><span class="line">    <span class="built_in">list</span> *defrag_later;         <span class="comment">/* List of key names to attempt to defrag one by one, gradually. */</span></span><br><span class="line">&#125; redisDb;</span><br></pre></td></tr></table></figure>
+
+<p>对于redisDb，笔者这里引用一下《Redis设计与实现》中的一个图，读者可以看的更加清晰</p>
+<blockquote>
+<p><img data-src='/image-2021-06-30-16.09.00.000.png'></img></p>
+</blockquote>
+<h1 id="rio-c-rio-h"><a href="#rio-c-rio-h" class="headerlink" title="rio.c rio.h"></a>rio.c rio.h</h1><p>rio即redis io， 主要实现了redis中的io操作, rio是一个结构体，他就是<code>_rio</code>, 下面是源码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">rio</span> &#123;</span></span><br><span class="line">    <span class="comment">/* Backend functions.</span></span><br><span class="line"><span class="comment">     * Since this functions do not tolerate short writes or reads the return</span></span><br><span class="line"><span class="comment">     * value is simplified to: zero on error, non zero on complete success. */</span></span><br><span class="line">    <span class="type">size_t</span> (*read)(<span class="keyword">struct</span> _rio *, <span class="type">void</span> *buf, <span class="type">size_t</span> len);</span><br><span class="line">    <span class="type">size_t</span> (*write)(<span class="keyword">struct</span> _rio *, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len);</span><br><span class="line">    <span class="type">off_t</span> (*tell)(<span class="keyword">struct</span> _rio *);</span><br><span class="line">    <span class="type">int</span> (*flush)(<span class="keyword">struct</span> _rio *);</span><br><span class="line">    <span class="comment">/* The update_cksum method if not NULL is used to compute the checksum of</span></span><br><span class="line"><span class="comment">     * all the data that was read or written so far. The method should be</span></span><br><span class="line"><span class="comment">     * designed so that can be called with the current checksum, and the buf</span></span><br><span class="line"><span class="comment">     * and len fields pointing to the new block of data to add to the checksum</span></span><br><span class="line"><span class="comment">     * computation. */</span></span><br><span class="line">    <span class="type">void</span> (*update_cksum)(<span class="keyword">struct</span> _rio *, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* The current checksum and flags (see RIO_FLAG_*) */</span></span><br><span class="line">    <span class="type">uint64_t</span> cksum, flags;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* number of bytes read or written */</span></span><br><span class="line">    <span class="type">size_t</span> processed_bytes;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* maximum single read or write chunk size */</span></span><br><span class="line">    <span class="type">size_t</span> max_processing_chunk;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Backend-specific vars. */</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="comment">/* In-memory buffer target. */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            sds ptr;</span><br><span class="line">            <span class="type">off_t</span> pos;</span><br><span class="line">        &#125; buffer;</span><br><span class="line">        <span class="comment">/* Stdio file pointer target. */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            FILE *fp;</span><br><span class="line">            <span class="type">off_t</span> buffered; <span class="comment">/* Bytes written since last fsync. */</span></span><br><span class="line">            <span class="type">off_t</span> autosync; <span class="comment">/* fsync after &#x27;autosync&#x27; bytes written. */</span></span><br><span class="line">        &#125; file;</span><br><span class="line">        <span class="comment">/* Connection object (used to read from socket) */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            connection *conn;   <span class="comment">/* Connection */</span></span><br><span class="line">            <span class="type">off_t</span> pos;    <span class="comment">/* pos in buf that was returned */</span></span><br><span class="line">            sds buf;      <span class="comment">/* buffered data */</span></span><br><span class="line">            <span class="type">size_t</span> read_limit;  <span class="comment">/* don&#x27;t allow to buffer/read more than that */</span></span><br><span class="line">            <span class="type">size_t</span> read_so_far; <span class="comment">/* amount of data read from the rio (not buffered) */</span></span><br><span class="line">        &#125; conn;</span><br><span class="line">        <span class="comment">/* FD target (used to write to pipe). */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">int</span> fd;       <span class="comment">/* File descriptor. */</span></span><br><span class="line">            <span class="type">off_t</span> pos;</span><br><span class="line">            sds buf;</span><br><span class="line">        &#125; fd;</span><br><span class="line">    &#125; io;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>简单来说，他的这些字段，分别对应这些内容：</p>
+<table>
+<thead>
+<tr>
+<th align="center">字段</th>
+<th align="center">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">read</td>
+<td align="center">读数据，是函数指针</td>
+</tr>
+<tr>
+<td align="center">write</td>
+<td align="center">写数据，是函数指针</td>
+</tr>
+<tr>
+<td align="center">tell</td>
+<td align="center">tell，是函数指针</td>
+</tr>
+<tr>
+<td align="center">flush</td>
+<td align="center">flush，是函数指针</td>
+</tr>
+<tr>
+<td align="center">update_cksum</td>
+<td align="center">校验和，是函数指针</td>
+</tr>
+<tr>
+<td align="center">cksum</td>
+<td align="center">当前校验和</td>
+</tr>
+<tr>
+<td align="center">flags</td>
+<td align="center">是否发生读写错误</td>
+</tr>
+<tr>
+<td align="center">processed_bytes</td>
+<td align="center">已经处理的字节数</td>
+</tr>
+<tr>
+<td align="center">max_processing_chunk</td>
+<td align="center">单次最大处理的字节数</td>
+</tr>
+<tr>
+<td align="center">io</td>
+<td align="center">具体的读写目标</td>
+</tr>
+</tbody></table>
+<p>这里的函数指针主要作用是给后面的下面这些函数使用，这种编程方式有一点像面向对象中的抽象类。注意看，下面的<code>rioWrite</code>使用了对象<code>r</code>的<code>write</code>方法，实现了任意 长度<code>len</code>的写入。而对象<code>r</code>的<code>write</code>方法是不支持任意长度len的。<code>rioRead</code>也是同理了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">size_t</span> <span class="title function_">rioWrite</span><span class="params">(rio *r, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (r-&gt;flags &amp; RIO_FLAG_WRITE_ERROR) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (len) &#123;</span><br><span class="line">        <span class="type">size_t</span> bytes_to_write = (r-&gt;max_processing_chunk &amp;&amp; r-&gt;max_processing_chunk &lt; len) ? r-&gt;max_processing_chunk : len;</span><br><span class="line">        <span class="keyword">if</span> (r-&gt;update_cksum) r-&gt;update_cksum(r,buf,bytes_to_write);</span><br><span class="line">        <span class="keyword">if</span> (r-&gt;write(r,buf,bytes_to_write) == <span class="number">0</span>) &#123;</span><br><span class="line">            r-&gt;flags |= RIO_FLAG_WRITE_ERROR;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        buf = (<span class="type">char</span>*)buf + bytes_to_write;</span><br><span class="line">        len -= bytes_to_write;</span><br><span class="line">        r-&gt;processed_bytes += bytes_to_write;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">size_t</span> <span class="title function_">rioRead</span><span class="params">(rio *r, <span class="type">void</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (r-&gt;flags &amp; RIO_FLAG_READ_ERROR) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (len) &#123;</span><br><span class="line">        <span class="type">size_t</span> bytes_to_read = (r-&gt;max_processing_chunk &amp;&amp; r-&gt;max_processing_chunk &lt; len) ? r-&gt;max_processing_chunk : len;</span><br><span class="line">        <span class="keyword">if</span> (r-&gt;read(r,buf,bytes_to_read) == <span class="number">0</span>) &#123;</span><br><span class="line">            r-&gt;flags |= RIO_FLAG_READ_ERROR;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (r-&gt;update_cksum) r-&gt;update_cksum(r,buf,bytes_to_read);</span><br><span class="line">        buf = (<span class="type">char</span>*)buf + bytes_to_read;</span><br><span class="line">        len -= bytes_to_read;</span><br><span class="line">        r-&gt;processed_bytes += bytes_to_read;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">off_t</span> <span class="title function_">rioTell</span><span class="params">(rio *r)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> r-&gt;tell(r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">int</span> <span class="title function_">rioFlush</span><span class="params">(rio *r)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> r-&gt;flush(r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个有趣的函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Flushes any buffer to target device if applicable. Returns 1 on success</span></span><br><span class="line"><span class="comment"> * and 0 on failures. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">rioBufferFlush</span><span class="params">(rio *r)</span> &#123;</span><br><span class="line">    UNUSED(r);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">/* Nothing to do, our write just appends to the buffer. */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>UNUSED</code>来自于一个宏<code> #define UNUSED(V) ((void) V)</code>, 其作用是消除编译器的警告： 变量未使用。</p>
+<p>最后是整个<code>bufferio</code>的源码, 定义了一些函数，这些函数只给rioBufferIO这个对象使用。这是一种单例模式。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ------------------------- Buffer I/O implementation ----------------------- */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Returns 1 or 0 for success/failure. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">size_t</span> <span class="title function_">rioBufferWrite</span><span class="params">(rio *r, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">    r-&gt;io.buffer.ptr = sdscatlen(r-&gt;io.buffer.ptr,(<span class="type">char</span>*)buf,len);</span><br><span class="line">    r-&gt;io.buffer.pos += len;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Returns 1 or 0 for success/failure. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">size_t</span> <span class="title function_">rioBufferRead</span><span class="params">(rio *r, <span class="type">void</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (sdslen(r-&gt;io.buffer.ptr)-r-&gt;io.buffer.pos &lt; len)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">/* not enough buffer to return len bytes. */</span></span><br><span class="line">    <span class="built_in">memcpy</span>(buf,r-&gt;io.buffer.ptr+r-&gt;io.buffer.pos,len);</span><br><span class="line">    r-&gt;io.buffer.pos += len;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Returns read/write position in buffer. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">off_t</span> <span class="title function_">rioBufferTell</span><span class="params">(rio *r)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> r-&gt;io.buffer.pos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Flushes any buffer to target device if applicable. Returns 1 on success</span></span><br><span class="line"><span class="comment"> * and 0 on failures. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">rioBufferFlush</span><span class="params">(rio *r)</span> &#123;</span><br><span class="line">    UNUSED(r);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">/* Nothing to do, our write just appends to the buffer. */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">const</span> rio rioBufferIO = &#123;</span><br><span class="line">    rioBufferRead,</span><br><span class="line">    rioBufferWrite,</span><br><span class="line">    rioBufferTell,</span><br><span class="line">    rioBufferFlush,</span><br><span class="line">    <span class="literal">NULL</span>,           <span class="comment">/* update_checksum */</span></span><br><span class="line">        <span class="number">0</span>,              <span class="comment">/* current checksum */</span></span><br><span class="line">        <span class="number">0</span>,              <span class="comment">/* flags */</span></span><br><span class="line">        <span class="number">0</span>,              <span class="comment">/* bytes read or written */</span></span><br><span class="line">        <span class="number">0</span>,              <span class="comment">/* read/write chunk size */</span></span><br><span class="line">    &#123; &#123; <span class="literal">NULL</span>, <span class="number">0</span> &#125; &#125; <span class="comment">/* union for io-specific vars */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">rioInitWithBuffer</span><span class="params">(rio *r, sds s)</span> &#123;</span><br><span class="line">    *r = rioBufferIO;</span><br><span class="line">    r-&gt;io.buffer.ptr = s;</span><br><span class="line">    r-&gt;io.buffer.pos = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件io和缓冲区io相差不大，注意关注文件io的写函数，这里涉及到一个<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21lbmd5YWZlaTQzL2FydGljbGUvZGV0YWlscy8zODMxOTc4Mw==">异步刷盘</span>的问题。</p>
+<p>redis对多个操作系统做了兼容,在linux下<code>redis_fsync</code>就是<code>fsync</code>，文件读写也有自己的缓冲区，一旦开启了自动同步<code>io.file.autosync</code>，则每写入一定数量<code>io.file.buffered</code>的数据，就进行同步<code>fsync(fileno(fp))</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Returns 1 or 0 for success/failure. */</span></span><br><span class="line"><span class="type">static</span> <span class="type">size_t</span> <span class="title function_">rioFileWrite</span><span class="params">(rio *r, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">    <span class="type">size_t</span> retval;</span><br><span class="line"></span><br><span class="line">    retval = fwrite(buf,len,<span class="number">1</span>,r-&gt;io.file.fp);</span><br><span class="line">    r-&gt;io.file.buffered += len;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (r-&gt;io.file.autosync &amp;&amp;</span><br><span class="line">        r-&gt;io.file.buffered &gt;= r-&gt;io.file.autosync)</span><br><span class="line">    &#123;</span><br><span class="line">        fflush(r-&gt;io.file.fp);</span><br><span class="line">        <span class="keyword">if</span> (redis_fsync(fileno(r-&gt;io.file.fp)) == <span class="number">-1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        r-&gt;io.file.buffered = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> retval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来的两个io分别是connection io和 file descriptor io, 前者只实现了从socket中读取数据的接口，后者只实现了向fd中写数据的接口（<code>This target is used to write the RDB file to pipe, when the master just streams the data to the replicas without creating an RDB on-disk image (diskless replication option)</code>）。</p>
+<h1 id="rdb-c-rdb-h"><a href="#rdb-c-rdb-h" class="headerlink" title="rdb.c rdb.h"></a>rdb.c rdb.h</h1><h2 id="rdbSaveRio"><a href="#rdbSaveRio" class="headerlink" title="rdbSaveRio"></a>rdbSaveRio</h2><p>直接看函数<code>rdbSaveRio</code>的实现，第一部分是一些准备工作，RDB的版本被储存到了字符串magic中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSaveRio</span><span class="params">(rio *rdb, <span class="type">int</span> *error, <span class="type">int</span> rdbflags, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    dictIterator *di = <span class="literal">NULL</span>;</span><br><span class="line">    dictEntry *de;</span><br><span class="line">    <span class="type">char</span> magic[<span class="number">10</span>];</span><br><span class="line">    <span class="type">uint64_t</span> cksum;</span><br><span class="line">    <span class="type">size_t</span> processed = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> j;</span><br><span class="line">    <span class="type">long</span> key_count = <span class="number">0</span>;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> info_updated_time = <span class="number">0</span>;</span><br><span class="line">    <span class="type">char</span> *pname = (rdbflags &amp; RDBFLAGS_AOF_PREAMBLE) ? <span class="string">&quot;AOF rewrite&quot;</span> :  <span class="string">&quot;RDB&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (server.rdb_checksum)</span><br><span class="line">        rdb-&gt;update_cksum = rioGenericUpdateChecksum;</span><br><span class="line">    <span class="built_in">snprintf</span>(magic,<span class="keyword">sizeof</span>(magic),<span class="string">&quot;REDIS%04d&quot;</span>,RDB_VERSION);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>第二部分<code>rdbWriteRaw</code>直接把magic版本数据写入rdb输出流，<code>rdbSaveInfoAuxFields</code>写入了一些kv对，分别是<code>redis-ver</code>,<code>redis-bits</code>,<code>ctime</code>和<code>used-mem</code>。</p>
+<p>对于<code>rdbSaveModulesAux</code>，他是module.c和module.h中的内容，大概就是保存了一个modules字典。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSaveInfoAuxFields</span><span class="params">(rio *rdb, <span class="type">int</span> rdbflags, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span> (rdbSaveAuxFieldStrStr(rdb,<span class="string">&quot;redis-ver&quot;</span>,REDIS_VERSION) == <span class="number">-1</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveAuxFieldStrInt(rdb,<span class="string">&quot;redis-bits&quot;</span>,redis_bits) == <span class="number">-1</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveAuxFieldStrInt(rdb,<span class="string">&quot;ctime&quot;</span>,time(<span class="literal">NULL</span>)) == <span class="number">-1</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveAuxFieldStrInt(rdb,<span class="string">&quot;used-mem&quot;</span>,zmalloc_used_memory()) == <span class="number">-1</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">rdbSaveRio</span><span class="params">(rio *rdb, <span class="type">int</span> *error, <span class="type">int</span> rdbflags, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span> (rdbWriteRaw(rdb,magic,<span class="number">9</span>) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveInfoAuxFields(rdb,rdbflags,rsi) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveModulesAux(rdb, REDISMODULE_AUX_BEFORE_RDB) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三部分开始处理数据库,其主体如下。依次写入了数据库的编号、数据库kv个数，数据库超时kv个数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSaveRio</span><span class="params">(rio *rdb, <span class="type">int</span> *error, <span class="type">int</span> rdbflags, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; server.dbnum; j++) &#123;</span><br><span class="line">        redisDb *db = server.db+j;</span><br><span class="line">        dict *d = db-&gt;dict;</span><br><span class="line">        <span class="keyword">if</span> (dictSize(d) == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        di = dictGetSafeIterator(d);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Write the SELECT DB opcode */</span></span><br><span class="line">        <span class="keyword">if</span> (rdbSaveType(rdb,RDB_OPCODE_SELECTDB) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">        <span class="keyword">if</span> (rdbSaveLen(rdb,j) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Write the RESIZE DB opcode. */</span></span><br><span class="line">        <span class="type">uint64_t</span> db_size, expires_size;</span><br><span class="line">        db_size = dictSize(db-&gt;dict);</span><br><span class="line">        expires_size = dictSize(db-&gt;expires);</span><br><span class="line">        <span class="keyword">if</span> (rdbSaveType(rdb,RDB_OPCODE_RESIZEDB) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">        <span class="keyword">if</span> (rdbSaveLen(rdb,db_size) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line">        <span class="keyword">if</span> (rdbSaveLen(rdb,expires_size) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Iterate this DB writing every entry */</span></span><br><span class="line">        <span class="keyword">while</span>((de = dictNext(di)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第三部分的<code>while</code>循环中，对整个数据库的kv字典进行了迭代，依次写入了rio的流。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Iterate this DB writing every entry */</span></span><br><span class="line"><span class="keyword">while</span>((de = dictNext(di)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    sds keystr = dictGetKey(de);</span><br><span class="line">    robj key, *o = dictGetVal(de);</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> expire;</span><br><span class="line"></span><br><span class="line">    initStaticStringObject(key,keystr);</span><br><span class="line">    expire = getExpire(db,&amp;key);</span><br><span class="line">    <span class="keyword">if</span> (rdbSaveKeyValuePair(rdb,&amp;key,o,expire) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* When this RDB is produced as part of an AOF rewrite, move</span></span><br><span class="line"><span class="comment">             * accumulated diff from parent to child while rewriting in</span></span><br><span class="line"><span class="comment">             * order to have a smaller final write. */</span></span><br><span class="line">    <span class="keyword">if</span> (rdbflags &amp; RDBFLAGS_AOF_PREAMBLE &amp;&amp;</span><br><span class="line">        rdb-&gt;processed_bytes &gt; processed+AOF_READ_DIFF_INTERVAL_BYTES)</span><br><span class="line">    &#123;</span><br><span class="line">        processed = rdb-&gt;processed_bytes;</span><br><span class="line">        aofReadDiffFromParent();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Update child info every 1 second (approximately).</span></span><br><span class="line"><span class="comment">             * in order to avoid calling mstime() on each iteration, we will</span></span><br><span class="line"><span class="comment">             * check the diff every 1024 keys */</span></span><br><span class="line">    <span class="keyword">if</span> ((key_count++ &amp; <span class="number">1023</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> now = mstime();</span><br><span class="line">        <span class="keyword">if</span> (now - info_updated_time &gt;= <span class="number">1000</span>) &#123;</span><br><span class="line">            sendChildInfo(CHILD_INFO_TYPE_CURRENT_INFO, key_count, pname);</span><br><span class="line">            info_updated_time = now;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后一部分，写入了结束符和checksum</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* If we are storing the replication information on disk, persist</span></span><br><span class="line"><span class="comment">     * the script cache as well: on successful PSYNC after a restart, we need</span></span><br><span class="line"><span class="comment">     * to be able to process any EVALSHA inside the replication backlog the</span></span><br><span class="line"><span class="comment">     * master will send us. */</span></span><br><span class="line"><span class="keyword">if</span> (rsi &amp;&amp; dictSize(server.lua_scripts)) &#123;</span><br><span class="line">    di = dictGetIterator(server.lua_scripts);</span><br><span class="line">    <span class="keyword">while</span>((de = dictNext(di)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        robj *body = dictGetVal(de);</span><br><span class="line">        <span class="keyword">if</span> (rdbSaveAuxField(rdb,<span class="string">&quot;lua&quot;</span>,<span class="number">3</span>,body-&gt;ptr,sdslen(body-&gt;ptr)) == <span class="number">-1</span>)</span><br><span class="line">            <span class="keyword">goto</span> werr;</span><br><span class="line">    &#125;</span><br><span class="line">    dictReleaseIterator(di);</span><br><span class="line">    di = <span class="literal">NULL</span>; <span class="comment">/* So that we don&#x27;t release it again on error. */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (rdbSaveModulesAux(rdb, REDISMODULE_AUX_AFTER_RDB) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* EOF opcode */</span></span><br><span class="line"><span class="keyword">if</span> (rdbSaveType(rdb,RDB_OPCODE_EOF) == <span class="number">-1</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* CRC64 checksum. It will be zero if checksum computation is disabled, the</span></span><br><span class="line"><span class="comment">     * loading code skips the check in this case. */</span></span><br><span class="line">cksum = rdb-&gt;cksum;</span><br><span class="line">memrev64ifbe(&amp;cksum);</span><br><span class="line"><span class="keyword">if</span> (rioWrite(rdb,&amp;cksum,<span class="number">8</span>) == <span class="number">0</span>) <span class="keyword">goto</span> werr;</span><br><span class="line"><span class="keyword">return</span> C_OK;</span><br></pre></td></tr></table></figure>
+
+<h2 id="rdbSave"><a href="#rdbSave" class="headerlink" title="rdbSave"></a>rdbSave</h2><p>首先rdbSave创建了一个名为<code>temp-pid.rdb</code>的文件，该文件将用于输出rdb的结果。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSave</span><span class="params">(<span class="type">char</span> *filename, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="type">char</span> tmpfile[<span class="number">256</span>];</span><br><span class="line">    <span class="type">char</span> cwd[MAXPATHLEN]; <span class="comment">/* Current working dir path for error messages. */</span></span><br><span class="line">    FILE *fp = <span class="literal">NULL</span>;</span><br><span class="line">    rio rdb;</span><br><span class="line">    <span class="type">int</span> error = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">snprintf</span>(tmpfile,<span class="number">256</span>,<span class="string">&quot;temp-%d.rdb&quot;</span>, (<span class="type">int</span>) getpid());</span><br><span class="line">    fp = fopen(tmpfile,<span class="string">&quot;w&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!fp) &#123;</span><br><span class="line">        <span class="type">char</span> *cwdp = getcwd(cwd,MAXPATHLEN);</span><br><span class="line">        serverLog(LL_WARNING,</span><br><span class="line">            <span class="string">&quot;Failed opening the RDB file %s (in server root dir %s) &quot;</span></span><br><span class="line">            <span class="string">&quot;for saving: %s&quot;</span>,</span><br><span class="line">            filename,</span><br><span class="line">            cwdp ? cwdp : <span class="string">&quot;unknown&quot;</span>,</span><br><span class="line">            strerror(errno));</span><br><span class="line">        <span class="keyword">return</span> C_ERR;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后使用该文件初始化rio流，并根据配置文件rio是否进行自动刷盘。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSave</span><span class="params">(<span class="type">char</span> *filename, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    rioInitWithFile(&amp;rdb,fp);</span><br><span class="line">    startSaving(RDBFLAGS_NONE);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (server.rdb_save_incremental_fsync)</span><br><span class="line">        rioSetAutoSync(&amp;rdb,REDIS_AUTOSYNC_BYTES);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>接着执行<code>rdbSaveRio</code>，并刷盘</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSave</span><span class="params">(<span class="type">char</span> *filename, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span> (rdbSaveRio(&amp;rdb,&amp;error,RDBFLAGS_NONE,rsi) == C_ERR) &#123;</span><br><span class="line">        errno = error;</span><br><span class="line">        <span class="keyword">goto</span> werr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Make sure data will not remain on the OS&#x27;s output buffers */</span></span><br><span class="line">    <span class="keyword">if</span> (fflush(fp)) <span class="keyword">goto</span> werr;</span><br><span class="line">    <span class="keyword">if</span> (fsync(fileno(fp))) <span class="keyword">goto</span> werr;</span><br><span class="line">    <span class="keyword">if</span> (fclose(fp)) &#123; fp = <span class="literal">NULL</span>; <span class="keyword">goto</span> werr; &#125;</span><br><span class="line">    fp = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>最后把这个rdb文件命名为<code>filename</code>，并结束rdb。</p>
+<h2 id="rdbSaveBackground"><a href="#rdbSaveBackground" class="headerlink" title="rdbSaveBackground"></a>rdbSaveBackground</h2><p>fork出一个子进程，子进程执行rdb任务。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rdbSaveBackground</span><span class="params">(<span class="type">char</span> *filename, rdbSaveInfo *rsi)</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> childpid;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasActiveChildProcess()) <span class="keyword">return</span> C_ERR;</span><br><span class="line"></span><br><span class="line">    server.dirty_before_bgsave = server.dirty;</span><br><span class="line">    server.lastbgsave_try = time(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ((childpid = redisFork(CHILD_TYPE_RDB)) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="type">int</span> retval;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Child */</span></span><br><span class="line">        redisSetProcTitle(<span class="string">&quot;redis-rdb-bgsave&quot;</span>);</span><br><span class="line">        redisSetCpuAffinity(server.bgsave_cpulist);</span><br><span class="line">        retval = rdbSave(filename,rsi);</span><br><span class="line">        <span class="keyword">if</span> (retval == C_OK) &#123;</span><br><span class="line">            sendChildCowInfo(CHILD_INFO_TYPE_RDB_COW_SIZE, <span class="string">&quot;RDB&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        exitFromChild((retval == C_OK) ? <span class="number">0</span> : <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">/* Parent */</span></span><br><span class="line">        <span class="keyword">if</span> (childpid == <span class="number">-1</span>) &#123;</span><br><span class="line">            server.lastbgsave_status = C_ERR;</span><br><span class="line">            serverLog(LL_WARNING,<span class="string">&quot;Can&#x27;t save in background: fork: %s&quot;</span>,</span><br><span class="line">                strerror(errno));</span><br><span class="line">            <span class="keyword">return</span> C_ERR;</span><br><span class="line">        &#125;</span><br><span class="line">        serverLog(LL_NOTICE,<span class="string">&quot;Background saving started by pid %ld&quot;</span>,(<span class="type">long</span>) childpid);</span><br><span class="line">        server.rdb_save_time_start = time(<span class="literal">NULL</span>);</span><br><span class="line">        server.rdb_child_type = RDB_CHILD_TYPE_DISK;</span><br><span class="line">        <span class="keyword">return</span> C_OK;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> C_OK; <span class="comment">/* unreached */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><h1 id="acl-c"><a href="#acl-c" class="headerlink" title="acl.c"></a>acl.c</h1><h1 id="ae-c"><a href="#ae-c" class="headerlink" title="ae.c"></a>ae.c</h1><h1 id="ae-h"><a href="#ae-h" class="headerlink" title="ae.h"></a>ae.h</h1><h1 id="ae-epoll-c"><a href="#ae-epoll-c" class="headerlink" title="ae_epoll.c"></a>ae_epoll.c</h1><h1 id="ae-evport-c"><a href="#ae-evport-c" class="headerlink" title="ae_evport.c"></a>ae_evport.c</h1><h1 id="ae-kqueue-c"><a href="#ae-kqueue-c" class="headerlink" title="ae_kqueue.c"></a>ae_kqueue.c</h1><h1 id="ae-select-c"><a href="#ae-select-c" class="headerlink" title="ae_select.c"></a>ae_select.c</h1><h1 id="anet-c"><a href="#anet-c" class="headerlink" title="anet.c"></a>anet.c</h1><h1 id="anet-h"><a href="#anet-h" class="headerlink" title="anet.h"></a>anet.h</h1><h1 id="aof-c"><a href="#aof-c" class="headerlink" title="aof.c"></a>aof.c</h1><h1 id="asciilogo-h"><a href="#asciilogo-h" class="headerlink" title="asciilogo.h"></a>asciilogo.h</h1><h1 id="atomicvar-h"><a href="#atomicvar-h" class="headerlink" title="atomicvar.h"></a>atomicvar.h</h1><h1 id="bio-c"><a href="#bio-c" class="headerlink" title="bio.c"></a>bio.c</h1><h1 id="bio-h"><a href="#bio-h" class="headerlink" title="bio.h"></a>bio.h</h1><h1 id="bitops-c"><a href="#bitops-c" class="headerlink" title="bitops.c"></a>bitops.c</h1><h1 id="blocked-c"><a href="#blocked-c" class="headerlink" title="blocked.c"></a>blocked.c</h1><h1 id="childinfo-c"><a href="#childinfo-c" class="headerlink" title="childinfo.c"></a>childinfo.c</h1><h1 id="cli-common-c"><a href="#cli-common-c" class="headerlink" title="cli_common.c"></a>cli_common.c</h1><h1 id="cli-common-h"><a href="#cli-common-h" class="headerlink" title="cli_common.h"></a>cli_common.h</h1><h1 id="cluster-c"><a href="#cluster-c" class="headerlink" title="cluster.c"></a>cluster.c</h1><h1 id="cluster-h"><a href="#cluster-h" class="headerlink" title="cluster.h"></a>cluster.h</h1><h1 id="config-c"><a href="#config-c" class="headerlink" title="config.c"></a>config.c</h1><h1 id="config-h"><a href="#config-h" class="headerlink" title="config.h"></a>config.h</h1><h1 id="connection-c"><a href="#connection-c" class="headerlink" title="connection.c"></a>connection.c</h1><h1 id="connection-h"><a href="#connection-h" class="headerlink" title="connection.h"></a>connection.h</h1><h1 id="connhelpers-h"><a href="#connhelpers-h" class="headerlink" title="connhelpers.h"></a>connhelpers.h</h1><h1 id="crc16-c"><a href="#crc16-c" class="headerlink" title="crc16.c"></a>crc16.c</h1><h1 id="crc16-slottable-h"><a href="#crc16-slottable-h" class="headerlink" title="crc16_slottable.h"></a>crc16_slottable.h</h1><h1 id="crc64-c"><a href="#crc64-c" class="headerlink" title="crc64.c"></a>crc64.c</h1><h1 id="crc64-h"><a href="#crc64-h" class="headerlink" title="crc64.h"></a>crc64.h</h1><h1 id="crcspeed-c"><a href="#crcspeed-c" class="headerlink" title="crcspeed.c"></a>crcspeed.c</h1><h1 id="crcspeed-h"><a href="#crcspeed-h" class="headerlink" title="crcspeed.h"></a>crcspeed.h</h1><h1 id="db-c"><a href="#db-c" class="headerlink" title="db.c"></a>db.c</h1><h1 id="debug-c"><a href="#debug-c" class="headerlink" title="debug.c"></a>debug.c</h1><h1 id="debugmacro-h"><a href="#debugmacro-h" class="headerlink" title="debugmacro.h"></a>debugmacro.h</h1><h1 id="defrag-c"><a href="#defrag-c" class="headerlink" title="defrag.c"></a>defrag.c</h1><h1 id="endianconv-c"><a href="#endianconv-c" class="headerlink" title="endianconv.c"></a>endianconv.c</h1><h1 id="endianconv-h"><a href="#endianconv-h" class="headerlink" title="endianconv.h"></a>endianconv.h</h1><h1 id="evict-c"><a href="#evict-c" class="headerlink" title="evict.c"></a>evict.c</h1><h1 id="expire-c"><a href="#expire-c" class="headerlink" title="expire.c"></a>expire.c</h1><h1 id="fmacros-h"><a href="#fmacros-h" class="headerlink" title="fmacros.h"></a>fmacros.h</h1><h1 id="geo-c"><a href="#geo-c" class="headerlink" title="geo.c"></a>geo.c</h1><h1 id="geo-h"><a href="#geo-h" class="headerlink" title="geo.h"></a>geo.h</h1><h1 id="geohash-c"><a href="#geohash-c" class="headerlink" title="geohash.c"></a>geohash.c</h1><h1 id="geohash-h"><a href="#geohash-h" class="headerlink" title="geohash.h"></a>geohash.h</h1><h1 id="geohash-helper-c"><a href="#geohash-helper-c" class="headerlink" title="geohash_helper.c"></a>geohash_helper.c</h1><h1 id="geohash-helper-h"><a href="#geohash-helper-h" class="headerlink" title="geohash_helper.h"></a>geohash_helper.h</h1><h1 id="help-h"><a href="#help-h" class="headerlink" title="help.h"></a>help.h</h1><h1 id="hyperloglog-c"><a href="#hyperloglog-c" class="headerlink" title="hyperloglog.c"></a>hyperloglog.c</h1><h1 id="latency-c"><a href="#latency-c" class="headerlink" title="latency.c"></a>latency.c</h1><h1 id="latency-h"><a href="#latency-h" class="headerlink" title="latency.h"></a>latency.h</h1><h1 id="lazyfree-c"><a href="#lazyfree-c" class="headerlink" title="lazyfree.c"></a>lazyfree.c</h1><h1 id="listpack-c"><a href="#listpack-c" class="headerlink" title="listpack.c"></a>listpack.c</h1><h1 id="listpack-h"><a href="#listpack-h" class="headerlink" title="listpack.h"></a>listpack.h</h1><h1 id="listpack-malloc-h"><a href="#listpack-malloc-h" class="headerlink" title="listpack_malloc.h"></a>listpack_malloc.h</h1><h1 id="localtime-c"><a href="#localtime-c" class="headerlink" title="localtime.c"></a>localtime.c</h1><h1 id="lolwut-c"><a href="#lolwut-c" class="headerlink" title="lolwut.c"></a>lolwut.c</h1><h1 id="lolwut-h"><a href="#lolwut-h" class="headerlink" title="lolwut.h"></a>lolwut.h</h1><h1 id="lolwut5-c"><a href="#lolwut5-c" class="headerlink" title="lolwut5.c"></a>lolwut5.c</h1><h1 id="lolwut6-c"><a href="#lolwut6-c" class="headerlink" title="lolwut6.c"></a>lolwut6.c</h1><h1 id="lzf-h"><a href="#lzf-h" class="headerlink" title="lzf.h"></a>lzf.h</h1><h1 id="lzfP-h"><a href="#lzfP-h" class="headerlink" title="lzfP.h"></a>lzfP.h</h1><h1 id="lzf-c-c"><a href="#lzf-c-c" class="headerlink" title="lzf_c.c"></a>lzf_c.c</h1><h1 id="lzf-d-c"><a href="#lzf-d-c" class="headerlink" title="lzf_d.c"></a>lzf_d.c</h1><h1 id="memtest-c"><a href="#memtest-c" class="headerlink" title="memtest.c"></a>memtest.c</h1><h1 id="mkreleasehdr-sh"><a href="#mkreleasehdr-sh" class="headerlink" title="mkreleasehdr.sh"></a>mkreleasehdr.sh</h1><h1 id="module-c"><a href="#module-c" class="headerlink" title="module.c"></a>module.c</h1><h1 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h1><h1 id="monotonic-c"><a href="#monotonic-c" class="headerlink" title="monotonic.c"></a>monotonic.c</h1><h1 id="monotonic-h"><a href="#monotonic-h" class="headerlink" title="monotonic.h"></a>monotonic.h</h1><h1 id="multi-c"><a href="#multi-c" class="headerlink" title="multi.c"></a>multi.c</h1><h1 id="networking-c"><a href="#networking-c" class="headerlink" title="networking.c"></a>networking.c</h1><h1 id="notify-c"><a href="#notify-c" class="headerlink" title="notify.c"></a>notify.c</h1><h1 id="object-c"><a href="#object-c" class="headerlink" title="object.c"></a>object.c</h1><h1 id="pqsort-c"><a href="#pqsort-c" class="headerlink" title="pqsort.c"></a>pqsort.c</h1><h1 id="pqsort-h"><a href="#pqsort-h" class="headerlink" title="pqsort.h"></a>pqsort.h</h1><h1 id="pubsub-c"><a href="#pubsub-c" class="headerlink" title="pubsub.c"></a>pubsub.c</h1><h1 id="quicklist-c"><a href="#quicklist-c" class="headerlink" title="quicklist.c"></a>quicklist.c</h1><h1 id="quicklist-h"><a href="#quicklist-h" class="headerlink" title="quicklist.h"></a>quicklist.h</h1><h1 id="rand-c"><a href="#rand-c" class="headerlink" title="rand.c"></a>rand.c</h1><h1 id="rand-h"><a href="#rand-h" class="headerlink" title="rand.h"></a>rand.h</h1><h1 id="rax-c"><a href="#rax-c" class="headerlink" title="rax.c"></a>rax.c</h1><h1 id="rax-h"><a href="#rax-h" class="headerlink" title="rax.h"></a>rax.h</h1><h1 id="rax-malloc-h"><a href="#rax-malloc-h" class="headerlink" title="rax_malloc.h"></a>rax_malloc.h</h1><h1 id="redis-benchmark-c"><a href="#redis-benchmark-c" class="headerlink" title="redis-benchmark.c"></a>redis-benchmark.c</h1><h1 id="redis-check-aof-c"><a href="#redis-check-aof-c" class="headerlink" title="redis-check-aof.c"></a>redis-check-aof.c</h1><h1 id="redis-check-rdb-c"><a href="#redis-check-rdb-c" class="headerlink" title="redis-check-rdb.c"></a>redis-check-rdb.c</h1><h1 id="redis-cli-c"><a href="#redis-cli-c" class="headerlink" title="redis-cli.c"></a>redis-cli.c</h1><h1 id="redis-trib-rb"><a href="#redis-trib-rb" class="headerlink" title="redis-trib.rb"></a>redis-trib.rb</h1><h1 id="redisassert-c"><a href="#redisassert-c" class="headerlink" title="redisassert.c"></a>redisassert.c</h1><h1 id="redisassert-h"><a href="#redisassert-h" class="headerlink" title="redisassert.h"></a>redisassert.h</h1><h1 id="redismodule-h"><a href="#redismodule-h" class="headerlink" title="redismodule.h"></a>redismodule.h</h1><h1 id="release-c"><a href="#release-c" class="headerlink" title="release.c"></a>release.c</h1><h1 id="replication-c"><a href="#replication-c" class="headerlink" title="replication.c"></a>replication.c</h1><h1 id="scripting-c"><a href="#scripting-c" class="headerlink" title="scripting.c"></a>scripting.c</h1><h1 id="sdsalloc-h"><a href="#sdsalloc-h" class="headerlink" title="sdsalloc.h"></a>sdsalloc.h</h1><h1 id="sentinel-c"><a href="#sentinel-c" class="headerlink" title="sentinel.c"></a>sentinel.c</h1><h1 id="server-c"><a href="#server-c" class="headerlink" title="server.c"></a>server.c</h1><h1 id="server-h"><a href="#server-h" class="headerlink" title="server.h"></a>server.h</h1><h1 id="setcpuaffinity-c"><a href="#setcpuaffinity-c" class="headerlink" title="setcpuaffinity.c"></a>setcpuaffinity.c</h1><h1 id="setproctitle-c"><a href="#setproctitle-c" class="headerlink" title="setproctitle.c"></a>setproctitle.c</h1><h1 id="sha1-c"><a href="#sha1-c" class="headerlink" title="sha1.c"></a>sha1.c</h1><h1 id="sha1-h"><a href="#sha1-h" class="headerlink" title="sha1.h"></a>sha1.h</h1><h1 id="sha256-c"><a href="#sha256-c" class="headerlink" title="sha256.c"></a>sha256.c</h1><h1 id="sha256-h"><a href="#sha256-h" class="headerlink" title="sha256.h"></a>sha256.h</h1><h1 id="siphash-c"><a href="#siphash-c" class="headerlink" title="siphash.c"></a>siphash.c</h1><h1 id="slowlog-c"><a href="#slowlog-c" class="headerlink" title="slowlog.c"></a>slowlog.c</h1><h1 id="slowlog-h"><a href="#slowlog-h" class="headerlink" title="slowlog.h"></a>slowlog.h</h1><h1 id="solarisfixes-h"><a href="#solarisfixes-h" class="headerlink" title="solarisfixes.h"></a>solarisfixes.h</h1><h1 id="sort-c"><a href="#sort-c" class="headerlink" title="sort.c"></a>sort.c</h1><h1 id="sparkline-c"><a href="#sparkline-c" class="headerlink" title="sparkline.c"></a>sparkline.c</h1><h1 id="sparkline-h"><a href="#sparkline-h" class="headerlink" title="sparkline.h"></a>sparkline.h</h1><h1 id="stream-h"><a href="#stream-h" class="headerlink" title="stream.h"></a>stream.h</h1><h1 id="syncio-c"><a href="#syncio-c" class="headerlink" title="syncio.c"></a>syncio.c</h1><h1 id="t-hash-c"><a href="#t-hash-c" class="headerlink" title="t_hash.c"></a>t_hash.c</h1><h1 id="t-list-c"><a href="#t-list-c" class="headerlink" title="t_list.c"></a>t_list.c</h1><h1 id="t-set-c"><a href="#t-set-c" class="headerlink" title="t_set.c"></a>t_set.c</h1><h1 id="t-stream-c"><a href="#t-stream-c" class="headerlink" title="t_stream.c"></a>t_stream.c</h1><h1 id="t-string-c"><a href="#t-string-c" class="headerlink" title="t_string.c"></a>t_string.c</h1><h1 id="t-zset-c"><a href="#t-zset-c" class="headerlink" title="t_zset.c"></a>t_zset.c</h1><h1 id="testhelp-h"><a href="#testhelp-h" class="headerlink" title="testhelp.h"></a>testhelp.h</h1><h1 id="timeout-c"><a href="#timeout-c" class="headerlink" title="timeout.c"></a>timeout.c</h1><h1 id="tls-c"><a href="#tls-c" class="headerlink" title="tls.c"></a>tls.c</h1><h1 id="tracking-c"><a href="#tracking-c" class="headerlink" title="tracking.c"></a>tracking.c</h1><h1 id="util-c"><a href="#util-c" class="headerlink" title="util.c"></a>util.c</h1><h1 id="util-h"><a href="#util-h" class="headerlink" title="util.h"></a>util.h</h1><h1 id="valgrind-sup"><a href="#valgrind-sup" class="headerlink" title="valgrind.sup"></a>valgrind.sup</h1><h1 id="version-h"><a href="#version-h" class="headerlink" title="version.h"></a>version.h</h1><h1 id="zipmap-c"><a href="#zipmap-c" class="headerlink" title="zipmap.c"></a>zipmap.c</h1><h1 id="zipmap-h"><a href="#zipmap-h" class="headerlink" title="zipmap.h"></a>zipmap.h</h1><h1 id="zmalloc-c"><a href="#zmalloc-c" class="headerlink" title="zmalloc.c"></a>zmalloc.c</h1><h1 id="zmalloc-h"><a href="#zmalloc-h" class="headerlink" title="zmalloc.h"></a>zmalloc.h</h1>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/shoka/images/wechatpay.png" alt="fightinggg 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/alipay.png" alt="fightinggg 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/shoka/images/paypal.png" alt="fightinggg 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>fightinggg <i class="ic i-at"><em>@</em></i>Believe it
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://fightinggg.github.io/shoka/QVAQR0.html" title="redis源码">http://fightinggg.github.io/shoka/QVAQR0.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/shoka/QV7MPT.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giph4fomxoj20zk0m8axp.jpg" title="跟我一起自己写编译器-6.语义分析">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 编译器</span>
+  <h3>跟我一起自己写编译器-6.语义分析</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/shoka/QVZE5O.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicitf0kl1j20zk0m87fe.jpg" title="通过开源项目获取jetbrains全家桶License">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Others</span>
+  <h3>通过开源项目获取jetbrains全家桶License</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sds-h-sds-c"><span class="toc-number">2.</span> <span class="toc-text">sds.h sds.c</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="toc-number">2.1.</span> <span class="toc-text">内存对齐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8F"><span class="toc-number">2.2.</span> <span class="toc-text">宏##</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sds-h-%E6%BA%90%E7%A0%81"><span class="toc-number">2.3.</span> <span class="toc-text">sds.h 源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#adlist-c-adlist-h"><span class="toc-number">3.</span> <span class="toc-text">adlist.c adlist.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mt19937-64-c-mt19937-64-h"><span class="toc-number">4.</span> <span class="toc-text">mt19937-64.c mt19937-64.h</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%85%E6%A3%AE%E7%B4%A0%E6%95%B0"><span class="toc-number">4.1.</span> <span class="toc-text">梅森素数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%A7%BB%E4%BD%8D%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">线性反馈移位寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">梅森旋转算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mt19937%E6%BA%90%E7%A0%81"><span class="toc-number">4.4.</span> <span class="toc-text">mt19937源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dict-c-dict-h"><span class="toc-number">5.</span> <span class="toc-text">dict.c dict.h</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E5%85%B8%E6%BA%90%E7%A0%81"><span class="toc-number">5.1.</span> <span class="toc-text">字典源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#server-h-server-c-1-%E8%B7%B3%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">server.h server.c-1-跳表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#intset-c-intset-h"><span class="toc-number">7.</span> <span class="toc-text">intset.c intset.h</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88%E5%8D%87%E7%BA%A7"><span class="toc-number">7.1.</span> <span class="toc-text">整数集合升级</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ziplist-c-ziplist-h"><span class="toc-number">8.</span> <span class="toc-text">ziplist.c ziplist.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#server-h-server-c-2-%E5%AF%B9%E8%B1%A1"><span class="toc-number">9.</span> <span class="toc-text">server.h server.c-2-对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#server-h-3-db"><span class="toc-number">10.</span> <span class="toc-text">server.h-3-db</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rio-c-rio-h"><span class="toc-number">11.</span> <span class="toc-text">rio.c rio.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rdb-c-rdb-h"><span class="toc-number">12.</span> <span class="toc-text">rdb.c rdb.h</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rdbSaveRio"><span class="toc-number">12.1.</span> <span class="toc-text">rdbSaveRio</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdbSave"><span class="toc-number">12.2.</span> <span class="toc-text">rdbSave</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rdbSaveBackground"><span class="toc-number">12.3.</span> <span class="toc-text">rdbSaveBackground</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile"><span class="toc-number">13.</span> <span class="toc-text">Makefile</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#acl-c"><span class="toc-number">14.</span> <span class="toc-text">acl.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-c"><span class="toc-number">15.</span> <span class="toc-text">ae.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-h"><span class="toc-number">16.</span> <span class="toc-text">ae.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-epoll-c"><span class="toc-number">17.</span> <span class="toc-text">ae_epoll.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-evport-c"><span class="toc-number">18.</span> <span class="toc-text">ae_evport.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-kqueue-c"><span class="toc-number">19.</span> <span class="toc-text">ae_kqueue.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ae-select-c"><span class="toc-number">20.</span> <span class="toc-text">ae_select.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#anet-c"><span class="toc-number">21.</span> <span class="toc-text">anet.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#anet-h"><span class="toc-number">22.</span> <span class="toc-text">anet.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#aof-c"><span class="toc-number">23.</span> <span class="toc-text">aof.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#asciilogo-h"><span class="toc-number">24.</span> <span class="toc-text">asciilogo.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#atomicvar-h"><span class="toc-number">25.</span> <span class="toc-text">atomicvar.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bio-c"><span class="toc-number">26.</span> <span class="toc-text">bio.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bio-h"><span class="toc-number">27.</span> <span class="toc-text">bio.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bitops-c"><span class="toc-number">28.</span> <span class="toc-text">bitops.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#blocked-c"><span class="toc-number">29.</span> <span class="toc-text">blocked.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#childinfo-c"><span class="toc-number">30.</span> <span class="toc-text">childinfo.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cli-common-c"><span class="toc-number">31.</span> <span class="toc-text">cli_common.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cli-common-h"><span class="toc-number">32.</span> <span class="toc-text">cli_common.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cluster-c"><span class="toc-number">33.</span> <span class="toc-text">cluster.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cluster-h"><span class="toc-number">34.</span> <span class="toc-text">cluster.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#config-c"><span class="toc-number">35.</span> <span class="toc-text">config.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#config-h"><span class="toc-number">36.</span> <span class="toc-text">config.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#connection-c"><span class="toc-number">37.</span> <span class="toc-text">connection.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#connection-h"><span class="toc-number">38.</span> <span class="toc-text">connection.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#connhelpers-h"><span class="toc-number">39.</span> <span class="toc-text">connhelpers.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crc16-c"><span class="toc-number">40.</span> <span class="toc-text">crc16.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crc16-slottable-h"><span class="toc-number">41.</span> <span class="toc-text">crc16_slottable.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crc64-c"><span class="toc-number">42.</span> <span class="toc-text">crc64.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crc64-h"><span class="toc-number">43.</span> <span class="toc-text">crc64.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crcspeed-c"><span class="toc-number">44.</span> <span class="toc-text">crcspeed.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#crcspeed-h"><span class="toc-number">45.</span> <span class="toc-text">crcspeed.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#db-c"><span class="toc-number">46.</span> <span class="toc-text">db.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#debug-c"><span class="toc-number">47.</span> <span class="toc-text">debug.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#debugmacro-h"><span class="toc-number">48.</span> <span class="toc-text">debugmacro.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#defrag-c"><span class="toc-number">49.</span> <span class="toc-text">defrag.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#endianconv-c"><span class="toc-number">50.</span> <span class="toc-text">endianconv.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#endianconv-h"><span class="toc-number">51.</span> <span class="toc-text">endianconv.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#evict-c"><span class="toc-number">52.</span> <span class="toc-text">evict.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#expire-c"><span class="toc-number">53.</span> <span class="toc-text">expire.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#fmacros-h"><span class="toc-number">54.</span> <span class="toc-text">fmacros.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geo-c"><span class="toc-number">55.</span> <span class="toc-text">geo.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geo-h"><span class="toc-number">56.</span> <span class="toc-text">geo.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geohash-c"><span class="toc-number">57.</span> <span class="toc-text">geohash.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geohash-h"><span class="toc-number">58.</span> <span class="toc-text">geohash.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geohash-helper-c"><span class="toc-number">59.</span> <span class="toc-text">geohash_helper.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#geohash-helper-h"><span class="toc-number">60.</span> <span class="toc-text">geohash_helper.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#help-h"><span class="toc-number">61.</span> <span class="toc-text">help.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hyperloglog-c"><span class="toc-number">62.</span> <span class="toc-text">hyperloglog.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#latency-c"><span class="toc-number">63.</span> <span class="toc-text">latency.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#latency-h"><span class="toc-number">64.</span> <span class="toc-text">latency.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lazyfree-c"><span class="toc-number">65.</span> <span class="toc-text">lazyfree.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#listpack-c"><span class="toc-number">66.</span> <span class="toc-text">listpack.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#listpack-h"><span class="toc-number">67.</span> <span class="toc-text">listpack.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#listpack-malloc-h"><span class="toc-number">68.</span> <span class="toc-text">listpack_malloc.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#localtime-c"><span class="toc-number">69.</span> <span class="toc-text">localtime.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lolwut-c"><span class="toc-number">70.</span> <span class="toc-text">lolwut.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lolwut-h"><span class="toc-number">71.</span> <span class="toc-text">lolwut.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lolwut5-c"><span class="toc-number">72.</span> <span class="toc-text">lolwut5.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lolwut6-c"><span class="toc-number">73.</span> <span class="toc-text">lolwut6.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lzf-h"><span class="toc-number">74.</span> <span class="toc-text">lzf.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lzfP-h"><span class="toc-number">75.</span> <span class="toc-text">lzfP.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lzf-c-c"><span class="toc-number">76.</span> <span class="toc-text">lzf_c.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lzf-d-c"><span class="toc-number">77.</span> <span class="toc-text">lzf_d.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#memtest-c"><span class="toc-number">78.</span> <span class="toc-text">memtest.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mkreleasehdr-sh"><span class="toc-number">79.</span> <span class="toc-text">mkreleasehdr.sh</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#module-c"><span class="toc-number">80.</span> <span class="toc-text">module.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#modules"><span class="toc-number">81.</span> <span class="toc-text">modules</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#monotonic-c"><span class="toc-number">82.</span> <span class="toc-text">monotonic.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#monotonic-h"><span class="toc-number">83.</span> <span class="toc-text">monotonic.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#multi-c"><span class="toc-number">84.</span> <span class="toc-text">multi.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#networking-c"><span class="toc-number">85.</span> <span class="toc-text">networking.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#notify-c"><span class="toc-number">86.</span> <span class="toc-text">notify.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#object-c"><span class="toc-number">87.</span> <span class="toc-text">object.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pqsort-c"><span class="toc-number">88.</span> <span class="toc-text">pqsort.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pqsort-h"><span class="toc-number">89.</span> <span class="toc-text">pqsort.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pubsub-c"><span class="toc-number">90.</span> <span class="toc-text">pubsub.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#quicklist-c"><span class="toc-number">91.</span> <span class="toc-text">quicklist.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#quicklist-h"><span class="toc-number">92.</span> <span class="toc-text">quicklist.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rand-c"><span class="toc-number">93.</span> <span class="toc-text">rand.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rand-h"><span class="toc-number">94.</span> <span class="toc-text">rand.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rax-c"><span class="toc-number">95.</span> <span class="toc-text">rax.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rax-h"><span class="toc-number">96.</span> <span class="toc-text">rax.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rax-malloc-h"><span class="toc-number">97.</span> <span class="toc-text">rax_malloc.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis-benchmark-c"><span class="toc-number">98.</span> <span class="toc-text">redis-benchmark.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis-check-aof-c"><span class="toc-number">99.</span> <span class="toc-text">redis-check-aof.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis-check-rdb-c"><span class="toc-number">100.</span> <span class="toc-text">redis-check-rdb.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis-cli-c"><span class="toc-number">101.</span> <span class="toc-text">redis-cli.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis-trib-rb"><span class="toc-number">102.</span> <span class="toc-text">redis-trib.rb</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redisassert-c"><span class="toc-number">103.</span> <span class="toc-text">redisassert.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redisassert-h"><span class="toc-number">104.</span> <span class="toc-text">redisassert.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redismodule-h"><span class="toc-number">105.</span> <span class="toc-text">redismodule.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#release-c"><span class="toc-number">106.</span> <span class="toc-text">release.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#replication-c"><span class="toc-number">107.</span> <span class="toc-text">replication.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#scripting-c"><span class="toc-number">108.</span> <span class="toc-text">scripting.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sdsalloc-h"><span class="toc-number">109.</span> <span class="toc-text">sdsalloc.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sentinel-c"><span class="toc-number">110.</span> <span class="toc-text">sentinel.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#server-c"><span class="toc-number">111.</span> <span class="toc-text">server.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#server-h"><span class="toc-number">112.</span> <span class="toc-text">server.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#setcpuaffinity-c"><span class="toc-number">113.</span> <span class="toc-text">setcpuaffinity.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#setproctitle-c"><span class="toc-number">114.</span> <span class="toc-text">setproctitle.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sha1-c"><span class="toc-number">115.</span> <span class="toc-text">sha1.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sha1-h"><span class="toc-number">116.</span> <span class="toc-text">sha1.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sha256-c"><span class="toc-number">117.</span> <span class="toc-text">sha256.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sha256-h"><span class="toc-number">118.</span> <span class="toc-text">sha256.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#siphash-c"><span class="toc-number">119.</span> <span class="toc-text">siphash.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#slowlog-c"><span class="toc-number">120.</span> <span class="toc-text">slowlog.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#slowlog-h"><span class="toc-number">121.</span> <span class="toc-text">slowlog.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#solarisfixes-h"><span class="toc-number">122.</span> <span class="toc-text">solarisfixes.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sort-c"><span class="toc-number">123.</span> <span class="toc-text">sort.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sparkline-c"><span class="toc-number">124.</span> <span class="toc-text">sparkline.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sparkline-h"><span class="toc-number">125.</span> <span class="toc-text">sparkline.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stream-h"><span class="toc-number">126.</span> <span class="toc-text">stream.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#syncio-c"><span class="toc-number">127.</span> <span class="toc-text">syncio.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-hash-c"><span class="toc-number">128.</span> <span class="toc-text">t_hash.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-list-c"><span class="toc-number">129.</span> <span class="toc-text">t_list.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-set-c"><span class="toc-number">130.</span> <span class="toc-text">t_set.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-stream-c"><span class="toc-number">131.</span> <span class="toc-text">t_stream.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-string-c"><span class="toc-number">132.</span> <span class="toc-text">t_string.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#t-zset-c"><span class="toc-number">133.</span> <span class="toc-text">t_zset.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#testhelp-h"><span class="toc-number">134.</span> <span class="toc-text">testhelp.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#timeout-c"><span class="toc-number">135.</span> <span class="toc-text">timeout.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tls-c"><span class="toc-number">136.</span> <span class="toc-text">tls.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tracking-c"><span class="toc-number">137.</span> <span class="toc-text">tracking.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#util-c"><span class="toc-number">138.</span> <span class="toc-text">util.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#util-h"><span class="toc-number">139.</span> <span class="toc-text">util.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#valgrind-sup"><span class="toc-number">140.</span> <span class="toc-text">valgrind.sup</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#version-h"><span class="toc-number">141.</span> <span class="toc-text">version.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#zipmap-c"><span class="toc-number">142.</span> <span class="toc-text">zipmap.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#zipmap-h"><span class="toc-number">143.</span> <span class="toc-text">zipmap.h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#zmalloc-c"><span class="toc-number">144.</span> <span class="toc-text">zmalloc.c</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#zmalloc-h"><span class="toc-number">145.</span> <span class="toc-text">zmalloc.h</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/shoka/Q8DH6N.html" rel="bookmark" title="mysql刷题1">mysql刷题1</a></li><li><a href="/shoka/Q8EN1R.html" rel="bookmark" title="redis">redis</a></li><li><a href="/shoka/Q8GQ4Q.html" rel="bookmark" title="mysql游标">mysql游标</a></li><li><a href="/shoka/Q8PP3V.html" rel="bookmark" title="mysql-入门">mysql-入门</a></li><li><a href="/shoka/QMBDS0.html" rel="bookmark" title="mysql常用指令">mysql常用指令</a></li><li><a href="/shoka/QPZUWC.html" rel="bookmark" title="docker-mysql">docker-mysql</a></li><li class="active"><a href="/shoka/QVAQR0.html" rel="bookmark" title="redis源码">redis源码</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="fightinggg"
+      data-src="/shoka/images/avatar.jpg">
+  <p class="name" itemprop="name">fightinggg</p>
+  <div class="description" itemprop="description">O ever youthful, O ever weeping</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/shoka/archives/">
+        <span class="count">464</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/shoka/categories/">
+        <span class="count">76</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/shoka/tags/">
+        <span class="count">16</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/shoka/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/shoka/QV7MPT.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/shoka/QVZE5O.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/hdu1847.html" title="hdu1847">hdu1847</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/%E7%AC%94%E8%AF%95/" title="分类于 笔试">笔试</a>
+</div>
+
+    <span><a href="/shoka/Q8VYLN.html" title="美团笔试">美团笔试</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="分类于 计算机网络">计算机网络</a>
+</div>
+
+    <span><a href="/shoka/QR12J0.html" title="从TCP看HTTP">从TCP看HTTP</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/CCF%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0.html" title="CCF有趣的数">CCF有趣的数</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8TZMC.html" title="SpringBoot1-介绍">SpringBoot1-介绍</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/Spring/" title="分类于 Spring">Spring</a>
+</div>
+
+    <span><a href="/shoka/Q8BOOH.html" title="spring5-XML配置IOC">spring5-XML配置IOC</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/ACM/" title="分类于 ACM">ACM</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/" title="分类于 老Blog迁移">老Blog迁移</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/ACM/%E8%80%81Blog%E8%BF%81%E7%A7%BB/reading-problem/" title="分类于 reading_problem">reading_problem</a>
+</div>
+
+    <span><a href="/shoka/bzoj3295.html" title="bzoj3295">bzoj3295</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/Language/" title="分类于 Language">Language</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/" title="分类于 Java">Java</a>
+<i class="ic i-angle-right"></i>
+<a href="/shoka/categories/Language/Java/SpringBoot/" title="分类于 SpringBoot">SpringBoot</a>
+</div>
+
+    <span><a href="/shoka/Q8YUMK.html" title="SpringBoot4-Web3-SpringMVC">SpringBoot4-Web3-SpringMVC</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/shoka/Q79R98.html" title="无旋Treap">无旋Treap</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/shoka/categories/%E5%AE%9E%E4%B9%A0/" title="分类于 实习">实习</a>
+</div>
+
+    <span><a href="/shoka/QQL340.html" title="腾讯实习">腾讯实习</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">fightinggg @ Yume Shoka</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'QVAQR0.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/shoka/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

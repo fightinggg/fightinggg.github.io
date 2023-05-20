@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>最大流最小割算法 | Believe it</title><meta name="author" content="fightinggg"><meta name="copyright" content="fightinggg"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  二分图的最小顶点覆盖定义：假如选了一个点就相当于覆盖了以它为端点的所有边。最小顶点覆盖就是选择最少的点来覆盖所有的边。 方法：最小顶点覆盖等于二分图的最大匹配。 我们用二分图来构造最小顶点覆盖。 二分图的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最大流最小割算法">
+<meta property="og:url" content="http://fightinggg.github.io/butterfly/PGMUCH.html">
+<meta property="og:site_name" content="Believe it">
+<meta property="og:description" content="nexthexonextbutterflyvolantisyearnyiliashokaindigoapollolandscapecactusmateryicarusfluidmaterial  二分图的最小顶点覆盖定义：假如选了一个点就相当于覆盖了以它为端点的所有边。最小顶点覆盖就是选择最少的点来覆盖所有的边。 方法：最小顶点覆盖等于二分图的最大匹配。 我们用二分图来构造最小顶点覆盖。 二分图的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2018-10-15T09:00:17.000Z">
+<meta property="article:modified_time" content="2019-09-03T08:09:38.000Z">
+<meta property="article:author" content="fightinggg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/butterfly/img/favicon.png"><link rel="canonical" href="http://fightinggg.github.io/butterfly/PGMUCH.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/butterfly/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/butterfly/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '最大流最小割算法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2019-09-03 16:09:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/butterfly/atom.xml" title="Believe it" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/butterfly/" title="Believe it"><span class="site-name">Believe it</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">最大流最小割算法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-10-15T09:00:17.000Z" title="发表于 2018-10-15 17:00:17">2018-10-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2019-09-03T08:09:38.000Z" title="更新于 2019-09-03 16:09:38">2019-09-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/">ACM</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/butterfly/categories/ACM/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9B%BE%E8%AE%BA/">图论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="最大流最小割算法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div><a href="/next/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">next</a><a href="/hexonext/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">hexonext</a><a href="/butterfly/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">butterfly</a><a href="/volantis/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">volantis</a><a href="/yearn/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yearn</a><a href="/yilia/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">yilia</a><a href="/shoka/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">shoka</a><a href="/indigo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">indigo</a><a href="/apollo/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">apollo</a><a href="/landscape/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">landscape</a><a href="/cactus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">cactus</a><a href="/matery/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">matery</a><a href="/icarus/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">icarus</a><a href="/fluid/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">fluid</a><a href="/material/PGMUCH.html" style="border-bottom: 0px;border-bottom: 0px;
+            background: #4FC921;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px 2px 6px;
+            margin: 2px 6px 2px 6px;
+            text-decoration: none;
+            float: left;
+            ">material</a><div style="clear: both;"></div></div>
+
+<h1 id="二分图的最小顶点覆盖"><a href="#二分图的最小顶点覆盖" class="headerlink" title="二分图的最小顶点覆盖"></a>二分图的最小顶点覆盖</h1><p>定义：假如选了一个点就相当于覆盖了以它为端点的所有边。最小顶点覆盖就是选择最少的点来覆盖所有的边。</p>
+<p>方法：最小顶点覆盖等于二分图的最大匹配。</p>
+<p>我们用二分图来构造最小顶点覆盖。</p>
+<h1 id="二分图的最大独立集"><a href="#二分图的最大独立集" class="headerlink" title="二分图的最大独立集"></a>二分图的最大独立集</h1><p>定义：选出一些顶点使得这些顶点两两不相邻，则这些点构成的集合称为独立集。找出一个包含顶点数最多的独立集称为最大独立集。</p>
+<p>方法：最大独立集&#x3D;所有顶点数-最小顶点覆盖。</p>
+<h1 id="二分图的最大团"><a href="#二分图的最大团" class="headerlink" title="二分图的最大团"></a>二分图的最大团</h1><p>定义：对于一般图来说，团是一个顶点集合，且由该顶点集合诱导的子图是一个完全图，简单说，就是选出一些顶点，这些顶点两两之间都有边。最大团就是使得选出的这个顶点集合最大。对于二分图来说，我们默认为左边的所有点之间都有边，右边的所有顶点之间都有边。那么，实际上，我们是要在左边找到一个顶点子集X，在右边找到一个顶点子集Y，使得X中每个顶点和Y中每个顶点之间都有边。</p>
+<p>方法：二分图的最大团&#x3D;补图的最大独立集。</p>
+<p>补图的定义是：对于二分图中左边一点x和右边一点y，若x和y之间有边，那么在补图中没有，否则有。</p>
+<p>这个方法很好理解，因为最大独立集是两两不相邻，所以最大独立集的补图两两相邻。</p>
+<h1 id="最小边覆盖"><a href="#最小边覆盖" class="headerlink" title="最小边覆盖"></a>最小边覆盖</h1><p>边覆盖集：通俗地讲，所谓边覆盖集，就是G中所有的顶点都是E中某条边的邻接顶点（边覆盖顶点），一条边只能覆盖2个顶点。</p>
+<p>注意：在无向图中存在用尽量少的边去“覆盖”住所有的顶点，所以边覆盖集有极小与最小的区别。</p>
+<p>极小边覆盖：若边覆盖E中的任何真子集都不是边覆盖集，则称E是极小边覆盖集。</p>
+<p>最小边覆盖：边数最小的边覆盖称为最小边覆盖，通俗地讲，就是极小边覆盖中的最小的一个集合。</p>
+<p>最小边覆盖 &#x3D; 最大独立集 &#x3D; n - 最大匹配</p>
+<h1 id="最大权闭合子图"><a href="#最大权闭合子图" class="headerlink" title="最大权闭合子图"></a>最大权闭合子图</h1><p>定义：有一个有向图，每一个点都有一个权值（可以为正或负或0），选择一个权值和最大的子图，使得每个点的后继都在子图里面，这个子图就叫最大权闭合子图。</p>
+<p>方法：将正权点连接s,容量为点权,负权点连接t容量为点权绝对值,所求得的最小割将图分为两部分,我们发现所有正点权的和减去该简单割便是与s相连的闭合图的权，通过最小割找到了最大权闭合图。</p>
+<h1 id="最大密度子图"><a href="#最大密度子图" class="headerlink" title="最大密度子图"></a>最大密度子图</h1><p>定义：给定一个无向图，要求它的一个子图，使得子图中边数 与点数 的比值最大，</p>
+<p>方法：定义$d_i$为与点i相连的所有边的权值和，定义$p_i$为点i的权，保留以前的图，新建源点s汇点t，s到i连边，权值为U，i到t连边，权值为$2g-d_i-2p_i$</p>
+<p>那么$h(g)$的值为$(U\cdot n-maxflow)$，二分答案就行了。</p>
+<h1 id="最小路径覆盖子图"><a href="#最小路径覆盖子图" class="headerlink" title="最小路径覆盖子图"></a>最小路径覆盖子图</h1><p>定义：对于一个有向图，找出最小的路径条数，使之成为一个路径覆盖．</p>
+<p>方法：用原图建立一个两层的新图，如果原图中存在边i-&gt;j我们建立的新图就有第一层的点i流到第二层的点j，最后建立超级源点流向 所有的第一层图的点，建立超级汇点，由所有第二层的图流入，用n减去所 求的最大流就是最小路径。</p>
+<h1 id="有向无环图最长链、最长反链"><a href="#有向无环图最长链、最长反链" class="headerlink" title="有向无环图最长链、最长反链"></a>有向无环图最长链、最长反链</h1><p>在有向无环图中，有如下的一些定义和性质：</p>
+<p>链：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。</p>
+<p>反链：一条反链是一些点的集合，链上任意两个点x, y，满足 x 不能到达 y，且 y 也不能到达 x。</p>
+<p>一个定理：最长反链长度&#x3D;最小链覆盖（用最少的链覆盖所有顶点）</p>
+<p>对偶定理：最长链长度&#x3D;最小反链覆盖    </p>
+<h1 id="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"><a href="#最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）" class="headerlink" title="最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）"></a>最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</h1><p>定义：一条链是一些点的集合，链上任意两个点x, y，满足要么 x 能到达 y ，要么 y 能到达 x 。有向无环图中，找出最小的路径条数，使之成为的一个路径覆盖。</p>
+<p>方法：我们将原图做一次Floyd传递闭包，在新图中寻找最小路径覆盖，这样其实就是相当于将原图改造了一下，只要 x 能到达 y ，就直接连一条边 (x, y)，这样就可以“绕过”原图的一些被其他路径占用的点，直接构造新路径了。这样就将可以相交的最小路径覆盖转化为了路径不能相交的最小路径覆盖了。</p>
+<p>最大团 &#x3D; 补图的最大独立集</p>
+<p>最小边覆盖 &#x3D; 二分图最大独立集 &#x3D; |V| - 最小路径覆盖</p>
+<p>最小路径覆盖 &#x3D; |V| - 最大匹配数</p>
+<p>最小顶点覆盖 &#x3D; 最大匹配数</p>
+<p>最小顶点覆盖 + 最大独立数 &#x3D; |V|</p>
+<p>最小割 &#x3D; 最小点权覆盖集 &#x3D; 点权和 - 最大点权独立集</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> rep(i,j,k) for(int i=j;i&lt;=(k);++i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> per(i,j,k) for(int i=j;i&gt;=(k);--i)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> repe(i,u) for(int i=head[u];i;i=nex[i])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// graph</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> V=<span class="number">5e4</span>+<span class="number">5</span>,E=<span class="number">5e4</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> head[V];</span><br><span class="line"><span class="type">int</span> to[E],nex[E],ew[E],tot=<span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">addedge1</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> w)</span> </span>&#123;to[++tot]=v,nex[tot]=head[u],ew[tot]=w,head[u]=tot;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;<span class="built_in">repe</span>(i,u) head[u]=<span class="number">0</span>,<span class="built_in">del</span>(to[i]);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最大流最小割算法</span></span><br><span class="line"><span class="type">int</span> lv[V],current[V],src,dst;</span><br><span class="line"><span class="type">int</span> *cap=ew;<span class="comment">//容量等于边权</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">maxflowbfs</span><span class="params">()</span></span>&#123;</span><br><span class="line">    queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    lv[src]=<span class="number">0</span>, q.<span class="built_in">push</span>(src);</span><br><span class="line">    <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="type">int</span> u=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="built_in">repe</span>(i,u)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[to[i]]&gt;=<span class="number">0</span>)<span class="keyword">continue</span>;</span><br><span class="line">            lv[to[i]]=lv[u]+<span class="number">1</span>, q.<span class="built_in">push</span>(to[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lv[dst]&gt;=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxflowdfs</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> f)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(u==dst)<span class="keyword">return</span> f;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span>&amp;i=current[u];i;i=nex[i])&#123;<span class="comment">//当前弧优化</span></span><br><span class="line">        <span class="keyword">if</span>(cap[i]==<span class="number">0</span>||lv[u]&gt;=lv[to[i]])<span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> flow=<span class="built_in">maxflowdfs</span>(to[i],<span class="built_in">min</span>(f,cap[i]));</span><br><span class="line">        <span class="keyword">if</span>(flow==<span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        cap[i]-=flow,cap[i^<span class="number">1</span>]+=flow;</span><br><span class="line">        <span class="keyword">return</span> flow;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">maxflow</span><span class="params">(<span class="type">int</span> base,<span class="type">int</span> n,<span class="type">int</span> s,<span class="type">int</span> t)</span></span>&#123;</span><br><span class="line">    src=base+s,dst=base+t;</span><br><span class="line">    ll flow=<span class="number">0</span>,f=<span class="number">0</span>;<span class="comment">// 计算最大流的过程中不可能爆int 唯独在最后对流量求和对时候可能会比较大 所以只有这里用ll</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">rep</span>(i,base+<span class="number">1</span>,base+n) current[i]=head[i],lv[i]=<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">maxflowbfs</span>())<span class="keyword">return</span> flow;</span><br><span class="line">        <span class="keyword">while</span>(f=<span class="built_in">maxflowdfs</span>(src,<span class="number">2e9</span>))</span><br><span class="line">            flow+=f;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly">fightinggg</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fightinggg.github.io/butterfly/PGMUCH.html">http://fightinggg.github.io/butterfly/PGMUCH.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fightinggg.github.io/butterfly" target="_blank">Believe it</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/butterfly/PGOVKM.html" title="构造"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">构造</div></div></a></div><div class="next-post pull-right"><a href="/butterfly/PGMNAB.html" title="球盒模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">球盒模型</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/butterfly/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">fightinggg</div><div class="author-info__description">O ever youthful, O ever weeping</div></div><div class="card-info-data site-data is-center"><a href="/butterfly/archives/"><div class="headline">文章</div><div class="length-num">464</div></a><a href="/butterfly/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/butterfly/categories/"><div class="headline">分类</div><div class="length-num">76</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E9%A1%B6%E7%82%B9%E8%A6%86%E7%9B%96"><span class="toc-number">1.</span> <span class="toc-text">二分图的最小顶点覆盖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">二分图的最大独立集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E5%9B%BE%E7%9A%84%E6%9C%80%E5%A4%A7%E5%9B%A2"><span class="toc-number">3.</span> <span class="toc-text">二分图的最大团</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E8%BE%B9%E8%A6%86%E7%9B%96"><span class="toc-number">4.</span> <span class="toc-text">最小边覆盖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E6%9D%83%E9%97%AD%E5%90%88%E5%AD%90%E5%9B%BE"><span class="toc-number">5.</span> <span class="toc-text">最大权闭合子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%AF%86%E5%BA%A6%E5%AD%90%E5%9B%BE"><span class="toc-number">6.</span> <span class="toc-text">最大密度子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%E5%AD%90%E5%9B%BE"><span class="toc-number">7.</span> <span class="toc-text">最小路径覆盖子图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E6%9C%80%E9%95%BF%E9%93%BE%E3%80%81%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE"><span class="toc-number">8.</span> <span class="toc-text">有向无环图最长链、最长反链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E9%93%BE%E8%A6%86%E7%9B%96%EF%BC%88%E5%8F%AF%E4%BB%A5%E7%9B%B8%E4%BA%A4%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E8%A6%86%E7%9B%96%EF%BC%89%EF%BC%88%E6%9C%80%E9%95%BF%E5%8F%8D%E9%93%BE%E9%95%BF%E5%BA%A6%EF%BC%89%EF%BC%88%E7%94%A8%E6%9C%80%E5%B0%91%E7%9A%84%E9%93%BE%E8%A6%86%E7%9B%96%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">最小链覆盖（可以相交的最小路径覆盖）（最长反链长度）（用最少的链覆盖所有顶点）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RUSDW0.html" title="智慧的疆界：从图灵机到人工智能">智慧的疆界：从图灵机到人工智能</a><time datetime="2023-05-17T05:00:00.000Z" title="发表于 2023-05-17 13:00:00">2023-05-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RS7SSC.html" title="Transformer">Transformer</a><time datetime="2023-03-28T05:05:00.000Z" title="发表于 2023-03-28 13:05:00">2023-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RPN780.html" title="2023你好">2023你好</a><time datetime="2023-02-06T05:00:00.000Z" title="发表于 2023-02-06 13:00:00">2023-02-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RFJ220.html" title="VPN与代理那些事">VPN与代理那些事</a><time datetime="2022-07-24T13:42:00.000Z" title="发表于 2022-07-24 21:42:00">2022-07-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/butterfly/RF964O.html" title="CPU架构介绍">CPU架构介绍</a><time datetime="2022-07-19T05:34:00.000Z" title="发表于 2022-07-19 13:34:00">2022-07-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By fightinggg</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/butterfly/js/utils.js"></script><script src="/butterfly/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
